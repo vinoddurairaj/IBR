@@ -1,6 +1,0 @@
-LIBRARY LOCALMON
-
-EXPORTS
-    DllEntryPoint
-    
-    InitializePrintMonitor2 = LocalMonInitializePrintMonitor2

@@ -1,8 +1,0 @@
-REGEDIT4
-
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
-"CL" = "@c:\\ftdsrc\\openstorage.cl"
-"QNM" = "stk"
-"CAPQ" = "STK"
-"MASTERNAME" = "OPENstorageServer"
-"PRODUCTNAME" = "OPENstorage Data Replication"

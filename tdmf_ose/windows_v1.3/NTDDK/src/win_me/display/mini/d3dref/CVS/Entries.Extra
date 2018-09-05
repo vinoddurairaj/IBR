@@ -1,8 +1,0 @@
-/disablerefrast.reg////*////
-/enablerefrast.reg////*////
-/makefile////*////
-D/drv////////
-D/inc////////
-D/link////////
-D/rast////////
-D/tnl////////

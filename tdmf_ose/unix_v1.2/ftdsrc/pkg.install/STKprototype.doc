@@ -1,9 +1,0 @@
-i pkginfo
-i copyright
-i request
-d none %PKGNM% 0755 bin bin
-d none %PKGNM%/doc 0755 bin bin
-d none %PKGNM%/doc/pdf 0755 bin bin
-d none %PKGNM%/bin 0755 bin bin
-f none %PKGNM%/doc/pdf/solaris.pdf 0644 root bin
-

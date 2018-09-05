@@ -1,1 +1,0 @@
-$SUCCEED_FAILURE="compiles_succeeded";

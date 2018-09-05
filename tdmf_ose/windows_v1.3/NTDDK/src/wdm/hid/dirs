@@ -1,5 +1,0 @@
-DIRS= \
-     monitor \
-     hclient \
-     gameenum \
-     hidgame

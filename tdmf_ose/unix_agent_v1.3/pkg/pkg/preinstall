@@ -1,8 +1,0 @@
-SOLPKGDIR="/var/sadm/pkg/SFTKdtc"
-
-if [ "`uname -s`" = "SunOS" ]; then
-	if [ ! -d $SOLPKGDIR ]; then
-		exit 1
-	fi
-fi
-exit 0

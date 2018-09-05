@@ -1,7 +1,0 @@
-#!/usr/bin/ksh
-#
-# Product Name
-#
-. ../../../mk/vars.sh
-
-print ${PRODUCTNAME_TOKEN}

@@ -1,9 +1,0 @@
-TARGETNAME=toastmon
-TARGETPATH=obj
-TARGETTYPE=DRIVER
-
-MSC_OPTIMIZATION=/Odi
-
-SOURCES= toastmon.rc \
-         toastmon.c  
-

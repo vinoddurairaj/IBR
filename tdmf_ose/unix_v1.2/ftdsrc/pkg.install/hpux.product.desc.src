@@ -1,7 +1,0 @@
-Vendor Name  %COMPANYNAME%.
-
-Product Name %PRODUCTNAME%
-
-%PRODUCTNAME% on HP-UX platforms provides disk mirroring to remote 
-servers. It supports HP 9000 Series 800 computers running
-HP-UX %OSRELEASE% operating system.

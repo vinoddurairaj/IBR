@@ -1,9 +1,0 @@
-#!/usr/bin/ksh
-#
-# Package Full Product Name
-#
-# Derive product name using the PRODUCTNAME macro.
-#
-. ../../../mk/vars.sh
-
-echo ${PRODUCTNAME} ${VERSIONBUILD}

@@ -1,2 +1,0 @@
-tdmf_ose/windows_v1.3/ftdsrc/SFTK_RFWDriver/RFWDriver/sftk_tdiconnect.c 	1.72	 VB: Chaining of Send Buffers added
-tdmf_ose/windows_v1.3/ftdsrc/SFTK_RFWDriver/RFWDriver/sftk_tdiconnect.c 	1.73	 no message

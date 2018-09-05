@@ -1,1 +1,0 @@
-/o DtcBlock.bsc *.sbr

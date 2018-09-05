@@ -1,6 +1,0 @@
-; TdmfCommonGuiDll.def : Declares the module parameters for the DLL.
-
-LIBRARY      "TdmfCommonGui"
-DESCRIPTION  'TdmfCommonGui Windows Dynamic Link Library'
-
-EXPORTS

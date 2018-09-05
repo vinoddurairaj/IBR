@@ -1,5 +1,0 @@
-EXPORTS
-    RefRastSetMemif
-    GetRefHalProvider
-    GetRefZBufferFormats
-    GetRefTextureFormats

@@ -1,8 +1,0 @@
-[Axp64]
-wdm=yes
-
-[IA64]
-wdm=yes
-
-[Alpha]
-wdm=yes

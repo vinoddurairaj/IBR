@@ -1,6 +1,0 @@
-LIBRARY         MONITOR
-
-EXPORTS
-        DllGetClassObject                   PRIVATE     ;internal
-        DllCanUnloadNow                     PRIVATE     ;internal
-

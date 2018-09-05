@@ -1,9 +1,0 @@
-[DYNAMIC]
-WILDCARD0=*.bat
-INCLUDESUBDIR=NO
-FOLDER=C:\tdmf_ose\windows_v1.2\ftdsrc\Installshield\TDMF
-
-[GENERAL]
-VERSION=1.10.000
-TYPE=FILELIST
-

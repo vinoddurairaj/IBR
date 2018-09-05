@@ -1,8 +1,0 @@
-#!/bin/sh
-#
-# Product Package Name
-#
-# For now, package name is product name
-#
-PRODUCT=`./PRODUCT`
-echo ${PRODUCT}

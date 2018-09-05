@@ -1,8 +1,0 @@
-#! /bin/sh
-cp driver/qds /usr/kernel/drv
-rem_drv qds
-add_drv qds
-libexec/start/qdsstart -a
-echo "testing..."
-newfs /dev/rdsk/c0t1d0s1 < /dev/null
-mount /mnt

@@ -1,5 +1,0 @@
-DIRS= \
-     kbd_us \
-     kbd_gr \
-     kbd_fr \
-     fe_kbds

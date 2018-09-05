@@ -1,7 +1,0 @@
-TOP=../../..
-
-SH_PROGRAM=${Q}-startdriver
-SHSRC=startdriver
-
-include ${TOP}/mk/prog.gmk
-

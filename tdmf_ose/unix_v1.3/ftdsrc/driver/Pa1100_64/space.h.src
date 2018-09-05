@@ -1,7 +1,0 @@
-/*
- * Tunable parameters for %Q% module
- */
-int ftd_debug = FTD_DEBUG;
-int ftd_chunk_size = FTD_CHUNK_SIZE;
-int ftd_num_chunk = FTD_NUM_CHUNK;
-

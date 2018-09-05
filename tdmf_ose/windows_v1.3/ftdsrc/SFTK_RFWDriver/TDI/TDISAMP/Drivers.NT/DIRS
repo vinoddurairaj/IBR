@@ -1,6 +1,0 @@
-DIRS=   KSLib   \
-        TDITTCP \
-        TDIECHO \
-        TDIQTest \
-        PassThru
-

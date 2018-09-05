@@ -1,3 +1,0 @@
-#
-# sparc specific files
-#

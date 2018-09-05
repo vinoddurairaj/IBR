@@ -1,7 +1,0 @@
-DIRS= \
-     qic157 \
-     miniqic \
-     exabyte2 \
-     exabyte1 \
-     dlttape \
-     4mmdat

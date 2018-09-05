@@ -1,6 +1,0 @@
-
-- Test
-
-Maybe
-- Add a device description
-- Add an About Box

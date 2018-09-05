@@ -1,5 +1,0 @@
-DIRS= \
-     fpfilter \
-     addfilter \
-     cdaudio \
-     diskperf

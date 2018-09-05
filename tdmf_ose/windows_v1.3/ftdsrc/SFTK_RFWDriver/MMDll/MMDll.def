@@ -1,6 +1,0 @@
-; MMDll.def : Declares the module parameters for the DLL.
-
-LIBRARY      "MMDll"
-
-EXPORTS
-    ; Explicit exports can go here

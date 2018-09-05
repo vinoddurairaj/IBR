@@ -1,7 +1,0 @@
-TOP=../..
-
-SH_PROGRAM=${Q}.add
-SHSRC=add
-
-include ${TOP}/mk/prog.gmk
-

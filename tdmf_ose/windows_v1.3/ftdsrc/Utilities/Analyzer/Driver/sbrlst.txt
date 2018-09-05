@@ -1,1 +1,0 @@
-/o TDMFANALYZER.bsc *.sbr

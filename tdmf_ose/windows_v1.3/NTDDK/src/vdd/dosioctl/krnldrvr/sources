@@ -1,6 +1,0 @@
-TARGETNAME=krnldrvr
-TARGETPATH=obj
-TARGETTYPE=DRIVER
-
-SOURCES=krnldrvr.c
-

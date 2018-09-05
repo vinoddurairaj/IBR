@@ -1,7 +1,0 @@
-NAME="%PRODUCTNAME%"
-CATEGORY=system
-ARCH="sparc"
-VENDOR="%COMPANYNAME%.  All Rights Reserved."
-BASEDIR=/opt
-PKG=%PKGNM%
-VERSION="%VERSION%"

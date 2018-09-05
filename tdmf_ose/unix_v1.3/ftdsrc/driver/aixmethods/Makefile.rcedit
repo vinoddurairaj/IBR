@@ -1,7 +1,0 @@
-TOP=../../..
-
-SH_PROGRAM=${Q}-rcedit
-SHSRC=rcedit
-
-include ${TOP}/mk/prog.gmk
-

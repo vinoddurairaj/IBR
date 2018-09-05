@@ -1,5 +1,0 @@
-Licensed Materials / Property of IBM
-(c) Copyright %COMPANYNAME% %COPYRIGHTYEAR 2001%.  All rights reserved.
-IBM, Softek, and %PRODUCTNAME% are registered or common law 
-trademarks of %COMPANYNAME% in the United States, other countries, or both. 
-

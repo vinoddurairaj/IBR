@@ -1,7 +1,0 @@
-LIBRARY  COINST
-
-EXPORTS   
-   MyCoInstaller 
-   
-
-
