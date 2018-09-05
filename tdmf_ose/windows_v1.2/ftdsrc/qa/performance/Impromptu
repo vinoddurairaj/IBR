@@ -1,0 +1,72 @@
+#!	/bin/ksh
+#
+QADIR=..
+CONFIGDIR=$QADIR/configs
+IOZONE=$QADIR/iozone
+RECONFIG="$QADIR/reconfig";
+KILLPMDS=killpmds;
+PERL=perl
+
+CONFFILES="performance1 performance2"
+RAWDISKS="/dev/rdsk/c0t1d0s1 /dev/rdsk/c1t1d0s1"
+FILESIZE=100
+BLOCKSIZE=8192
+
+
+function PrintThreeSamples {
+	DEV="$1";
+	CONF="$2";
+	PMDS="$3";
+	DISK="$4";
+
+	print -n "$CONF	$PMDS	$DISK	write	";
+	eval $($IOZONE $FILESIZE $BLOCKSIZE $DEV | $PERL -e  'while (<>) {
+												 m|([0-9]+) bytes/second for writing| && print "WSAMPLE1=$1\n";
+												 m|([0-9]+) bytes/second for reading| && print "RSAMPLE1=$1\n";
+												}')
+	print -n "$WSAMPLE1	"
+
+	eval $($IOZONE $FILESIZE $BLOCKSIZE $DEV | $PERL -e  'while (<>) {
+												 m|([0-9]+) bytes/second for writing| && print "WSAMPLE2=$1\n";
+												 m|([0-9]+) bytes/second for reading| && print "RSAMPLE2=$1\n";
+												}')
+	print -n "$WSAMPLE2	"
+
+	eval $($IOZONE $FILESIZE $BLOCKSIZE $DEV | $PERL -e  'while (<>) {
+												 m|([0-9]+) bytes/second for writing| && print "WSAMPLE3=$1\n";
+												 m|([0-9]+) bytes/second for reading| && print "RSAMPLE3=$1\n";
+												}')
+	print "$WSAMPLE3";
+	print "$CONF	$PMDS	$DISK	read	$RSAMPLE1	$RSAMPLE2	$RSAMPLE3";
+}
+
+# Now start.  First, the baselines.
+#
+killpmds
+rem_drv qds
+
+print 'Config.	PMDS?	Disk	Operation	Sample 1	Sample2		Sample 3'
+
+#for D in $RAWDISKS; do
+#	PrintThreeSamples $D raw N/A ${D##*/};
+#done
+
+# and now the qds configurations: with PMDs...
+#
+$RECONFIG $CONFIGDIR/performance1.cfg $CONFIGDIR/performance1.conf
+PrintThreeSamples /dev/rdsk/qds0 qds Yes c0t1d0s1
+
+#$RECONFIG $CONFIGDIR/performance2.cfg $CONFIGDIR/performance2.conf
+#PrintThreeSamples /dev/rdsk/qds0 qds Yes c1t1d0s1
+
+# ...and without PMDs.
+#
+#$RECONFIG $CONFIGDIR/performance1.cfg $CONFIGDIR/performance1.conf
+#$KILLPMDS
+#PrintThreeSamples /dev/rdsk/qds0 qds No c0t1d0s1
+
+#$RECONFIG $CONFIGDIR/performance2.cfg $CONFIGDIR/performance2.conf
+#$KILLPMDS
+#PrintThreeSamples /dev/rdsk/qds0 qds No c1t1d0s1
+
+exit 0

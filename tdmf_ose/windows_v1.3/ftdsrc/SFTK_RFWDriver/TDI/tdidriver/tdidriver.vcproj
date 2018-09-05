@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="tdidriver"
+	ProjectGUID="{CCCCFFC3-FFA4-439C-A0F4-2454B990809A}"
+	RootNamespace="tdidriver"
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+
+"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\md5c.c">
+			</File>
+			<File
+				RelativePath=".\md5const.c">
+			</File>
+			<File
+				RelativePath=".\sftkprotocol.c">
+			</File>
+			<File
+				RelativePath=".\tdiConnect.c">
+			</File>
+			<File
+				RelativePath=".\tdiListen.c">
+			</File>
+			<File
+				RelativePath=".\tdimain.c">
+			</File>
+			<File
+				RelativePath=".\tdiReceive.c">
+			</File>
+			<File
+				RelativePath=".\tdiSend.c">
+			</File>
+			<File
+				RelativePath=".\tdiutil.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\Cache\newbab\common.h">
+			</File>
+			<File
+				RelativePath="..\..\Cache\newbab\dtb.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\ethertype.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Igmp.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\In.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\In_systm.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Inetinc.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Ip.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Ip_icmp.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Ip_mrout.h">
+			</File>
+			<File
+				RelativePath=".\md5.h">
+			</File>
+			<File
+				RelativePath=".\md5const.h">
+			</File>
+			<File
+				RelativePath="..\..\Cache\newbab\mmg.h">
+			</File>
+			<File
+				RelativePath="..\..\Cache\newbab\mmgr_ntkrnl.h">
+			</File>
+			<File
+				RelativePath=".\resource.h">
+			</File>
+			<File
+				RelativePath=".\sftk_session_manager.h">
+			</File>
+			<File
+				RelativePath="..\..\Cache\newbab\sftkprotocol.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\Drivers.NT\KSInc\SftkTdiTcpEx.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\Drivers.NT\KSInc\SftkTdiUtil.h">
+			</File>
+			<File
+				RelativePath="..\..\Cache\newbab\slab.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\Include\Smpletcp.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Tcp.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\Include\Tdiioctl.h">
+			</File>
+			<File
+				RelativePath=".\tdiutil.h">
+			</File>
+			<File
+				RelativePath="..\Tdisamp\NetINet\Udp.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath=".\Res.rc">
+			</File>
+		</Filter>
+		<Filter
+			Name="Build Files"
+			Filter="">
+			<File
+				RelativePath=".\CSym.bat">
+			</File>
+			<File
+				RelativePath=".\ddkbuild.bat">
+			</File>
+			<File
+				RelativePath=".\sbrList.txt">
+			</File>
+			<File
+				RelativePath=".\Sources">
+			</File>
+			<File
+				RelativePath=".\tdiblock.INI">
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\readme.txt">
+		</File>
+		<File
+			RelativePath=".\TdiBlock.bsc">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

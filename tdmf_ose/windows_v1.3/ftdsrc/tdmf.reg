@@ -1,0 +1,7 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
+"CL" = "@c:\\tdmf_ose\\windows_v1.3\\ftdsrc\\tdmf.cl"
+"MASTERNAME" = "TdmfReplServer"
+"PRODUCTNAME" = "TDMF"
+"CMDPREFIX" = "dtc"

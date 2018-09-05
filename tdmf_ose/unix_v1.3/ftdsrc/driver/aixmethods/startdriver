@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# invoked during boot processing from /etc/rc
+
+# assert a few things that need to 
+# hold before the driver can be started
+
+# for logging
+err=0;
+drvnm="%Q%0"
+logf=/var/%Q%/%Q%error.log;
+datestr=`date "+%Y/%m/%d %T"`;
+errhdr="[${datestr}] FTD: ";
+
+# whether the driver is in an available state
+lsdev -C -l ${drvnm} -S A | grep "Available" 1> /dev/null 2>&1;
+if [ $? -ne 0 ]
+then
+	err=1;
+	errmsg=`echo "${errhdr} $0: %Q%0 driver state not Available"`;
+else
+	# driver is in Available state, start it
+	/usr/%Q%/bin/%Q%start -ba 1> /dev/null 2>&1;
+	if [ $? -ne 0 ]
+	then
+		err=2;
+		errmsg=`echo "${errhdr} "$0: %Q%0 driver start failed"`;
+	else
+		err=0;
+		errmsg=`echo "${errhdr} "$0: %Q%0 driver started"`;
+	fi
+fi
+
+# report errors
+echo ${errmsg} 1>> ${logf} 2>&1;
+exit ${err};

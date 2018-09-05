@@ -1,0 +1,13 @@
+[Project:Properties:Product]
+CompanyName:=StoneFly Networks
+;URL:=
+;EmailAddress:=
+;Copyright:=
+;Summary:=
+Name:=StoneFly Replicator
+;Version:=
+;ExeFile:=
+;Comments:=
+
+[ShellObj:Data]
+Folder4:=Folder2\StoneFly Replicator

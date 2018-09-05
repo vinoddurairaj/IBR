@@ -1,0 +1,9 @@
+tdmf_ose/windows_v1.3/btools/bRcvslasttag.pm 	1.132	 Build 05014 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRcvslasttag.pm 	1.133	 Build 05015 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRcvstag.pm 	1.136	 Build 05014 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRcvstag.pm 	1.137	 Build 05015 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRglobalvars.pm 	1.146	 Build 05014
+tdmf_ose/windows_v1.3/btools/bRglobalvars.pm 	1.147	 Build 05015
+tdmf_ose/windows_v1.3/btools/bRlastbuildGMTdate.pm 	1.113	 RFWHEAD B05014 commit via bRcvscommit.pl : buildcommitstring
+tdmf_ose/windows_v1.3/btools/btoolschangelist.txt 	1.127	 RFWHEAD B05014 commit via bRcvscommit.pl : buildcommitstring
+tdmf_ose/windows_v1.3/btools/sourcechangelist.txt 	1.126	 RFWHEAD B05014 commit via bRcvscommit.pl : buildcommitstring

@@ -1,0 +1,91 @@
+# Pre-removal script for %PKGNM%
+#	Copyright (c) 1997, 1998 FullTime Software, Inc.  All rights reserved.
+# $Id: hpux.preremove.src,v 1.1.1.1 2001/09/14 13:48:45 dturrin Exp $
+
+REV=%VERSION%
+
+# Kill any Pmds, Rmds, and %PKGNM%refresh daemons
+/opt/%PKGNM%/bin/killpmds
+/opt/%PKGNM%/bin/killrmds
+/opt/%PKGNM%/bin/killrefresh
+/opt/%PKGNM%/bin/kill%Q%master
+/opt/%PKGNM%/bin/%Q%stop -a
+
+# Check if any .cfg files exist
+a=/etc/opt/%PKGNM%/*.cfg 
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+		mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% Config files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any .sh files exist
+a=/etc/opt/%PKGNM%/*.sh
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+		mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% Shell files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any .lic files exist
+a=/etc/opt/%PKGNM%/*.lic
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+	        mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% License files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if the %Q%.conf file exists
+if [ -f /etc/opt/%PKGNM%/%Q%.conf ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+	        mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving the %Q%.conf file to /var/opt/%PKGNM%/%PKGNM%${REV}
+	mv /etc/opt/%PKGNM%/%Q%.conf /var/opt/%PKGNM%/%PKGNM%${REV}/.
+fi
+
+exit 0
+

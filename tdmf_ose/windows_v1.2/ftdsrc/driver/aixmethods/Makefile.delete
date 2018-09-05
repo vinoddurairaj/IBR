@@ -1,0 +1,7 @@
+TOP=../..
+
+SH_PROGRAM=${Q}.delete
+SHSRC=delete
+
+include ${TOP}/mk/prog.gmk
+

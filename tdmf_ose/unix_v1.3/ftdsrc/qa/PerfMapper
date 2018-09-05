@@ -1,0 +1,128 @@
+#! /usr/local/bin/perl5
+#
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+use Getopt::Std;
+
+########################################
+# Initialize constants
+#
+$GENDISKTRAFFIC=(defined $ENV{'GENDISKTRAFFIC'} ? $ENV{'GENDISKTRAFFIC'}
+				 : (defined $ENV{'CVSROOT'} ? "$ENV{'CVSROOT'}/SafeData/qa/GenDiskTraffic"
+					: 'GenDiskTraffic'));
+
+@DFLT_AccessMode = ('S', 'R');			# access mode--one of 'R' or 'S'.  Default is both.
+@DFLT_PercentWrites = (10);				# percentage of block hits being write hits
+@DFLT_PercentReadWrites = (0);			# percentage of write hits being read/write hits
+@DFLT_SectorsPerBlock = (16);			# application block size, in sectors.  Default is 16 (8 Kbytes)
+@DFLT_MeanBlocksPerAccess = (5);		# expected size of a given I/O access, in application blocks
+@DFLT_MeanAccessPeriod = (1.5);	 		# expected time between accesses, in seconds
+@DFLT_VarianceMultiplier = (1);			# variance multiplier
+@DFLT_TestDuration = (60);				# duration of test, in seconds; or 0 if no limit
+
+########################################
+# Process arguments
+#
+$scriptName = $0;
+getopts('DM:QS:V:b:np:qr:s:t:v:w:') || Usage();
+$#ARGV == 0 || Usage();
+
+########################################
+# Initialize parameters
+#
+@accessMode				= ((defined $opt_M) ? split(/,\s*|\s+/, $opt_M) : @DFLT_AccessMode);
+@percentWrites			= ((defined $opt_w) ? split(/,\s*|\s+/, $opt_w) : @DFLT_PercentWrites);
+@percentReadWrites		= ((defined $opt_r) ? split(/,\s*|\s+/, $opt_r) : @DFLT_PercentReadWrites);
+@sectorsPerBlock		= ((defined $opt_s) ? split(/,\s*|\s+/, $opt_s) : @DFLT_SectorsPerBlock);
+@meanBlocksPerAccess	= ((defined $opt_b) ? split(/,\s*|\s+/, $opt_b) : @DFLT_MeanBlocksPerAccess);
+@meanAccessPeriod		= ((defined $opt_p) ? split(/,\s*|\s+/, $opt_p) : @DFLT_MeanAccessPeriod);
+@accessPeriodVariance	= ((defined $opt_v) ? split(/,\s*|\s+/, $opt_v) : ());
+@varianceMultiplier		= ((defined $opt_V && !defined $opt_v) ? split(/,\s*|\s+/, $opt_V) : @DFLT_VarianceMultiplier);
+@testDuration			= ((defined $opt_t) ? split(/,\s*|\s+/, $opt_t) : @DFLT_TestDuration);
+@RNGSeed				= ((defined $opt_S) ? split(/,\s*|\s+/, $opt_S) : (time));
+
+$device = $ARGV[0];
+
+foreach $accessMode (@accessMode) {
+	foreach $percentWrites (@percentWrites) {
+		foreach $percentReadWrites (@percentReadWrites) {
+			foreach $sectorsPerBlock (@sectorsPerBlock) {
+				foreach $meanBlocksPerAccess (@meanBlocksPerAccess) {
+					foreach $meanAccessPeriod (@meanAccessPeriod) {
+						@varList = ((defined $opt_v) ? @accessPeriodVariance
+													 : map($meanAccessPeriod * $_, @varianceMultiplier));
+						foreach $variance (@varList) {
+							foreach $testDuration (@testDuration) {
+								foreach $RNGSeed (@RNGSeed) {
+									$GDTCommand = join(' ',
+													   ($GENDISKTRAFFIC,
+														$opt_Q ? '-Q' : ($opt_q ? '-q' : ''),
+														$opt_D ? '-D' : '',
+														$accessMode eq 'R' ? '-R' : '',
+														"-w$percentWrites",
+														"-r$percentReadWrites",
+														"-s$sectorsPerBlock",
+														"-b$meanBlocksPerAccess",
+														"-p$meanAccessPeriod",
+														"-v$variance",
+														"-t$testDuration",
+														"-S$RNGSeed",
+														$device
+														));
+									print $GDTCommand . "\n" if ($opt_n || (! $opt_q && ! $opt_Q));
+									if (! $opt_n) {
+										system($GDTCommand) && do {
+											die "Command failed. Error status $?\n";
+										};
+									}
+									$opt_Q = 1 if ($opt_q);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+exit 0;
+
+sub Usage {
+	printf "Usage: %s [options] <dev>\n", $scriptName;
+	printf "\t-D:            print a running commentary on the action\n";
+	printf "\t-n:            print the command lines without executing them.\n";
+	printf "\t-M<mode>:      access mode: 'R' - random, or 'S' for sequential. The default is to do both (-MR,S)\n";
+
+	printf "\t-p<period>:    mean access period in seconds (default: -p%s)\n",
+		join(',', @DFLT_MeanAccessPeriod);
+
+	printf "\t-v<variance>:  access period variance in seconds (default: none. See -V)\n";
+
+	printf "\t-V<varmult>:   always use (<period>*<varmult>) as the access period variance (default: -V%s)\n",
+		join(',', @DFLT_VarianceMultiplier);
+
+	printf "\t-b<accesssz>:  mean access size in application blocks (default: -b%s)\n",
+		join(',', @DFLT_MeanBlocksPerAccess);
+
+	printf "\t-s<size>:      application block size, in 512 byte sectors (default: -s%s)\n",
+		join(',', @DFLT_SectorsPerBlock);
+
+	printf "\t-w<write%%>:    percent write accesses (default: -w%s)\n",
+		join(',', @DFLT_PercentWrites);
+
+	printf "\t-r<r/w%%>:      percentage of write accesses preceeded by read (default: %.1f%%)\n",
+		join(',', @DFLT_PercentReadWrite);
+
+	printf "\t-t<secs>:      run for <secs> seconds (default: -t%s)\n",
+		join(',', @DFLT_TestDuration);;
+
+	printf "\t-S<seed>:      random number generator seed (default is the current time)\n";
+	printf "\t-q:            generate one-line-per-run statistics reports with a single header\n";
+	printf "\t-Q:            generate one-line-per-run statistics reports with no header\n\n";
+	printf "Each argument can be a comma-separated list of values.  $scriptName runs\n";
+	printf "GenDiskTraffic with the cross-product of all of the different values.\n\n";
+	printf "The -v option overrides the -V option.\n";
+	die "\n";
+}

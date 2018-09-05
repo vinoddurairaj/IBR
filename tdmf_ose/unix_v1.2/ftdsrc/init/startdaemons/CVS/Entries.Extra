@@ -1,0 +1,9 @@
+/Makefile////*////
+/SFTKdtc-startdaemons.service.brand////*////
+/SFTKdtc-startmaster.service.brand////*////
+/SFTKdtc-startpmds.service.brand////*////
+/startdaemons.sh////*////
+/startdaemons.sh.AIX////*////
+/startdaemons.sh.HP-UX////*////
+/startdaemons.sh.Linux////*////
+/startdaemons.sh.SunOS////*////

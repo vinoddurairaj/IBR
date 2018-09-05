@@ -1,0 +1,665 @@
+# Microsoft Developer Studio Generated Dependency File, included by libftd.mak
+
+.\ftd_cfgsys.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\ftd.h"\
+	".\ftd_cfgsys.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_config.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock_t.h"\
+	".\ftd_throt.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_cpoint.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_cpoint.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_dev.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\disksize.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_devlock.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_platform.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_devio.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\ftd.h"\
+	".\ftd_devio.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_devlock.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\ftd.h"\
+	".\ftd_devlock.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_error.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_error.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_fsm.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_cpoint.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_devlock.h"\
+	".\ftd_error.h"\
+	".\ftd_fsm.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_lg_states.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_rsync.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\ftd_stat.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_ioctl.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_journal.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_lg.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_devlock.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_lg_states.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_platform.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\ftd_stat.h"\
+	".\ftd_throt.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_lic.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\logmsg.h"\
+	"..\liblic\license.h"\
+	"..\liblic\licplat.h"\
+	"..\liblic\licprod.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_error.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_pathnames.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\ftd.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_perf.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_platform.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_platform.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_proc.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_lg_states.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_ps.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\disksize.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_rsync.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libmd5\md5.h"\
+	"..\libmd5\md5const.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_lg_states.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_rsync.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\ftd_stat.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_sock.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\disksize.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_cfgsys.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_devlock.h"\
+	".\ftd_error.h"\
+	".\ftd_fsm.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_lg_states.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_rsync.h"\
+	".\ftd_sock.h"\
+	".\ftd_sock_t.h"\
+	".\ftd_stat.h"\
+	".\un.h"\
+	".\values.h"\
+	
+
+.\ftd_stat.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\driver\ftdio.h"\
+	"..\..\logmsg.h"\
+	"..\libcomp\_huff.h"\
+	"..\libcomp\_lz.h"\
+	"..\libcomp\_lzhl.h"\
+	"..\libcomp\comp.h"\
+	"..\libcomp\lzhl.h"\
+	"..\libcomp\pred.h"\
+	"..\liblst\custom.h"\
+	"..\liblst\llist.h"\
+	"..\libproc\proc.h"\
+	"..\libsock\sock.h"\
+	"..\libsock\sockerrnum.h"\
+	"..\libsock\tcp.h"\
+	"..\libutil\getopt.h"\
+	"..\libutil\iov_t.h"\
+	"..\libutil\misc.h"\
+	".\errmsg.h"\
+	".\ftd.h"\
+	".\ftd_config.h"\
+	".\ftd_dev.h"\
+	".\ftd_devio.h"\
+	".\ftd_error.h"\
+	".\ftd_ioctl.h"\
+	".\ftd_journal.h"\
+	".\ftd_lg.h"\
+	".\ftd_pathnames.h"\
+	".\ftd_perf.h"\
+	".\ftd_port.h"\
+	".\ftd_port_win.h"\
+	".\ftd_proc.h"\
+	".\ftd_ps.h"\
+	".\ftd_ps_pvt.h"\
+	".\ftd_sock_t.h"\
+	".\un.h"\
+	".\values.h"\
+	

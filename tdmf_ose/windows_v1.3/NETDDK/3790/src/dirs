@@ -1,0 +1,11 @@
+DIRS= \
+     wdm \
+     general \
+     setup \
+     network \
+     kernel \
+     mmedia \
+     print \
+     storage \
+     vdd \
+     video

@@ -1,0 +1,3 @@
+DIRS= \
+     proppage \
+     ac97

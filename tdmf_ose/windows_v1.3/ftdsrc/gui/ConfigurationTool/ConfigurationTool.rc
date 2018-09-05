@@ -1,0 +1,456 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "../../lib/libResMgr/Resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+SFTK_IDI_APPLOGO        ICON    DISCARDABLE     "res\\ConfigurationTool.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 327, 121
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ConfigurationTool"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Configuration Tool Version 1.2.14",
+                    IDC_STATIC_ABOUT_VERSION,40,10,225,8,SS_NOPREFIX
+    LTEXT           "Copyright (c) 2002 Softek Storage Solutions Corporation. All Rights Reserved",
+                    IDC_STATIC_COPYRIGHT,40,28,270,10
+    EDITTEXT        IDC_EDI_LICENSE_KEY,65,92,149,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "License Key:",IDC_STATIC,20,95,42,8
+    GROUPBOX        "License",IDC_STATIC,13,43,301,71
+    CONTROL         "Edit License Key",IDC_CHECK_ABOUT_LICENSE_KEY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,19,56,65,10
+    PUSHBUTTON      "OK",IDC_BUTTON_ABOUT_OK,270,7,50,14
+    LTEXT           "Expiration Date:",IDC_STATIC,20,74,51,8
+    LTEXT           "Static",IDC_STATIC_EXP_DATE,75,74,136,8
+    ICON            157,IDC_STATIC_SFTK,11,10,20,20
+END
+
+IDD_CONFIGURATIONTOOL_DIALOG DIALOGEX 0, 0, 202, 210
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ConfigurationTool"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,89,190,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,145,190,50,14
+    COMBOBOX        IDC_LIST_GROUPS,45,127,48,62,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD_GROUP,138,118,50,14
+    PUSHBUTTON      "Modify...",IDC_BUTTON_MODIFY_GROUP,138,139,50,14
+    PUSHBUTTON      "Delete...",IDC_BUTTON_DELETE_GROUP,138,160,50,14
+    EDITTEXT        IDC_EDIT_BAB_SIZE,49,20,40,12,ES_NUMBER
+    EDITTEXT        IDC_EDIT_TCP_WIN_SIZE,89,58,65,14,ES_NUMBER
+    EDITTEXT        IDC_EDIT_PORT_NUM,89,77,65,14,ES_NUMBER
+    CONTROL         "Spin2",IDC_SPIN_BAB_SIZE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS,91,19,10,14
+    GROUPBOX        "Network",IDC_STATIC,6,47,189,58
+    LTEXT           "TCP Window Size:",IDC_STATIC,15,61,60,8
+    LTEXT           "KB",IDC_STATIC,162,61,10,8
+    LTEXT           "Primary Port Number:",IDC_STATIC,15,80,67,8
+    GROUPBOX        "Logical Groups",IDC_STATIC,6,109,189,70
+    LTEXT           "Groups:",IDC_STATIC,16,130,25,8
+    LTEXT           "Note:",IDC_STATIC,16,156,18,8
+    EDITTEXT        IDC_EDIT_GROUP_NOTE,40,153,90,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "BAB Size:",IDC_STATIC,15,22,32,8
+    GROUPBOX        "BAB Configuration",IDC_STATIC,7,7,188,36
+    LTEXT           "MB",IDC_STATIC,111,22,12,8
+END
+
+IDD_DIALOG_DELETE_GROUP DIALOG DISCARDABLE  0, 0, 152, 50
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Delete Group"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Cancel Delete",IDCANCEL,15,29,50,14
+    PUSHBUTTON      "Delete Group",IDOK,82,29,50,14
+    LTEXT           "Are you sure you want to delete a group?",IDC_STATIC,10,
+                    10,130,8
+END
+
+IDD_DIALOG_SYSTEM DIALOG DISCARDABLE  0, 0, 291, 170
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+CAPTION "Systems"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Primary System",IDC_STATIC,15,5,258,49
+    LTEXT           "Enter Host name or IP Address:",IDC_STATIC,24,17,100,8
+    EDITTEXT        IDC_EDIT_PRI_HOST_OR_IP,129,15,132,14,ES_AUTOHSCROLL
+    LTEXT           "PStore file:",IDC_STATIC_PSTORE,24,37,35,8
+    EDITTEXT        IDC_EDIT_PSTORE,61,35,200,14,ES_AUTOHSCROLL
+    GROUPBOX        "Secondary System",IDC_STATIC,15,59,258,71
+    LTEXT           "Enter Host name or IP Address:",IDC_STATIC,25,72,100,8
+    EDITTEXT        IDC_EDIT_SEC_HOST_OR_IP,129,69,132,14,ES_AUTOHSCROLL
+    LTEXT           "Journal Directory:",IDC_STATIC,46,92,56,8
+    EDITTEXT        IDC_EDIT_JOURNAL_DIR,106,90,155,14,ES_AUTOHSCROLL
+    LTEXT           "Secondary Port:",IDC_STATIC,50,113,52,8
+    EDITTEXT        IDC_EDIT_SECONDARY_PORT,105,110,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Chaining",IDC_CHECK_CHAINING,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,179,112,43,10
+    GROUPBOX        "Notes",IDC_STATIC,15,133,258,32
+    EDITTEXT        IDC_EDIT_SYSTEM_NOTE,26,145,237,14,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG_TUNABLE_PARAMS DIALOG DISCARDABLE  0, 0, 242, 206
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+CAPTION "Tunable Parameters"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Synchronous Mode",IDC_STATIC,7,7,153,40
+    CONTROL         "Sync Mode",IDC_CHECK_SYNC_MODE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,18,52,10
+    LTEXT           "Depth:",IDC_STATIC,92,18,22,8
+    EDITTEXT        IDC_EDIT_DEPTH,115,15,40,14,ES_READONLY | ES_NUMBER
+    LTEXT           "Timeout:",IDC_STATIC,68,33,28,8
+    EDITTEXT        IDC_EDIT_TIMEOUT,97,30,40,14,ES_READONLY | ES_NUMBER
+    LTEXT           "Sec",IDC_STATIC,141,33,14,8
+    GROUPBOX        "Compression",IDC_STATIC,165,7,70,40
+    CONTROL         "Compression",IDC_CHECK_COMPRESSION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,172,24,56,10
+    GROUPBOX        "Refresh Timeout Interval",IDC_STATIC,7,50,228,46
+    LTEXT           "Timeout Interval:",IDC_STATIC,15,80,54,8
+    EDITTEXT        IDC_EDIT_REFRESH_INTERVAL,71,77,49,14,ES_AUTOHSCROLL
+    LTEXT           "dd/hh/mm/ss",IDC_STATIC,124,80,44,8
+    GROUPBOX        "Journal",IDC_STATIC,7,99,228,28
+    CONTROL         "Do Not Use Journals",IDC_CHECK_JOURNAL_LESS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,111,81,10
+    CONTROL         "Never Timeout",IDC_CHECK_NEVER_TIMEOUT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,62,63,10
+END
+
+IDD_DIALOG_DTC_DEV DIALOG DISCARDABLE  0, 0, 243, 156
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
+CAPTION "Replication Pairs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Define Replication Pairs",IDC_STATIC,4,4,235,145
+    LTEXT           "Primary",IDC_STATIC,13,15,24,8
+    LTEXT           "Secondary",IDC_STATIC,76,15,35,8
+    LISTBOX         IDC_LIST_DTC_DEVICES,12,27,150,78,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD,174,29,50,14
+    PUSHBUTTON      "Modify...",IDC_BUTTON_MODIFY_DTC,174,51,50,14
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,174,72,50,14
+    GROUPBOX        "Remarks",IDC_STATIC,11,113,220,30
+    EDITTEXT        IDC_EDIT_DTC_REMARKS,20,123,205,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+END
+
+IDD_DIALOG_ADD_MOD_MIRROR DIALOG DISCARDABLE  0, 0, 172, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add/Modify Mirrors"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,56,70,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,115,70,50,14
+    GROUPBOX        "On Primary System",IDC_STATIC,5,3,160,29
+    LTEXT           "Data Device:",IDC_STATIC,10,15,43,8
+    GROUPBOX        "On Secondary System",IDC_STATIC,5,33,160,27
+    LTEXT           "Mirror Device:",IDC_STATIC,11,44,45,8
+    COMBOBOX        IDC_LIST_DATA_DEV,60,13,98,57,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LIST_MIRROR_DEV,59,43,99,61,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_DIALOG_ADD_GROUP DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add Group"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_GROUP,45,17,135,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_GROUP_NOTE,25,45,155,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,73,74,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,74,50,14
+    LTEXT           "Group:",IDC_STATIC,5,20,22,8
+    LTEXT           "Note:",IDC_STATIC,5,48,18,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ConfigurationTool MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ConfigurationTool\0"
+            VALUE "LegalCopyright", "Copyright (C) 2004\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ConfigurationTool.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "ConfigurationTool Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "1000\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 114
+    END
+
+    IDD_CONFIGURATIONTOOL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+
+    IDD_DIALOG_DELETE_GROUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 145
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+
+    IDD_DIALOG_SYSTEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 284
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_DIALOG_TUNABLE_PARAMS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+    END
+
+    IDD_DIALOG_ADD_MOD_MIRROR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 165
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+
+    IDD_DIALOG_ADD_GROUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+SFTK_IDB_SPLASHSCREEN   BITMAP  DISCARDABLE     "res\\TDMFlogo202.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ConfigurationTool..."
+    IDS_STRING_DIALOG_CAPTION "DTC Configuration"
+    IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
+    IDS_STRING_HEADER_BREAK "#===============================================================\n"
+    IDS_STRING_OEM_FILE     "Configuration File:  "
+    IDS_STRING_OEM_VERSION  "Version "
+    IDS_STRING_UPDATE       "#\n#  Last Updated:  "
+    IDS_STRING_NOTE         "#\nNOTES:  "
+    IDS_STRING_PRIMARY_DEF  "#\n#\n# Primary System Definition:\n#\nSYSTEM-TAG:          SYSTEM-A                  PRIMARY\n"
+    IDS_STRING_HOST         "  HOST:                "
+    IDS_STRING_PSTORE       "  PSTORE:              "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    SFTK_IDS_PRODUCTNAME    "Replicator"
+    SFTK_IDS_FULLPRODUCTNAME "Softek Replicator"
+    SFTK_IDS_COMPANYNAME    "Softek Storage Solutions Corp."
+    SFTK_IDS_COPYRIGHTNOTICE 
+                            "This software is the licensed software of Softek Storage Solutions Corporation.\r\n\r\nTHIS SOFTWARE IS THE CONFIDENTIAL OR TRADE SECRET PROPERTY OF SOFTEK STORAGE SOLUTIONS CORPORATION AND MAY ONLY BE USED UNDER LICENSE FROM SOFTEK STORAGE SOLUTIONS CORPORATION."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_SECONDARY    "#\n# Secondary System Definition:\n#\nSYSTEM-TAG:          SYSTEM-B                  SECONDARY\n"
+    IDS_STRING_JOURNAL      "  JOURNAL:             "
+    IDS_STRING_CHAIN_ON     "  CHAINING:            on\n"
+    IDS_STRING_CHAIN_OFF    "  CHAINING:            off\n"
+    IDS_STRING_THROTTLE     "#\nTHROTTLE:  "
+    IDS_STRING_ACTION_LIST  "ACTIONLIST\n"
+    IDS_STRING_END_ACTION_LIST "\nENDACTIONLIST\n\n"
+    IDS_STRING_DEVICE_DEF   "#\n# Device Definitions:\n#\n"
+    IDS_STRING_END_CONFIG   "#\n#\n# -- End of "
+    IDS_STRING_PROFILE      "PROFILE:            "
+    IDS_STRING_REMARK       "  REMARK:  "
+    IDS_STRING_PRIMARY_SYSA "  PRIMARY:          SYSTEM-A"
+    IDS_STRING_OPENSTORAGE  "  OPENSTORAGE_DATA_REPLICATION-DEVICE:  "
+    IDS_STRING_DATADISK     "  DATA-DISK:        "
+    IDS_STRING_SEC_SYSB     "  SECONDARY:        SYSTEM-B\n"
+    IDS_STRING_MIRROR       "  MIRROR-DISK:      "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STRING_SECOND_PORT  "  SECONDARY-PORT:      "
+    IDS_STRING_ACTION       "\tACTION: "
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRC)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH_CANADIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""../../lib/libResMgr/Resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\ConfigurationTool.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\ConfigurationTool.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

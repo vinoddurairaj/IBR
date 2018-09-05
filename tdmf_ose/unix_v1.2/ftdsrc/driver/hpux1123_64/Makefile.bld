@@ -1,0 +1,296 @@
+#
+# Copyright (C) 2005 Softek Storage Solutions, Inc.
+#
+# $Id: Makefile.bld,v 1.6 2010/12/10 13:37:31 proulxm Exp $
+#
+# Makefile.bld for HP-UX 11.23 kernel modules. 
+# It is invoked by Makefile to do the actual module build, after
+# Makefile has set up the appropriate build environment.
+
+TOP=../..
+include ${TOP}/mk/Makefile.inc
+
+#########################################################
+#                                                       #
+# Modify the following three macros to match your setup #
+#                                                       #
+#########################################################
+
+# Object files which comprise the module
+# Uncomment ${MODULE}.mc.o if you have a stub
+
+OBJS= ${MODULE}.modmeta.o #${MODULE}.mc.o
+
+# Header files - if desired, specific header dependencies can be defined
+# on explicit build rules for each .c file, but here we'll just recompile
+# everything if any header changes.  Technically, all headers including
+# HP-UX headers should be listed, but realistically only the driver's own
+# headers really matter under normal circumstances (i.e. no patches or
+# HP-UX upgrades to introduce system header file changes.)
+
+#HEADERS= ${MODULE}.h
+
+#############################################################
+#                                                           #
+# Lines below this point normally don't need to be modified #
+#                                                           #
+#############################################################
+
+# Definitions which apply to both IPF and PA
+
+CC=/opt/ansic/bin/cc
+#CCOPTS_common= -Ae +DD64 +O2
+CCOPTS_common= -Ae +DD64 -g
+
+IDENTS_common= -DACLS -DAUDIT -DHPONCPLUS -DIDDS -DIPSEC -DIVT_INTERCEPT \
+	-DLWSYSCALL -DPGPROF -DSTCP -D_CLEAN_BE -D_HPUX_SOURCE -D_KERNEL \
+	-D_LARGEFILE64_SOURCE -D_NO_USER_PROTOS -D_UNSUPPORTED \
+	-D__BIGMSGQUEUE_ENABLED -D__ROSE__ -U__hp9000s700 \
+	-D_XPG4_EXTENDED -D__STDC_EXT__ 
+
+
+# Definitions which apply to IPF only
+ 
+CCOPTS_ipf= +DSitanium2 +kernel +objstatvars +Olit=all +Oshortdata=0 +W863
+ 
+IDENTS_ipf= -DKERNEL_DEBUGGER -DVARIABLE_UAREA -D_SYSCALL_64 -D__NO_PA_HDRS
+
+LDOPTS_ipf= +noobjdebug
+
+# Definitions which apply to PA only
+CCOPTS_pa= +DS2.0 +ES1.Xindirect_calls +ESlit +ESsfc +ESssf \
+	   +ordering_unaware +Oentrysched +Ofastaccess +Omultiprocessor \
+	   -Wp,-H300000 +Xid -Bextern:${BUILDENV}/linkersyms
+ 
+IDENTS_pa= -DCOMB_FLIPPER -DKGDB_ON -DLP64_TMP_NODBG -DNEW_MFCTL_W \
+	-DNEW_RDB -DPARISC -DRDB -DSPP_OBP_BOOT -DSPP_RUNWAY_ERR_ENABLED \
+	-D__NO_EM_HDRS -D__ROSEVILLE__ -D__TEMP64__ -D__hp9000s800
+
+LDOPTS_pa=
+
+# Merge the common and architecture-specific definitions
+
+COPTS=
+CCOPTS= ${CCOPTS_common} ${CCOPTS_${ARCH}}
+IDENTS= ${IDENTS_common} ${IDENTS_${ARCH}}
+LDOPTS= ${LDOPTS_common} ${LDOPTS_${ARCH}}
+
+CFLAGS= ${COPTS} ${CCOPTS} ${IDENTS} ${LDOPTS} ${VERSIONDEFINES} -DKERNEL -DHPUX -DNEED_BIGINTS
+CFLAGS2=
+
+# Command locations
+
+BUILDENV=	/opt/ddk/11.23/BE/bin
+BUILDENV_STUB=  /opt/ddk/11.23/BE/macro_files
+MODMETA=	${BUILDENV}/modmeta
+MODLINK=	${BUILDENV}/modlink
+STUB.m4=	${BUILDENV_STUB}/stub.m4
+
+####################
+# Main build rules #
+####################
+ 
+#===========================================
+
+VERSSRC=${TOP}/version.c
+
+HDRS=   ../ftd_all.h ../ftd_bab.h ../ftd_bits.h \
+	../ftd_buf.h ../ftd_ddi.h ../ftd_def.h \
+	../ftd_disk.h ../ftd_kern_cproto.h ../ftd_kern_ctypes.h \
+	../ftd_klog.h ../ftd_timers.h ../ftd_var.h ../ftdio.h
+
+SRCS=   ../ftd_ddi.c ../ftd_buf.c ../ftd_hpux.c ../ftd_bab.c ../ftd_bits.c \
+	../ftd_ioctl.c ../ftd_all.c ../ftd_klog.c ../memset.c \
+	../ftd_timers.c ../ftd_pending_ios_monitoring.c ../ftd_dynamic_activation.c ../ftd_dynamic_activation_hpux.c ../ftd_hash_table.c $(VERSSRC)
+
+MYOBJS= ${OBJS} \
+	ftd_ddi.o ftd_buf.o ftd_hpux.o ftd_bab.o ftd_bits.o \
+	ftd_ioctl.o ftd_all.o ftd_klog.o memset.o \
+	ftd_timers.o ftd_pending_ios_monitoring.o ftd_dynamic_activation.o ftd_dynamic_activation_hpux.o ftd_hash_table.o version.o
+
+#EXTRA_CLEANS = mod64.o master.d-${Q} system.${Q} space.h-${Q} ${Q}.conf
+EXTRA_CLEANS = {MODULE}.o ${MODULE}.modmeta ${MODULE}.modmeta.o
+
+#===========================================
+
+all:: ${MODULE}
+
+${MODULE}: ${MYOBJS} ${Q}.conf
+	echo "Creating $@ ..."
+	rm -f $@
+	${MODLINK} -o ${MODULE} ${MYOBJS}
+ 
+# This rule compiles the module metadata, which replaces master/space files
+
+${MODULE}.modmeta.o: ${MODULE}.modmeta
+	echo "Compiling ${MODULE}.modmeta ..."
+	rm -f $@ ${MODULE}.modmeta.c
+	${MODMETA} ${IDENTS} ${MODULE}.modmeta > ${MODULE}.modmeta.c
+	${CC} ${CCOPTS} ${IDENTS} -c ${MODULE}.modmeta.c
+	rm -f ${MODULE}.modmeta.c
+
+# This rule builds an auto-load stub source file
+
+${MODULE}.mc.o: ${MODULE}.mc
+	echo "Building ${MODULE}.mc ..."
+	rm -f $@ ${MODULE}.s
+	m4 ${STUB.m4} ${MODULE}.mc > ${MODULE}.mc.s
+	${CC} ${CCOPTS} ${IDENTS} -c ${MODULE}.mc.s
+	rm -f ${MODULE}.mc.s
+#
+# production rules
+ftd_hpux.o: ../ftd_hpux.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_ddi.o: ../ftd_ddi.c ${HDRS}
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_buf.o: ../ftd_buf.c ${HDRS}
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_bab.o: ../ftd_bab.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_bits.o:  ../ftd_bits.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_ioctl.o: ../ftd_ioctl.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_all.o: ../ftd_all.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_klog.o: ../ftd_klog.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_timers.o: ../ftd_timers.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+memset.o: ../memset.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_pending_ios_monitoring.o: ../ftd_pending_ios_monitoring.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_dynamic_activation.o: ../ftd_dynamic_activation.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+
+ftd_dynamic_activation_hpux.o: ../ftd_dynamic_activation_hpux.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+ftd_hash_table.o: ../ftd_hash_table.c
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+version.o: ${VERSSRC}
+	${CC} ${CFLAGS} ${CFLAG2} -c $<
+
+#
+# misc targets
+#
+
+${Q}.conf: ../driver.conf
+	$(PKGIFY)
+
+${MODULE}.modmeta: modmeta.src
+	$(PKGIFY)
+
+# Dependency
+#
+ftd_hpux.o: ../ftd_hpux.c
+ftd_hpux.o: ../ftd_ddi.h
+ftd_hpux.o: ../ftd_def.h
+ftd_hpux.o: ../ftd_kern_ctypes.h
+ftd_hpux.o: ../ftd_kern_cproto.h
+ftd_buf.o: ../ftd_buf.c
+ftd_buf.o: ../ftd_kern_ctypes.h
+ftd_buf.o: ../ftd_buf.h
+ftd_buf.o: ../ftd_def.h
+ftd_buf.o: ../ftd_bab.h
+ftd_buf.o: ../ftd_def.h
+ftd_buf.o: ../ftdio.h
+ftd_buf.o: ../ftd_kern_ctypes.h
+ftd_buf.o: ../ftd_buf.h
+ftd_buf.o: ../ftdio.h
+ftd_buf.o: ../ftd_klog.h
+ftd_buf.o: ../ftd_kern_cproto.h
+ftd_bab.o: ../ftd_bab.c
+ftd_bab.o: ../ftd_kern_ctypes.h
+ftd_bab.o: ../ftd_ddi.h
+ftd_bab.o: ../ftd_def.h
+ftd_bab.o: ../ftd_bab.h
+ftd_bab.o: ../ftd_def.h
+ftd_bab.o: ../ftdio.h
+ftd_bab.o: ../ftd_kern_ctypes.h
+ftd_bab.o: ../ftd_buf.h
+ftd_bab.o: ../ftdio.h
+ftd_bab.o: ../ftd_klog.h
+ftd_bab.o: ../ftd_bab.h
+ftd_bab.o: ../ftd_klog.h
+ftd_bab.o: ../ftd_kern_cproto.h
+ftd_bits.o: ../ftd_bits.c
+ftd_bits.o: ../ftd_kern_ctypes.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_buf.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_kern_ctypes.h
+ftd_bits.o: ../ftd_klog.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_bits.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_klog.h
+ftd_bits.o: ../ftd_kern_cproto.h
+ftd_bits.o: ../ftd_bits.c
+ftd_bits.o: ../ftd_kern_ctypes.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_buf.h
+ftd_ddi.o:  ../ftd_ddi.c
+ftd_ioctl.o: ../ftdio.h
+ftd_ioctl.o: ../ftd_klog.h
+ftd_ioctl.o: ../ftd_bab.h
+ftd_ioctl.o: ../ftd_bits.h
+ftd_ioctl.o: ../ftd_def.h
+ftd_ioctl.o: ../ftd_var.h
+ftd_ioctl.o: ../ftd_all.h
+ftd_ioctl.o: ../ftdio.h
+ftd_ioctl.o: ../ftd_klog.h
+ftd_ioctl.o: ../ftd_kern_cproto.h
+ftd_ioctl.o: ../ftd_dynamic_activation.h
+ftd_all.o: ../ftd_all.c
+ftd_all.o: ../ftd_kern_ctypes.h
+ftd_all.o: ../ftd_ddi.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftd_bab.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftdio.h
+ftd_all.o: ../ftd_kern_ctypes.h
+ftd_all.o: ../ftd_buf.h
+ftd_all.o: ../ftdio.h
+ftd_all.o: ../ftd_klog.h
+ftd_all.o: ../ftd_bab.h
+ftd_all.o: ../ftd_bits.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftd_var.h
+ftd_all.o: ../ftd_all.h
+ftd_all.o: ../ftd_klog.h
+ftd_all.o: ../ftd_kern_cproto.h
+ftd_all.o: ../ftd_dynamic_activation.h
+ftd_klog.o: ../ftd_klog.c
+ftd_klog.o: ../ftd_kern_ctypes.h
+ftd_klog.o: ../ftd_klog.h
+memset.o: ../memset.c
+memset.o: ../ftd_kern_ctypes.h
+ftd_dynamic_activation.o: ../ftd_dynamic_activation.h
+ftd_dynamic_activation.o: ../ftd_kern_cproto.h
+ftd_dynamic_activation.o: ../ftd_klog.h
+ftd_dynamic_activation.o: ../ftd_ddi.h
+ftd_dynamic_activation.o: ../ftd_all.h
+ftd_dynamic_activation_hpux.o: ../ftd_dynamic_activation_os.h
+ftd_hash_table.o: ../ftd_def.h
+version.o: ../../version.c

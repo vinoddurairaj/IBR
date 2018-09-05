@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="newbab"
+	ProjectGUID="{D46F2498-B51A-4C83-84C9-361932094508}"
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=C:\NETDDK/3790
+set WNETBASE=C:\NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=C:\NETDDK/3790
+set WNETBASE=c:\NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=C:\NETDDK/3790
+set WNETBASE=C:\NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				Output="newbab.sys"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)NETDDK/3790
+set WNETBASE=$(SolutionDir)NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)NETDDK/3790
+set WNETBASE=$(SolutionDir)NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)NETDDK/3790
+set WNETBASE=$(SolutionDir)NETDDK/3790
+call ddkbuild.bat -WNET2K  chk $(InputDir)
+"
+				Output="newbab.sys"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\dirparse.c">
+			</File>
+			<File
+				RelativePath=".\dtb.c">
+			</File>
+			<File
+				RelativePath=".\makefile.inc">
+			</File>
+			<File
+				RelativePath=".\mmg.c">
+			</File>
+			<File
+				RelativePath=".\mmgr_ntkrnl.c">
+			</File>
+			<File
+				RelativePath=".\ntifs.c">
+			</File>
+			<File
+				RelativePath=".\sftkprotocol.c">
+			</File>
+			<File
+				RelativePath=".\slab.c">
+			</File>
+			<File
+				RelativePath=".\usr_main.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\common.h">
+			</File>
+			<File
+				RelativePath=".\dtb.h">
+			</File>
+			<File
+				RelativePath=".\mmg.h">
+			</File>
+			<File
+				RelativePath=".\mmgr_ntkrnl.h">
+			</File>
+			<File
+				RelativePath=".\sftkprotocol.h">
+			</File>
+			<File
+				RelativePath=".\slab.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<File
+			RelativePath=".\ddkbuild.bat">
+		</File>
+		<File
+			RelativePath=".\readme.txt">
+		</File>
+		<File
+			RelativePath=".\Sources">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

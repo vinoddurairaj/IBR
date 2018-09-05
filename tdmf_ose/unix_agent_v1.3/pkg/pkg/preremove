@@ -1,0 +1,6 @@
+#!/sbin/sh
+
+# Kill Replicator Agent daemon
+/opt/SFTKdua/bin/killdua
+
+exit 0

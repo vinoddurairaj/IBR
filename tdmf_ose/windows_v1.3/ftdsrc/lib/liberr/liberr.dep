@@ -1,0 +1,8 @@
+# Microsoft Developer Studio Generated Dependency File, included by liberr.mak
+
+.\errors.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\..\logmsg.h"\
+	"..\libftd\ftd_cfgsys.h"\
+	".\errors.h"\
+	

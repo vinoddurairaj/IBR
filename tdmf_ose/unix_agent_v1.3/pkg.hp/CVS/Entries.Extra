@@ -1,0 +1,14 @@
+/go////*////
+/hpux.checkinstall.src////*////
+/hpux.configure.src////*////
+/hpux.copyright.src////*////
+/hpux.docs.desc.src////*////
+/hpux.postinstall.src////*////
+/hpux.postremove.src////*////
+/hpux.preinstall.src////*////
+/hpux.preremove.src////*////
+/hpux.product.desc.src////*////
+/hpux.programs.desc.src////*////
+/hpux.unconfigure.src////*////
+/hpux.vendor.desc.src////*////
+/product.psf////*////

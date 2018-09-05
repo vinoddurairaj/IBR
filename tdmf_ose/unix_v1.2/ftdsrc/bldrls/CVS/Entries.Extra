@@ -1,0 +1,14 @@
+/MAKEDIST.sh////*////
+/MAKERELEASE.sh////*////
+/aix.bldcmd////*////
+/bldhost.conf////*////
+/bldtargets.conf////*////
+/cdromprodsys.conf////*////
+/disttargets.conf////*////
+/hp.bldcmd////*////
+/hp1020.bldcmd////*////
+/hp1100.bldcmd////*////
+/hpbld.conf////*////
+/reng.conf////*////
+/sol.bldcmd////*////
+/watch.sh////*////

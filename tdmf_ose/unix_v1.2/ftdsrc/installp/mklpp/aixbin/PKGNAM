@@ -1,0 +1,8 @@
+#!/usr/bin/ksh
+#
+# Product Package Name
+#
+# For now, package name is product name
+#
+PRODUCT=`./PRODUCT`
+print ${PRODUCT}

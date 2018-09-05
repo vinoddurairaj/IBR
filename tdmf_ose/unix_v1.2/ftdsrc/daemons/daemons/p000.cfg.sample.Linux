@@ -1,0 +1,48 @@
+#===============================================================
+#  Softek Replicator for UNIX* Configuration File:  /%FTDCFGDIR%/p000.cfg
+#  Softek Replicator for UNIX* Version %VERSION%
+#
+#  Last Updated:  Wed Feb 03 21:30:48 PST 2010
+#===============================================================
+#
+# Primary System Definition:
+#
+SYSTEM-TAG:          SYSTEM-A                  PRIMARY        
+  HOST:                india
+  PSTORE:              /dev/vg01/pstore
+  DYNAMIC-ACTIVATION:  off
+  AUTOSTART:           on
+#
+# Secondary System Definition:
+#
+SYSTEM-TAG:          SYSTEM-B                  SECONDARY      
+  HOST:                china
+  JOURNAL:             /journal
+#
+#
+# Device Definitions:
+#
+PROFILE:            1
+  PRIMARY:          SYSTEM-A
+  DTC-DEVICE:       /dev/dtc/lg0/dsk/dtc0
+  DATA-DISK:        /dev/vg01/src1
+  SECONDARY:        SYSTEM-B
+  MIRROR-DISK:      /dev/vg02/tgt1
+#
+PROFILE:            2
+  PRIMARY:          SYSTEM-A
+  DTC-DEVICE:       /dev/dtc/lg0/dsk/dtc1
+  DATA-DISK:        /dev/vg01/src2
+  SECONDARY:        SYSTEM-B
+  MIRROR-DISK:      /dev/vg02/tgt2
+#
+PROFILE:            3
+  PRIMARY:          SYSTEM-A
+  DTC-DEVICE:       /dev/dtc/lg0/dsk/dtc2
+  DATA-DISK:        /dev/vg01/src3
+  SECONDARY:        SYSTEM-B
+  MIRROR-DISK:      /dev/vg02/tgt3
+#
+#
+# -- End of dtc Configuration File:  /etc/opt/SFTKdtc/p000.cfg
+

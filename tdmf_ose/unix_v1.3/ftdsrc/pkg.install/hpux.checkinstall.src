@@ -1,0 +1,20 @@
+#! /sbin/sh
+##########################################################################
+# Product: %Q%
+# Fileset: %Q%.Programs
+# checkinstall
+##########################################################################
+# Copyright (c) 2001 Fujitsu Software Technology Corporation. All rights reserved.
+########################################################################
+
+# get system environment
+# check if %CAPQ% is installed
+exitval=$SUCCESS
+swlist %CAPQ%  > /dev/null 2>&1
+if ($? -eq 0)
+then
+   print "You need to swremove the %CAPQ% product before installing the new release\n"
+   exitval=$FAILURE
+fi
+exit $exitval
+

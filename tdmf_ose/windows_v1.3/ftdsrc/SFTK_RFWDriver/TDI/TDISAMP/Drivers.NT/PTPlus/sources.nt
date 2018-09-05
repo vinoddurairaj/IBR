@@ -1,0 +1,30 @@
+TARGETNAME=PCATDIH
+TARGETPATH=$(BASEDIR)\lib
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(BASEDIR)\lib\*\$(DDKBUILDENV)\ndis.lib \
+		$(BASEDIR)\lib\*\$(DDKBUILDENV)\tdi.lib \
+		$(BASEDIR)\lib\*\$(DDKBUILDENV)\pcakslib.lib
+
+# INCLUDES=$(BASEDIR)\src\network\inc;..\..\NetINet
+INCLUDES=$(BASEDIR)\src\network\inc;..\KSInc;..\..\Include;..\..\NetINet
+
+SOURCES =       PCATDIH.c       \
+                IPFILT.c        \
+                TCPFILT.c       \
+                UDPFILT.c       \
+                RAWFILT.c       \
+                AFDFILT.c       \
+                ADDR.c          \
+                TCPCONN.c       \
+                TCPSEND.c       \
+                TCPRCV.c        \
+                UDPSEND.c       \
+                UDPRCV.c        \
+                W32API.c        \
+                PCATDIH.rc
+
+RELATIVE_DEPTH=..\..
+
+MSC_WARNING_LEVEL=/W3
+

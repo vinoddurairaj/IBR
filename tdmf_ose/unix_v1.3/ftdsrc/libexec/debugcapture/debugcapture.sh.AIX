@@ -1,0 +1,535 @@
+#!/bin/sh
+
+######################################################################
+# Program:
+# --------
+# %Q%debugcapture (1.2.2) for AIX 4.3
+#
+# Copyright (c) 2001 Fujitsu Software Technology Corporation (Fujitsu Softek)
+# All Rights Reserved.
+#
+# RCSfile: debugcapture.sh.AIX,v $
+# $Revision: 1.4 $
+# $Date: 2001/05/18 14:15:33 $
+#
+# Usage:
+# ------
+# One simply executes the program, for example,
+#
+#       nodename1# %Q%debugcapture
+#
+# Borne or Korn shell:
+#
+#       nodename1# echo y | %Q%debugcapture > %Q%debugcapture.log 2>&1
+#
+# C-shell:
+#
+#       nodename1# echo y | %Q%debugcapture >& %Q%debugcapture.log
+# ------------
+#
+# This program will attempt to collect system and %PRODUCTNAME% %VERSION% for
+# AIX information which can be used for resolving issues with the 
+# %PRODUCTNAME% environment of a customer.  Please save the file 
+# created by this program and send a copy to your vendor or reseller
+# support organization.
+#
+# What is archived to date:
+# -------------------------
+#       . Search for where the variable "files" is defined to examine
+#         the list of files that will be archived if they exist.
+#       . A listing of all boot script will be archived.
+#       . Data about the system is archived.  Search for the variable
+#         "data_commands" to examine the list of commands which
+#         will be executed to generate information about the system.
+#
+# Remarks:
+# --------
+#       . One may wish to change the variable "work_dir".  One may
+#         need to change this variable because of a lack of file
+#         system free space.
+#
+# work_dir="/tmp"
+work_dir="/var/tmp"
+#
+#         Do not use the %PRODUCTNAME% installation directories
+#         as the location of "work_dir".  This is because
+#         this directory will be archived.
+#       . If there are files or directories that should be included
+#         but are not included by default, then simply create a
+#         directory under the %PRODUCTNAME% installation directory
+#         and place these files and directories under this directory.
+#         For example, create "%VAROPTDIR%/%PKGNM%/%FYI", that is, create
+#         "FYI" under the default installation directory:
+#         "/opt/%VAROPTDIR%/%PKGNM%/".
+#       . One could use "%Q%debugcapture" to maintain a record of
+#         configuration changes to one's environment.
+#
+#
+######################################################################
+
+#
+# Use Bourne shell's built-in "echo"
+#
+E="echo"
+
+#
+# Define "check_executable" and "verify_executable".
+#
+check_executable() {
+        if [ ! -x "${1}" ]; then
+                $E "Warning: unable to find an executable \"${1}\"." >&2
+        fi
+}
+
+verify_executable() {
+        if [ ! -x "${1}" ]; then
+                $E "Error: unable to find an executable \"${1}\"." >&2
+                exit 1
+        fi
+}
+
+#
+# Verify executables.
+#
+# These are required:
+awk="/bin/awk"
+cat="/bin/cat"
+grep="/bin/grep"
+id="/bin/id"
+uname="/bin/uname"
+
+for command in ${awk} ${cat} ${id} ${grep} ${uname}; do
+        verify_executable ${command}
+done
+
+#
+# Determine the Operating System (OS).
+#
+OS=`${uname} -s -r`
+case "${OS}" in
+        "AIX 3")
+                :
+        ;;
+        *)      ${cat} >&2 <<EOF
+"${OS}" is not currently supported.  Currently, the following
+operating systems are supported:  AIX 3
+EOF
+                exit 1
+        ;;
+esac
+
+#
+# Who am I?  One must be root.
+#
+# Note: "uid=0(root)" appears only once in this script.
+#
+whoami=`${id} | ${awk} '/uid=0\(root\)/'`
+if [ -z "${whoami}" ]; then
+        $E "Error: `${id}`.  One must be root." >&2
+        exit 1
+fi
+
+#
+# Check to see if %PRODUCTNAME% has actually been installed and
+# its standard directory trees created.
+#
+
+$E "Determining the installation directory for %PRODUCTNAME%"
+if [ ! -d /%FTDBINDIR% ]; then
+   $E "Error:  %PRODUCTNAME% installation directory /%FTDBINDIR% not present."
+   $E "Error:  Cannot proceed further with this diagnostic program."
+   exit 1
+fi
+
+if [ ! -d /%FTDVAROPTDIR% ]; then
+   $E "Error:  %PRODUCTNAME% run-time files directory /%FTDVAROPTDIR% not present."
+   $E "Error:  Cannot proceed further with this diagnostic program."
+   exit 1
+fi
+
+if [ ! -d /%FTDCFGDIR% ]; then
+   $E "Error:  %PRODUCTNAME% configuration files directory /%FTDCFGDIR% not present."
+   $E "Error:  Cannot proceed further with this diagnostic program."
+   exit 1
+fi
+
+#
+# Check the suitability of "${work_dir}".
+#
+if   [ ! -d "${work_dir}" ]; then
+        $E "Error: \"${work_dir}\" is not a directory." >&2
+        $E "Error: The variable \"work_dir\" is not set correctly." >&2
+        exit 1
+else
+        $E "The working directory is \"${work_dir}\"."
+        $E ""
+fi
+
+#
+# Display an informational message.
+#
+######################################################################
+${cat}  <<EOF
+This program will attempt to collect system and %PRODUCTNAME% %VERSION%
+information which can be used for resolving issues with the 
+%PRODUCTNAME% %VERSION% environment of a customer.  It is 
+recommended that this program is run on every primary and secondary 
+system in question.
+
+Please save the file created by this program and send a copy to
+your vendor or reseller support organization. 
+
+EOF
+######################################################################
+#
+# Does one continue or stop?
+#
+$E "Continue? [y]: \c"; read anwser
+if [ ! -z "${anwser}" -a "${anwser}" != "y" ]; then
+        $E "bye."
+        exit 0
+else
+        $E "ok ..."
+fi
+
+#
+# Set up command variables to be absolute pathnames.
+#
+# Required commands.
+#
+basename="/bin/basename"
+chmod="/bin/chmod"
+compress="/bin/compress"
+cp="/bin/cp"
+dirname="/bin/dirname"
+ls="/bin/ls"
+mkdir="/bin/mkdir"
+rm="/bin/rm"
+tar="/bin/tar"
+touch="/bin/touch"
+#uuencode="/bin/uuencode"
+#
+req_commands="
+        ${basename}
+        ${chmod}
+        ${compress}
+        ${cp}
+        ${dirname}
+        ${ls}
+        ${mkdir}
+        ${rm}
+        ${tar}
+        ${touch}"
+#        ${uuencode}
+#
+# Optional commands for system data generation.
+#
+arpinfo="/usr/sbin/arp -an /dev/kmem"
+crash="/usr/sbin/crash"
+df="/bin/df"
+ifconfig="/etc/ifconfig"
+ipcs="/bin/ipcs"
+mount="/usr/sbin/mount"
+netstat="/bin/netstat"
+nawk="/bin/nawk"
+ps="/bin/ps"
+swap="/usr/sbin/lsps"
+tail="/bin/tail"
+true="/bin/true"
+lslpp="/usr/bin/lslpp"
+lppck="/usr/bin/lppchk"
+#
+# Used to generate system data.
+#
+# Note: "${data_commands}" is essentially an array of
+#       commands, commands "${command00}" through ... .
+#
+command00="${cat} /etc/motd"
+command01="${df} -k"
+command02="${mount}"
+command03="${swap} -s"
+command04="${swap} -l -a"
+command05="${ifconfig} -a"
+command06="${netstat} -rn"
+command07="${netstat} -gn"
+command08="${netstat} -in"
+command09="${netstat} -m"
+command10="${netstat} -s"
+command11="${netstat} -an"
+command12="${arpinfo}"
+command13="${ps} -efl"
+command14="${lslpp} -l \"%Q%.rte*\" "
+command15="${lppck} -c \"%Q%.rte*\" "
+command16="${lppck} -v \"%Q%.rte*\" "
+#
+# Note: Because of the use of "check_executable" below,
+#       use "/bin/echo", an executable, so as to be
+#       sure not to use the Bourne shell's built-in echo
+#       for "command17".
+#
+command17="/bin/echo p | ${crash}"
+command18="${ipcs} -a"
+#
+# Note: The commands are executed in the order
+#       of top to bottom to generate system data.
+#
+data_commands='
+        ${command00}
+        ${command01}
+        ${command02}
+        ${command03}
+        ${command04}
+        ${command05}
+        ${command06}
+        ${command07}
+        ${command08}
+        ${command09}
+        ${command10}
+        ${command11}
+        ${command12}
+        ${command13}
+        ${command14}
+        ${command15}
+        ${command16}
+        ${command17}
+        ${command18}
+        '
+
+#
+# Verify the executability of ${req_commands}.
+#
+# These are required:
+for command in ${req_commands}; do
+        verify_executable ${command}
+done
+
+#
+# Set up list of files to archive.
+#
+files="/.cshrc
+       /.profile
+       /.rhosts
+      "
+
+#
+# Set up destination directory and file names.
+#
+archive=`${uname} -n`
+
+dest_dir="${work_dir}/${archive}"
+
+data_file="${dest_dir}/misc_system_info_data_file"
+rc_listing="${dest_dir}/rc_listing"
+
+#
+# Set up destination directory.
+#
+(
+cd ${work_dir}
+${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+
+${mkdir} ${dest_dir}; ${chmod} 700 ${dest_dir}
+
+#
+# Define cleanup function and install interrupt handler
+#
+cleanup() {
+(
+cd ${work_dir}
+${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+exit 1
+}
+
+trap cleanup 1 2 3 4 10 15
+
+#
+# capture process information
+$E "Capturing a snapshot of running processes"
+${ps} -efl >${dest_dir}/ps-output
+
+#
+# Generate the data file.
+#
+# Note: The use of "check_executable ${command}" will work when
+#       "${command}" has the form "<command> <flags>".  This usage
+#       could give somewhat misleading information in some cases,
+#       for example, "/bin/echo p | crash".
+#
+$E "Generating %PRODUCTNAME% diagnostic and system data .\c"
+${touch} ${data_file}
+#
+for command in ${data_commands}; do
+        eval execute="${command}"
+        $E "++++++++++++++++++++[ ${execute} ]:" >> ${data_file} 
+        result=`check_executable ${execute} 2>&1`
+        if [ -z "${result}" ]; then
+                eval ${execute} >> ${data_file} 2>&1
+        else
+                $E "${result}" >> ${data_file}
+        fi
+        $E "" >> ${data_file}
+        $E ".\c" 
+done
+        $E ""
+#
+# Capture the volume groups and volume info
+$E "Capturing volume group and volume definitions..."
+VOLFILE="${dest_dir}/volume_group_info"
+VOLGRPS=`/usr/sbin/lsvg`
+$E "Volume Groups = ${VOLGRPS}" >> ${VOLFILE}
+$E "========================================" >> ${VOLFILE}
+for VOLGRP in ${VOLGRPS}; do
+    $E " " >> ${VOLFILE}
+    $E "========================================" >> ${VOLFILE}
+    $E "Volume Group = ${VOLGRP}" >> ${VOLFILE}
+    $E "++++++++++" >> ${VOLFILE}
+    $E "lsvg ${VOLGRP}" >> ${VOLFILE}
+    /usr/sbin/lsvg ${VOLGRP} >> ${VOLFILE}
+    $E "++++++++++" >> ${VOLFILE}
+    $E "lsvg -l ${VOLGRP}" >> ${VOLFILE}
+    /usr/sbin/lsvg -l ${VOLGRP} >> ${VOLFILE}
+    $E "++++++++++" >> ${VOLFILE}
+    $E "lsvg -M ${VOLGRP}" >> ${VOLFILE}
+    /usr/sbin/lsvg -M ${VOLGRP} >> ${VOLFILE}
+    LVOLS=`/usr/sbin/lsvg -l ${VOLGRP} | /bin/sed -n '3,$p' | /bin/awk '{print $1}'`
+    for LVOL in ${LVOLS}; do
+        $E "----------" >> ${VOLFILE}
+        $E "Volume Group:  ${VOLGRP}   Logical Volume:  ${LVOL}" >> ${VOLFILE}
+        $E "-----" >> ${VOLFILE}
+        $E "lslv ${LVOL}" >> ${VOLFILE}
+        /usr/sbin/lslv ${LVOL} >> ${VOLFILE}
+        $E "-----" >> ${VOLFILE}
+        $E "lslv -l ${LVOL}" >> ${VOLFILE}
+        /usr/sbin/lslv -l ${LVOL} >> ${VOLFILE}
+        $E "-----" >> ${VOLFILE}
+        $E "lslv -m ${LVOL}" >> ${VOLFILE}
+        /usr/sbin/lslv -m ${LVOL} >> ${VOLFILE}
+     done
+done
+
+#
+# Copy OS specific files.
+#
+#
+# Set up list of files to archive.
+#
+files="/.cshrc
+       /.profile
+       /.rhosts
+      "
+
+$E "capturing current system configuration files..."
+for file in ${files}; do
+    $E "Copying ${file} to ${dest_dir} ..."
+    if [ -f ${file} ]; then
+        ${cp} -p ${file} ${dest_dir}
+    fi
+done
+${mkdir} ${dest_dir}/etc
+${cp} -p /etc/* ${dest_dir}/etc 2> /dev/null
+${rm} ${dest_dir}/etc/*passwd* 2> /dev/null
+
+#
+# get the system error log
+# 
+$E "capturing system error log report..."
+/bin/errpt -a >> ${dest_dir}/errpt.out
+
+#
+# get the boot scripts 
+${cp} /etc/rc ${dest_dir}/rc
+if [ "" != "/etc/rc.BAK*" ]; then
+    ${cp} /etc/rc.BAK* ${dest_dir}
+fi
+
+#
+# get the /dev directory listing
+$E "obtaining directory listing of /dev..."
+${ls} -laR /dev >> ${dest_dir}/ls_dev.out
+
+#
+# ===== get %PRODUCTNAME% specific information =====
+$E "obtaining %PRODUCTNAME% configuration and status files..."
+if [ -f /usr/lib/methods/%Q%.get ]; then
+    /usr/lib/methods/%Q%.get > ${dest_dir}/%Q%.get.output
+fi
+
+if [ -f /usr/lib/drivers/%Q%.conf ]; then
+    ${cp} /usr/lib/drivers/%Q%.conf ${dest_dir}/%Q%.conf
+fi
+
+if [ -d /%FTDVAROPTDIR% ]; then
+    $E "capturing /%FTDVAROPTDIR% ...."
+    /bin/mkdir ${dest_dir}/var
+    /bin/cp -f -p -R /%FTDVAROPTDIR% ${dest_dir}/var/%Q% 2> /dev/null
+#    curdir=`/bin/pwd`
+#    cd /var
+#    /bin/tar cf ${dest_dir}/var%Q%.tar %Q% 2> /dev/null 
+#    cd ${curdir}
+fi
+
+if [ -d /%FTDCFGDIR% ]; then
+    $E "capturing /%FTDCFGDIR% ...."
+    /bin/cp -f -p -R /%FTDCFGDIR% ${dest_dir}/etc/%Q% 2> /dev/null
+#    curdir=`/bin/pwd`
+#    cd /etc
+#    /bin/tar cf ${dest_dir}/etc%Q%.tar %Q% 2> /dev/null
+#    cd ${curdir}
+fi
+
+$E "capturing %PRODUCTNAME% binary signatures...."
+$E " " > ${dest_dir}/%Q%binaryinfo.out
+if [ -f /usr/lib/drivers/%Q% ]; then
+    $E "--------------------" >> ${dest_dir}/%Q%binaryinfo.out
+    ${ls} -laF /usr/lib/drivers/%Q% >> ${dest_dir}/%Q%binaryinfo.out
+    /bin/strings /usr/lib/drivers/%Q% | /bin/grep "Version" >> ${dest_dir}/%Q%binaryinfo.out
+fi
+if [ -d /usr/%Q%/bin ]; then
+    for file in /usr/%Q%/bin/*; do
+        $E "--------------------" >> ${dest_dir}/%Q%binaryinfo.out
+        ${ls} -laF ${file} >> ${dest_dir}/%Q%binaryinfo.out
+        /bin/strings ${file} | /bin/grep "Version" >> ${dest_dir}/%Q%binaryinfo.out
+    done
+fi
+
+#
+# attempt to get %PRODUCTNAME% state, if it is running
+#
+$E "attempting to capture %PRODUCTNAME% state information..."
+if [ -d /%FTDBINDIR% ]; then
+    /%FTDBINDIR%/%Q%licinfo > ${dest_dir}/%Q%licinfo.out
+    /%FTDBINDIR%/%Q%info -a > ${dest_dir}/%Q%info.out
+#    /%FTDBINDIR%/%Q%set -a > ${dest_dir}/%Q%set.out
+fi
+
+#
+# Make the archive.
+#
+
+
+$E "Making the %PRODUCTNAME% diagnostics archive file ${archive}.tar.Z ..."
+(
+cd ${work_dir}
+${tar} -cf - ./${archive} | ${compress} > ${archive}.tar.Z
+#${uuencode} ${archive}.tar.Z < ${archive}.tar.Z > ${archive}.tar.Z.uu
+${rm} -rf ${archive} ${archive}.tar 
+${chmod} 600 ${archive}.tar.Z
+)
+
+${cat} <<EOF
+Done:
+-----
+`${ls} -l ${work_dir}/${archive}.tar.Z`
+
+Please ftp/email the above file to your vendor or reseller of
+%PRODUCTNAME% support organization.
+
+EOF
+exit 0
+
+
+
+
+

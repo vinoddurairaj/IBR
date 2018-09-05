@@ -1,0 +1,67 @@
+
+RFWHEAD BUILD 03018 Date  :  2004/03/03	Time  :  13:01
+
+RFWHEAD BUILD 03018 DELIVERABLES :	AVAILABLE AT : 
+
+http server (SVL) : 			http://129.212.65.20/builds/Replicator/Windows/RFWHEAD/B03018
+
+ftp (Sunnyvale) : 			ftp 129.212.65.20
+
+install image  : 				RFWHEAD.B03018.ALL.zip
+
+install iso image  : 			RFWHEAD.B03018.iso
+
+StoneFly iso image  : 			RFWHEAD.B03018.StoneFly.iso
+
+CVS tag   : 				RFWHEAD+20040303+B03018
+
+corecode source files changed :   =	4
+
+build related scripts changed :   =	6
+
+Source change list created from cvs tags :
+
+RFWHEAD+20040303+B03018  :  to  :  RFWHEAD+20040303+B03017
+
+
+=======================B03018======================
+
+
+RFWHEAD :  Return Codes
+
+NTNet Configuration :     Build: 47 succeeded, 0 failed, 1 skipped
+setup.inx - 0 error(s), 0 warning(s)
+setup.inx - 0 error(s), 0 warning(s)
+W2K Configuration :     Build: 48 succeeded, 0 failed, 0 skipped
+
+
+=====================B03018===================
+
+Source File :    File Rev :     WR / Message list :     B03018
+
+=====================B03018===================
+
+tdmf_ose/windows_v1.3/ftdsrc/daemons/master/ftd_master.c 	1.35	correct merge
+tdmf_ose/windows_v1.3/ftdsrc/lib/libftd/ftd_sock.h 	1.10	merge from GA
+tdmf_ose/windows_v1.3/ftdsrc/libexec/override/ftd_override.c 	1.12	correct merge
+tdmf_ose/windows_v1.3/ftdsrc/libexec/stop/ftd_stop.c 	1.11	correct merge
+
+
+=====================B03018================
+
+
+
+=====================B03018===================
+
+Build Script  :  Environment Changes  :  btools etc.
+
+Source File :    File Rev :     WR / Message list :     B03018
+
+=====================B03018===================
+
+tdmf_ose/windows_v1.3/btools/EMAILDIST.txt 	1.13	RFWHEAD B03017 commit via bRcvscommit.pl : buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRcvslasttag.pm 	1.19	Build 03018 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRcvstag.pm 	1.23	Build 03018 commit via bRcvstag.pl :  buildcommitstring
+tdmf_ose/windows_v1.3/btools/bRglobalvars.pm 	1.30	Build 03018
+tdmf_ose/windows_v1.3/btools/btoolschangelist.txt 	1.13	RFWHEAD B03017 commit via bRcvscommit.pl : buildcommitstring
+tdmf_ose/windows_v1.3/btools/sourcechangelist.txt 	1.12	RFWHEAD B03017 commit via bRcvscommit.pl : buildcommitstring

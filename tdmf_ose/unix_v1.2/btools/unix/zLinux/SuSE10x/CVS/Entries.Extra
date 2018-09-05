@@ -1,0 +1,11 @@
+/bRbuildSuSE10x.pl////*////
+/bRcleanROOT.pl////*////
+/bRcpLOGS.pl////*////
+/bRcpRPM.pl////*////
+/bRftpRFX.pl////*////
+/bRftpRTP.pl////*////
+/bRftpTUIP.pl////*////
+/bRisoZ.pl////*////
+/bRpostBuildSuSE10x.pl////*////
+/bRsshSuSE10xs390x.pl////*////
+/bRtarCVF.pl////*////

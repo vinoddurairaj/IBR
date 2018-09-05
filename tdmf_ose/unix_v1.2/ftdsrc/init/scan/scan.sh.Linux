@@ -1,0 +1,454 @@
+#!/bin/sh
+#
+# LICENSED MATERIALS / PROPERTY OF %COMPANYNAME%
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+# This script provides support to load start and stop 
+# %PRODUCTNAME% daemons.
+#
+# exit values: 0 (OK), 1 (FAIL), and 2 (N/A)
+
+# /etc/init.d/%PKGNM%-scan
+#
+### BEGIN INIT INFO
+# Provides:          %PKGNM%-scan
+# Required-Start:    
+# Should-Start: boot.evms boot.lvm boot.md boot.device-mapper boot.scsidev
+# X-UnitedLinux-Should-Start: boot.evms boot.lvm boot.md boot.device-mapper boot.scsidev
+# Required-Stop: 
+# Default-Start:     B
+# Default-Stop:
+# Description:       %COMPANYNAME2% %PRODUCTNAME% Driver Loader
+### END INIT INFO
+
+case "$1" in
+'start')
+    ulimit -c unlimited
+    # driver install for linux 2.6.x kernel and higher
+
+    # Check if we must restore the network configuration files and hostname (case of switch over to a new boot drive
+    # migrated from another server, replacing the boot drive on the target machine). We do it here so that it be
+    # as early as possible in the boot process, before other daemons start.
+
+    # Determine if we are on Redhat or SuSE
+    IsRHEL7=0
+    release_file="/etc/redhat-release"
+    /bin/ls $release_file 1> /dev/null 2>&1
+    file_found=$?
+    if [ $file_found -eq 0 ]
+    then
+        IsRedHat=1
+        if /bin/fgrep -q 'release 7' $release_file 2> /dev/null
+        then
+            IsRHEL7=1
+        fi
+    else
+        release_file="/etc/SuSE-release"
+        /bin/ls $release_file 1> /dev/null 2>&1
+        file_found=$?
+        if [ $file_found -eq 0 ]
+        then
+            IsRedHat=0
+        else
+            /bin/echo "Did not find /etc/redhat-release nor /etc/SuSE-release to determine if we are on RedHat or SuSE." 
+        fi 
+    fi 
+    # On RHEL7, check if the root filesystem is read-only (bootup time); if so, temporarily remount it RW
+    remount_root_Ronly=0
+    if [ $IsRHEL7 -eq 1 ]
+    then
+        dtcrootstate=`LC_ALL=C awk '/ \/ / && ($3 !~ /rootfs/) { print $4 }' /proc/mounts`
+        # Check if there are other substrings in the output, separated by ','
+        echo $dtcrootstate | grep ',' 1> /dev/null 2>&1
+        if [ $? -eq 0 ]
+        then
+            dtcrootstate=`/bin/echo -e $dtcrootstate | awk 'BEGIN { FS = "," } ; { print $1 }'`
+        fi
+        echo "dtcrootstate = $dtcrootstate"
+        if [ "$dtcrootstate" != "rw" ] ; then
+          echo "Remounting root filesystem in read-write mode: "
+          mount -n -o remount,rw /
+          echo "Remounted root filesystem in read-write mode for the time of SFTKdtc-scan start"
+          remount_root_Ronly=1
+        fi
+    fi
+
+    if [ $file_found -eq 0 ]
+    then
+        if [ $IsRedHat -eq 1 ]
+        then
+            #---------------- RedHat section ---------------
+            /bin/ls /SFTKdtc_migrated_bootvol_mntpoint 1> /dev/null 2>&1
+            result=$?
+            if [ $result -ne 0 ]
+	        then
+                /bin/mkdir /SFTKdtc_migrated_bootvol_mntpoint 1> /dev/null 2>&1
+            fi
+            /bin/mount /dev/sda1 /SFTKdtc_migrated_bootvol_mntpoint # <- new /boot volume
+            result=$?
+            if [ $result -eq 0 ]
+            then
+                # Check if the marker flag file is there, indicating that a restore is needed
+                if [ -e /SFTKdtc_migrated_bootvol_mntpoint/SFTKdtc_restore_net_config_files ]
+	            then
+                    /bin/echo "SFTKdtc-scan restoring network configuration files and hostname after migrated boot drive switch over..."
+                    if [ -e /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/hostname_restore.txt ]
+                    then
+                        current_hostname=`/bin/hostname | /bin/awk '{print $1}'`
+                        hostname_to_restore=`/bin/cat /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/hostname_restore.txt | /bin/awk '{print $1}'`
+                        /bin/hostname $hostname_to_restore
+                        result4=$?
+                        if [ $result4 -eq 0 ]
+                        then
+                            /bin/echo "Restored hostname to $hostname_to_restore."
+                        else
+                            /bin/echo "Failed restoring hostname to $hostname_to_restore; status = $result4. Putting back previous hostname: $current_hostname"
+                            /bin/hostname $current_hostname
+                        fi
+                    fi
+                    /bin/mv /etc/hosts /etc/SFTKdtc_migrated_hosts_file
+                    /bin/cp -p /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/hosts /etc/hosts
+                    result1=$?
+                    /bin/mv /etc/sysconfig/network /etc/sysconfig/SFTKdtc_migrated_network_file
+                    /bin/cp -p /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/network /etc/sysconfig/.
+                    result2=$?
+                    if [ $IsRHEL7 -eq 0 ]
+                    then
+                        /bin/mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/SFTKdtc_migrated_ifcfg-eth0_file
+                        /bin/cp -p /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/ifcfg-eth0 /etc/sysconfig/network-scripts/.
+                        result3=$?
+                    else
+                        /bin/mkdir /etc/SFTKdtc_migrated_network_scripts 1> /dev/null 2>&1
+                        /bin/mv /etc/sysconfig/network-scripts/* /etc/SFTKdtc_migrated_network_scripts/.
+                        /bin/cp -p --dereference --preserve=links /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/network-scripts/* /etc/sysconfig/network-scripts/.
+                        result3=$?
+                    fi
+                    if [ -e /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/yp.conf ]
+                    then
+                        /bin/mv /etc/yp.conf /etc/SFTKdtc_migrated_yp.conf
+                        /bin/cp -p /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/yp.conf /etc/.
+                    fi
+                    # Make sure the writing is physically done, because the root filesystem is remounted read-only after our script is run
+                    /bin/sync
+                    /bin/sleep 5
+                    if [ $result1 -eq 0 -a $result2 -eq 0 -a $result3 -eq 0 ]
+                    then
+                        if [ $IsRHEL7 -eq 0 ]
+                        then
+                            /bin/echo "Restored /etc/hosts, /etc/sysconfig/network and /etc/sysconfig/network-scripts/ifcfg-eth0"
+                        else
+                            /bin/echo "Restored /etc/hosts, /etc/sysconfig/network and /etc/sysconfig/network-scripts"
+                        fi
+                    fi 
+
+                    # Now restore also the udev rules if they were backed up
+                    result5=0
+                    if [ -e /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/rules.d ]
+                    then
+                        /bin/mv /etc/udev/rules.d /etc/udev/rules.d_migrated_from_source_server
+                        /bin/cp -pr /SFTKdtc_migrated_bootvol_mntpoint/backup_original_target_net_config_files/rules.d /etc/udev/.
+                        result5=$?
+                        if [ $result5 -eq 0 ]
+                        then 
+                            /bin/echo "Restored target VM /etc/udev/rules.d/<all files>."
+                        else
+                            /bin/echo "Error status $result5 while restoring target VM /etc/udev/rules.d/<all files>."
+                        fi
+
+                        /bin/sync
+                    fi
+                    # If success, remove the marker file that says to restore; else: leave it there, a new attempt will be done
+                    # when our daemons start, later in the boot process
+                    # Also, if success and not RHEL7, create a marker file telling our master daemon boot scripts to check that our restored ifcfg-eht0
+                    # file is not replaced by a .bak by other OS scripts (problem documented on Linux for which there are patches in RH 5.6,
+                    # discussion example: https://bugzilla.redhat.com/show_bug.cgi?id=253146).
+                    if [ $result1 -eq 0 -a $result2 -eq 0 -a $result3 -eq 0 -a $result4 -eq 0 -a $result5 -eq 0 ]
+                    then
+                        /bin/rm -f /SFTKdtc_migrated_bootvol_mntpoint/SFTKdtc_restore_net_config_files
+                        if [ $IsRHEL7 -eq 0 ]
+                        then
+                            /bin/touch /SFTKdtc_migrated_bootvol_mntpoint/SFTKdtc_check_ifcfg_eth0_restored_file
+                        fi
+                        /bin/sync
+                    fi 
+	            fi
+                /bin/umount /SFTKdtc_migrated_bootvol_mntpoint
+                result=$?
+                if [ $result -eq 0 ]
+                then
+                    /bin/rmdir /SFTKdtc_migrated_bootvol_mntpoint
+                fi
+	        fi
+        fi
+        #---------------- SuSE Linux section ---------------
+        # NOTE: for SuSE Linux, everything is done by the failover scripts prior to power off and disk change,
+        # because the root partition is accessible then. No specific logic for SuSE here.
+
+    fi
+
+    # Check if SFTKdtc services are disabled
+    if [ -e /etc/opt/SFTKdtc/SFTKdtc_services_disabled ]
+	then
+        /bin/echo "Not loading the %COMPANYNAME2% %PRODUCTNAME% kernel module because SFTKdtc services are disabled"
+        /bin/echo "    (presence of file /etc/opt/SFTKdtc/SFTKdtc_services_disabled has been detected)."
+          if [ $IsRHEL7 -eq 1 -a $remount_root_Ronly -eq 1 ]
+          then
+              echo "Remounting root filesystem in read-only mode"
+              mount -n -o remount,ro /
+          fi
+        exit 0
+	fi
+
+    target_isa=`/bin/uname -m`  #storing machine Architecture e.g. x86_64
+
+    PARAS=
+
+    # WR PROD8888: RFX 2.7.1 brings back support of RH4 U2 and above, which did not have /etc/modprobe.d
+	# Check for this here:
+    if [ ! -e /etc/modprobe.d ]
+	then
+        /bin/mkdir /etc/modprobe.d
+	fi
+
+    if [ -e '/etc/modprobe.d/sftkdtc.conf' ]
+    then
+	    PARAS=`/bin/grep %MODULENAME% /etc/modprobe.d/sftkdtc.conf | /bin/awk -F"%MODULENAME%" '{print $2}'`
+	else
+	    touch /etc/modprobe.d/sftkdtc.conf
+        JUST_CREATED_MODPROBE_CONFIG_FILE=1
+    fi
+    
+    
+    rev=`/bin/uname -r`  #Storing kernel revision e.g. 2.6.5-7.97-smp
+
+    # Extract just the x.y.z main version info.
+    kernel_version_without_extraversion=`echo $rev | egrep -o  "^[0-9]+\.[0-9]+\.[0-9]+"`
+
+    if [ -f /etc/redhat-release ]
+    then
+        if fgrep -q 'release 6' /etc/redhat-release 2> /dev/null
+            then            
+                # For RH6 releases, the config name starts with .el6 and extends until the next dot, which is followed by the processor info.
+                # Example for RH 6.1: .el6 out of 2.6.32-71.el6.x86_64
+                kernel_config_name=`echo $rev | egrep -o  "\.el6[^.]*"`
+                rh6_or_7=true
+            else
+                if fgrep -q 'release 7' /etc/redhat-release 2> /dev/null
+                then
+                    # Processing for RHEL 7 is the same as for RHEL 6
+                    # Example for RH 7.0: .el7 out of 3.7.0-0.36.el7.x86_64
+                    kernel_config_name=`echo $rev | egrep -o  "\.el7[^.]*"`
+                    rh6_or_7=true
+                else
+                    # The config name is the part following the last dot on other Red Hat releases...
+                    # Example for RH 5.2: .el5PAE out of 2.6.18-92.el5PAE
+                    kernel_config_name=`echo $rev | egrep -o  "\.[^.]+$"`
+                fi
+            fi
+    else
+        # The config name is the part following the last hyphen on SuSE.
+        # Example for SuSE 11.1: -pae out of 2.6.32.12-0.7-pae
+        kernel_config_name=`echo $rev | egrep -o  "\-[^-]+$"`
+    fi
+    
+    # We 1st check if the driver is already loaded.
+    /sbin/lsmod | /bin/grep %MODULENAME% >/dev/null 2>&1
+    driver_already_loaded=$?
+
+    if [ $driver_already_loaded == 0 ]
+    then
+        /bin/echo "TDMFIP driver is loaded."
+    fi
+
+    if [ $driver_already_loaded != 0 -a -z "$PARAS" ]
+    then
+        # It's assumed that the config file will be created during the installation when the post-install script runs startdeamons (who calls this script).
+        # At that time, we do not want to report that we couldn't find the BAB configs.
+        if [ -z "$JUST_CREATED_MODPROBE_CONFIG_FILE" ]
+        then
+            # But anytime that the config file exists and that it doesn't contain the BAB parameters, report it.
+            /bin/echo "Not loading the %COMPANYNAME2% %PRODUCTNAME% kernel module because no BAB configurations could be found."
+        fi 
+    elif [ $driver_already_loaded != 0 ]
+    then
+	    /bin/echo "Installing %COMPANYNAME2% %PRODUCTNAME% loadable kernel module"
+
+        if [ $rh6_or_7 ]
+        then
+            # Red Hat 6 and 7: revision already has the cpu architecture as part of its revision.
+            dpath=/%ETCOPTDIR%/%PKGNM%/driver/linux-${rev}
+        else
+            dpath=/%ETCOPTDIR%/%PKGNM%/driver/linux-${rev}.${target_isa}
+        fi
+	    
+        # If the directory for this kernel type and processor architecture exists, take this driver module
+        if [ -d $dpath ]
+        then
+	        /sbin/insmod $dpath/%MODULENAME%.ko $PARAS
+            ret=$?
+            if [ $ret -eq 0 ]
+            then
+                echo "  Successfully inserted driver $dpath/%MODULENAME%.ko"
+            else
+                echo "  Failed inserting driver $dpath/%MODULENAME%.ko; error = "$ret
+                  if [ $IsRHEL7 -eq 1 -a $remount_root_Ronly -eq 1 ]
+                  then
+                      echo "Remounting root filesystem in read-only mode"
+                      mount -n -o remount,ro /
+                  fi
+                exit 1
+            fi
+        else
+            # Otherwise, try all potential drivers until one works out.
+            echo " Searching the proper driver for kernel ${rev}..."
+            ret=1
+
+            for dpath in `/bin/ls -dr /%ETCOPTDIR%/%PKGNM%/driver/linux-${kernel_version_without_extraversion}*${kernel_config_name}.${target_isa} 2>/dev/null`
+            do
+                echo "${0##*/}: Trying driver $dpath/%MODULENAME%.ko"
+                /sbin/insmod $dpath/%MODULENAME%.ko $PARAS 2> /dev/null
+                ret=$?
+                if [ $ret -eq 0 ]
+                then
+                    echo "     Successfully inserted driver $dpath/%MODULENAME%.ko"
+                    echo "     Creating a soft link to the directory containing the successfully loaded driver, for next load"
+                    /bin/ln -s $dpath  /%ETCOPTDIR%/%PKGNM%/driver/linux-${rev}.${target_isa}
+                    break
+                fi
+            done
+        
+            if [ "$ret" -ne 0 ]
+            then
+                echo "${0##*/}: Error - Could not locate %MODULENAME%.ko driver for rev=$rev"
+                  if [ $IsRHEL7 -eq 1 -a $remount_root_Ronly -eq 1 ]
+                  then
+                      echo "Remounting root filesystem in read-only mode"
+                      mount -n -o remount,ro /
+                  fi
+                exit 1
+            fi
+        fi
+
+        /bin/rm -rf /dev/%Q%
+        /bin/mkdir /dev/%Q%
+        /bin/rm -rf /var/run/%PKGNM%/pmd*
+        /bin/rm -rf /var/run/%PKGNM%/rmd*
+        # if we're running during boot, remove the core file dir for the daemon so
+        # that rc.sysinit doesn't fail trying to remove the directory
+      if [ $IsRHEL7 -eq 0 ]
+      then
+        if [ -z $2 ]
+            then
+                /bin/rm -rf /var/run/%PKGNM%/%Q%
+            fi
+      fi
+        #
+        # Get the major number of the ftd char device
+        #
+        cmajor=`/bin/awk 'BEGIN { major=-1; char=0; } ; \
+                          /^Block devices:/ { char=0; } ; \
+                          /^Character devices:/ { char=1; } ; \
+                          /\<ftd\>/ { if (char) major=$1; } ;\
+                          END { print major; }' /proc/devices`
+        if [ $cmajor -lt 0 ] ; then
+            echo $0 ftd char device not registered
+              if [ $IsRHEL7 -eq 1 -a $remount_root_Ronly -eq 1 ]
+              then
+                  echo "Remounting root filesystem in read-only mode"
+                  mount -n -o remount,ro /
+              fi
+            exit 1
+        fi
+        /bin/mknod -m 640 /dev/%Q%/ctl c $cmajor 4095
+        if [ $IsRHEL7 -eq 1 ]
+        then
+            if [ -e /sbin/%Q%start ]
+            then
+                /sbin/%Q%start -ab
+            else
+                /opt/SFTKdtc/bin/%Q%start -ab
+            fi
+        else
+            /sbin/%Q%start -ab
+        fi
+
+          if [ $IsRHEL7 -eq 1 -a $remount_root_Ronly -eq 1 ]
+          then
+              echo "Remounting root filesystem in read-only mode"
+              mount -n -o remount,ro /
+          fi
+    fi
+    ;;
+'stop')
+    	ulimit -c unlimited
+        TimeStamp=`/bin/date "+%Y-%m-%d-%Hh%Mm%S"`;
+	    /bin/echo "Stopping %COMPANYNAME2% %PRODUCTNAME% Groups"
+        /bin/sync;/bin/sync      # Do two syncs because 2nd only starts after first completes
+
+        # On RedHat 7, check that the PMDs and RMDs have stopped (RHEL 7 defect 74194)
+        IsRHEL7=0
+        release_file="/etc/redhat-release"
+        /bin/ls $release_file 1> /dev/null 2>&1
+        file_found=$?
+        if [ $file_found -eq 0 ]
+        then
+            if /bin/fgrep -q 'release 7' $release_file 2> /dev/null
+            then
+                IsRHEL7=1
+            fi
+        fi
+        if [ $IsRHEL7 -eq 1 ]
+        then
+            # Wait until the PMDs/RMDs are stopped
+            all_stopped=0
+            time_waited=0
+            max_wait_time=300
+            time_remaining=$max_wait_time
+            while [ $all_stopped -eq 0 ] && [ $time_waited -lt $max_wait_time ]
+            do
+                /bin/ps -el | /bin/grep in.pmd 1> /dev/null 2>&1
+                all_stopped=$?
+                if [ $all_stopped -eq 0 ]
+                then
+                    /bin/echo "Waiting for PMDs to stop; will timeout after $time_remaining seconds..."
+                    /bin/echo "Waiting for PMDs to stop; will timeout after $time_remaining seconds..." >> /var/opt/SFTKdtc/shutdown_$TimeStamp.log
+                    /bin/sleep 10
+                    time_waited=`expr $time_waited + 10`
+                else
+                    # All PMDs are stopped. Check RMDs.
+                    /bin/ps -el | /bin/grep in.rmd 1> /dev/null 2>&1
+                    all_stopped=$?
+                    if [ $all_stopped -eq 0 ]
+                    then
+                        /bin/echo "Waiting for RMDs to stop; will timeout after $time_remaining seconds..."
+                        /bin/echo "Waiting for RMDs to stop; will timeout after $time_remaining seconds..." >> /var/opt/SFTKdtc/shutdown_$TimeStamp.log
+                        /bin/sleep 10
+                        time_waited=`expr $time_waited + 10`
+                    fi
+                fi
+                time_remaining=`expr $max_wait_time - $time_waited`
+            done
+        fi
+
+        /sbin/%Q%stop -sa
+        dtcstop_status=$?
+        /bin/sync;/bin/sync      # Make sure pstores are written WR 43148 
+        if [ $dtcstop_status -ne 0 ] ; then
+            /bin/echo -n "%Q%stop status = NOT OK; code = "
+            /bin/echo $dtcstop_status
+        fi
+    ;;
+*)
+    /bin/echo "Usage: $0 { start | stop }"
+    exit 1
+    ;;
+esac
+
+exit 0

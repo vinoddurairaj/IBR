@@ -1,0 +1,3 @@
+#build var  :  do not mess without build master's approval. 
+#var is available after gmake....
+$PRODver="%VERSION%";

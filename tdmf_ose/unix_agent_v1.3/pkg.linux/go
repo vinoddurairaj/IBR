@@ -1,0 +1,20 @@
+#!/bin/sh
+
+dir=`pwd`
+
+mkdir -p /var/tmp/dua-root
+
+mkdir -p /var/tmp/dua-root/etc/init.d
+cp ../SFTKdua /var/tmp/dua-root/etc/init.d/SFTKdua
+mkdir -p /var/tmp/dua-root/opt/SFTKdua
+mkdir -p /var/tmp/dua-root/opt/SFTKdua/bin
+cp ../dtcAgent /var/tmp/dua-root/opt/SFTKdua/bin/dtcAgent
+cp ../killdua /var/tmp/dua-root/opt/SFTKdua/bin/killdua
+mkdir -p /var/tmp/dua-root/etc/opt/SFTKdua
+cp ../dtcAgent.cfg /var/tmp/dua-root/etc/opt/SFTKdua/dtcAgent.cfg
+mkdir -p /var/tmp/dua-root/var/opt/SFTKdua
+mkdir -p /var/tmp/dua-root/var/opt/SFTKdua/Agn_tmp
+
+/usr/bin/rpmbuild -bb agent_linux.spec
+
+rm -fr /var/tmp/dua-root

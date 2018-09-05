@@ -1,0 +1,32 @@
+
+PdDv:
+	type = "%Q%"
+	class = "%Q%_class"
+	subclass = "%Q%_subclass"
+	prefix = "%Q%"
+	devid = 0
+	base = 0
+	has_vpd = 0
+	detectable = 0
+	chgstatus = 0
+	bus_ext = 0
+	fru = 0
+	led = 0x987
+	setno = 1
+	msgno = 1
+	catalog = "%Q%.cat"
+	DvDr = "%Q%"
+	Define = "/usr/lib/methods/def%Q%"
+	Configure = "/usr/lib/methods/cfg%Q%"
+	Change = ""
+	Unconfigure = "/usr/lib/methods/ucfg%Q%"
+	Undefine = "/usr/lib/methods/udef%Q%"
+	Start = ""
+	Stop = ""
+	inventory_only = 0
+	uniquetype = "%Q%_class/%Q%_subclass/%Q%"
+
+Config_Rules:
+	phase = 2
+	seq = 0
+	rule = "/usr/lib/methods/def%Q% -c %Q%_class -s %Q%_subclass -t %Q%; /usr/lib/methods/cfg%Q% -l %Q%0"

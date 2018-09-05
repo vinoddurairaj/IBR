@@ -1,0 +1,216 @@
+The first portion of this file is a listing of the commonly recognized
+Linux OS Release Levels, and the associated kernel level returned by
+uname -r.  This is derived from various public sources, and not directly
+confirmed by IBM in all cases.  This is not a list of OSs supported
+for TDMF-IP.
+
+The second portion of this file is a listing of the kernel levels supported
+by the drivers delivered with each of the noted TDMF-IP rpm installation
+packages.  
+
+Fedora  4  - 2.6.11
+Fedora  5  - 2.6.15
+Fedora  6  - 2.6.18
+Fedora  7  - 2.6.21
+Fedora  8  - 2.6.23
+Fedora  9  - 2.6.25
+Fedora 10  - 2.6.27.5-117
+Fedora 11  - 2.6.29
+----------------------------
+RHEL2  2.1 GA	2.4.9-e.3
+RHEL2  Update1 	2.4.9-e.12
+RHEL2  Update2 	2.4.9-e.24
+RHEL2  Update3 	2.4.9-e.34
+RHEL2  Update4 	2.4.9-e.40
+RHEL2  Update5 	2.4.9-e.49
+RHEL2  Update6 	2.4.9-e.57
+----------------------------
+RHEL3     gold  2.4.21-4
+RHEL3  Update1  2.4.21-9
+RHEL3  Update2  2.4.21-15
+RHEL3  Update3  2.4.21-20	RFX 2.5.3
+RHEL3  Update4  2.4.21-27	RFX 2.5.3
+RHEL3  Update5  2.4.21-32	RFX 2.5.3
+RHEL3  Update6  2.4.21-37	RFX 2.5.3
+RHEL3  Update7  2.4.21-40	RFX 2.5.3
+RHEL3  Update8  2.4.21-47	RFX 2.5.3
+RHEL3  Update9  2.4.21-50
+----------------------------
+RHEL4     gold  2.6.9-5
+RHEL4  Update1  2.6.9-11	RFX 2.6.1
+RHEL4  Update2  2.6.9-22	RFX 2.6.1
+RHEL4  Update3  2.6.9-34	RFX 2.6.1
+RHEL4  Update4  2.6.9-42	RFX 2.6.1
+RHEL4  Update5  2.6.9-55	RFX 2.6.1
+RHEL4  Update6  2.6.9-67	RFX 2.6.1
+RHEL4  Update7  2.6.9-78	
+----------------------------
+RHEL5     gold  2.6.18-8	RFX 2.6.4 x64 and s390
+RHEL5  Update1  2.6.18-53	RFX 2.6.4 x64 and s390
+RHEL5  Update2  2.6.18-92	RFX 2.6.4 x64 and s390
+RHEL5  Update3  2.6.18-128	RFX 2.6.4 x64 and s390
+RHEL5  Update4  2.6.18-164	RFX 2.6.4 i686, x86_64, ia64 and s390x
+----------------------------
+
+RFX 2.5.3 only supported for RHEL 3, in /opt/SFTKdtc/driver/
+
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-20.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-20.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-20.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-20.ELsmp.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-27.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-27.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-27.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-27.ELsmp.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-32.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-32.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-32.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-32.ELsmp.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-37.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-37.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-37.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-37.ELsmp.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-40.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-40.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-40.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-40.ELsmp.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-47.EL.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-47.EL.i686
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-47.ELsmp.athlon
+RedHat-AS3x32-TDMFIP-2.5.3.0-7055.i386.rpm:	linux-2.4.21-47.ELsmp.i686
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-20.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-20.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-20.ELsmp.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-27.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-27.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-27.ELsmp.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-32.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-32.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-32.ELsmp.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-37.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-37.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-37.ELsmp.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-40.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-40.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-40.ELsmp.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-47.EL.ia32e.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-47.EL.x86_64
+RedHat-AS3x64-TDMFIP-2.5.3.0-7055.x86_64.rpm:	linux-2.4.21-47.ELsmp.x86_64
+
+----------------------------
+2.6.x moved the driver to /etc/opt/SFTKdtc/driver/
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-11.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-11.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-22.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-22.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-34.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-34.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-42.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-42.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-5.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-5.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-55.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-55.ELsmp.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-67.EL.i686
+RedHat-AS4x32-TDMFIP-2.6.1.0-8204.i386.rpm:	linux-2.6.9-67.ELsmp.i686
+RedHat-AS4x64-ia64-TDMFIP-2.6.1.0-8204.ia64.rpm:	linux-2.6.9-42.EL.ia64
+RedHat-AS4x64-ia64-TDMFIP-2.6.1.0-8204.ia64.rpm:	linux-2.6.9-55.EL.ia64
+RedHat-AS4x64-ia64-TDMFIP-2.6.1.0-8204.ia64.rpm:	linux-2.6.9-67.EL.ia64
+RedHat-AS4x64-s390x-TDMFIP-2.6.1.0-8204.s390x.rpm:	linux-2.6.9-34.EL.s390x
+RedHat-AS4x64-s390x-TDMFIP-2.6.1.0-8204.s390x.rpm:	linux-2.6.9-42.EL.s390x
+RedHat-AS4x64-s390x-TDMFIP-2.6.1.0-8204.s390x.rpm:	linux-2.6.9-55.EL.s390x
+RedHat-AS4x64-s390x-TDMFIP-2.6.1.0-8204.s390x.rpm:	linux-2.6.9-67.EL.s390x
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-11.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-11.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-22.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-22.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-34.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-34.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-42.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-42.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-5.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-5.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-55.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-55.ELsmp.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-67.EL.x86_64
+RedHat-AS4x64-TDMFIP-2.6.1.0-8204.x86_64.rpm:	linux-2.6.9-67.ELsmp.x86_64
+
+RedHat-5x-s390x-TDMFIP-2.6.4.0-11161.s390x.rpm:	linux-2.6.18-128.el5.s390x
+RedHat-5x-s390x-TDMFIP-2.6.4.0-11161.s390x.rpm:	linux-2.6.18-164.el5.s390x
+RedHat-5x-s390x-TDMFIP-2.6.4.0-11161.s390x.rpm:	linux-2.6.18-53.el5.s390x
+RedHat-5x-s390x-TDMFIP-2.6.4.0-11161.s390x.rpm:	linux-2.6.18-8.1.3.el5.s390x
+RedHat-5x-s390x-TDMFIP-2.6.4.0-11161.s390x.rpm:	linux-2.6.18-92.el5.s390x
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-128.el5.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-128.el5PAE.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-164.el5.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-164.el5PAE.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-53.el5.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-53.el5PAE.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-8.el5.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-8.el5PAE.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-92.el5.i686
+RedHat-5x-x86_32-TDMFIP-2.6.4.0-11161.i686.rpm:	linux-2.6.18-92.el5PAE.i686
+RedHat-5x-x86_64-TDMFIP-2.6.4.0-11161.x86_64.rpm:	linux-2.6.18-128.el5.x86_64
+RedHat-5x-x86_64-TDMFIP-2.6.4.0-11161.x86_64.rpm:	linux-2.6.18-164.el5.x86_64
+RedHat-5x-x86_64-TDMFIP-2.6.4.0-11161.x86_64.rpm:	linux-2.6.18-53.el5.x86_64
+RedHat-5x-x86_64-TDMFIP-2.6.4.0-11161.x86_64.rpm:	linux-2.6.18-8.el5.x86_64
+RedHat-5x-x86_64-TDMFIP-2.6.4.0-11161.x86_64.rpm:	linux-2.6.18-92.el5.x86_64
+
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.139-64k-pagesize.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.139-default.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.139-sn2.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.191-64k-pagesize.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.191-default.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.191-sn2.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.244-64k-pagesize.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.244-default.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.244-sn2.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.308-64k-pagesize.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.308-default.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.308-sn2.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.97-64k-pagesize.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.97-default.ia64
+SuSE-9x-ia64-TDMFIP-2.6.2.0-9229.ia64.rpm:	linux-2.6.5-7.97-sn2.ia64
+SuSE-9x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.5-7.139-s390x.s390x
+SuSE-9x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.5-7.191-s390x.s390x
+SuSE-9x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.5-7.244-s390x.s390x
+SuSE-9x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.5-7.308-s390x.s390x
+SuSE-9x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.5-7.97-s390x.s390x
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.139-default.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.139-smp.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.191-default.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.191-smp.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.244-default.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.244-smp.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.308-default.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.308-smp.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.97-default.x86_64
+SuSE-9x-x64-TDMFIP-2.6.2.0-9229.x86_64.rpm:	linux-2.6.5-7.97-smp.x86_64
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.139-bigsmp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.139-default.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.139-smp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.191-bigsmp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.191-default.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.191-smp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.244-bigsmp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.244-default.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.244-smp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.308-SLRS.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.308-bigsmp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.308-default.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.308-smp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.97-bigsmp.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.97-default.i686
+SuSE-9x-x86-TDMFIP-2.6.2.0-9229.i386.rpm:	linux-2.6.5-7.97-smp.i686
+SuSE-10x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.16.21-0.8-default.s390x
+SuSE-10x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.16.46-0.12-default.s390x
+SuSE-10x-s390x-TDMFIP-2.6.4.0-11159.s390x.rpm:	linux-2.6.16.60-0.21-default.s390x
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.21-0.8-default.x86_64
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.21-0.8-smp.x86_64
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.46-0.12-default.x86_64
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.46-0.12-smp.x86_64
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.60-0.21-default.x86_64
+SuSE-10x-x86_64-TDMFIP-2.6.4.0-11159.x86_64.rpm:	linux-2.6.16.60-0.21-smp.x86_64
+SuSE-11x-x86_32-TDMFIP-2.6.5.0-12243.i686.rpm:  	linux-2.6.27.19-5-default.i686
+SuSE-11x-x86_32-TDMFIP-2.6.5.0-12243.i686.rpm:  	linux-2.6.27.19-5-pae.i686
+SuSE-11x-x86_64-TDMFIP-2.6.5.0-12243.x86_64.rpm:  	linux-2.6.27.19-5-default.x86_64

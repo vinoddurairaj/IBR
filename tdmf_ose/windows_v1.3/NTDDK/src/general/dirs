@@ -1,0 +1,5 @@
+DIRS= \
+     setup \
+     wmicli \
+     portio \
+     toaster

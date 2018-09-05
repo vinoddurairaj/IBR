@@ -1,0 +1,63 @@
+#! /opt/LWperl/bin/perl
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+########################################
+# Preliminaries
+#
+use Getopt::Std;
+
+########################################
+# Initialize constants
+#
+$CONFIGDIR='../configs';
+$QADIR='..';
+
+$| = 1;
+
+system("killpmds");
+system("rem_drv qds");
+
+DoTest('/dev/rdsk/c1t1d0s1', '/dev/dsk/c1t1d0s1');
+DoTest('/dev/rdsk/c1t1d0s1', '/dev/dsk/c1t1d0s1');
+DoTest('/dev/rdsk/c1t1d0s1', '/dev/dsk/c1t1d0s1');
+
+system("$QADIR/reconfig $CONFIGDIR/performance.cfg $CONFIGDIR/performance.conf");
+# sleep 10;
+
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+
+system("killpmds");
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+DoTest('/dev/rdsk/qds0', '/dev/dsk/qds0');
+
+##############################################################################
+# Subroutines & Functions
+#
+sub ReportTime {
+	my($CMD) = @_;
+	open PIPE, "(time $CMD >/dev/null) 2>&1 |" || die "$!";
+	print("$CMD\t");
+	while (<PIPE>) {
+		/((real)|(user)|(sys))\s+(([0-9]+):)?([0-9.]+)/ || next;
+		print($6*60+$7,"\t");
+	}
+	print "\n";
+}
+
+sub DoTest {
+
+	my($RDEV, $DEV) = @_;
+
+	ReportTime("sh -c 'echo y | newfs $RDEV'");
+	system("mount $DEV /mnt");
+	ReportTime("cp -r /export/ultra2/100MB_dir /mnt");
+	ReportTime("cp -r /mnt/100MB_dir /mnt/100MB_dir_copy");
+	ReportTime("rm -r /mnt/100MB_dir");
+	ReportTime("dd if=/dev/zero of=/mnt/BigZero bs=8k count=12800");
+	ReportTime("cp /mnt/BigZero /mnt/BigZero_copy");
+	system("umount /mnt");
+}

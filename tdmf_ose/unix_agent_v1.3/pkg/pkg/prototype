@@ -1,0 +1,45 @@
+#
+# pkg
+#
+i copyright
+i pkginfo
+i prototype
+i depend
+i preinstall
+#i request
+#i postinstall
+i preremove
+#i space
+
+#
+# dir
+#
+d none /etc ? ? ?
+d none /etc/init.d ? ? ?
+d none /etc/rc3.d ? ? ?
+d none /etc/opt ? ? ?
+x none /etc/opt/SFTKdua 0755 root sys
+
+d none /opt ? ? ?
+x none /opt/SFTKdua 0755 root sys
+x none /opt/SFTKdua/doc 0755 root sys
+x none /opt/SFTKdua/bin 0755 root sys
+
+d none /var ? ? ?
+d none /var/opt ? ? ?
+d none /var/opt/SFTKdua 0755 bin bin
+d none /var/opt/SFTKdua/Agn_tmp 0755 bin bin
+
+#
+# bin
+#
+f none opt/SFTKdua/bin/dtcAgent=dtcAgent 0555 bin bin
+f none opt/SFTKdua/bin/killdua 0555 bin bin
+
+f none etc/opt/SFTKdua/dtcAgent.cfg=dtcAgent.cfg 0666 bin bin
+
+#
+# script
+#
+f none etc/init.d/SFTKdua 0555 root sys
+l none /etc/rc3.d/S26SFTKdua=/etc/init.d/SFTKdua

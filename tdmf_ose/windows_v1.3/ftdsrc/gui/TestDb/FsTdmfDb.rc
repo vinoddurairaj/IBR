@@ -1,0 +1,539 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDDFV_Ex1 DIALOGEX 0, 0, 402, 302
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDCLC_Tbl,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,10,85,380,135,WS_EX_DLGMODALFRAME | 
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDCE_Sql,10,60,380,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Fills Tbl",IDCB_Fills,10,10,50,14
+    PUSHBUTTON      "Show Tbl",IDCB_Show,70,10,50,14
+    PUSHBUTTON      "Force Select",IDC_BUTSEL,10,35,50,14
+    LTEXT           "IP Address:Port",IDC_STATIC,10,265,50,8
+    EDITTEXT        IDCE_SrvName,10,230,130,20,ES_READONLY,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | 
+                    WS_EX_STATICEDGE
+    EDITTEXT        IDCE_SrvIpP,70,260,190,20,ES_READONLY,
+                    WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | 
+                    WS_EX_STATICEDGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDDFV_Ex1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 395
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 295
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos de FsTdmfDb"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "FsTdmfDb version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2002",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_FSTDMFDB_FORM DIALOG DISCARDABLE  0, 0, 321, 221
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Tst CrTbl",IDC_BUTTON1,10,40,50,14
+    PUSHBUTTON      "Test Cases",IDC_BUTTON2,80,40,50,14
+    PUSHBUTTON      "Drop Tables",IDC_BUTTON3,150,40,50,14
+    PUSHBUTTON      "Stress Test",IDC_BUTTON4,10,155,50,14
+    EDITTEXT        IDC_EDIT1,10,195,87,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT2,105,195,87,14,ES_AUTOHSCROLL | WS_DISABLED
+    GROUPBOX        "Tests",IDC_STATIC,5,140,310,75
+    EDITTEXT        IDC_EDIT3,185,155,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Number of tests :",IDC_STATIC,130,155,54,8
+    PUSHBUTTON      "Volume Test",IDC_BUTTON5,70,155,50,14
+    PUSHBUTTON      "Create Db",IDC_BUTTON6,10,20,50,14
+    PUSHBUTTON      "Create Logins",IDC_BUTTON7,80,20,50,14
+    PUSHBUTTON      "Code Demo",IDC_BUTTON8,150,20,50,14
+    PUSHBUTTON      "Var Test",IDC_BUTTON9,70,80,50,14
+    PUSHBUTTON      "Create Tbl",IDC_BUTTON10,10,115,50,14
+    PUSHBUTTON      "Tst WlkThr",IDC_BUTTON11,130,80,50,14
+    PUSHBUTTON      "Walk Through",IDC_BUTTON12,130,115,50,14
+    PUSHBUTTON      "Ex Fills Tbl 2",IDC_BUTTON13,70,115,50,14
+    GROUPBOX        "Tutorial",IDC_STATIC,5,100,310,35
+    PUSHBUTTON      "Cr Tbl Sql",IDC_BUTTON14,10,80,50,14
+    GROUPBOX        "Current",IDC_STATIC,5,10,310,50
+    PUSHBUTTON      "Fast Test",IDC_BUTTON15,10,175,50,14
+    PUSHBUTTON      "Fast Scroll Tst",IDC_BUTTON16,70,175,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_FSTDMFDB_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 314
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 214
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\FsTdmfDb.ico"
+IDR_FSTDMFTYPE          ICON    DISCARDABLE     "res\\FsTdmfDbDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Fichier"
+    BEGIN
+        MENUITEM "&Nouveau\tCtrl+N",            ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",              ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM "&Barre d'outils",             ID_VIEW_TOOLBAR
+        MENUITEM "Barre d'é&tat",               ID_VIEW_STATUS_BAR
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de FsTdmfDb...",    ID_APP_ABOUT
+    END
+END
+
+IDR_FSTDMFTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Fichier"
+    BEGIN
+        MENUITEM "&Nouveau\tCtrl+N",            ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM "&Fermer",                     ID_FILE_CLOSE
+        MENUITEM "&Enregistrer\tCtrl+S",        ID_FILE_SAVE
+        MENUITEM "En&registrer sous...",        ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Imprimer...\tCtrl+P",        ID_FILE_PRINT
+        MENUITEM "Aperçu a&vant impression",    ID_FILE_PRINT_PREVIEW
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",              ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+    END
+    POPUP "&Edition"
+    BEGIN
+        MENUITEM "&Annuler\tCtrl+Z",            ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Couper\tCtrl+X",             ID_EDIT_CUT
+        MENUITEM "&Copier\tCtrl+C",             ID_EDIT_COPY
+        MENUITEM "C&oller\tCtrl+V",             ID_EDIT_PASTE
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM "&Barre d'outils",             ID_VIEW_TOOLBAR
+        MENUITEM "Barre d'é&tat",               ID_VIEW_STATUS_BAR
+    END
+    POPUP "Fe&nêtre"
+    BEGIN
+        MENUITEM "&Nouvelle fenêtre",           ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Mosaïque",                   ID_WINDOW_TILE_HORZ
+        MENUITEM "&Réorganiser les icônes",     ID_WINDOW_ARRANGE
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de FsTdmfDb...",    ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 2.2.0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040C04B0"
+        BEGIN
+            VALUE "CompanyName", "Softek Storage Solutions Corp.\0"
+            VALUE "FileDescription", "Application MFC FsTdmfDb\0"
+            VALUE "FileVersion", "1,0,0,1\0"
+            VALUE "InternalName", "FsTdmfDb\0"
+            VALUE "LegalCopyright", "Copyright 2001-2003\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "FsTdmfDb.EXE\0"
+            VALUE "ProductName", "Softek Replicator\0"
+            VALUE "ProductVersion", "2.2.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "FsTdmfDb"
+    IDR_FSTDMFTYPE          "\nFsTdmf\nFsTdmf Test Lab\n\n\nFsTdmfDb.Document\nFsTdmf Document"
+    IDR_FsTdmfEx1           "\nFsTdmf\nFsTdmf Exemple1\n\n\nFsTdmfDb.Document\nFsTdmf Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "FsTdmfDb"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "MAJ"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "DEF"
+    ID_INDICATOR_OVR        "ECR"
+    ID_INDICATOR_REC        "ENR"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Crée un nouveau document\nNouveau"
+    ID_FILE_OPEN            "Ouvre un document existant\nOuvrir"
+    ID_FILE_CLOSE           "Ferme le document actif\nFermer"
+    ID_FILE_SAVE            "Enregistre le document actif\nEnregistrer"
+    ID_FILE_SAVE_AS         "Enregistre le document actif sous un nouveau nom\nEnregistrer sous"
+    ID_FILE_PAGE_SETUP      "Change les options d'impression\nMise en page"
+    ID_FILE_PRINT_SETUP     "Change les options d'imprimante et d'impression\nConfiguration de l'impression"
+    ID_FILE_PRINT           "Imprime le document actif\nImprimer"
+    ID_FILE_PRINT_PREVIEW   "Affiche des pages entières\nAperçu avant impression"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Affiche des informations sur le programme, le numéro de version et le copyright\nA propos de"
+    ID_APP_EXIT             "Ferme l'application ; propose d'enregistrer les documents\nQuitter"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Ouvre ce document"
+    ID_FILE_MRU_FILE2       "Ouvre ce document"
+    ID_FILE_MRU_FILE3       "Ouvre ce document"
+    ID_FILE_MRU_FILE4       "Ouvre ce document"
+    ID_FILE_MRU_FILE5       "Ouvre ce document"
+    ID_FILE_MRU_FILE6       "Ouvre ce document"
+    ID_FILE_MRU_FILE7       "Ouvre ce document"
+    ID_FILE_MRU_FILE8       "Ouvre ce document"
+    ID_FILE_MRU_FILE9       "Ouvre ce document"
+    ID_FILE_MRU_FILE10      "Ouvre ce document"
+    ID_FILE_MRU_FILE11      "Ouvre ce document"
+    ID_FILE_MRU_FILE12      "Ouvre ce document"
+    ID_FILE_MRU_FILE13      "Ouvre ce document"
+    ID_FILE_MRU_FILE14      "Ouvre ce document"
+    ID_FILE_MRU_FILE15      "Ouvre ce document"
+    ID_FILE_MRU_FILE16      "Ouvre ce document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Passe au volet de fenêtre suivant\nVolet suivant"
+    ID_PREV_PANE            "Revient au volet précédent\nVolet précédent"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Ouvre une nouvelle fenêtre pour le document actif\nNouvelle fenêtre"
+    ID_WINDOW_ARRANGE       "Réorganise les icônes en bas de la fenêtre\nRéorganise les icônes"
+    ID_WINDOW_CASCADE       "Réorganise les fenêtres en cascade\nCascade"
+    ID_WINDOW_TILE_HORZ     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_TILE_VERT     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_SPLIT         "Réorganise les fenêtres en une mosaïque\nMosaïque"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
+    ID_EDIT_COPY            "Copie la sélection et la place dans le Presse-papiers\nCopier"
+    ID_EDIT_CUT             "Supprime la sélection et la place dans le Presse-papiers\nCouper"
+    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
+    ID_EDIT_PASTE           "Insère le contenu du Presse-papiers\nColler"
+    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
+    ID_EDIT_REPLACE         "Remplace le texte spécifique par un texte différent\nRemplacer"
+    ID_EDIT_SELECT_ALL      "Sélectionne le document entier\nSélectionner tout"
+    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
+    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Affiche ou masque la barre d'outils\nBarre d'outils"
+    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nBarre d'état"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Change la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Agrandit la fenêtre au format de l'écran"
+    AFX_IDS_SCNEXTWINDOW    "Passe à la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Passe à la fenêtre de document précédente"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille d'origine"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+    AFX_IDS_MDICHILD        "Active cette fenêtre"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Ferme le mode d'aperçu avant impression\nFermer l'aperçu"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRC)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH_CANADIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\FsTdmfDb.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.fra\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\FsTdmfDb.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#include "l.fra\afxprint.rc"        // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,70 @@
+# Post-removal script for FullTime Data v4.0 for Solaris
+# $Id: sun.postremove.src,v 1.1.1.1 2001/09/14 13:48:45 dturrin Exp $
+
+SERVICES=/etc/inet/services
+
+killproc() {            # kill the named process(es)
+    pid=`/usr/bin/ps -e |
+             /usr/bin/grep -w $1 |
+             /usr/bin/sed -e 's/^  *//' -e 's/ .*//'`
+        [ "$pid" != "" ] && kill $2 $pid
+}
+
+if [ -d "/usr/local/bin" ]; then
+    if [ -w "/usr/local/bin" ]; then
+	echo "Removing %PRODUCTNAME% Symbolic Links from /usr/local/bin" 
+	rm -f /usr/local/bin/in.pmd
+	rm -f /usr/local/bin/in.rmd
+	rm -f /usr/local/bin/in.%Q%
+	rm -f /usr/local/bin/killbackfresh
+	rm -f /usr/local/bin/kill%Q%master
+	rm -f /usr/local/bin/killpmds
+	rm -f /usr/local/bin/killrefresh
+	rm -f /usr/local/bin/killrmds
+	rm -f /usr/local/bin/launchbackfresh
+	rm -f /usr/local/bin/launchpmds
+	rm -f /usr/local/bin/launchrefresh
+	rm -f /usr/local/bin/launch%Q%master
+	rm -f /usr/local/bin/throtd
+	rm -f /usr/local/bin/%Q%backfresh
+	rm -f /usr/local/bin/%Q%configtool
+	rm -f /usr/local/bin/%Q%info
+	rm -f /usr/local/bin/%Q%killbackfresh
+	rm -f /usr/local/bin/%Q%killpmd
+	rm -f /usr/local/bin/%Q%killrmd
+	rm -f /usr/local/bin/%Q%killrefresh
+	rm -f /usr/local/bin/%Q%monitortool
+	rm -f /usr/local/bin/%Q%perftool
+	rm -f /usr/local/bin/%Q%pmd
+	rm -f /usr/local/bin/%Q%refresh
+	rm -f /usr/local/bin/%Q%rmdreco
+	rm -f /usr/local/bin/%Q%updatepmd
+	rm -f /usr/local/bin/%Q%debugcapture
+	rm -f /usr/local/bin/%Q%hostinfo
+	rm -f /usr/local/bin/%Q%init
+	rm -f /usr/local/bin/%Q%licinfo
+	rm -f /usr/local/bin/%Q%override
+	rm -f /usr/local/bin/%Q%start
+	rm -f /usr/local/bin/%Q%stop
+	rm -f /usr/local/bin/%Q%set
+        rm -f /usr/local/bin/%Q%usersguide > /dev/null 2>&1
+	rm -f /usr/local/bin/updatepmds
+    fi
+fi
+echo "Removing %PRODUCTNAME% device tree: /dev/%Q%"
+rm -rf /dev/%Q%/*
+rm -rf /dev/%Q%
+
+echo "Removing temporary files from /var/opt/%PKGNM%"
+/bin/sleep 5
+rm -f "/var/opt/%PKGNM%/*" > /dev/null 2>&1
+
+if [ "$BASEDIR" != "/opt" ]; then
+	rm -f /opt/$PKGINST
+fi
+
+echo "Removing %PRODUCTNAME% master daemon from $SERVICES"
+cp $SERVICES $SERVICES.%Q%
+egrep -v 'in\.%Q%' $SERVICES.%Q% > $SERVICES
+
+exit 0

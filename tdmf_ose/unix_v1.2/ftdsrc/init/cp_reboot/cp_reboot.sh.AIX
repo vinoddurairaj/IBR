@@ -1,0 +1,62 @@
+#!/bin/sh
+#  cp_boot.sh
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+#########################################################################
+#
+# This script will run a user defined cp_reboot_s###.sh script (if it exists)
+# when a boot occurs while any group is in checkpoint mode on the secondary.
+#
+#########################################################################
+
+cd /%OURCFGDIR%
+CFGFILES=s*.cfg
+PATH=$PATH:/bin
+if [ `uname -s` = "Linux" ];then
+ECHO="echo -e"
+else
+ECHO="echo "
+fi
+
+if [ ! -f $CFGFILES ]
+then
+    exit 0
+fi
+
+for FILE in $CFGFILES
+do
+    GRPNO=`expr $FILE : 's\([0-9][0-9][0-9]\)\.cfg'`
+    JRNDIR=`grep "JOURNAL:" $FILE | awk '{print $2}'` 
+    JRNDIRARRAY="${JRNDIRARRAY}$GRPNO $JRNDIR\n"
+done
+
+JRNDIRARRAY="${JRNDIRARRAY}x x"
+
+$ECHO $JRNDIRARRAY |
+while read LINE
+do
+    GRPNO=`echo $LINE | awk '{print $1}'`
+    JRN=`echo $LINE | awk '{print $2}'`
+    
+    if [ $GRPNO = x ]; then break;fi
+
+    cd $JRN
+    P_FILE=`echo j${GRPNO}.*.p`
+
+    if [ -f $P_FILE ]; then
+        CP_REBOOT=/%OURCFGDIR%/cp_reboot_s${GRPNO}.sh
+        if [ -x $CP_REBOOT ]; then
+            RET=`$CP_REBOOT`
+            echo $RET
+        fi
+    fi
+done

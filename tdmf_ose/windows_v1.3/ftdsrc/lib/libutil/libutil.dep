@@ -1,0 +1,40 @@
+# Microsoft Developer Studio Generated Dependency File, included by libutil.mak
+
+.\bitmap.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\bitmap.h"\
+	".\error.h"\
+	".\list.h"\
+	".\misc.h"\
+	
+
+.\diskkey.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\diskkey.h"\
+	".\error.h"\
+	
+
+.\disksize.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\misc.h"\
+	
+
+.\error.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\error.h"\
+	
+
+.\ntfsinfo.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\error.h"\
+	".\list.h"\
+	".\misc.h"\
+	".\ntfsinfo.h"\
+	
+
+.\volume.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\libftd\ftd_devlock.h"\
+	".\list.h"\
+	".\misc.h"\
+	

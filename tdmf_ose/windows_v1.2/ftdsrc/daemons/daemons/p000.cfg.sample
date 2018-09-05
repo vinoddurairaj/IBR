@@ -1,0 +1,37 @@
+#===============================================================
+#
+# Copyright (c) 1998 FullTime Software, Inc.  All Rights Reserved.
+#
+# RESTRICTED RIGHTS LEGEND: Use, duplication, or disclosure by the
+# Government is subject to restrictions as set forth in
+# subparagraph (c)(1)(ii) of the Rights in Technical Data and
+# Computer Software clause at DFARS 52.227-7013 and in similar
+# clauses in the FAR and NASA FAR Supplement.
+#
+#
+# Last Updated:  Wed Mar 25 08:48:57 MST 1998
+#===============================================================
+NOTES:  this sample configuration file is for logical group 000, primary (p000.cfg)
+#
+# Primary System Definition:
+#
+SYSTEM-TAG:          SYSTEM-A                  PRIMARY        
+  HOST:              india 
+#
+# Secondary System Definition:
+#
+SYSTEM-TAG:          SYSTEM-B                  SECONDARY      
+  HOST:              china 
+  JOURNAL:           /var/tmp/journal
+#
+# Device Definitions:
+#
+PROFILE:            1
+  REMARK:           This device corresponds to /usr/local/test/database 
+  PRIMARY:          SYSTEM-A
+  FULLTIME-DEVICE:    /dev/ftd/lg0/rdsk/ftd0
+  DATA-DISK:          /dev/rdsk/c0t0d0s1
+  SECONDARY:        SYSTEM-B
+  MIRROR-DISK:        /dev/rdsk/c0t0d0s0
+# -- End of ftd Configuration File:  p000.cfg
+

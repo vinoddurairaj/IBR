@@ -1,0 +1,7 @@
+/debug.lib////*////
+/libcnt.lib////*////
+/libcrt.lib////*////
+/libdos.lib////*////
+/libvxd.lib////*////
+/ntoskrnl.lib////*////
+/scsiport.lib////*////

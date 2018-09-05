@@ -1,0 +1,4 @@
+DIRS= \
+     Enable \
+     remove \
+     install

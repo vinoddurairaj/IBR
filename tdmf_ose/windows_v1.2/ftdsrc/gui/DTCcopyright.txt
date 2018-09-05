@@ -1,0 +1,112 @@
+Copyright 1999, Legato Systems, Inc. All rights reserved. Legato
+NetWorker is a registered trademark of Legato Systems, Inc. All other
+trademarks are the property of their respective owners.
+
+LICENSE AGREEMENT
+THIS PRODUCT CONTAINS CERTAIN COMPUTER PROGRAMS AND OTHER PROPRIETARY
+MATERIAL, THE USE OF WHICH IS SUBJECT TO THIS LICENSE AGREEMENT.  YOU
+ARE CONSENTING TO BE BOUND BY AND BECOME A PARTY TO THIS LICENSE
+AGREEMENT.  IF YOU DO NOT AGREE WITH ALL THE TERMS, YOU MUST RETURN
+THIS PRODUCT, ALL MANUALS AND DOCUMENTATION, AND PROOF OF PAYMENT, TO
+THE PLACE YOU OBTAINED THEM FOR A FULL REFUND WITHIN 30 DAYS OF FIRST
+ACQUIRING THIS PRODUCT. Your written approval is not a prerequisite to
+the validity or enforceability of this agreement and no solicitation
+of any such written approval by or on behalf of Legato shall be
+construed as an inference to the contrary.     
+
+LICENSE AND TERMS
+Legato and any applicable sublicensors grant to you a limited,
+personal, non-exclusive, non-transferable license to use the server
+software programs and related documentation in this package
+(collectively referred to as the "Software") on licensed client
+processing unit(s). Any attempted sublicense, assignment, rental, sale
+or other transfer of the Software or the rights or obligations of this
+Agreement without the prior written consent of Legato shall be
+void. This license granted herein will automatically terminate without
+notice to you if you fail to comply with its terms. This Agreement
+will be governed by the laws of the State of California as such laws
+apply to agreements between California residents entered into and to
+be performed within California. 
+
+The Software is copyrighted. You may make copies of the software
+programs only for backup and archival purposes. Unauthorized copying,
+reverse engineering (except to the extent applicable laws specifically
+prohibit such restriction), decompiling, dissassembling, and creating
+derivative works of the Software are prohibited. You may print and
+make copies of the documentation for your use and archive purposes
+only. Unauthorized printing, copying, and creating derivative works of
+the documentation are prohibited. Title to the Software is not
+transferred to you by this license. Ownership and title to the
+Software and to the actual contents of this package, including the
+copy of the Software and the media on which it is stored and the
+associated documentation are retained by Legato.     
+
+LIMITED WARRANTY:  LIMITATION OF LIABILITY
+Legato does not warrant that the Software will be free from error or
+will meet your specific requirements.  Legato disclaims all complete
+responsibility for decisions made or actions taken based on
+information obtained using the Software. Any statements made
+concerning the utility of the Software are not to be construed as
+unexpressed or implied warranties. 
+
+Subject to the conditions and limitations on liability stated herein,
+Legato warrants for a period of thirty (30) days from the delivery of
+the first copy of each type of SOFTWARE, as so delivered, will
+materially conform to Legato's then current documentation for such
+SOFTWARE. This warranty covers only problems reported to Legato during
+the warranty period. ANY LIABILITY OF LEGATO WITH RESPECT TO THE
+SOFTWARE OR THE PERFORMANCE THEREOF UNDER ANY WARRANTY, NEGLIGENCE,
+STRICT LIABILITY OR OTHER THEORY WILL BE LIMITED EXCLUSIVELY TO
+PRODUCT REPLACEMENT OR, IF REPLACEMENT IS INADEQUATE AS A REMEDY OR,
+IN LEGATO'S OPINION, IMPRACTICAL, TO REFUND OF THE LICENSE FEE. EXCEPT
+FOR THE FOREGOING, THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY
+OF ANY KIND INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF FITNESS OR
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. FURTHER, Legato
+DOES NOT WARRANT, GUARANTEE, OR MAKE ANY REPRESENTATIONS REGARDING THE
+USE, OR THE RESULTS OF THE USE OF THE SOFTWARE OR WRITTEN MATERIALS IN
+TERMS OF CORRECTNESS, ACCURACY, RELIABILITY, OR OTHERWISE.  THIS
+DISCLAIMER OF WARRANTY CONSTITUTES AN ESSENTIAL PART OF THIS LICENSE
+AGREEMENT, SOME STATES DO NOT ALLOW EXCLUSIONS OF AN IMPLIED WARRANTY,
+SO THIS DISCLAIMER MAY NOT APPLY TO YOU AND YOU MAY HAVE OTHER LEGAL
+RIGHTS THAT VARY FROM STATE TO STATE OR BY JURISDICTION.  The Licensee
+understands that Legato is not responsible for and will have no
+liability for hardware, software, or other items or any services
+provided by any persons other than Legato. Legato shall have no
+liability for delays or failures beyond its reasonable control. 
+
+LEGATO OR ANY SUBLICENSOR SHALL NOT BE RESPONSIBLE OR LIABLE WITH
+RESPECT TO ANY SUBJECT MATTER OF THIS LICENSE AGREEMENT UNDER ANY
+CONTRACT, NEGLIGENCE, STRICT LIABILITY OR OTHER LEGAL OR EQUITABLE
+THEORY: A) FOR LOSS OR INACCURACY OF DATA OR (EXCEPT FOR RETURN OF
+AMOUNTS PAID TO LEGATO THEREFORE), COST OF PROCUREMENT OF SUBSTITUTE
+GOODS, SERVICES OR TECHNOLOGY, B) FOR ANY INDIRECT, INCIDENTAL,
+SPECIAL OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED TO LOSS OF
+REVENUES AND LOSS OF PROFITS; OR C) FOR ANY MATTER BEYOND ITS
+REASONABLE CONTROL.     
+
+EXPORT CONTROLS.  You shall comply with the US Foreign Corrupt
+Practices Act and all applicable export laws, restrictions, and
+regulations of the United States or foreign agency or authority.  You
+will not export, or allow the export or re-export of the Software in
+violation of any such laws, restrictions or regulations.  You shall
+obtain and bear all expenses relating to any necessary licenses and/or
+exemptions with respect to the export from the US of the Software to
+any location so as to be in compliance with all applicable laws and
+regulations prior to delivery thereof by Licensor.
+
+MISCELLANEOUS.  This Agreement represents the complete agreement
+concerning this license between the parties and supersedes all prior
+agreements and representations between them.  It may be amended only
+by a writing executed by both parties.  If any provision of this
+Agreement is held to be unenforceable for any reason, such provision
+shall be reformed only to the extent necessary to make it enforceable.
+This Agreement shall be governed by and construed under California law
+as such law applies to agreements between California residents entered
+into and to be performed within California.
+
+U.S. GOVERNMENT RESTRICTED RIGHTS.  Use, duplication or disclosure by
+the Government is subject to restrictions set forth in subparagraphs
+(a) through (d) of the Commercial Computer-Restricted Rights clause at
+FAR 52.227-19 when applicable, or in subparagraph (c) (1) (ii) of the
+Rights in Technical Data and Computer Software clause in DFARS
+252.227-7013, and in similar clauses in the NASA FAR Supplement.

@@ -1,0 +1,25 @@
+# Microsoft Developer Studio Generated Dependency File, included by libcomp.mak
+
+.\comp.c : \
+	".\_huff.h"\
+	".\_lz.h"\
+	".\_lzhl.h"\
+	".\comp.h"\
+	".\lzhl.h"\
+	".\pred.h"\
+	
+
+.\lzhl.c : \
+	".\_huff.h"\
+	".\_lz.h"\
+	".\_lzhl.h"\
+	".\Hdec_g.tbl"\
+	".\Hdec_s.tbl"\
+	".\Hdisp.tbl"\
+	".\Henc.tbl"\
+	".\lzhl.h"\
+	
+
+.\pred.c : \
+	".\pred.h"\
+	

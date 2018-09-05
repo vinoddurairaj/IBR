@@ -1,0 +1,7 @@
+DIRS= \
+     toastmon \
+     coinstaller \
+     exe \
+     filter \
+     func \
+     bus

@@ -1,0 +1,19 @@
+# Microsoft Developer Studio Generated Dependency File, included by liblic.mak
+
+.\license.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\license.h"\
+	".\licplat.h"\
+	".\licprod.h"\
+	
+
+.\licplat.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	"..\libutil\misc.h"\
+	
+
+.\licprod.c : \
+	".\license.h"\
+	".\licplat.h"\
+	".\licprod.h"\
+	

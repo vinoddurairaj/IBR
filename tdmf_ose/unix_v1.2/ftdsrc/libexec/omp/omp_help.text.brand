@@ -1,0 +1,176 @@
+########################################################################
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+#
+# Offline Migration Package (OMP)   Version %VERSION%
+#
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2007%.  All Rights Reserved.
+#
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+#
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#  $Id: omp_help.text.brand,v 1.4 2008/12/28 10:12:16 naat0 Exp $
+#
+#  omp_help.text -- help file (English)
+#  
+########################################################################
+#
+# Usage convention
+#
+# []  Parameters or values are optional.
+# {}  One of the parameters or values enclosed within the braces are required
+# |   Separates parameters that cannot chosen together
+# ... Parameters or values preceding the ellipsis can be repeated
+# <>  Defines a value that needs to be replaced by user data. The value name
+#     will have its words capitalized.
+#
+########################################################################
+#
+# Help Topic format
+#
+#   #begin keyword
+#   text is laid out as it should be displayed to the user
+#   #end keyword
+#
+#   Blank lines and lines beginning with # are ignored outside of the
+#   the #begin and #end markers
+#
+########################################################################
+
+
+#begin omp_admin
+omp_admin subcommand [subcommand options]
+#end omp_admin
+
+
+#begin omp_selectctlr
+omp_selectctlr
+#end omp_selectctlr
+
+
+#begin omp_getscsidsk
+omp_getscsidsk
+#end omp_getscsidsk
+
+
+#begin omp_genconf
+omp_genconf [-y|-n] [-g] [-v] 
+#end omp_genconf
+
+
+#begin omp_help
+omp_help [topics]...
+#end omp_help
+
+
+#begin omp omp_cleanup
+omp_cleanup [-s] [-d] [-c]
+#end omp omp_cleanup
+
+
+#begin omp_monitor
+omp_monitor [-s] [-g] [-d] [-p] [-c <lines>] [-l <logfile>] [-i {0|<interval>}]
+#end omp_monitor
+
+
+#begin omp_setup
+omp_setup
+#end omp_setup
+
+
+#begin omp_sched
+omp_sched
+#end omp_sched
+
+
+#begin omp_verifysched
+omp_verifysched
+#end omp_verifysched
+
+
+#begin start
+omp_admin start [-f]
+#end start
+
+
+#begin stop
+omp_admin stop
+#end stop
+
+
+#begin enable
+omp_admin enable
+#end enable
+
+
+#begin disable
+omp_admin disable
+#end disable
+
+
+#begin activate
+omp_admin activate [<minutes>]
+#end activate
+
+
+#begin deactivate
+omp_admin deactivate
+#end deactivate
+
+
+#begin status
+omp_admin status
+#end status
+
+
+#begin version
+omp_admin version
+#end version
+
+
+#begin copycsv
+omp_admin copycsv [<source_directory>]
+#end copycsv
+
+
+#begin copymatchup
+omp_admin copymatchup [<source_directory>]
+#end copycsv
+
+
+#begin showsched
+omp_admin showsched {prepared|active} [-s] [-g] [-d]
+#end showsched
+
+
+#begin taillog
+omp_admin taillog [<tail command options>]
+#end taillog
+
+
+#begin recover
+omp_admin recover [schedule_groups]...
+#end recover
+
+
+#begin editsched
+omp_admin {editsched|visched}
+#end editsched
+
+
+#begin usage
+    omp_help [topics]...
+
+    Where topics can be 
+	omp_admin, omp_selectctlr,  omp_getscsidsk, omp_genconf,
+	omp_help,  omp_cleanup,     omp_monitor,    omp_setup.
+	omp_sched, omp_verifysched,
+
+	start,    stop,    enable,  disable,   activate,  deactivate
+	status,   version, copycsv, showsched, taillog,   recover
+	editsched
+#end usage

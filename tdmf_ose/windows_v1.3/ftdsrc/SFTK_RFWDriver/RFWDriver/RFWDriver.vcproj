@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="RFWDriver"
+	ProjectGUID="{8B8E2234-1324-4CBF-B6D1-53DC66BA4CF6}"
+	RootNamespace="RFWDriver"
+	SccProjectName=""
+	SccLocalPath=""
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug NT4|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 chk $(InputDir) /a"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 chk $(InputDir) /a"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 chk $(InputDir) /a"
+				Output="sftk_Block.sys"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a"/>
+		</Configuration>
+		<Configuration
+			Name="Release NT4|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 fre $(InputDir) /a"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 fre $(InputDir) /a"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -NT4 fre $(InputDir) /a"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="sftk_Bitmap.c">
+			</File>
+			<File
+				RelativePath="sftk_Dev.c">
+			</File>
+			<File
+				RelativePath="sftk_Device.c">
+			</File>
+			<File
+				RelativePath="sftk_driver.c">
+			</File>
+			<File
+				RelativePath="sftk_Ioctl.c">
+			</File>
+			<File
+				RelativePath="sftk_lg.c">
+			</File>
+			<File
+				RelativePath="sftk_MM.c">
+			</File>
+			<File
+				RelativePath="sftk_OS.c">
+			</File>
+			<File
+				RelativePath="sftk_pstore.c">
+			</File>
+			<File
+				RelativePath=".\sftk_Queue.c">
+			</File>
+			<File
+				RelativePath="sftk_Refresh.c">
+			</File>
+			<File
+				RelativePath=".\sftk_Registry.c">
+			</File>
+			<File
+				RelativePath="sftk_SM.c">
+			</File>
+			<File
+				RelativePath="sftk_Thread.c">
+			</File>
+			<File
+				RelativePath="sftk_WMI.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="ftdio.h">
+			</File>
+			<File
+				RelativePath=".\sftk_com.h">
+			</File>
+			<File
+				RelativePath=".\sftk_comProto.h">
+			</File>
+			<File
+				RelativePath="sftk_def.h">
+			</File>
+			<File
+				RelativePath="sftk_Macro.h">
+			</File>
+			<File
+				RelativePath="sftk_main.h">
+			</File>
+			<File
+				RelativePath="sftk_MM.h">
+			</File>
+			<File
+				RelativePath="sftk_NT.h">
+			</File>
+			<File
+				RelativePath="sftk_os.h">
+			</File>
+			<File
+				RelativePath="sftk_Proto.h">
+			</File>
+			<File
+				RelativePath="sftk_ps.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			<File
+				RelativePath=".\sftk_block.mc">
+			</File>
+			<File
+				RelativePath="sftk_block.rc">
+			</File>
+		</Filter>
+		<Filter
+			Name="Build Files"
+			Filter="">
+			<File
+				RelativePath="buildchk.log">
+			</File>
+			<File
+				RelativePath="CSym.bat">
+			</File>
+			<File
+				RelativePath="ddkbuild.bat">
+			</File>
+			<File
+				RelativePath="makefile">
+			</File>
+			<File
+				RelativePath="sbrList.txt">
+			</File>
+			<File
+				RelativePath=".\sftkBlk.inf">
+			</File>
+			<File
+				RelativePath=".\sftkBlk.ini">
+			</File>
+			<File
+				RelativePath="sources">
+			</File>
+		</Filter>
+		<Filter
+			Name="TDI"
+			Filter="">
+			<Filter
+				Name="TDI Source Files"
+				Filter="">
+				<File
+					RelativePath=".\sftk_comutil.c">
+				</File>
+				<File
+					RelativePath=".\sftk_tdiconnect.c">
+				</File>
+				<File
+					RelativePath=".\sftk_tdilisten.c">
+				</File>
+				<File
+					RelativePath=".\sftk_tdireceive.c">
+				</File>
+				<File
+					RelativePath=".\sftk_tdisend.c">
+				</File>
+				<File
+					RelativePath=".\Sftk_TdiTcpEx.c">
+				</File>
+				<File
+					RelativePath=".\Sftk_TdiUtil.c">
+				</File>
+			</Filter>
+			<Filter
+				Name="TDI Header Files"
+				Filter="">
+				<File
+					RelativePath=".\Tdi\ethertype.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Igmp.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\In.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\In_systm.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Inetinc.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Ip.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Ip_icmp.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Ip_mrout.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Sftk_TdiTcpEx.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Sftk_TdiUtil.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Smpletcp.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Tcp.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\TDIHApi.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\TDIQHelp.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Ttcpapi.h">
+				</File>
+				<File
+					RelativePath=".\Tdi\Udp.h">
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Protocol"
+			Filter="">
+			<Filter
+				Name="Protocol Source Files"
+				Filter="">
+				<File
+					RelativePath=".\sftk_comp.c">
+				</File>
+				<File
+					RelativePath=".\sftk_lzhl.c">
+				</File>
+				<File
+					RelativePath=".\sftk_md5c.c">
+				</File>
+				<File
+					RelativePath=".\sftk_md5const.c">
+				</File>
+				<File
+					RelativePath=".\sftk_pred.c">
+				</File>
+				<File
+					RelativePath=".\sftk_protocol.c">
+				</File>
+			</Filter>
+			<Filter
+				Name="Protocol Header Files"
+				Filter="">
+				<File
+					RelativePath=".\Hdec_g.tbl">
+				</File>
+				<File
+					RelativePath=".\Hdec_s.tbl">
+				</File>
+				<File
+					RelativePath=".\Hdisp.tbl">
+				</File>
+				<File
+					RelativePath=".\Henc.tbl">
+				</File>
+				<File
+					RelativePath=".\sftk__lzhl.h">
+				</File>
+				<File
+					RelativePath=".\sftk_comp.h">
+				</File>
+				<File
+					RelativePath=".\sftk_lz.h">
+				</File>
+				<File
+					RelativePath=".\sftk_lzhl.h">
+				</File>
+				<File
+					RelativePath=".\sftk_md5.h">
+				</File>
+				<File
+					RelativePath=".\sftk_md5const.h">
+				</File>
+				<File
+					RelativePath=".\sftk_pred.h">
+				</File>
+				<File
+					RelativePath=".\sftk_protocol.h">
+				</File>
+			</Filter>
+		</Filter>
+		<File
+			RelativePath=".\RFWDriver.bsc">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

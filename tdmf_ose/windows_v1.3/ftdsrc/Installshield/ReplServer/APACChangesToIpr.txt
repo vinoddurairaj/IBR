@@ -1,0 +1,13 @@
+[Project:Properties:Product]
+CompanyName:=Fujitsu Softek
+;URL:=
+;EmailAddress:=
+;Copyright:=
+;Summary:=
+Name:=TDMF OSE 
+;Version:=
+;ExeFile:=
+;Comments:=
+
+[ShellObj:Data]
+Folder4:=Folder2\TDMF OSE

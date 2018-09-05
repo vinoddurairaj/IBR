@@ -1,0 +1,43 @@
+NT Build tools:
+
+Installshield 6.1 , SP 1
+resource file %installshield%\Redistributable\Compressed Files\0009-English\Intel 32\_isres.dll, 
+dialog 12002 has been modified to say "License Key" instead of "Serial Number".
+
+Microsoft Visual C++ 6.0, SP 3
+
+A Legato product Build environment is set up by running build.reg and replication.reg in the root of the ftdsrc tree (then reboot).
+
+build.reg contains environmental variables that point to the ftdsrc source tree and the libraries to use
+
+replication.reg contains the "CL" environment varible that gives compiler a option filename (in this case it points to replication.cl).
+It also contain product specific names to be used in the build.
+
+replication.cl contains compiler options for the replication product.
+
+Hack:  The named product icons used need to be manually edited in the GUI's project settings and resource.h files for DTCConfigTool and MonitorTool.
+
+To Build load ftd.dsw workspace, clean, select the LogMsg project and build it (we need a header file it creates), pick release or debug and build all.
+
+
+Special instructions for NT4 Version build
+------------------------------------------
+
+- Define NTFOUR value for compilation. 
+(Modify the tdmf.cl file by adding /D NTFOUR="4.00")
+
+- Change the DKK librairies for NT4 DDK.
+
+- Modify (or copy) the NTDDK library dirs before compiling. 
+
+The directories must be same as WIN2K DDK.
+
+C:\NTDDK\LIB\i386\CHECKED ==> C:\NTDDK\LIBCHK\i386
+C:\NTDDK\LIB\i386\FREE    ==> C:\NTDDK\LIBFRE\i386
+
+Special instructions for PSTORE DRIVE Version build (before rel 1.3)
+--------------------------------------------------------------------
+- Define OLD_PSTORE value for compilation. 
+(Modify the tdmf.cl file by adding /D OLD_PSTORE="PARTITION")
+WARNING: NOT TESTED YET!!!
+

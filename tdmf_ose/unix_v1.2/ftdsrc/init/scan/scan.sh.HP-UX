@@ -1,0 +1,77 @@
+#!/sbin/sh
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+# This script does the minimum required to get the %PRODUCTNAME%
+# driver loaded and initialized.  It generally should be run in init mode S
+# (in /etc/rcS.d) AFTER all initialization routines for underlying disk
+# components (for example VxVM or Sun's Solstice) have had a chance to
+# become alive.
+#
+#
+# create the controller device, if not there
+#
+
+rval=0
+set_return() {
+        x=$?
+        if [ $x -ne 0 ]; then
+                echo "EXIT CODE: $x"
+                rval=1
+        fi
+}
+
+case "$1" in
+'start_msg')
+    echo "Start %COMPANYNAME2% %PRODUCTNAME% devices"
+    ;;
+'stop_msg')
+    echo "Stop %COMPANYNAME2% %PRODUCTNAME% devices"
+    ;;
+'start')
+    echo "Starting %COMPANYNAME2% %PRODUCTNAME% devices"
+
+    # Remove /dev/%Q% and recreate CTL device.
+    # This ensures that the the master control device node always match our dynamically assigned major number.
+    /sbin/rm -fr /dev/%Q%
+    /sbin/mkdir /dev/%Q%
+
+    if [ -f /sbin/lsdev ]
+    then
+        # HP-UX 11iv2 and 11iv2 have a statically linked lsdev within /sbin.
+        cmaj=`/sbin/lsdev -h -d %Q% | /sbin/awk '{print $1}'`
+        /sbin/mknod /dev/%Q%/ctl c $cmaj 0xffffff
+        set_return
+    else
+        # On HP-UX 11iv1, we need to rely on the statically linked mksf.
+        /sbin/mksf -d %Q% -m 0xffffff -r /dev/%Q%/ctl
+        set_return
+    fi
+
+    if [ $rval -eq 0 ]; then
+        /sbin/chmod 644 /dev/%Q%/ctl
+        /sbin/chown bin:bin /dev/%Q%/ctl
+
+        /sbin/%Q%start -ba
+        set_return
+    fi
+    ;;
+'stop')
+    echo "Stopping %COMPANYNAME2% %PRODUCTNAME% devices"
+    /sbin/%Q%stop -sa
+    set_return
+    ;;
+*)
+    echo "Usage: $0 { start | stop }"
+    ;;
+esac
+
+exit $rval

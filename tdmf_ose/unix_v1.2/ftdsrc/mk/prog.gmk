@@ -1,0 +1,224 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved
+#
+# Include this last after you've made your definitions in your makefile.
+#
+# $Id: prog.gmk,v 1.16 2009/02/13 07:17:33 naat0 Exp $
+#
+#
+include ${TOP}/mk/vars.gmk
+
+_MAKE_SUBDIRS=	\
+	@for i in ${SUBDIRS} x; do \
+		if [ $$i != x ]; then \
+			echo Making $@ in $$i; \
+			(cd $$i ; $(MAKE) VERSION=$(VERSION) BUILDNUM=$(BUILDNUM)$@); \
+		fi; \
+	done
+
+ifdef PROGRAM
+all::	${Q}$(PROGRAM)
+endif
+ifdef SH_PROGRAM
+all::	${SH_PROGRAM}
+endif
+ifdef PLAT_SH_PROGRAM
+all::	${PLAT_SH_PROGRAM}
+endif
+ifdef BIN_PROGRAM
+all::	${BIN_PROGRAM}
+endif
+ifdef PROGRAMS
+all::	${PROGRAMS}
+endif
+
+clean:	_FORCE
+	@if [ x"${CLEANS}" != x ] ; then \
+		$(RM) ${CLEANS}; \
+	fi
+
+install:: _FORCE
+	@mkdir -p ${BINDIR} ${LIBDIR} ${ETCDIR} ${MANDIR} ${TCLDIR} \
+		${SAMPLEDIR} ${PKGUSRSBINDIR} ${INITDIR} ${PKGDIR} \
+		${CONFIGDIR}  ${HACMPDIR} \
+		$(OMPBINDIR) $(OMPDOCSDIR) $(OMPPROFILEDIR) \
+		${HTMLDIR} ${HTMLIMGDIR} ${PDFDIR} ${LIBEXECDIR}; \
+	for i in ${BIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+		${INSTALL} $$i ${BINDIR}; \
+		fi; \
+	done ; \
+	for i in ${LIBEXEC_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} $$i ${LIBEXECDIR}; \
+		fi; \
+	done ; \
+	for i in ${HACMP_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} $$i ${HACMPDIR}; \
+		fi; \
+	done ; \
+	for i in ${OMPBIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} $$i ${OMPBINDIR}; \
+		fi; \
+	done ; \
+	for i in ${OMPDOCS_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 666 $$i ${OMPDOCSDIR}; \
+		fi; \
+	done ; \
+	for i in ${OMPPROFILE_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} $$i ${OMPPROFILEDIR}; \
+		fi; \
+	done ; \
+	for i in ${HTML_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${HTMLDIR}; \
+		fi; \
+	done ; \
+	for i in ${IMG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${IMGDIR}; \
+		fi; \
+	done ; \
+        for i in ${IMG_INSTALL} x; do \
+                if [ $$i != x ]; then \
+                        ${INSTALL} -m 444 $$i ${IMGDIR}; \
+                fi; \
+        done ; \
+        for i in ${PDF_INSTALL} x; do \
+                if [ $$i != x ]; then \
+                        ${INSTALL} -m 444 $$i ${PDFDIR}; \
+                fi; \
+        done ; \
+        for i in ${HTMLIMG_INSTALL} x; do \
+                if [ $$i != x ]; then \
+                        ${INSTALL} -m 444 $$i ${HTMLIMGDIR}; \
+                fi; \
+        done ; \
+	for i in ${PS_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PSDIR}; \
+		fi; \
+	done ; \
+	for i in ${TOP_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${TOPDIR}; \
+		fi; \
+	done ; \
+	for i in ${USRSBIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PKGUSRSBINDIR}; \
+		fi; \
+	done ; \
+	for i in ${SBIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${SBINDIR}; \
+		fi; \
+	done ; \
+	for i in ${INIT_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${INITDIR}; \
+		fi; \
+	done ; \
+	for i in ${CONFIG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${CONFIGDIR}; \
+		fi; \
+	done ; \
+	for i in ${ETC_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${ETCDIR}; \
+		fi; \
+	done ; \
+	for i in ${PKG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PKGDIR}; \
+		fi; \
+	done ; \
+	for i in ${LIB_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${LIBDIR}; \
+		fi; \
+	done ; \
+	for i in ${MAN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${MANDIR}; \
+		fi; \
+	done ; \
+	for i in ${TCL_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${TCLDIR}; \
+		fi; \
+	done ; \
+	for i in ${SAMPLE_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${SAMPLEDIR}; \
+		fi; \
+	done ;
+
+ifndef DEPLIBS
+DEPLIBS:= $(shell echo " ${LIBS} " | sed -e 's/ -l[^ ]*//g')
+endif
+ifdef PROGRAM
+${Q}${PROGRAM}: ${V} ${OBJS} ${DEPLIBS}
+	${CC} ${CFLAGS} -o ${Q}${PROGRAM} ${OBJS} ${V} ${LINKOPTS} ${LIBS}
+endif
+
+ifneq (${SH_PROGRAM}${PLAT_SH_PROGRAM},)
+indices=$(shell (( i= 0 )); while (( i < $(words ${${1}}) )); do (( i += 1 )); l="$${l} $$i"; done; echo  $${l})
+
+define pkgify_rule
+${1}: PKGIFY_MODE?=+x
+${1}: ${2}
+	$${PKGIFY}
+	@chmod $${PKGIFY_MODE} $$@
+
+endef
+# The blank line above the endef is a required to work around an expected bug bug in gmake 3.80 and 3.81
+
+define pkgify_template 
+$(foreach idx,$(call indices,${1}), $(call pkgify_rule,$(word ${idx},${$(1)}),$(word ${idx},${${2}})))
+endef
+endif
+
+ifdef SH_PROGRAM
+ifneq ($(words ${SH_PROGRAM}),$(words ${SHSRC}))
+$(error Lists SH_PROGRAM [$(words ${SH_PROGRAM})] and SHSRC [$(words ${SHSRC})] do not have equal number of elements)
+endif
+endif
+# gmake 3.80 did not function correctly with $eval inside ifdef SH_PROGRAM
+# gmake 3.81 works correctly though
+$(if ${SH_PROGRAM},$(eval $(call pkgify_template,SH_PROGRAM,SHSRC)))
+
+ifdef PLAT_SH_PROGRAM
+ifneq ($(words ${PLAT_SH_PROGRAM}),$(words ${PLATSHSRC}))
+$(error Lists PLAT_SH_PROGRAM $(words [${PLAT_SH_PROGRAM})] and PLATSHSRC [$(words ${PLATSHSRC})] do not have equal number of elements)
+endif
+endif
+# gmake 3.80 did not function correctly with $eval inside ifdef PLAT_SH_PROGRAM
+# gmake 3.81 works correctly though
+$(if ${PLAT_SH_PROGRAM},$(eval $(call pkgify_template,PLAT_SH_PROGRAM,PLATSHSRC)))
+
+ifdef BIN_PROGRAM
+${BIN_PROGRAM}: ${BIN_PROGRAM}.${SYSTYPE}.${HWTYPE}
+	@cp -p $? $@
+endif
+
+CLEANS += cscope.out
+
+cscope.out: $(SRC)
+	$(CSCOPE) -b $(CINCLUDES) -f $@ $(SRC)
+
+${V}:
+	@$(MAKE) -C $(TOP) COPTFLAGS="$(COPTFLAGS)" version.o
+
+.c.o:
+	${CC} ${CFLAGS} -c $<
+
+_FORCE:
+
+include ${TOP}/mk/debug.gmk
+include ${TOP}/mk/depend.gmk

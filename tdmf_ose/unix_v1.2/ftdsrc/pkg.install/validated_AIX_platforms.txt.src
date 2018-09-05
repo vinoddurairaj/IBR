@@ -1,0 +1,21 @@
+########################################################################
+#
+#  validated_AIX_platforms.txt
+#
+#  %PRODUCTNAME% v%VERSION%
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# Softek TDMF for UNIX*
+# (c) Copyright IBM Corp.  2003, 2011.  All Rights Reserved.
+# The source code for this program is not published or otherwise divested of
+# its trade secrets, irrespective of what has been deposited with the U.S.
+# Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or disclosure
+# restricted by GSA ADP Schedule Contract with IBM Corp.
+#
+#
+########################################################################
+5.3
+6.1
+7.1
+7.2

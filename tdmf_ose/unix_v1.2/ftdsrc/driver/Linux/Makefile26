@@ -1,0 +1,351 @@
+#
+# $Header: /cvs2/sunnyvale/tdmf_ose/unix_v1.2/ftdsrc/driver/Linux/Makefile26,v 1.62 2018/03/29 21:44:34 paulclou Exp $
+#
+SHELL := /bin/sh
+TOP := ../..
+export PREDIR ?= $(shell pwd)
+EXTRA_CLEANS=$(Q).conf *.symvers
+include $(PREDIR)/$(TOP)/mk/Makefile.inc
+
+ifeq "$(origin VERSION)" "undefined"
+	VERSION := DEV
+endif
+
+VERSION_OBJ:=   ../../version.o
+ALL_OBJS :=     ../ftd_all.o \
+                ../ftd_bab.o \
+                ../ftd_bits.o \
+                ../ftd_buf.o \
+                ../ftd_ddi.o \
+                ../ftd_ioctl.o \
+                ../ftd_klog.o \
+                ../ftd_linux.o \
+                ../ftd_linux_proc_fs.o \
+                ../ftd_pending_ios_monitoring.o \
+                ../ftd_dynamic_activation.o \
+                ../ftd_dynamic_activation_linux.o \
+                ../ftd_hash_table.o \
+                ../memset.o \
+                $(VERSION_OBJ)
+
+obj-m := $(MODULENAME).o
+$(MODULENAME)-objs := $(ALL_OBJS)
+DEBUG_OBJS = none
+
+# Here are the mappings between the RedHat Enterprise releases and their associated kernel versions:
+# The complete mappings should also be present here: http://kbase.redhat.com/faq/FAQ_41_5859.shtm
+
+# RH 4  : 2.6.9-5
+# RH 4.1: 2.6.9-11
+# RH 4.2: 2.6.9-22
+# RH 4.3: 2.6.9-34
+# RH 4.4: 2.6.9-42
+# RH 4.5: 2.6.9-55
+# RH 4.6: 2.6.9-67
+# RH 4.7: 2.6.9-78
+# RH 4.8: 2.6.9-89
+
+# RH 5  : 2.6.18-8
+# RH 5.1: 2.6.18-53
+# RH 5.2: 2.6.18-92
+# RH 5.3: 2.6.18-128
+# RH 5.4: 2.6.18-164
+# RH 5.5: 2.6.18-194
+
+# RH 6  : 2.6.32-71
+# RH 6.4: 2.6.32-358
+
+# RH 7  : 3.7.0-0.36 (alpha3 release June 2013)
+
+# Definition of drivers built for Red Hat 4
+
+i686_include += 2.6.9-5.EL 2.6.9-5.ELsmp
+i686_exclude += 2.6.9-5.ELhugemem
+
+x86_64_include += 2.6.9-5.EL  2.6.9-5.ELsmp
+# We never compiled ElxenU drivers for kernels 2.6.9 - 2.6.9-42, 
+# so I assume the support for it was probably added in RH4 update 5.
+x86_64_exclude += 2.6.9-55.ELxenU
+
+# Definition of drivers built for Red Hat 5
+
+s390x_include += 2.6.18-8.1.3.el5
+s390x_exclude +=
+
+ia64_include +=
+ia64_exclude += 2.6.18-8.el5 2.6.18-8.el5xen
+
+i686_include += 2.6.18-8.el5 2.6.18-8.el5PAE
+i686_exclude += 2.6.18-8.el5xen
+
+x86_64_include += 2.6.18-8.el5
+x86_64_exclude += 2.6.18-8.el5xen
+
+# Definition of drivers built for Red Hat 6
+
+i686_include += 2.6.32-71.el6
+i686_exclude += 
+
+x86_64_include += 2.6.32-71.el6
+x86_64_exclude += 
+
+# Definition of drivers built for Red Hat 7: NOTE that 3.7.0-0.36.el7 is an Alpha kernel version as of June 2013,
+# 3.10.0-54.0.1.el7 is the Beta release of RHEL 7, and 3.10.0-123.el7 is the GA release.
+
+# i686_include += We don't have the kernel sources for i686
+# i686_exclude += 
+
+x86_64_include += 3.7.0-0.36.el7 \
+		      3.10.0-54.0.1.el7 \
+              3.10.0-123.el7
+x86_64_exclude += 
+
+# SuSE 10    2.6.16.21
+# SuSE 10.1  2.6.16.46
+# SuSE 10.2  2.6.16.60-0.21
+# SuSE 10.3  2.6.16.60-0.54.5
+# SuSE 10.4  2.6.16.60-0.85.1
+# SuSE 11    2.6.27.19-5
+# SuSE 11.1  2.6.32.12-0.7
+# SuSE 11.2  3.0.13-0.27
+# SuSE 11.3  3.0.70-0.9 (note: as of May 31, this is the beta release used for first testing, no longer used)
+# SuSE 11.3  3.0.76-0.11 (note: this is the final SuSE 11.3 release)
+
+# Definition of drivers built forSuSE 10
+
+s390x_include += 2.6.16.21-0.8-default \
+		     2.6.16.46-0.12-default \
+		     2.6.16.60-0.21-default
+s390x_exclude +=
+
+ia64_include +=
+ia64_exclude += 2.6.16.21-0.8-default \
+		     2.6.16.46-0.12-default \
+		     2.6.16.60-0.21-default \
+		     2.6.16.60-0.54.5-default
+
+i686_include += 2.6.16.21-0.8-default \
+		     2.6.16.21-0.8-smp \
+		     2.6.16.21-0.8-bigsmp \
+		     2.6.16.46-0.12-default \
+		     2.6.16.46-0.12-smp \
+		     2.6.16.46-0.12-bigsmp \
+		     2.6.16.60-0.21-default \
+		     2.6.16.60-0.21-smp \
+		     2.6.16.60-0.21-bigsmp \
+		     2.6.16.60-0.54.5-default \
+		     2.6.16.60-0.54.5-smp \
+		     2.6.16.60-0.54.5-bigsmp \
+             2.6.16.60-0.85.1-default \
+             2.6.16.60-0.85.1-smp \
+             2.6.16.60-0.85.1-bigsmp
+i686_exclude += 2.6.16.21-0.8-xen \
+		     2.6.16.21-0.8-xenpae \
+		     2.6.16.46-0.12-xen \
+		     2.6.16.46-0.12-xenpae \
+		     2.6.16.60-0.21-vmi \
+		     2.6.16.60-0.21-vmipae \
+		     2.6.16.60-0.21-xen \
+		     2.6.16.60-0.21-xenpae \
+		     2.6.16.60-0.54.5-vmi \
+		     2.6.16.60-0.54.5-vmipae \
+		     2.6.16.60-0.54.5-xen \
+		     2.6.16.60-0.54.5-xenpae \
+             2.6.16.60-0.85.1-vmi \
+             2.6.16.60-0.85.1-vmipae \
+             2.6.16.60-0.85.1-xen \
+             2.6.16.60-0.85.1-xenpae
+
+x86_64_include += 2.6.16.21-0.8-default \
+		     2.6.16.21-0.8-smp \
+		     2.6.16.46-0.12-default \
+		     2.6.16.46-0.12-smp \
+		     2.6.16.60-0.21-default \
+		     2.6.16.60-0.21-smp \
+		     2.6.16.60-0.54.5-default \
+		     2.6.16.60-0.54.5-smp \
+             2.6.16.60-0.85.1-default \
+             2.6.16.60-0.85.1-smp
+x86_64_exclude += 2.6.16.21-0.8-xen \
+		     2.6.16.46-0.12-xen \
+		     2.6.16.60-0.21-xen \
+		     2.6.16.60-0.54.5-xen \
+             2.6.16.60-0.85.1-xen
+
+# Definition of drivers built for SuSE 11
+
+ia64_include +=
+ia64_exclude += 2.6.27.19-5-default \
+                     2.6.32.12-0.7-default 2.6.32.12-0.7-trace
+
+i686_include += 2.6.27.19-5-default 2.6.27.19-5-pae \
+                     2.6.32.12-0.7-default 2.6.32.12-0.7-pae 3.0.13-0.27-default 3.0.13-0.27-pae 3.0.76-0.11-default 3.0.76-0.11-pae 3.0.101-63-default 3.0.101-63-pae
+i686_exclude += 2.6.32.12-0.7-xen 3.0.13-0.27-xen 3.0.13-0.27-trace 3.0.76-0.11-xen 3.0.76-0.11-trace 3.0.101-63-xen 3.0.101-63-trace # 2.6.32.12-0.7-trace : The trace configuration doesn't build, so we skip ip.
+
+x86_64_include += 2.6.27.19-5-default \
+                     2.6.32.12-0.7-default 3.0.13-0.27-default 3.0.76-0.11-default 3.0.101-0.31-default 3.0.101-63-default
+x86_64_exclude += 2.6.32.12-0.7-xen 2.6.32.12-0.7-trace 3.0.13-0.27-xen 3.0.13-0.27-trace 3.0.76-0.11-xen 3.0.76-0.11-trace 3.0.101-63-xen 3.0.101-63-trace
+
+# Definition of drivers built for SuSE 12
+
+x86_64_include += 3.12.28-4-default 3.12.49-11-default
+x86_64_exclude += 3.12.28-4-xen 3.12.49-11-xen
+
+
+
+TARGET_PREFIX:= linux-
+TARGET_ISA    = $(HOST_PROCESSOR)
+TARGET_CLASS  = $($(HOST_ISA)_CLASS)
+INCLUDED_VERSIONS = $($(TARGET_ISA)_include)
+EXCLUDED_VERSIONS = $($(TARGET_ISA)_exclude)
+VERSIONS      = $(INCLUDED_VERSIONS) $(EXCLUDED_VERSIONS)
+
+CC            = $(shell which gcc)
+TMP 	     := $(shell echo /tmp/$$$$cscope)
+
+# The s390x build machines do not have NFS access to /srcpool, but hold a copy of it within /work/srcpool/.
+# The KBLDROOT variable will hold whatever kernel build root is suitable to the environment.
+KBLDROOT      = $(word 1,$(wildcard /work/srcpool/tdmf/ /srcpool/tdmf))
+
+ifdef DEBUG
+CDEFINES   = $(KDEFINES) -DMODULE -DMODVERSION $(KDEBUG) -UFTD_DEBUG
+else
+CDEFINES   = $(KDEFINES) -DMODULE -DMODVERSION
+endif
+
+# The makefiles defines LINUX_VERSION_CODE for the need of the user space based on the kernel version of the build machine.
+# This doesn't generate any complaints when the version of the build machine and target kernel are the same, but won't
+# work otherwise.  Since this shouldn't be defined anyways for kernel builds, we undefine it.
+# @todo Remove all usage of the user space LINUX_VERSION_CODE
+CDEFINES += -ULINUX_VERSION_CODE 
+
+# Todo: revise and clean up all these optimization flags.
+# CFLAGS+= $(KCSTRICT) $(CDEFINES) $(KCFLAGS) -Os -fomit-frame-pointer -Wdeclaration-after-statement -pipe -fno-unit-at-a-time 
+CFLAGS+= $(KCSTRICT) $(CDEFINES) $(KCFLAGS) -Os -pipe -fno-unit-at-a-time
+COPTFLAGS  = $(KCFLAGS)
+
+ifeq (m64,$(TARGET_CLASS))
+CFLAGS+=  -fno-reorder-blocks -Wno-sign-compare 
+
+ifeq (x86_64,$(HOST_ISA))
+CFLAGS+= -mno-red-zone 
+endif
+
+else
+CFLAGS+= -nostdinc -iwithprefix include -Iinclude -msoft-float -mpreferred-stack-boundary=2  -fno-builtin-sprintf -fno-builtin-log2 -fno-builtin-puts -mregparm=3 -Iinclude/asm/mach-default
+endif
+
+# Use EXTRA_CFLAGS as defined for the 2.6 builds 
+# SuSE 11 complains about using CFLAGS
+# SuSE 11 defines a Q macro so undefine Q for kernel file builds
+
+EXTRA_CFLAGS:=${CFLAGS}
+CFLAGS=
+export EXTRA_CFLAGS
+$(warn mymake ${EXTRA_CFLAGS})
+
+clean:: clean-target clean_objs
+clean-final:
+	@$(RM) -r $(MODULES:%=$(TARGET_PREFIX)%)
+
+%-target : ISALIST      = $($(TARGET_CLASS)_ISALIST)
+%-target : _MODULES     = $(shell for isa in $(ISALIST) ; do \
+				for version in $(VERSIONS) ; do \
+				echo "$${version}.$${isa}" ; \
+				done ; \
+				done )
+%-target :
+	@$(MAKE) DEBUG_OBJS="$(DEBUG_OBJS)" MODULES="$(_MODULES)" $(*)-final
+
+%-tget : ISALIST      = $($(TARGET_CLASS)_ISALIST)
+%-tget : _MODULES     = $(shell for isa in $(ISALIST) ; do \
+			for version in $(VERSIONS) ; do \
+			echo "$(TARGET_PREFIX)$${version}.$${isa}" ; \
+			done ; \
+			done )
+%-tget : BLDVERS = $(shell for version in $(VERSIONS) ; do \
+			echo "$${version}" ; \
+			done )
+
+# Now that we build drivers across distributions and that kernel sources are organized by distribution under /srcpool
+# We must use a trial and error approach to find out wher the sources for a given kernel is.
+# We start by assuming a SuSE kernel (which requires more drivers built) and switch to a Red Hat one if required.
+# That is what the LINUX_DIST_KERNEL_SOURCES is used for.
+%-tget :
+	for blds in $(BLDVERS) ; do \
+	echo Building driver of "$${blds}" ; \
+	blddir="$(TARGET_PREFIX)$${blds}.$(TARGET_ISA)" ; \
+	[ ! -d $${blddir} ] && /bin/mkdir $${blddir} ; \
+	moddir=$(shell pwd) ; \
+	${RM} -rf $(ALL_OBJS) $(MODULENAME).* .tmp* .$(MODULENAME).* ../../.*.cmd ../.*.cmd Module.markers; \
+    LINUX_DIST_KERNEL_SOURCES=$(KBLDROOT)/suse/bldenv/$(TARGET_ISA)/lib/modules/$${blds}/build ;\
+    [ -d $$LINUX_DIST_KERNEL_SOURCES ] || LINUX_DIST_KERNEL_SOURCES=$(KBLDROOT)/redhat/bldenv/$(TARGET_ISA)/lib/modules/$${blds}/build ;\
+    # Drivers built for RH 4 (kernel 2.6.9) need to be built using gcc 3.4 \
+    if echo $${blds} | fgrep 2.6.9  2>&1 > /dev/null; then cc=gcc34; else cc=gcc; fi ;\
+    # Drivers built for RH 7 Alpha (kernel 3.7.0) need to be built using gcc 4.7 \
+    if echo $${blds} | fgrep 3.7.0  2>&1 > /dev/null; then cc=gcc473; fi ;\
+    # Drivers built for RH 7 Beta and GA (kernel 3.10.0) are built using gcc 4.9.1 \
+    if echo $${blds} | fgrep 3.10.0  2>&1 > /dev/null; then cc=gcc491; fi ;\
+    # Drivers built for SuSE 12.0 (kernel 3.12.28) are built using gcc 4.9.1 \
+    if echo $${blds} | fgrep 3.12.28  2>&1 > /dev/null; then cc=gcc491; fi ;\
+    # Drivers built for SuSE 12.1 (kernel 3.12.49) are built using gcc 4.9.1 \
+    if echo $${blds} | fgrep 3.12.49  2>&1 > /dev/null; then cc=gcc491; fi ;\
+    $(MAKE) CC=$${cc} -C $$LINUX_DIST_KERNEL_SOURCES Q="" M=$${moddir} modules ; \
+ 	/bin/cp $(MODULENAME).ko $(TARGET_PREFIX)$${blds}.$(TARGET_ISA) ; \
+	done
+
+all :: drivers
+
+drivers : drivers-tget
+
+list_modules:: list_modules-target
+list_modules-final: $(MODULES:%=%/$(MODULENAME).ko-list)
+
+list_excluded_modules::
+	@for isa in $($(TARGET_CLASS)_ISALIST) ; do \
+		for version in $(EXCLUDED_VERSIONS) ; do \
+			echo "${TARGET_PREFIX}$${version}.$${isa}/${MODULENAME}.ko" ; \
+		done ; \
+	done
+
+list_included_modules::
+	@for isa in $($(TARGET_CLASS)_ISALIST) ; do \
+		for version in $(INCLUDED_VERSIONS) ; do \
+			echo "${TARGET_PREFIX}$${version}.$${isa}/${MODULENAME}.ko" ; \
+		done ; \
+	done
+
+$(TMP): $(ALL_OBJS:%.o=%.cscope)
+cscope.out: $(TMP)
+	$(CSCOPE) -b -I../ -I $(KBLDROOT)/$(DISTRIBUTION)/bldenv/$(TARGET_ISA)/include $(shell cat $(TMP))
+	@$(RM) $(TMP)
+
+#local_install: local_driver $(HOST_KERNEL)-install
+
+%-list:
+	@echo $(TARGET_PREFIX)$(*)
+
+$(DEBUG_OBJS): EXTRA_KDEFINES=-D_DEBUG
+
+%.cscope: %.c
+	@echo $< >> $(TMP)
+
+INSTALLDIRS = etc/init.d etc/rc3.d etc/${OEM}${Q}/driver
+INSDIRS = $(INSTALLDIRS:%=$(DESTDIR)/%)
+$(INSDIRS):
+	$(MKDIR) -p $@
+
+install-final: $(MODULES:%=$(TARGET_PREFIX)%/$(MODULENAME).ko-install)
+
+%-install:
+	$(INSTALL) -D $(*) ${DESTDIR}/etc/opt/${OEM}${Q}/driver/$(*)
+
+install:: $(INSDIRS) $(Q).conf install-target
+	@${INSTALL} -m 444 ${Q}.conf ${DESTDIR}/etc/opt/${OEM}${Q}/driver
+	@${INSTALL} -m 444 ${Q}.conf ${SAMPLEDIR}
+
+${Q}.conf: ../driver.conf
+	$(PKGIFY)
+
+clean_objs:
+	@$(RM) -r $(ALL_OBJS) $(MODULENAME).* .tmp* .$(MODULENAME).* ../../.*.cmd ../.*.cmd Module.markers

@@ -1,0 +1,124 @@
+<XML>
+<HTMLHelpCollection>
+<masterchm value="=p_d_ddkint"/>
+<masterlangid value=1033/>
+<samplelocation value=""/>
+<collectionnum value=10003/>
+<refcount value=0/>
+<version value=0/>
+<findmergedchms value=0/>
+<Folders>
+<Folder>
+	<TitleString value="Windows 2000 DDK"/>
+	<FolderOrder value=0/>
+	<Folder>
+		<TitleString value="=p_d_ddkint"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_dwguid"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_setup"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_kernel"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_stream"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_grafx"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_net"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_d_vdos"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="Supplemental Documents"/>
+		<FolderOrder value=0/>
+		<Folder>
+			<TitleString value="=p_d_supp"/>
+			<FolderOrder value=0/>
+			<LangId value=1033/>
+		</Folder>
+	</Folder>
+	<Folder>
+		<TitleString value="Debugger Documents"/>
+		<FolderOrder value=0/>
+		<Folder>
+			<TitleString value="=p_ddkdbg"/>
+			<FolderOrder value=0/>
+			<LangId value=1033/>
+		</Folder>
+	</Folder>
+</Folder>
+<Folder>
+	<TitleString value="Millennium DDK"/>
+	<FolderOrder value=0/>
+	<Folder>
+		<TitleString value="=p_w98gs"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_win98ddk"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_dxddk"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_other"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_scddk"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_iosguide"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_dbgtools"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_infguide"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+	<Folder>
+		<TitleString value="=p_usb"/>
+		<FolderOrder value=0/>
+		<LangId value=1033/>
+	</Folder>
+</Folder>
+</Folders>
+</HTMLHelpCollection>
+</XML>

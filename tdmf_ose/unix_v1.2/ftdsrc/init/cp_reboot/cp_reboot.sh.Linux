@@ -1,0 +1,119 @@
+#!/bin/sh
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#########################################################################
+#
+# This script will run a user defined cp_reboot_s###.sh script (if it exists)
+# when a boot occurs while any group is in checkpoint mode on the secondary.
+#
+#########################################################################
+# %PKGNM%-chkpt_boot Startup Script
+
+# chkconfig: 2345 24 87
+# description: %PKGNM% chkpt Boot Startup Script (for reboot with checkpoint)
+
+# /etc/init.d/%PKGNM%-chkpt_boot
+
+### BEGIN INIT INFO
+# Provides:       %PKGNM%-chkpt_boot
+# Required-Start: $network $syslog
+# Should-Start: $portmap 
+# Required-Stop:
+# Should-Stop:  $network $syslog
+%ifdistribution == redhat
+# Default-Start:  2 3 4 5
+%endif
+%ifdistribution == suse
+# Default-Start:  2 3 5
+%endif
+# Default-Stop:
+# Description:    %COMPANYNAME2% %PRODUCTNAME2% chkpt_boot Startup Script
+### END INIT INFO
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin:$PATH"
+export PATH
+
+case "$1" in
+    'start')
+       echo "Start %COMPANYNAME2% %PRODUCTNAME% checkpoint boot"
+
+    # Check if SFTKdtc services are disabled
+    if [ -e /etc/opt/SFTKdtc/SFTKdtc_services_disabled ]
+	then
+        /bin/echo "Not doing the %COMPANYNAME2% %PRODUCTNAME% checkpoint boot because SFTKdtc services are disabled"
+        /bin/echo "    (presence of file /etc/opt/SFTKdtc/SFTKdtc_services_disabled has been detected)."
+        exit 0
+	fi
+
+	cd /%OURCFGDIR%
+	CFGFILES=s*.cfg
+	if [ `uname -s` = "Linux" ];then
+	    ECHO="echo -e"
+	else
+	    ECHO="echo "
+	fi
+
+	a=./[s]???.cfg
+	if [ `echo $a | wc -w` == 1 ]; then
+	    if [ ! -f $a ];then
+		exit 0
+	    fi
+	fi
+
+	for FILE in $CFGFILES
+	do
+	    GRPNO=`expr $FILE : 's\([0-9][0-9][0-9]\)\.cfg'`
+	    JRNDIR=`grep "JOURNAL:" $FILE | awk '{print $2}'` 
+	    JRNDIRARRAY="${JRNDIRARRAY}$GRPNO $JRNDIR\n"
+	done
+
+	JRNDIRARRAY="${JRNDIRARRAY}x x"
+
+	$ECHO $JRNDIRARRAY |
+	while read LINE
+	do
+	    GRPNO=`echo $LINE | awk '{print $1}'`
+	    JRN=`echo $LINE | awk '{print $2}'`
+	    
+	    if [ $GRPNO = x ]; then break;fi
+
+	    cd $JRN
+	    P_FILE=`echo j${GRPNO}.*.p`
+
+	    if [ -f $P_FILE ]; then
+		CP_REBOOT=/%OURCFGDIR%/cp_reboot_s${GRPNO}.sh
+		if [ -x $CP_REBOOT ]; then
+		    RET=`$CP_REBOOT`
+		    echo $?
+		fi
+	    fi
+	done
+%ifdistribution == redhat
+	if [ -d /var/lock/subsys ] ; then
+	    touch /var/lock/subsys/%PKGNM%-chkpt_boot
+	fi
+%endif
+	;;
+    'stop')
+	#something maybe added later for do nothing really now
+%ifdistribution == redhat
+	if [ -e /var/lock/subsys/%PKGNM%-chkpt_boot ] ; then
+	    rm /var/lock/subsys/%PKGNM%-chkpt_boot
+	fi
+%endif
+	;;
+    *)
+	echo "Usage: $0 { start | stop }"
+	exit 1
+	;;
+esac
+
+exit 

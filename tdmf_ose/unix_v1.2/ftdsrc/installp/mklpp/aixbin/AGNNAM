@@ -1,0 +1,9 @@
+#!/usr/bin/ksh
+#
+# Agent Product Name
+#
+# derive this by looking at mk/vars.sh for the `QAGN' variable.
+#
+. ../../../mk/vars.sh
+
+echo ${QAGN}

@@ -1,0 +1,372 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved
+#
+#
+ifndef VARS_GMK
+VARS_GMK=defined
+ifndef MAKEFLAGS
+MAKEFLAGS=--no-print-directory
+endif
+DESTDIR=${TOP}/pkg.install/pkg
+Q=%%QNAME%%
+PDFQ=%%PDFQNAME%%
+CAPQ=%%CAPQNAME%%
+V=${TOP}/version.o
+PRODUCTBRAND=%%PRODUCTBRAND%%
+PRODUCTNAME=%%PRODUCTNAME%%
+CAPPRODUCTNAME=%%CAPPRODUCTNAME%%
+TECHSUPPORTNAME=%%TECHSUPPORTNAME%%
+COMPANYNAME=%%COMPANYNAME%%
+COMPANYNAME2=%%COMPANYNAME2%%
+COMPANYNAME3=%%COMPANYNAME3%%
+MODULENAME=sftkdtc
+OSRELEASE=%%OSRELEASE%%
+ARCH=%%ARCH%%
+QAGN=%%QAGNNM%%
+CAPQAGN=%%CAPQAGNNM%%
+GIFPREFIX=%%GIFPREFIX%%
+BRANDTOKEN=%%BRANDTOKEN%%
+GROUPNAME=%%GROUPNAME%%
+CAPGROUPNAME=%%CAPGROUPNAME%%
+
+# where PRODUCTNAME contains token separators, 
+# put underscores...this is for using productname 
+# like variable tokens in tcl or shell scripts...
+PRODUCTNAME_TOKEN=%%PRODUCTNAME_TOKEN%%
+PRODUCTNAME_SHORT=%%PRODUCTNAME_SHORT%%
+
+SYSTYPE:= $(shell uname -s)
+ifneq (,$(findstring 2.6,$(shell uname -r)))
+ifneq (,$(PREDIR))
+SYSVERS:= $(shell ${PREDIR}/${TOP}/mk/unamevers.sh)
+else
+SYSVERS:= $(shell ${TOP}/mk/unamevers.sh)
+endif
+else
+SYSVERS:= $(shell ${TOP}/mk/unamevers.sh)
+endif
+
+# AIX: No pkginst, OEM is irrelevant
+ifeq (AIX,$(SYSTYPE))
+OEM=
+OEMNAME=%%OEMNAME%%
+else
+OEM=%%OEMNAME%%
+OEMNAME=%%OEMNAME%% 
+endif
+
+ifeq (${Q},qds)
+PKGNAME=QLIXds
+else
+PKGNAME=${OEM}${Q}
+endif
+ifeq (${Q},qds)
+DOCPKGNAME=QLIXdds
+else
+DOCPKGNAME=${OEM}${Q}d
+endif
+
+ifneq (,$(findstring 2.6,$(shell uname -r)))
+ifneq (,$(PREDIR))
+include ${PREDIR}/${TOP}/mk/Makefile.inc.${SYSTYPE}
+else
+include ${TOP}/mk/Makefile.inc.${SYSTYPE}
+endif
+else
+include ${TOP}/mk/Makefile.inc.${SYSTYPE}
+endif
+
+ifdef GCC_CHECKER
+GCC_CHEKER_DEFINES=-DGCC_CHECKER
+CC=gcc -Wformat
+endif
+VERSIONDEFINES=-DVERSION=\"${VERSION}\" -DPRODUCTNAME="\"${PRODUCTNAME}\"" \
+	-DPRODUCTNAME_TOKEN="\"${PRODUCTNAME_TOKEN}\"" \
+	-DPRODUCTNAME_SHORT="\"${PRODUCTNAME_SHORT}\"" \
+	-DOEM=\"${OEM}\" -DPKGNAME=\"${PKGNAME}\" -DQNM=\"${Q}\" \
+	-DCAPQ=\"${CAPQ}\" -DQAGN=\"${QAGN}\" -DCAPQAGN=\"${CAPQAGN}\"\
+	-DCAPPRODUCTNAME="\"${CAPPRODUCTNAME}\"" \
+	-DGROUPNAME="\"${GROUPNAME}\"" -DCAPGROUPNAME="\"${CAPGROUPNAME}\"" \
+	-DVERSIONBUILD="\"${VERSIONBUILD}\"" -DSYSVERS=${SYSVERS} \
+	-DBRANDTOKEN="'${BRANDTOKEN}'"
+ifeq (SunOS,$(SYSTYPE))
+SHELL=/usr/bin/ksh
+AWK=nawk
+CFLAGS = ${VERSIONDEFINES} ${PLATFORMDEFINES} ${COPTFLAGS} \
+	${CINCLUDES} ${CDEFINES} ${GCC_CHECKER_DEFINES} ${FDSETSIZE}
+else
+AWK=awk
+CFLAGS += ${VERSIONDEFINES} ${PLATFORMDEFINES} ${COPTFLAGS} \
+	${CINCLUDES} ${CDEFINES} ${GCC_CHECKER_DEFINES}
+endif
+LINKFLAGS =
+DEPEND = /usr/openwin/bin/makedepend
+RM=/bin/rm -f
+
+#
+# TODO Add notes on the variables here
+#
+
+REV=2.9.1
+FIXNUM=%%FIXNUM%%
+ifneq (,$(findstring FIXNUM,${FIXNUM}))
+FIXNUM=0
+endif
+FIXLEVEL=.$(FIXNUM)
+
+# The build number is passed to each Makefile so we can have one consistent
+# build number for each gmake no matter how many times gmake is called
+
+ifndef BUILDNUM
+BUILDNUM=%%BUILDNUM%%
+ifneq (,$(findstring BUILDNUM,${BUILDNUM}))
+BUILDNUM:=DEV$(shell date +%Y%m%d%H%M%S)
+endif
+endif
+
+VERSION=$(REV)$(FIXLEVEL)
+BUILDPREFIX=${NULLSTRING}%%BUILDPREFIX%%
+ifneq (,$(findstring BUILDPREFIX,${BUILDPREFIX}))
+BUILDPREFIX:=${NULLSTRING} Build # single space before and after the Build
+endif
+
+BUILDSUFFIX=${NULLSTRING}%%BUILDSUFFIX%%
+ifneq (,$(findstring BUILDSUFFIX,${BUILDSUFFIX}))
+BUILDSUFFIX:=
+endif
+
+#
+# The agent parses the ${VERSION}${VERSIONBUILD} from the dtcinfo -v
+# Beware of changing lengths or these strings without looking at the agent
+#
+
+VERSIONBUILD=${BUILDPREFIX}${BUILDNUM}${BUILDSUFFIX}
+CVS_MAJREV=`echo $(REV) | sed -e 's/-.*$//g;s/\./-/g'`
+CVS_REV=`echo $(VERSION) | sed -e 's/-.*$//g;s/\./-/g'`
+
+CLEANS=$(OBJS) $(EXTRA_CLEANS) core *~ .depend *_pure_*.[oa] .pure
+ifdef PROGRAM
+CLEANS+= ${Q}${PROGRAM}
+endif
+ifdef PROGRAMS
+CLEANS+=${PROGRAMS}
+endif
+ifdef LIBRARY
+CLEANS+=lib${LIBRARY}.a
+endif
+ifdef SH_PROGRAM
+CLEANS+=${SH_PROGRAM}
+endif
+ifdef PLAT_SH_PROGRAM
+CLEANS+=${PLAT_SH_PROGRAM}
+endif
+ifdef BIN_PROGRAM
+CLEANS+=${BIN_PROGRAM}
+endif
+ifdef PKGHDRS
+CLEANS+=${PKGHDRS}
+endif
+
+TOPDIR=${DESTDIR}/${PKGNAME}
+BINDIR=${TOPDIR}/bin
+LIBEXECDIR=${TOPDIR}/libexec
+HACMPDIR=${DESTDIR}/etc/${Q}/hacmp
+LIBDIR=${TOPDIR}/lib
+MANDIR=${TOPDIR}/man/man1
+ETCDIR=${DESTDIR}/etc/opt/${PKGNAME}
+CONFIGDIR=${DESTDIR}/etc/rc.config.d
+HTMLDIR=${TOPDIR}/doc/html
+IMGDIR=${TOPDIR}/doc/images
+HTMLIMGDIR=${TOPDIR}/doc/html/images
+PDFDIR=${TOPDIR}/doc/pdf
+PSDIR=${TOPDIR}/doc/postscript
+PKGDIR=${DESTDIR}/..
+SBINDIR=${DESTDIR}/sbin
+PKGUSRSBINDIR=${DESTDIR}/usr/sbin
+TCLDIR=${LIBDIR}/${Q}${REV}
+SAMPLEDIR=${TOPDIR}/samples
+OMPDIR=${DESTDIR}/etc/opt/${OEM}omp
+OMPBINDIR=${OMPDIR}/bin
+OMPDOCSDIR=${OMPDIR}/docs
+OMPPROFILEDIR=${DESTDIR}/etc/profile.d
+ROOTED=/
+
+INCLIC=-I${TOP}/lib/liblic
+INCMD5=-I${TOP}/lib/libmd5
+INCGEN=-I${TOP}/lib/libgen
+INCDEVICE=-I${TOP}/driver
+PKGROOTDIR=buildroot
+DISTRIBUTION=
+DISTRELEASE=
+ifeq (Linux,$(SYSTYPE))
+INCDEVICE+=-I$(TOP)/driver/Linux
+ifneq ($(strip $(wildcard /etc/redhat-release)),)
+DISTRIBUTION=redhat
+ifneq (,$(findstring 2.6.9-,${OSRELEASE}))
+DISTRELEASE=4
+endif
+ifneq (,$(findstring 2.6.18-,${OSRELEASE}))
+DISTRELEASE=5
+endif
+ifneq (,$(findstring 2.6.32-,${OSRELEASE}))
+DISTRELEASE=6
+endif
+ifneq (,$(findstring 3.7.0-,${OSRELEASE}))
+DISTRELEASE=7
+endif
+endif
+ifneq ($(wildcard /etc/SuSE-release),)
+DISTRIBUTION=suse
+ifneq (,$(findstring 2.6.5-,${OSRELEASE}))
+DISTRELEASE=9
+endif
+ifneq (,$(findstring 2.6.16.,${OSRELEASE}))
+DISTRELEASE=10
+endif
+ifneq (,$(findstring 2.6.27.,${OSRELEASE}))
+DISTRELEASE=11
+endif
+endif
+ifeq (${DISTRIBUTION},)
+$(error Unknown Linux Distribution)
+endif
+ifeq (${DISTRELEASE},)
+$(error Unknown Linux Distribution Release)
+endif
+endif
+
+
+LIBLIC=${TOP}/lib/liblic/liblic.a
+LIBMD5=${TOP}/lib/libmd5/libmd5.a
+ifeq (HP-UX,$(SYSTYPE))
+   LIBGEN=${TOP}/lib/libgen/libgen.a  ${LIBMD5} -lm
+else 
+   LIBGEN=${TOP}/lib/libgen/libgen.a  ${LIBMD5}
+endif
+DEPLIBLIC=${TOP}/lib/liblic/liblic.a
+DEPLIBMD5=${TOP}/lib/libmd5/libmd5.a
+DEPLIBGEN=${TOP}/lib/libgen/libgen.a
+
+# product installation root vars.
+# product seems to have this minimal set of roots...
+# map roots according to SYSTYPE
+# for now, this is made consistent with
+# similar mapping performed in
+# installp/mklpp/aixbin/mkbaserel.sh
+# by looking in this file for definitions
+# delimited by the VARDIR_START VARDIR_STOP
+# macros below. please don't move them...
+ifeq (AIX,$(SYSTYPE))
+# %VARDIR_START%
+OPTDIR=usr
+VAROPTDIR=var
+OURCFGDIR=etc/${Q}/lib
+ETCOPTDIR=etc/${Q}/lib
+ETCINITDDIR=etc/${Q}/init.d
+ETCRSDDIR=etc/${Q}/rS.d
+ETCR2DDIR=etc/${Q}/r2.d
+ETCR3DDIR=etc/${Q}/r3.d
+USRKERNELDRVDIR=usr/lib/drivers
+USRSBINDIR=${OPTDIR}/sbin
+FTDLIBDIR=${OPTDIR}/${Q}/lib
+FTDBINDIR=${OPTDIR}/${Q}/bin
+FTDLIBEXECDIR=${OPTDIR}/${Q}/libexec
+FTDCFGDIR=etc/${Q}/lib
+FTDCONFDIR=${OPTDIR}/lib/drivers
+FTDVAROPTDIR=${VAROPTDIR}/${Q}
+# %VARDIR_STOP%
+else
+OPTDIR=opt
+VAROPTDIR=var/opt
+ETCOPTDIR=etc/opt
+ETCINITDDIR=etc/init.d
+ETCRSDDIR=etc/rS.d
+ETCR2DDIR=etc/r2.d
+ETCR3DDIR=etc/r3.d
+FTDLIBDIR=opt/${PKGNAME}/lib
+FTDLIBEXECDIR=${OPTDIR}/${PKGNAME}/libexec
+FTDBINDIR=${OPTDIR}/${PKGNAME}/bin
+FTDCFGDIR=${ETCOPTDIR}/${PKGNAME}
+FTDCONFDIR=usr/kernel/drv
+FTDVAROPTDIR=${VAROPTDIR}/${PKGNAME}
+USRKERNELDRVDIR=usr/kernel/drv
+USRSBINDIR=usr/sbin
+OURCFGDIR=etc/opt/${PKGNAME}
+# HP-UX: Put the driver conf file in with the cfg files
+ifeq (HP-UX,$(SYSTYPE))
+FTDCONFDIR=${FTDCFGDIR}
+USRKERNELDRVDIR=${FTDCFGDIR}
+ETCINITDDIR=sbin/init.d
+ETCRSDDIR=sbin/rc0.d
+ETCR2DDIR=sbin/rc2.d
+ETCR3DDIR=sbin/rc3.d
+endif
+endif
+# On Linux, we rely on the distribution's wish.
+ifeq (Linux,$(SYSTYPE))
+FTDTIXWISH=wish
+FTDTIXBINPATH=usr/bin
+else
+FTDTIXWISH=${Q}wish
+FTDTIXBINPATH=${FTDLIBEXECDIR}
+endif
+
+# Vars to help the translation
+export PRODUCTBRAND
+export DISTRIBUTION
+export DISTRELEASE
+export PKGIFYARCH:=${ARCH}
+export PKGIFYNUMVERS:=${SYSVERS}
+PKGIFY=@${RM} $@; \
+	echo Making $@ from $?; \
+	${AWK} -f ${TOP}/mk/vars.awk \
+	$? \
+	PKGNM='${PKGNAME}' \
+	PRODUCTNAME='${PRODUCTNAME}' \
+	PRODUCTNAME_TOKEN='${PRODUCTNAME_TOKEN}' \
+	PRODUCTNAME_SHORT='${PRODUCTNAME_SHORT}' \
+	CAPPRODUCTNAME='${CAPPRODUCTNAME}' \
+	TECHSUPPORTNAME='${TECHSUPPORTNAME}' \
+	COMPANYNAME='${COMPANYNAME}' \
+	COMPANYNAME2='${COMPANYNAME2}' \
+	COMPANYNAME3='${COMPANYNAME3}' \
+	OSRELEASE='${OSRELEASE}' \
+	ARCH='${ARCH}' \
+	MODULENAME='${MODULENAME}' \
+	FTDLIBEXECDIR='${FTDLIBEXECDIR}' \
+	FTDBINDIR='${FTDBINDIR}' \
+	FTDLIBDIR='${FTDLIBDIR}' \
+	VERSION='${VERSION}' \
+	REV='${REV}' \
+	FIXNUM='${FIXNUM}' \
+	VERSIONBUILD='${VERSIONBUILD}' \
+	BUILDNUM='${BUILDNUM}' \
+	PKGROOTDIR='${PKGROOTDIR}' \
+	OEM='${OEM}' \
+	Q='${Q}' \
+	PDFQ='${PDFQ}' \
+	CAPQ='${CAPQ}' \
+	QAGN='${QAGN}' \
+	CAPQAGN='${CAPQAGN}' \
+	OPTDIR='${OPTDIR}' \
+	VAROPTDIR='${VAROPTDIR}' \
+	ETCOPTDIR='${ETCOPTDIR}' \
+	ETCINITDDIR='${ETCINITDDIR}' \
+	ETCRSDDIR='${ETCRSDDIR}' \
+	ETCR2DDIR='${ETCR2DDIR}' \
+	ETCR3DDIR='${ETCR3DDIR}' \
+	FTDCFGDIR='${FTDCFGDIR}' \
+	FTDCONFDIR='${FTDCONFDIR}' \
+	FTDVAROPTDIR='${FTDVAROPTDIR}' \
+	OURCFGDIR='${OURCFGDIR}' \
+	USRKERNELDRVDIR='${USRKERNELDRVDIR}' \
+	FTDTIXBINPATH='${FTDTIXBINPATH}' \
+	FTDTIXWISH='${FTDTIXWISH}' \
+	COPYRIGHTYEAR='${COPYRIGHTYEAR}' \
+	USRSBINDIR='${USRSBINDIR}' \
+	ROOTED='${ROOTED}' \
+	GROUPNAME='${GROUPNAME}' \
+	CAPGROUPNAME='${CAPGROUPNAME}' \
+	GIFPREFIX='${GIFPREFIX}' \
+	>$@;
+endif

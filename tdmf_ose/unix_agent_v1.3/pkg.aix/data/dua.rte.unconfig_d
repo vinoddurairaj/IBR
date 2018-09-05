@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Post uninstall process.
+
+exit 0;

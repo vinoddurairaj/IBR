@@ -1,0 +1,82 @@
+#!/bin/ksh
+#
+# chfs_patch_remove
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+# Command Description:
+#
+# Removes /usr/sbin/extendlv check for attempts to grow a Softek device,
+# replaces /usr/sbin/chfs symbolic link with the original AIX chfs binary
+#
+#
+function mod_extendlv {
+
+    EXTENDLV=/usr/sbin/extendlv
+    grep "Softek" ${EXTENDLV} > /dev/null 2>&1
+    if [ $? -eq 0 ] 
+    then
+        # remove modifications 
+        cp $EXTENDLV ${EXTENDLV}.pre_remove
+        lineno=`cat ${EXTENDLV} | sed -n -e '/Softek/=' | tail -1`
+        if [ xx"${lineno}" = "xx" ]
+        then
+            echo "${EXTENDLV} cannot find lines to modify, please edit ${EXTENDLV} by hand to remove lines added by %PRODUCTNAME%."
+            exit 1
+        else
+            beginline=$lineno
+            endline=`expr $lineno + 6`
+            echo "\nRemoving Softek modifications to ${EXTENDLV}..."
+            cat ${EXTENDLV} | sed "${beginline},${endline} d" > ${EXTENDLV}.tmp
+            mv ${EXTENDLV}.tmp ${EXTENDLV}
+        fi
+        /usr/bin/chmod 544 ${EXTENDLV}
+        rm -f ${EXTENDLV}.pre_remove
+   else
+        echo "Softek modifications to ${EXTENDLV} already removed."
+   fi 
+}
+
+echo
+echo "Removing this patch will restore the original /usr/sbin/chfs command and"
+echo "remove any Softek modifications to the /usr/sbin/extendlv script."
+echo
+echo "Would you like to continue? (Y/N)\c"
+read ANS
+
+
+typeset -l ANS=$ANS
+if [[ yes = "$ANS"* ]]
+then
+
+# first remove our modifications to /sbin/extendlv 
+mod_extendlv
+
+if [ -L /usr/sbin/chfs ] 
+then
+    echo "Removing symbolic link to /usr/dtc/bin/dtcchfs..."
+    if [ -f /usr/sbin/chfs.aix.orig ] 
+    then
+       rm -f /usr/sbin/chfs
+       mv /usr/sbin/chfs.aix.orig /usr/sbin/chfs
+       rm -f /usr/dtc/bin/dtcchfs
+    else
+       echo "/usr/sbin/chfs.aix.orig binary missing! Cannot restore."
+       exit 1
+    fi
+else 
+    echo "/usr/sbin/chfs already restored.\n"         
+fi
+
+echo "Patch removal complete.\n"
+else 
+    echo "No modifications made to /usr/sbin/chfs or /usr/sbin/extendlv."
+fi

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+FTDPIDS=""
+
+if [ "`uname -s`" = "SunOS" ]; then
+	FTDPIDS=`/usr/bin/pgrep -x -u 0 dtcAgent`
+	if [ "$FTDPIDS" != "" ]; then
+        	kill -15 $FTDPIDS >/dev/null 2>&1
+	fi
+else
+	FTDPIDS=`/bin/ps -e | /bin/grep "dtcAgent" | /bin/grep -v "grep" | /bin/awk '{print $1}'`
+	if [ "$FTDPIDS" != "" ]; then
+		/bin/kill -15 $FTDPIDS >/dev/null 2>&1
+	fi
+fi
+exit 0

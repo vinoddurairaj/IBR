@@ -1,0 +1,22 @@
+NT_UP=0
+
+MAJORCOMP=tdiBlock
+MINORCOMP=kslib
+
+TARGETNAME=pcakslib
+TARGETTYPE=LIBRARY
+#TARGETPATH=$(BASEDIR)\lib
+TARGETPATH=..\KSLib\$(DDKBUILDENV)
+TARGETLIBS=
+
+#INCLUDES=$(INCLUDES);..\KSInc;$(BASEDIR)\src\network\inc;..\..\NetINet
+INCLUDES=..\KSInc;..\..\include;$(DDK_INC_PATH);$(BASEDIR)\src\network\inc;..\..\NetINet
+
+#C_DEFINES=$(C_DEFINES) -DNT -D_NTDRIVER_ -D_PNP_POWER
+
+#MSC_WARNING_LEVEL=/W3 /WX /Zi /FR
+MSC_WARNING_LEVEL=$(MSC_WARNING_LEVEL) /FR
+
+SOURCES=         \
+    SftkTdiutil.c     \
+    SftkTditcpex.c

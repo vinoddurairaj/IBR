@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+
+<FONT FACE="Verdana"><H2><a NAME="DRIVERSIGN"></a>Driver Signing Update</H2>
+
+</FONT><FONT FACE="Verdana" SIZE=2><P><B>Contents</B><BR>
+<I><a href="#works">How Driver Signing Works</a></I><BR>
+<I><a href="#sign">How to Get Digital Signatures for Windows Drivers</a></I><BR>
+<I><a href="#sum">Driver Signing Summary</a></I></P>
+
+<P>Microsoft is promoting driver signing for designated device classes as a mechanism to advance the quality of drivers, to provide a better user experience, and to reduce support costs for vendors and total cost of ownership for customers. Microsoft began digitally signing drivers for the Microsoft&#174; Windows&#174;&nbsp;98 operating system that passed the Windows Hardware Quality Labs (WHQL) tests in 1998, Windows&nbsp;2000, and Windows Me.</P>
+
+<P>This article provides a general orientation to driver signing on Microsoft Windows operating systems. This article also describes how vendors can get their drivers digitally signed.</P>
+
+<H3><a name="works">HOW DRIVER SIGNING WORKS</a></H3></FONT><FONT FACE="Verdana" SIZE=2>
+<P>Driver signing (sometimes called &quot;code signing&quot;) consists of the following components:
+
+<UL>
+	<LI>A catalog (CAT) file that is part of the driver package and contains a digital signature issued by WHQL</LI>
+	<LI>An INF file that references the catalog file</LI>
+        <LI>Drivers that have passed WHQL testing</LI>
+	<LI>Operating system policy settings that control whether an unsigned driver can be installed</LI>
+</UL></P>
+
+<P><B>CAT Files. </B>A catalog file has the filename extension .<I>cat</I> and a name chosen by the vendor. The vendor establishes the relationship between the driver package and its CAT file by including in the INF’s <B>[Version]</B> section a <B>CatalogFile</B> directive with a reference to the&nbsp;CAT file. The vendor distributes the CAT file along with the&nbsp;other files in the driver package. The operating system maintains this relationship by copying the driver’s INF file to&nbsp;the&nbsp;%System%\Inf directory and the CAT file to the %windir%\INF directory.</P>
+
+<P><B>Digital Signature. </B>When a driver package passes WHQL testing, WHQL generates a separate CAT file containing a hash of the driver binaries and other relevant information. WHQL then digitally signs the CAT file using Digital Signature cryptographic technology and sends it to the vendor. Driver signing does not change the driver binaries or the INF file submitted for testing.  </P>
+
+<P>The operating system performs signature verification whenever an INF file is used to install hardware from a device class that is subject to signature detection: that is, during any Plug and Play operation, when the user runs the Add New Hardware wizard in the Control Panel, and so on. </P>
+
+<P><B>Driver Signing and Driver Installation. </B>The system always installs the driver that is the closest match for the hardware, whether or not that driver is signed; however, given drivers of equal rank, the system installs the signed driver rather than the unsigned driver. Device classes subject to signature detection in Windows Me are:</P>
+<ul>
+<li>Display
+<li>Media
+</ul>
+
+<P>During driver installation, Windows compares the hashes contained in the driver’s CAT file with the computed hash of the driver binaries to determine whether the binaries have changed since the CAT file was created. If a driver fails the signature check or there is no CAT file, what happens next depends on the driver signing policy in effect on the user’s system:
+
+<UL>
+	<LI>If the policy is set to Ignore, the driver installs silently, with no message to the user.</LI>
+	<LI>If the policy is set to Warn, a message warns the user the driver is unsigned, which means that it has not passed WHQL testing and might cause problems. The Warn dialog box gives the user the option to override the warning and install an unsigned driver anyway.</LI>
+	<LI>If the policy is set to Block, the system displays a message that informs the user that the driver cannot be installed because it is not digitally signed.</LI>
+</UL></P>
+
+<P>All drivers that will be distributed to end users should be digitally signed, to preserve the integrity of the released operating system and ensure the best possible user experience. </P>
+
+<P><B>Driver Signing and System File Protection. </B>Driver signing and system-file protection are two different mechanisms that both serve the goal of maintaining a stable and reliable operating system: 
+
+<UL>
+	<LI>A driver’s digital signature allows the system to ensure that the driver files being installed have not been modified since the files passed testing by WHQL. Depending on the driver signing policy in effect on a user’s system, the user might be allowed to disregard warnings and install an unsigned driver.</LI>
+	<LI>System-file protection prevents replacement of certain monitored system files<I> </I>except by trusted sources, such as service pack installations or Windows Update. </LI>
+</UL></P>
+
+<P>For information about System File Protection, please see SFP.HTM in the %ddkroot% directory.
+<p> For Windows File Protection (available in Windows&nbsp;2000), see the web site at: 
+<BR><I>http://www.microsoft.com/hwdev/ntdrivers/sfp.htm</I></P>
+
+<H3><a name="sign">HOW TO GET DIGITAL SIGNATURES FOR WINDOWS DRIVERS</a></H3></FONT><FONT FACE="Verdana" SIZE=2>
+
+<P>Vendors should submit the following kinds of driver packages to WHQL:
+
+<UL>
+	<LI>New driver packages</LI>
+	<LI>Updates to existing driver packages that involve modifications to the chipset/hardware, driver binaries, INF files, or Help files</LI>
+</UL></P>
+
+<P>Changes to hardware or firmware require a new revision value in&nbsp;the device ID so the operating system can detect the updated device and install the correct driver for it. Such a driver package should be submitted to WHQL for retesting even if the driver binaries do not change, because the driver’s INF must reflect the device’s new device ID, which invalidates the CAT file. For example, if support for a new device is added to an existing driver package, that device’s device ID will need to be added to the INF file, the updated driver package submitted to WHQL, and a new CAT file generated.</P>
+
+<P>A driver submitted to WHQL for testing will be digitally signed if the submission includes an INF that references a CAT file and meets Windows Logo Program requirements. Only signed drivers will be published on the Windows Update web site.</P>
+
+<P>The exception to this is reference design drivers, which serve as a proof of concept to OEMs and IHVs who make products from the silicon and the driver. An OEM or IHV who modifies a reference driver that has passed WHQL testing can submit it with a high degree of confidence that the modified version will also pass. Reference drivers are not meant for sale or use on a released system, so they do not receive digital signatures. A driver-and-chipset combination should not be submitted as a reference design if they will be sold or distributed without modification.</P>
+
+<P>The following sections describe how to get a digital signature for a Windows driver.</P>
+
+<H4>Modify the Driver’s INF File</H4></FONT><FONT FACE="Verdana" SIZE=2>
+
+<P>As of September 1, 1999, all driver INF files submitted to WHQL for testing must include a <B>CatalogFile</B> directive in the <B>[Version</B>] section of the INF that refers to the driver’s CAT file. For example:</P></FONT>
+
+<PRE>CatalogFile = samplez.cat</PRE>
+
+<FONT FACE="Verdana" SIZE=2><P>The name of the CAT file is up to the vendor, but it must have the filename extension <I>.cat</I>. For convenience, Microsoft recommends maintaining a unique CAT file name for each driver package. </P>
+
+<P>To test installation of an unsigned driver before submitting it to WHQL, create a dummy text file with the name referenced by the <B>CatalogFile </B>directive in the INF. This prevents the &quot;file missing&quot; errors that would otherwise occur. It is not necessary to include the dummy text file in the WHQL submission. </P>
+
+<P>Each set of driver binaries must have a separate CAT file; two unrelated drivers cannot share the same CAT file. A single driver that serves multiple devices—that is, the INF references multiple Plug and Play device IDs—needs only one CAT file. </P>
+
+<P>In general, there should be one CAT file for each INF in a driver package. Vendors of driver packages that consist of multiple drivers tested and installed as a set—such as a set of class drivers that serve different functions on a multifunction device—might find it convenient to have a single CAT file for the driver package and refer to that file from each class driver’s INF. The operating system will copy the CAT file during installation so that each INF has a corresponding CAT file on the system. </P>
+
+<h5><i>Cross-Platform Infs</i></h5>
+<P>If the driver package installs the same set of binaries on both Windows&nbsp;2000 and Windows&nbsp;98, the INF file can contain a single, undecorated <B>CatalogFile </B>directive that refers to a single CAT file. See the Windows&nbsp;Me DDK for a discussion of decorations in INF directives in the <i>Installing Drivers on Windows Millennium</i> section.</P>
+
+<P>However, if a driver package installs different binaries on Windows&nbsp;2000 and Windows&nbsp;98 systems, or if it installs different binaries on different Windows&nbsp;2000 platforms, the driver’s INF file will contain one or more of the following directives:
+
+<UL>
+	<LI><B>CatalogFile.NT</B> Any Windows&nbsp;2000 system. If the INF file contains this directive, an undecorated <B>CatalogFile</B> directive becomes Windows&nbsp;98-specific.</LI>
+	<LI><B>CatalogFile.ntx86</B> A Windows&nbsp;2000 system running on an x86-based platform.</LI>
+</UL></P>
+
+<P>For example, to specify a CAT file that is specific to Windows&nbsp;2000, but is not used for Windows&nbsp;98:</P></FONT>
+
+<PRE><CODE>CatalogFile.NT=ntSampleZ.cat
+</CODE></PRE>
+
+<FONT FACE="Verdana" SIZE=2><P>For example, this might be used for an INF that doesn’t actually copy any files on Windows&nbsp;2000. However, if an INF copies files on one operating system but not the other, or if it copies different files on Windows&nbsp;98 and Windows&nbsp;2000, it would require a different CAT file for each operating system. In this case, the INF file’s <B>[Version]</B> section would contain entries such as the following:</P></FONT>
+
+<PRE><CODE>CatalogFile.NTx86=ahntx86.cat
+CatalogFile=ahaw98.cat</CODE></PRE>
+
+<FONT FACE="Verdana" SIZE=2><P>Order of entries does not matter. For information about creating INF files for Windows&nbsp;2000, see <I>http://www.microsoft.com/hwdev/ntdrivers/w2inf.htm</I></P>
+
+<P>See also the following documentation in the Windows&nbsp;2000 Driver Development Kit (DDK):
+
+<UL>
+	<LI>Setup, Plug &amp; Play, Power Management —&gt; Design Guide —&gt; Part&nbsp;4: Setup —&gt; 4.0&nbsp;Creating an INF File: <I>http://www.microsoft.com/ddk/ddkdocs/win2k/create-inf_4l47.htm</I></LI>
+	<LI>Setup, Plug &amp; Play, Power Management —&gt; Reference —&gt; Part&nbsp;3: Setup —&gt; 1.0&nbsp;INF File Sections and Directives at: <I>http://www.microsoft.com/ddk/ddkdocs/win2k/inf-format_7soi.htm</I></LI>
+</UL></P>
+
+<H4>Submit the Driver Test Package to WHQL</H4></FONT><FONT FACE="Verdana" SIZE=2>
+
+<P>Vendors should follow the usual procedure for submitting a driver test package to WHQL for testing. A driver test package generally includes driver binaries and INF files, hardware needed for testing, passing test logs, agreements and fees. Currently, WHQL offers two options for testing:
+
+<UL>
+	<LI><B>Full test.</B> The vendor tests the hardware and submits the driver test package. WHQL verifies that the vendor provided testing logs, tests the hardware, and issues a test report. Full test takes an average of 30 days.</LI>
+	<LI><B>Self test. </B>The vendor tests the hardware and submits the same driver test package as for a full test; however, WHQL only verifies the passing test logs and does not test the hardware. Self-test takes an average of seven days, and is only available for a limited number of technologies.</LI>
+</UL></P>
+
+<P>Microsoft has web-based driver signing program, called Quick-Sign. For information about submitting a driver package to WHQL, see:<I> http://www.microsoft.com/hwtest/</I></P>
+
+<H4>Receive the Catalog File from WHQL</H4></FONT><FONT FACE="Verdana" SIZE=2>
+
+<P>When the package has passed WHQL testing (or validation of passing test logs), WHQL sends the usual test report to the vendor. The catalog file containing the digital signature follows in a separate e-mail from WHQL. </P>
+
+<H4>Distribute the Driver</H4></FONT><FONT FACE="Verdana" SIZE=2>
+
+<P>Vendors must include the digitally signed catalog file with other installable files when distributing the driver. </P>
+
+<P>If vendors grant distribution rights to Microsoft when submitting driver test packages to WHQL, the driver packages are automatically placed on the Windows Update web site as soon as they pass WHQL testing and meet additional Windows Update publishing criteria. Otherwise, vendors are responsible for distributing their drivers to users.</P>
+
+<P>For information about Windows Update, see<I>: http://www.microsoft.com/hwdev/ntdrivers/winup.htm</I></P>
+
+<H3><a name="sum">DRIVER SIGNING SUMMARY</a></H3>
+</FONT><FONT FACE="Verdana" SIZE=2>
+<P><UL>
+	<LI><B>Follow the steps for getting drivers signed:</B>
+<UL type="disc">
+	<LI>Include a <B>CatalogFile </B>directive in your driver’s INF file as described in this paper.</LI>
+	<LI>Follow the procedures to submit driver packages to WHQL for testing, Logo, and driver signing.</LI>
+	<LI>Include the CAT file received from WHQL on the distribution media for the device, driver, or both.</LI>
+	<LI>Allow Windows Update to publish your driver package by granting distribution rights to Microsoft with your WHQL submission.</LI>
+</UL>
+</LI>
+	<LI><B>Contact Microsoft by e-mail for related information:</B>
+<UL type="disc">
+	<LI>For questions, concerns or feedback relating to the WHQL Quick-Sign program, or about CAT file generation, embedded attributes, or previously received catalog files: <B>whqlds@microsoft.com</B></LI>
+
+	<LI>For information about WHQL testing for the Windows Logo Program: <B>whqlinfo@microsoft.com</B></LI>
+</UL>
+</LI>
+	<LI><B>Check the Microsoft web site for related information:</B>
+<UL type="disc">
+	<LI>How driver signing works: <I>http://www.microsoft.com/hwdev/supportability/</I></LI>
+
+	<LI>Current information about the Quick-Sign program: <I>http://www.microsoft.com/hwtest/content/digsig/content.stm</I></LI>
+	<LI>Resources and help developing drivers: <I>http://www.microsoft.com/hwdev/resources.htm</I></LI>
+	<LI>Information about creating Windows&nbsp;2000 INF files: <I>http://www.microsoft.com/hwdev/ntdrivers/w2inf.htm</I></LI>
+</UL>
+</LI>
+</UL></P>
+
+<P><I><B>DISCLAIMER: </B>The information contained in this document represents the current view of Microsoft Corporation on the issues discussed as of the date of publication. Because Microsoft must respond to changing market conditions, it should not be interpreted to be a commitment on the part of Microsoft, and Microsoft cannot guarantee the accuracy of any information presented. This document is for informational purposes only. MICROSOFT MAKES NO WARRANTIES, EXPRESS OR IMPLIED, IN THIS DOCUMENT.</I></P>
+
+<P><I>MSDN, Microsoft, Win32, Win64, Windows, and Windows&nbsp;NT are either registered trademarks or trademarks of Microsoft Corporation in the United States and/or other countries. Other product and company names mentioned herein may be the trademarks of their respective owners.</I></P>
+
+</FONT><P ALIGN="CENTER"><A HREF="#top"><FONT FACE="Verdana" SIZE=2>Top of page</FONT></A><FONT FACE="Verdana" SIZE=2> </P></FONT>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=624>
+<TR><TD VALIGN="MIDDLE" BGCOLOR="#00ffff" HEIGHT=2>
+<P></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="MS Sans Serif" SIZE=1><P>&copy; 2000 Microsoft Corporation</FONT><FONT FACE="Verdana" SIZE=2> </P></FONT></BODY>
+</HTML>

@@ -1,0 +1,11 @@
+DIRS= \
+     videocap \
+     usb \
+     scancam \
+     hid \
+     wmi \
+     general \
+     dvd \
+     audio \
+     acpi \
+     1394

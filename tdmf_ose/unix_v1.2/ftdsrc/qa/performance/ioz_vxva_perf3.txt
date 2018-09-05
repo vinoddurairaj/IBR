@@ -1,0 +1,33 @@
+no DataStar PMD Daemons currently running
+Config.	PMDS?	Disk	Operation	Sample 1	Sample2		Sample 3
+/opt/QLIXds/bin/killpmds
+no DataStar PMD Daemons currently running
+rsh safedata-b /opt/QLIXds/bin/killrmds
+DataStar RMD Daemons terminated.
+rem_drv qds
+cp ../configs/vxva_log.cfg /etc/opt/QLIXds/dsgrp000.cfg
+rcp ../configs/vxva_log.cfg safedata-b:/etc/opt/QLIXds/dsgrp000.cfg
+cp ../configs/vxva_log.conf /usr/kernel/drv/qds.conf
+add_drv qds
+/opt/QLIXds/bin/qdswlinit -g0
+/opt/QLIXds/bin/qdswlscan -g0
+rsh safedata-b /opt/QLIXds/bin/launchrmds
+/opt/QLIXds/bin/launchpmds
+qds	Yes	c0t1d0s0	write	3901283	3769566	3778691
+qds	Yes	c0t1d0s0	read	5242844	5242597	5245693
+/opt/QLIXds/bin/killpmds
+DataStar PMD Daemons terminated.
+rsh safedata-b /opt/QLIXds/bin/killrmds
+DataStar RMD Daemons terminated.
+rem_drv qds
+cp ../configs/vxva_log.cfg /etc/opt/QLIXds/dsgrp000.cfg
+rcp ../configs/vxva_log.cfg safedata-b:/etc/opt/QLIXds/dsgrp000.cfg
+cp ../configs/vxva_log.conf /usr/kernel/drv/qds.conf
+add_drv qds
+/opt/QLIXds/bin/qdswlinit -g0
+/opt/QLIXds/bin/qdswlscan -g0
+rsh safedata-b /opt/QLIXds/bin/launchrmds
+/opt/QLIXds/bin/launchpmds
+DataStar PMD Daemons terminated.
+qds	No	c0t1d0s0	write	3874431	3830893	3820216
+qds	No	c0t1d0s0	read	5242802	5242839	5205342

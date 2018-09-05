@@ -1,0 +1,209 @@
+#! /bin/sh
+########################################################################
+#
+#  SFTKdtc_AIX_failover_boot_network_reconfig.sh
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise divested of
+# its trade secrets, irrespective of what has been deposited with the U.S.
+# Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or disclosure
+# restricted by GSA ADP Schedule Contract with IBM Corp.
+#
+########################################################################
+
+
+#-------------------------------------------------------------------------------
+##### FUNCTION TO FORMAT THE GROUP NUMBER 3-DIGIT SUFFIX OF DAEMON NAME #####
+# Arguments:
+# $1: group number
+FormatGroupNumberSubstring() {
+
+    group=$1
+    if [ $group -gt 99 ]
+    then
+        GroupNumberSubstring="$group"
+    else
+        if [ $group -gt 9 ]
+        then
+            GroupNumberSubstring="0$group"
+        else
+            GroupNumberSubstring="00$group"
+        fi
+    fi
+
+}
+
+
+################################ MAIN SCRIPT BODY ########################################
+Platform=`/bin/uname`
+if [ $Platform != "AIX" ]
+then
+    /bin/echo "SFTKdtc_AIX_failover_boot_network_reconfig.sh can only be run on AIX."
+    exit 1
+fi
+
+# 1) Check if the flag file exists indicating that this is a failover boot
+if ! [ -e /etc/SFTKdtc_call_mktcpip_at_boot ]
+then
+    exit 0
+fi
+
+/usr/bin/echo "<<<<< SFTKdtc network reconfiguration at root drive failover on target server >>>>>"
+
+# 2) Read the network configuration parameters from the parm file created by dtc-target-netinfo
+# NOTE: we expect that the network parameter file has been validated already; no error checking on that here
+#       except for the existence of the file.
+NetConfigParmFile="/etc/SFTKdtc_rootvg_failover_network_parms.txt"
+if ! [ -e $NetConfigParmFile ]
+then
+    /usr/bin/echo "SFTKdtc_AIX_failover_boot_network_reconfig.sh: did not find the network parameter file $NetConfigParmFile. Exiting."
+    exit 1
+fi
+
+# Target server hostname:
+TargetHostname=`/usr/bin/grep "TargetHostname" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Target host IP address (ex: 1.2.3.4):
+TargetHostIPaddress=`/usr/bin/grep "TargetHostIPaddress" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Subnetmask (ex: 255.255.255.0):
+Subnetmask=`/usr/bin/grep "Subnetmask" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Network interface (ex: en0):
+NetworkInterface=`/usr/bin/grep "NetworkInterface" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Name Server IP address:
+NameServerIPaddress=`/usr/bin/grep "NameServerIPaddress" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Domain name (ex: subdomain.domain.com):
+DomainName=`/usr/bin/grep "DomainName" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Default Gateway IP address:
+GatewayIPaddress=`/usr/bin/grep "GatewayIPaddress" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Cost for default route (-C arg to mktcpip, ex: 0):
+Cost=`/usr/bin/grep "Cost" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Do active dead gateway detection on default route? (-A arg to mktcpip, enter yes or no):
+ActiveDeadGatewayDetection=`/usr/bin/grep "ActiveDeadGatewayDetection" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# CableType (-t arg to mktcpip, can be N/A):
+CableType=`/usr/bin/grep "CableType" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# NetworkAdapter (ex.: inet0):
+NetworkAdapter=`/usr/bin/grep "NetworkAdapter" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Replicator TDMF UNIX IP group number:
+GroupNumber=`/usr/bin/grep "GroupNumber" $NetConfigParmFile | /usr/bin/awk '{print $2}'`
+
+# Format the 3-digit group number
+FormatGroupNumberSubstring $GroupNumber
+
+# 3) Check that we are indeed on the target server (in case the source server would have rebooted for some reason, 
+#    with everything in place for network reconfiguration for the target, in which case it must not alter its own network configuration).
+#    For this we verify if the SFTKdtc_services_disabled flag file exists
+#    (indicating clean failover initiated from the source server) AND if we are booting from a
+#    drive different than that identified as the SOURCE rootvg hdisk in the Replicator configuration file.
+if ! [ -e /etc/dtc/lib/SFTKdtc_services_disabled ]
+then
+    # The source server rebooted or crashed outside of a normal clean failover operation, since the flag file has not been created.
+    # If we are booting from the drive identified as the source server boot drive, then it is highly probable that we ARE on the source server.
+    # Do not risk altering the network configuration, then.
+    BootDrive=`/usr/bin/bootlist -m normal -o | /usr/bin/awk '{print $1}'`
+
+    # Make sure we can locate a source hdisk definition in the replicated PMD configuration file
+    /bin/grep DATA-DISK /etc/dtc/lib/p$GroupNumberSubstring.cfg | /bin/grep hdisk | /bin/grep -v "#" 1> /dev/null 2>&1
+    found_hdisk=$?
+    if [ $found_hdisk -ne 0 ]
+    then
+        /usr/bin/echo "SFTKdtc_AIX_failover_boot_network_reconfig.sh: did not find an hdisk source device in the configuration file p$GroupNumberSubstring.cfg."
+        /usr/bin/echo "Please verify the configuration file." 
+        exit 0   # We exit with status 0 to make sure we do not disrupt the rest of the boot sequence
+    fi
+
+    # Now get the first source hdisk definition
+    for SourceRootvgDrive in `/bin/grep DATA-DISK /etc/dtc/lib/p$GroupNumberSubstring.cfg | /bin/grep hdisk | /bin/grep -v "#" | /bin/awk '{print $2}'`
+    do
+        break # ---> exit the for loop
+    done
+
+    # NOTE: the configuration file could have the raw device name, such as /dev/rhdisk0; we must be able to handle that
+    BootDriveDevPath="/dev/$BootDrive"
+    RawBootDriveDevPath="/dev/r$BootDrive"
+    if [ "$BootDriveDevPath" == "$SourceRootvgDrive" -o "$RawBootDriveDevPath" == "$SourceRootvgDrive" ]
+    then
+        /usr/bin/echo "SFTKdtc_AIX_failover_boot_network_reconfig.sh:"
+        /usr/bin/echo "The failover flag file /etc/dtc/lib/SFTKdtc_services_disabled has not been found. This indicates that the source server was rebooted"
+        /usr/bin/echo "or crashed outside the context of a normal failover operation. Also, the current bootdrive is the same as the source hdisk identified"
+        if [ "$BootDriveDevPath" == "$SourceRootvgDrive" ]
+        then
+            /usr/bin/echo "in the configuration file /etc/dtc/lib/p$GroupNumberSubstring.cfg ($BootDriveDevPath), so we are not changing the network configuration."
+        else
+            /usr/bin/echo "in the configuration file /etc/dtc/lib/p$GroupNumberSubstring.cfg ($RawBootDriveDevPath), so we are not changing the network configuration."
+        fi
+        exit 0
+    fi
+fi
+
+# 4) We are the target server (meaning this is a failover boot), remove the flag file for next boot or in case of re-entry in rc.tcpip.
+/usr/bin/rm /etc/SFTKdtc_call_mktcpip_at_boot
+
+# 5) Remove network adapter devices:
+/usr/sbin/lsdev -F name|/usr/bin/grep ent | /usr/bin/xargs -i -t /usr/sbin/rmdev -dl {} -R
+
+# 6) Remove network adapter settings:
+/usr/sbin/rmdev -dl $NetworkAdapter -R
+
+# 7) Have AIX look for hardware/configuration (note: an error message is expected from cfgmgr, but it is to be ignored):
+/usr/sbin/cfgmgr 2> /dev/null
+
+# 8) Configure the network adapter again; here the mktcpip command arguments are taken from the user input from the parameter file generated by dtc-target-netinfo
+/usr/bin/echo "SFTKdtc_AIX_failover_boot_network_reconfig.sh: reconfiguring network parameters with the following command:"
+/usr/bin/echo "/usr/sbin/mktcpip -h $TargetHostname  -a $TargetHostIPaddress -m $Subnetmask  -i $NetworkInterface  -n $NameServerIPaddress  -d $DomainName  -g $GatewayIPaddress  -C $Cost  -A $ActiveDeadGatewayDetection  -t $CableType" 
+/usr/sbin/mktcpip -h $TargetHostname  -a $TargetHostIPaddress -m $Subnetmask  -i $NetworkInterface  -n $NameServerIPaddress  -d $DomainName  -g $GatewayIPaddress  -C $Cost  -A $ActiveDeadGatewayDetection  -t $CableType
+
+# 9) Rename all the replicator group configuration files that were replicated from the source server, so that nobody can attempt
+#    to start a group defined for the source server and whose config files have been inherited on the target server.
+lgnum=0
+maxlgnum=999
+while [ $lgnum -le $maxlgnum ]
+do
+    # Format the 3-digit group number
+    FormatGroupNumberSubstring $lgnum
+    # PMD files
+    if [ -e /etc/dtc/lib/p$GroupNumberSubstring.cfg ]
+    then
+        for SourceServer in `/bin/grep HOST /etc/dtc/lib/p$GroupNumberSubstring.cfg | /bin/grep -v "#" | /usr/bin/awk '{print $2}'`
+        do
+            break  # --> exit for loop; take the first HOST definition
+        done
+        /usr/bin/echo "Renaming replicated source server /etc/dtc/lib/p$GroupNumberSubstring.cfg to /etc/dtc/lib/p$GroupNumberSubstring.cfg.from_$SourceServer"
+        /usr/bin/mv /etc/dtc/lib/p$GroupNumberSubstring.cfg /etc/dtc/lib/p$GroupNumberSubstring.cfg.from_$SourceServer
+        # If there is a .cur file, rename it also
+        if [ -e /etc/dtc/lib/p$GroupNumberSubstring.cur ]
+        then
+            /usr/bin/echo "Renaming replicated source server /etc/dtc/lib/p$GroupNumberSubstring.cur to /etc/dtc/lib/p$GroupNumberSubstring.cur.from_$SourceServer"
+            /usr/bin/mv /etc/dtc/lib/p$GroupNumberSubstring.cur /etc/dtc/lib/p$GroupNumberSubstring.cur.from_$SourceServer 2> /dev/null
+        fi
+    fi
+    # RMD files
+    if [ -e /etc/dtc/lib/s$GroupNumberSubstring.cfg ]
+    then
+        for SourceServer in `/bin/grep HOST /etc/dtc/lib/s$GroupNumberSubstring.cfg | /bin/grep -v "#" | /usr/bin/awk '{print $2}'`
+        do
+            break  # --> exit for loop; take the first HOST definition
+        done
+        /usr/bin/echo "Renaming replicated source server /etc/dtc/lib/s$GroupNumberSubstring.cfg to /etc/dtc/lib/s$GroupNumberSubstring.cfg.from_$SourceServer"
+        /usr/bin/mv /etc/dtc/lib/s$GroupNumberSubstring.cfg /etc/dtc/lib/s$GroupNumberSubstring.cfg.from_$SourceServer
+    fi
+
+	lgnum=`expr ${lgnum} + 1`;
+done
+/usr/bin/echo "Renaming replicated source server /etc/dtc/lib/dtcAgent.cfg to /etc/dtc/lib/dtcAgent.cfg.from_$SourceServer"
+/usr/bin/mv /etc/dtc/lib/dtcAgent.cfg /etc/dtc/lib/dtcAgent.cfg.from_$SourceServer 2> /dev/null
+
+exit 0
+

@@ -1,0 +1,283 @@
+#!/bin/ksh
+########################################################################
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+#  /%OPTDIR%/%PKGNM%/bin/genmklv
+#
+#  Program to generate an enhanced mklv to allow the user to set his 
+#  own minor device number for the logical volume
+#
+#  Variable Conventions
+#
+#  All Uppercase - exported variable
+#  first character lower case - local read/write variable
+#  first charactr upper case - local read only variable
+#
+#  $Header: /cvs2/sunnyvale/tdmf_ose/unix_v1.2/ftdsrc/libexec/genmklv/genmklv.sh.AIX,v 1.8 2010/01/20 19:46:20 naat0 Exp $
+#
+########################################################################
+
+function display
+{
+    typeset msgnum=$1;
+    typeset default_msg="Unable to retrieve message number $msgnum\n"
+    shift
+
+    dspmsg -s 1 $CmdMsgs $msgnum "$default_msg" "$@"
+
+}
+
+function cleanup
+{
+    trap '' HUP QUIT INT TERM EXIT
+
+    [ -f $MklvCopy ] && rm -f $MklvCopy
+    umask $OldUmask
+
+    if [[ "${restoreSoftekMklvCmd}" -eq 1 ]]
+    then
+	rm -f "${SoftekMklvCmd}"
+	[[ -n "${BackupFile}" ]] && mv "${BackupFile}" "${SoftekMklvCmd}"
+    fi
+    exit $1
+}
+
+readonly MAX_BACKUPS=10		# maximum number of backup copies to maintain
+
+#############################################################################
+#
+# Name: backup_file
+# Description
+#	Creates a backup file from the input parameter.  This is done by adding
+#	appending the string .orig. followed by a number.  The next largest
+#	number is calculated and used to create the backup file.  The maximum
+#	number of backups is maintained and cleaned up when you exceed the 
+#	number MAX_BACKUPS
+#
+# Input $1 - pathname that needs to be backed up
+# Returns   0 on success
+#	    1 on failure
+#           BackupFile variable contains the pathname of the backup file 
+#	    being created.  It is assumed the caller is protecting against
+#	    multi-user access.
+#		
+
+backup_file()
+{
+    typeset pathname=$1
+    typeset backupTemplate=${pathname}.orig.
+    typeset -i parts
+    typeset -i backupIndex
+
+    [[ ! -a "${pathname}" ]] && return 0	# existence test
+    [[ ! -f "${pathname}" ]] && return 1	# regular file test
+
+    #
+    # Count the number of periods so we can extract the last field
+    # which will be numeric backup count.  We numerically reverse 
+    # sort so the first item contains the largest backup number
+    #
+    # Don't forget to escape blanks in in filenames.  (Should we do tabs also?)
+    #
+    # ls -d is used to avoid listing directory contents that match 
+    # the backup filename pattern
+
+    parts=$( IFS='.'; set -- ${backupTemplate} ; print $(( $# + 1 )) )
+
+    eval set -- $(ls -1d "${backupTemplate}"+([0-9]) 2>/dev/null | sed -e's/ /\\ /g' | sort -t. -k ${parts}nr)
+
+    if [[ -n "$1" ]]
+    then 
+	backupIndex=${1#"${backupTemplate}"}
+	let "backupIndex=backupIndex+1"
+    else
+	let backupIndex=0    
+    fi
+
+    #
+    # Backup file and verify it was completely copied
+    #
+
+    BackupFile=${backupTemplate}${backupIndex}
+
+    if ! ( cp "${pathname}" "${BackupFile}" >/dev/null 2>&1 && cmp -s "${pathname}" "${BackupFile}" )
+    then
+       rm -f "${BackupFile}"
+       return 1
+    fi
+
+    # Remove old backup copies if we have enough to look at
+    # Ignore remove errors if the list contains directories.
+
+    [[ "$#" -ge "${MAX_BACKUPS}" ]] &&
+    shift $(( ${MAX_BACKUPS} - 1 )) &&
+    [[ -n "$1" ]] &&
+    rm -f "$@" >/dev/null 2>&1
+    return 0
+}
+
+remove_all_backups()
+{
+    typeset pathname=$1
+    typeset backupTemplate=${pathname}.orig.
+    rm -f "${backupTemplate}"+([0-9]) >/dev/null 2>&1
+    return 0
+}
+
+function usage
+{
+    display 24010 "$Cmd"
+}
+
+# Make sure the caller does not override standard OS commands
+
+unalias -a
+
+export PATH=/usr/bin:/etc:/usr/sbin:/usr/ucb:/sbin
+
+#
+# Get command name for error messages
+#
+
+typeset -r Cmd=$(basename "$0")
+typeset -r CmdMsgs=%ROOTED%%ETCOPTDIR%/softek_cmdlvm.cat
+
+#
+# File name variables
+#
+
+typeset -r SoftekMklvCmdName=%Q%%MKLV%
+typeset -r OsMklvCmd=%ROOTED%%USRSBINDIR%/%MKLV%
+typeset -r MklvCopy=/tmp/${SoftekMklvCmdName}.$$
+typeset -r SoftekMklvCmd=%ROOTED%%FTDBINDIR%/${SoftekMklvCmdName}
+
+#
+# User Response variables
+#
+
+typeset -rl YesResponse=$(dspcat $CmdMsgs 1 24003)
+typeset -rl NoResponse=$(dspcat $CmdMsgs 1 24004)
+typeset -l  userResponse
+
+#
+# Exit codes
+#
+
+typeset -ri ExitCodeTrap=8
+typeset -ri ExitCodeFatal=4
+typeset -ri ExitCodeError=2
+typeset -ri ExitCodeWarning=1
+typeset -ri ExitCodeSuccess=0
+
+typeset -ri OldUmask=$(umask)
+
+typeset -i exitCode=$ExitCodeSuccess
+
+trap "cleanup $ExitCodeTrap" HUP QUIT INT TERM 
+
+trap "cleanup \$exitCode" EXIT
+
+#
+# Do not run script unless the user is root
+#
+
+effectiveUser=$(whoami 2>/dev/null)
+# echo NOTE: Do not forget to enable root only execution
+if [[ $? -ne 0 || "$effectiveUser" != "root" ]]
+then
+    display 24000 "$Cmd";	# must be root to execute this script
+    exit $((exitCode=$ExitCodeError))
+fi
+
+#
+# Get command line args
+#
+
+while getopts ":sd" option
+do
+    case $option in
+	d) remove_all_backups $SoftekMklvCmd; exit 0;;
+	s) silentMode=1 ;;
+	*) [[ "$OPTARG" != [?hH] ]] && display 24011 $Cmd "$OPTARG" # Bad Param
+	   usage;
+	   exit $((exitCode=$ExitCodeError)) ;;
+    esac
+done
+
+#
+# Make sure mklv is still a shell script 
+#
+
+typeset -l type1 type2	# force lowercase
+
+file $OsMklvCmd | read name type1 type2 rest
+if [[ $? -ne 0 ]]
+then
+    display 24008 $Cmd;		# file command failed to execute
+    exit $((exitCode=$ExitCodeFatal))
+fi
+
+if [[ "$type1" != "shell" || "$type2" != "script" ]]
+then
+    display 24009 $Cmd;		# mklv is not a shell script
+    exit $((exitCode=$ExitCodeFatal))
+fi
+
+grep -q \\\-n\) $OsMklvCmd
+if [[ $? -eq 0 ]]
+then
+    display 24001 "$Cmd" "$OsMklvCmd" "-n";	# dtcmklv -n option already defined
+    exit $((exitCode=$ExitCodeFatal))
+fi
+%ROOTED%%FTDBINDIR%/genmklv.awk -v "SOFTEK_MSGS=$CmdMsgs" $OsMklvCmd > $MklvCopy
+if [[ $? -ne 0 ]]
+then
+    display 24001 "$Cmd" "$OsMklvCmd";	# mklv copying failed
+    exit $((exitCode=$ExitCodeFatal))
+fi
+
+# TODO Need a test to make sure awk copied the complete file
+
+if [[ -z "$silentMode" ]]
+then
+    display 24002 $Cmd $SoftekMklvCmdName;	# last chance before overwriting
+    read userResponse
+else
+    userResponse=$YesResponse
+fi
+
+if [[ $(expr "$YesResponse" : "$userResponse") -ne 0 ]]
+then
+    if backup_file "${SoftekMklvCmd}"
+    then
+	[[ -n "${BackupFile}" ]] && display 24012 $Cmd "${SoftekMklvCmd}" "${BackupFile}"
+    else
+	display 24013 $Cmd "${SoftekMklvCmd}" "${BackupFile}"
+	exit $((exitCode=$ExitCodeError))
+    fi
+
+    restoreSoftekMklvCmd=1
+    cp "${MklvCopy}" "${SoftekMklvCmd}" && cmp -s "${MklvCopy}" "${SoftekMklvCmd}"
+    if [[ "$?" -ne 0 ]]
+    then
+	display 24005 $Cmd $SoftekMklvCmdName;	# copy failed
+	exit $((exitCode=$ExitCodeError))
+    fi
+    restoreSoftekMklvCmd=0
+    chown root $SoftekMklvCmd
+    chgrp system $SoftekMklvCmd
+    chmod 750 $SoftekMklvCmd
+
+    display 24006 $Cmd $SoftekMklvCmd;	# We made the changes
+else
+    display 24007 $Cmd $SoftekMklvCmd;	# We made no changes
+fi

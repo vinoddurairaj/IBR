@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# build SunOS vers, according to brand
+#
+
+# parameters
+prog=$0
+seqnum=$1
+brand=$2
+count=$#
+
+if [ $count = 3 ]; then
+    log=$3
+    $prog $seqnum $brand > $log 2>&1
+    exit $?
+fi
+
+
+# supporting tools
+make=/usr/local/bin/gmake
+
+# environment
+PATH=/usr/local/bin:/opt/SUNWspro/bin:/usr/ccs/bin:$PATH:.
+export PATH
+
+cd rebrand
+${make} ${brand} seqnum=${seqnum}
+
+cd ..
+# build an installation package
+${make} clean cdrom
+
+exit 0

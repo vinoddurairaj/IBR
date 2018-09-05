@@ -1,0 +1,2 @@
+$rfxSUM="7e9316affcf6e4d9784fc010d188c702";
+$tuipSUM="5efa5ff8b47035a06e648bf8964cf168";

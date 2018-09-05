@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Product Revision Level
+#
+# For now, derive this by looking at mk/vars.gmk for, 
+# then decomposing, the `REV' macro.
+#
+VARSGMK=../../../mk/vars.gmk
+
+REVMACRO=`egrep "(^REV=)" ${VARSGMK}`
+eval ${REVMACRO}
+RVS=`echo ${REV} | awk  -F. '{printf "%02d", $2}'`
+echo ${RVS}
+

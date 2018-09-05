@@ -1,0 +1,8 @@
+LIBRARY Perf
+
+DESCRIPTION 'Performance Data Collection DLL'
+
+EXPORTS
+    PerfOpen
+    PerfCollect
+    PerfClose

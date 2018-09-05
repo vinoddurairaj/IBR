@@ -1,0 +1,4 @@
+DIRS= \
+     jpn \
+     cht \
+     chs

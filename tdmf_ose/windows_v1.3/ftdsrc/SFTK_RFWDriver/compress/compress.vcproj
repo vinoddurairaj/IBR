@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="compress"
+	ProjectGUID="{A731B833-50AC-4CBA-B290-5C2F94AA0866}"
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K chk $(InputDir) /a
+"
+				Output="compress.exe"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="0">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a
+"
+				ReBuildCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a
+"
+				CleanCommandLine="set OUTPATH=$(InputDir)$(IntDir)\
+set W2KBASE=$(SolutionDir)..\..\..\NETDDK/3790
+call ddkbuild.bat $(SolutionDir)..\..\..\NETDDK/3790 -W2K fre $(InputDir) /a
+"
+				Output="compress.exe"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\sftk_comp.c">
+			</File>
+			<File
+				RelativePath=".\sftk_lzhl.c">
+			</File>
+			<File
+				RelativePath=".\sftk_maintst.c">
+			</File>
+			<File
+				RelativePath=".\sftk_pred.c">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\Hdec_g.tbl">
+			</File>
+			<File
+				RelativePath=".\Hdec_s.tbl">
+			</File>
+			<File
+				RelativePath=".\Hdisp.tbl">
+			</File>
+			<File
+				RelativePath=".\Henc.tbl">
+			</File>
+			<File
+				RelativePath=".\sftk__lzhl.h">
+			</File>
+			<File
+				RelativePath=".\sftk_comp.h">
+			</File>
+			<File
+				RelativePath=".\sftk_huff.h">
+			</File>
+			<File
+				RelativePath=".\sftk_lz.h">
+			</File>
+			<File
+				RelativePath=".\sftk_lzhl.h">
+			</File>
+			<File
+				RelativePath=".\sftk_pred.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<Filter
+			Name="Build Files"
+			Filter="">
+			<File
+				RelativePath=".\CSym.bat">
+			</File>
+			<File
+				RelativePath=".\ddkbuild.bat">
+			</File>
+			<File
+				RelativePath=".\Makefile">
+			</File>
+			<File
+				RelativePath=".\sbrList.txt">
+			</File>
+			<File
+				RelativePath=".\Sources">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,11 @@
+#!/sbin/sh
+########
+#  Product: Replicator Agent
+#  checkinstall
+########
+#
+# Copyright (c) 2003 Softek Technology Corporation. All rights reserved.
+#
+########
+
+exit 0

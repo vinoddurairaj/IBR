@@ -1,0 +1,106 @@
+#! /usr/local/bin/perl5
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+########################################
+# Preliminaries
+#
+use Getopt::Std;
+use qaLib( qw(ParseCfgFile) );
+
+
+########################################
+# Process arguments
+#
+$scriptName = $0;
+###### getopts('DQRS:b:p:qr:s:t:v:w:') || Usage();
+$#ARGV == 0 || Usage();
+
+########################################
+# Open the cfg file
+#
+my $CFGFILE = $ARGV[0];
+
+open CFGFILE, $CFGFILE
+	|| die "$scriptName: Could not open cfg file '$CFGFILE': $!\n";
+
+my $lg = ParseCfgFile($CFGFILE);
+
+print <<EOF;
+#
+# Qualix DataStar Driver Configuration File
+# Generated automatically by "$0" from $CFGFILE
+#
+# Copyright(c) 1996, 1997, 1998 FullTime Software, Inc.
+# All Rights Reserved Worldwide.
+EOF
+
+for $profileRef ( @{$lg->{PROFILES}} ) {
+	next unless $profileRef; # ($g->{PROFILES}[$i]);
+	my $qdsInstance = ( $profileRef->{DATASTARDEVICE} =~ m/([0-9]+)$/ && $1 );
+	EmitConfLine($lg->{PRIMARY}{HOST}, $qdsInstance, $profileRef->{DATADISK});
+}
+
+
+#Comment the following out:
+if (0) {
+while (<CFGFILE>) {
+	m/^\s*SYSTEM-TAG:\s.*\sPRIMARY\s*$/ && do {
+		while (<CFGFILE>) {
+			m/^\s*HOST:\s+(\S+)\s*$/ && do {
+				$primaryHost = $1;
+				last;
+			};
+			m/^\s*HOSTID:\s+/ && next;
+			m/^\s*IP:\s+/ && next;
+			last;
+		}
+		next;
+	};
+
+	m|^\s*DATASTAR-DEVICE:\s+/dev/rdsk/qds([0-9]+)\s*$| && do {
+		$qdsInstance = $1;
+		next;
+	};
+
+	m/^\s*DATADISK:\s+(\S+)\s*$/ && do {
+		EmitConfLine($primaryHost, $qdsInstance, $1);
+		next;
+	};
+}
+}
+#End Comment Out
+
+exit 0;
+
+sub EmitConfLine {
+	my($primaryHost, $qdsInstance, $dataDisk) = @_;
+
+	defined($primaryHost) ||
+		die "Could not find primary host in $cfgfile\n";
+
+	defined($qdsInstance) ||
+		die "Could not find qds device name in $cfgfile\n";
+
+	$hostName = `hostname`;
+	chop $hostName;
+
+	if ($primaryHost ne $hostName) {
+		$L=`rsh $primaryHost $qaLib::QDSDEVINFO $dataDisk`
+			|| die "Failed to run qdsdevinfo on host $primaryHost\n";
+	}
+	else {
+		$L=`$qaLib::QDSDEVINFO $dataDisk 2>/dev/null`
+			|| die "Failed to run qdsdevinfo\n"
+	}
+
+	$L =~ s/\n//g;
+	$L =~ s/\s+/ /g;
+	printf(qq{name="qds" parent="pseudo" instance=$qdsInstance %s disk="%s";\n}, $L, $dataDisk);
+}
+
+sub Usage {
+	printf "Usage: %s <cfgfile>\n", $scriptName;
+	die "\n";
+}
+

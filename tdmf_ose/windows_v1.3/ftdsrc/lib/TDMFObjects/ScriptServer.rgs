@@ -1,0 +1,24 @@
+HKCR
+{
+	TDMFObjects.ScriptServerFile.1 = s 'ScriptServerFile Class'
+	{
+		CLSID = s '{28BDE7D3-8C77-4113-AAAD-7525B930C56B}'
+	}
+	TDMFObjects.ScriptServerFile = s 'ScriptServerFile Class'
+	{
+		CLSID = s '{28BDE7D3-8C77-4113-AAAD-7525B930C56B}'
+		CurVer = s 'TDMFObjects.ScriptServerFile.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {28BDE7D3-8C77-4113-AAAD-7525B930C56B} = s 'ScriptServerFile Class'
+		{
+			ProgID = s 'TDMFObjects.ScriptServerFile.1'
+			VersionIndependentProgID = s 'TDMFObjects.ScriptServerFile'
+			InprocServer32 = s '%MODULE%'
+			{
+			}
+			'TypeLib' = s '{B15F8DB8-7BC4-4643-8880-3FB191E335BF}'
+		}
+	}
+}

@@ -1,0 +1,535 @@
+#!/bin/sh
+#!/bin/sh
+######################################################################
+# Program:
+# --------
+# %Q%debugcapture (1.2.2) for HP-UX 10.20 for Model 800 servers
+#
+# Copyright (c) 1996, 1997, 1998, 1999 Legato Systems, Inc.  
+# All Rights Reserved.
+#
+# $RCSfile: debugcapture.sh.HP-UX,v $
+# $Revision: 1.2 $
+# $Date: 2003/10/01 15:43:29 $
+#
+# Usage:
+# ------
+# One simply executes the program, for example,
+#
+#       nodename1# %Q%debugcapture
+#
+# Borne or Korn shell:
+#
+#       nodename1# echo y | %Q%debugcapture > %Q%debugcapture.log 2>&1
+#
+# C-shell:
+#
+#       nodename1# echo y | %Q%debugcapture >& %Q%debugcapture.log
+#
+# Description:
+# ------------
+# This program will attempt to collect system and %PRODUCTNAME% %VERSION%
+# configuration and state information for Solaris information which can be 
+# used for resolving issues with the %PRODUCTNAME% %VERSION% environment 
+# of a customer.  Please save the file created by this program and send 
+# a copy to the support organization of the vendor or reseller from whom
+# this software was obtained. 
+#
+# Remarks:
+# --------
+#       . One may wish to change the variable "work_dir".  One may
+#         need to change this variable because of a lack of file
+#         system free space.
+#
+work_dir="/tmp"
+#         work_dir="/var/tmp"
+#
+######################################################################
+
+
+#
+# Use Bourne shell's built-in "echo"
+#
+echo="echo"
+
+#
+# Define "check_executable" and "verify_executable".
+#
+check_executable() {
+    if [ ! -x "${1}" ]; then
+        ${echo} "Warning: unable to find an executable \"${1}\"." >&2
+    fi
+}
+
+verify_executable() {
+    if [ ! -x "${1}" ]; then
+        ${echo} "Error: unable to find an executable \"${1}\"." >&2
+        exit 1
+    fi
+}
+
+#
+# Verify executables.
+#
+# These are required:
+awk="/bin/awk"
+cat="/bin/cat"
+id="/bin/id"
+uname="/bin/uname"
+
+for command in ${awk} ${cat} ${id} ${uname}; do
+    verify_executable ${command}
+done
+
+#
+# Determine the Operating System (OS).
+#
+OS=`${uname} -s -r`
+case "${OS}" in
+    "HP-UX "*".10.2"*)
+            :
+    ;;
+    *)      ${cat} >&2 <<EOF
+"${OS}" is not currently supported.  Currently, the following
+operating systems are supported:  HP-UX 10.20
+EOF
+    exit 1
+    ;;
+esac
+
+#
+# Who am I?  One must be root.
+#
+# Note: "uid=0(root)" appears only once in this script.
+#
+whoami=`${id} | ${awk} '/uid=0\(root\)/'`
+if [ -z "${whoami}" ]; then
+    ${echo} "Error: `${id}`.  One must be root." >&2
+    exit 1
+fi
+
+#
+# Determine the %PRODUCTNAME% installation directory.
+#
+# This is required:
+PKGNM="%PKGNM%"
+install_dir="/opt/${PKGNM}"
+if [ ! -d "/opt/${PKGNM}" ]; then
+    ${echo} "Error: %PRODUCTNAME% installation directory: " >&2
+    ${echo} "Error: \"${install_dir}\" was not found." >&2
+    ${echo} "Error: Cannot determine the installation directory." >&2
+    exit 1
+else
+    ${echo} "The %PRODUCTNAME% installation directory is \"${install_dir}\"."
+    ${echo} ""
+fi
+
+#
+# Check the suitability of "${work_dir}".
+#
+if [ ! -d "${work_dir}" ]; then
+    ${echo} "Error: \"${work_dir}\" is not a directory." >&2
+    ${echo} "Error: The variable \"work_dir\" is not set correctly." >&2
+    exit 1
+else
+    ${echo} "The working directory is \"${work_dir}\"."
+    ${echo} ""
+fi
+
+#
+# Display an informational message.
+#
+######################################################################
+${cat}  <<EOF
+This program will collect system and %PRODUCTNAME% %VERSION% diagnostic
+information which can be used for diagnosing and resolving issues with 
+this product in a specific customer environment.  Please save the file 
+created by this program and send a copy to the support organization of
+the vendor or reseller from whom the product was obtained.
+
+EOF
+######################################################################
+#
+# Does one continue or stop?
+#
+${echo} "Continue? [y]: \c"; read anwser
+if [ ! -z "${anwser}" -a "${anwser}" != "y" ]; then
+    ${echo} "bye."
+    exit 0
+else
+    ${echo} "ok ..."
+fi
+
+#
+# Set up command variables to be absolute pathnames.
+#
+# Required commands.
+#
+basename="/bin/basename"
+chmod="/bin/chmod"
+compress="/bin/compress"
+cp="/bin/cp"
+dirname="/bin/dirname"
+ls="/bin/ls"
+mkdir="/bin/mkdir"
+rm="/bin/rm"
+strings="/bin/strings"
+sum="/bin/sum"
+tar="/bin/tar"
+touch="/bin/touch"
+uuencode="/bin/uuencode"
+#
+req_commands="
+    ${basename}
+    ${chmod}
+    ${compress}
+    ${cp}
+    ${dirname}
+    ${ls}
+    ${mkdir}
+    ${rm}
+    ${tar}
+    ${touch}
+    ${uuencode}"
+#
+# Optional commands for system data generation.
+#
+arpinfo="/usr/sbin/arp -an"
+checkkey="${install_dir}/bin/%Q%licinfo"
+df="/bin/df"
+dmesg="/usr/sbin/dmesg"
+ifconfig="/usr/sbin/ifconfig"
+ipcs="/bin/ipcs"
+lanscan="/usr/sbin/lanscan"
+lvdisplay="/usr/sbin/lvdisplay"
+mount="/usr/sbin/mount"
+netstat="/bin/netstat"
+ps="/bin/ps"
+pvdisplay="/usr/sbin/pvdisplay"
+swapinfo="/usr/sbin/swapinfo"
+swverify="/usr/sbin/swverify"
+sysdef="/usr/sbin/sysdef"
+tail="/bin/tail"
+true="/bin/true"
+version="${install_dir}/bin/cl -v"
+vgdisplay="/usr/sbin/vgdisplay"
+#
+# Optional functions for system data generation.
+#
+#
+# Obtain hostid
+#
+hostid () {
+    ${uname} -i | ${awk} '{printf("0x%x\n", $1)}'
+}
+# Obtain interface data.
+#
+# The variable data_file is defined below.
+#
+interface_data() {
+    if [ -x "${lanscan}" -a -x "${ifconfig}" ]; then
+        interfaces=`${lanscan} | \
+            ${awk} '$0 !~ /Hardware|Path|Station|Address|MAC|ID/{print $5}'`
+            
+        for interface in ${interfaces}; do
+        ${echo} "++++++++++++++++++++[ ${ifconfig} ${interface} ]:" >> ${data_file}
+        ${ifconfig} ${interface} >> ${data_file}; ${echo} "" >> ${data_file}
+        done
+    fi
+}
+#
+# Obtain Logical Volume Data
+#
+# The variable data_file is defined below.
+#
+lv_data () {
+    if [ -x "${vgdisplay}" -a -x "${lvdisplay}" ]; then
+        lvs=`${vgdisplay} -v | ${awk} '$0 ~ /LV Name/ {print $3}'`
+
+        for lv in ${lvs}; do
+            ${echo} "++++++++++++++++++++[ ${lvdisplay} -v ${lv} ]:" >> ${data_file}
+            ${lvdisplay} -v ${lv} >> ${data_file}; ${echo} "" >> ${data_file}
+        done 
+    fi
+}
+#
+# Obtain Physical Volume Data
+#
+# The variable data_file is defined below.
+#
+pv_data () {
+    if [ -x "${vgdisplay}" -a -x "${pvdisplay}" ]; then
+        pvs=`${vgdisplay} -v | ${awk} '$0 ~ /PV Name/ {print $3}'`
+
+        for pv in ${pvs}; do
+            ${echo} "++++++++++++++++++++[ ${pvdisplay} -v ${pv} ]:" >> ${data_file}
+            ${pvdisplay} -v ${pv} >> ${data_file}; ${echo} "" >> ${data_file}
+        done 
+    fi
+}
+#
+# Used to generate system data.
+#
+# Note: "${data_commands}" is essentially an array of
+#       commands, commands "${command00}" through ... .
+#
+command00a="${checkkey}"
+command00b="${version}"
+#
+# Note: Because of the use of "check_executable" below,
+#       the construct "${true} && lv_data" is a
+#       trick so as to be able to include functions
+#       in the for loop below.
+#
+command01="${true} && hostid"
+command02="${uname} -a"
+command03a="${df} -k"
+command03b="${mount}"
+command04="${vgdisplay} -v"
+command05="${true} && lv_data"
+command06="${true} && pv_data"
+command07="${lanscan}"
+command08="${true} && interface_data"
+command09="${netstat} -rn"
+command10="${netstat} -in"
+command11="${netstat} -m"
+command12="${netstat} -s"
+command13="${netstat} -an"
+command14="${arpinfo}"
+command15="${ps} -efl"
+command16="${sysdef}"
+command17="${dmesg}"
+command18="${ipcs} -a"
+command19="${swapinfo}"
+command99="${swverify} -v %PRODUCTNAME%.Programs %PRODUCTNAME%.Documentation"
+#
+# Note: The commands are executed in the order
+#       of top to bottom to generate system data.
+#
+data_commands='
+    ${command00a}
+    ${command00b}
+    ${command01}
+    ${command02}
+    ${command03a}
+    ${command03b}
+    ${command04}
+    ${command05}
+    ${command06}
+    ${command07}
+    ${command08}
+    ${command09}
+    ${command10}
+    ${command11}
+    ${command12}
+    ${command13}
+    ${command14}
+    ${command15}
+    ${command16}
+    ${command17}
+    ${command18}
+    ${command19}
+    ${command99}
+    '
+#
+# Verify the executability of ${req_commands}.
+#
+# These are required:
+for command in ${req_commands}; do
+    verify_executable ${command}
+done
+
+#
+# Set up list of files to archive.
+#
+files="$HOME/.cshrc
+    $HOME/.login
+    $HOME/.profile
+    $HOME/.rhosts
+    /etc/auto_*
+    /etc/exports
+    /etc/fstab
+    /etc/hosts*
+    /etc/inetd.conf
+    /etc/inittab
+    /etc/lvmrc
+    /etc/mnttab
+    /etc/mrouted.conf
+    /etc/networks
+    /etc/nsswitch.conf
+    /etc/rc.config.d/*
+    /etc/resolv.conf
+    /etc/rpc
+    /etc/services
+    "
+
+#
+# Set up destination directory and file names.
+#
+archive=`${uname} -n`
+dest_dir="${work_dir}/${archive}"
+data_file="${dest_dir}/misc_system_info_data_file"
+rc_listing="${dest_dir}/rc_listing"
+
+#
+# Set up destination directory.
+#
+(
+    cd ${work_dir}
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+
+${mkdir} ${dest_dir}; ${chmod} 700 ${dest_dir}
+
+#
+# Define cleanup function and install interrupt handler
+#
+cleanup() {
+(
+    cd ${work_dir}
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+exit 1
+}
+
+trap cleanup 1 2 3 4 10 15
+
+#
+# Copy all OS specific files.
+#
+for file in ${files}; do
+    ${echo} "Copying ${file} to ${dest_dir} ..."
+    ${cp} -p ${file} ${dest_dir}
+done
+
+#
+# Copy OS specific log files.
+#
+nlines="10000"
+logs="/etc/rc.log /var/adm/syslog/syslog.log /%VAROPTDIR%/%PKGNM%/%Q%error.log /%VAROPTDIR%/%PKGNM%/%Q%error.log.1"
+for log in ${logs}; do
+    if [ -f ${log} ]; then
+        ${echo} "Copying ${nlines} lines of ${log} ..."
+        ${tail} -${nlines} ${log} > ${dest_dir}/`${basename} ${log}`
+    fi
+done
+
+#
+# Copy LVM specific files.
+#
+lvm="/etc/lvmconf"
+lv=`${basename} ${lvm}`
+list="."
+if [ -d "${lvm}" ]; then
+    ${echo} "Copying LVM files ..."
+    ${mkdir} -p ${dest_dir}/${lv}
+    (cd ${lvm}; ${tar} -cf - ${list}) | \
+        (cd ${dest_dir}/${lv}; ${tar} -xf -)
+fi
+#
+# Generate the "rc" listing.
+#
+${echo} "Generating an \"rc\" listing ..."
+${ls} -al /sbin/rc?.d > ${rc_listing}
+
+#
+# Copy the interesting files from %PRODUCTNAME% %VERSION% installation directory.
+#
+${echo} "Copying configuration and state information from"
+${echo} "  %PRODUCTNAME% %VERSION%"
+
+parent_dir=`${dirname} ${install_dir}`
+child_dir=`${basename} ${install_dir}`
+${echo} "Capturing running processes"
+${ps} -el >${dest_dir}/ps-output
+${echo} "Copying %PRODUCTNAME% %VERSION% directory listings"
+${ls} -laRF /opt/${PKGNM} >${dest_dir}/ls--opt-${PKGNM}
+${ls} -laRF /etc/opt/${PKGNM} >${dest_dir}/ls--etc-opt-${PKGNM}
+${ls} -laRF /var/opt/${PKGNM} >${dest_dir}/ls--var-opt-${PKGNM}
+${ls} -laRF /dev >${dest_dir}/ls--dev
+
+(cd /etc/opt; ${tar} -cf ${dest_dir}/etc-opt-${PKGNM}.tar ${PKGNM})
+(cd /var/opt; ${tar} -cf ${dest_dir}/var-opt-${PKGNM}.tar ${PKGNM})
+(cd /usr/conf; ${tar} -cf ${dest_dir}/master.d.tar master.d)
+cp /stand/build/bab.c ${destdir}/bab.c
+dest_dir="${work_dir}/${archive}"
+$E "Verifying %PRODUCTNAME% %VERSION% binaries - writing to ${dest_dir}/bin-info-${PKGNM}.txt"
+${echo} "%PKGNM% %VERSION%" > ${dest_dir}/bin-info-${PKGNM}.txt
+for file in /opt/${PKGNM}/bin/*; do
+    ${echo} "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${echo} "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${ls} -laF ${file} >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${sum} ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+    ${strings} ${file} | /bin/grep Version >> ${dest_dir}/bin-info-${PKGNM}.txt
+done
+file="/usr/conf/lib/lib%Q%.a"
+${echo} "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+${echo} "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+${ls} -laF ${file} >> ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/sum ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/strings ${file} | /bin/grep Version >> ${dest_dir}/bin-info-${PKGNM}.txt
+file="/stand/build/bab.o"
+if [ -f "${file}" ]; then
+    ${echo} "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${echo} "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${ls} -laF ${file} >> ${dest_dir}/bin-info-${PKGNM}.txt
+    /bin/sum ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+fi
+for file in /stand/*vmuni*; do
+    ${echo} "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${echo} "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${ls} -laF ${file} >> ${dest_dir}/bin-info-${PKGNM}.txt
+    /bin/sum ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+    /bin/strings ${file} | /bin/grep Version >> ${dest_dir}/bin-info-${PKGNM}.txt
+done
+${echo} "---DONE---" >> ${dest_dir}/bin-info-${PKGNM}.txt
+${echo} "Attempting to capture the output of %Q%info"
+/opt/${PKGNM}/bin/%Q%info -a > ${dest_dir}/%Q%info.out 2>&1
+${echo} "capturing license key validation information"
+/opt/${PKGNM}/bin/%Q%licinfo > ${dest_dir}/%Q%licinfo.out 2>&1
+#${echo} "attempting to capture tunable parameters"
+#/opt/${PKGNM}/bin/%Q%set -a > ${dest_dir}/%Q%set.out 2>&1
+#
+# Generate the data file.
+#
+# Note: The use of "check_executable ${command}" will work when
+#       "${command}" has the form "<command> <flags>".  This usage
+#       could give somewhat misleading information in some cases,
+#       for example, "/bin/echo y | <command>".
+#
+${touch} ${data_file}
+for command in ${data_commands}
+do
+    eval execute="${command}"
+    ${echo} "++++++++++++++++++++[ ${execute} ]:" >> ${data_file} 
+    result=`check_executable ${execute} 2>&1`
+    if [ -z "${result}" ]; then
+        eval ${execute} >> ${data_file} 2>&1
+    else
+        ${echo} "${result}" >> ${data_file}
+    fi
+    ${echo} "" >> ${data_file}
+    ${echo} ".\c" 
+done
+${echo} ""
+
+#
+# Make the archive.
+#
+${echo} "Making the archive ..."
+(
+    cd ${work_dir}
+    ${tar} -cvf - ./${archive} | ${compress} > ${archive}.tar.Z
+    ${uuencode} ${archive}.tar.Z < ${archive}.tar.Z > ${archive}.tar.Z.uu
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z
+    ${chmod} 600 ${archive}.tar.Z.uu
+)
+
+${cat} <<EOF
+
+Done:
+-----
+`${ls} -l ${work_dir}/${archive}.tar.Z.uu`
+
+EOF
+exit 0

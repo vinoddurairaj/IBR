@@ -1,0 +1,12 @@
+#! /bin/ksh
+#
+print '# Partition map for' $(hostname);
+print '#';
+print '# Partition\tSize';
+
+for D in /dev/rdsk/c?t[0-5]d0s2; do
+	D=${D#/dev/rdsk/};
+	D=${D%s2};
+	prtvtoc /dev/rdsk/${D}s2 \
+		| perl -nea 'm/^\*/ && next; split; printf "# '${D}'s%s\t%s\n", $_[0], $_[4];';
+done

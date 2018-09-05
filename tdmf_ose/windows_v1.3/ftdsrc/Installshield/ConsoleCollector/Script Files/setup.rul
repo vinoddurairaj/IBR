@@ -1,0 +1,1076 @@
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            
+//   File Name:   Setup.rul                                                   
+//                                                                            
+//   Description: InstallShield script                                        
+//                                                                            
+//   Comments:    This script was generated based on the selections you made in
+//                the Project Wizard.  Refer to the help topic entitled "Modify      
+//                the script that the Project Wizard generates" for information
+//                on possible next steps.
+//
+////////////////////////////////////////////////////////////////////////////////  
+
+//#define Debug  // this enables the install to run on any OS with any priviliges.  
+
+// Include header files
+    
+#include "ifx.h"
+#include "rebrandable.h"
+    
+////////////////////// string defines ////////////////////////////
+
+//////////////////// installation declarations ///////////////////
+
+// ----- DLL function prototypes -----
+
+
+    // your DLL function prototypes    
+    
+prototype INT dtcTDMFInstall.CreateTdmfDB(BYREF STRING, BYREF STRING);  
+prototype INT dtcTDMFInstall.ValidateIPAddress(BYREF STRING);  
+prototype INT dtcTDMFInstall.GetIPFromComputerName(BYREF STRING, BYREF STRING); 
+prototype INT dtcTDMFInstall.GetIPCount();
+prototype INT dtcTDMFInstall.GetIPAddressFromList(NUMBER, BYREF STRING);
+prototype BOOL KERNEL32.GetComputerName(BYREF STRING, BYREF NUMBER);  
+prototype INT dtcTdmfDbUpgrade.UpgradeTdmfDb(BYREF STRING);
+
+// ---- script function prototypes -----
+
+
+    // your script function prototypes
+
+prototype BOOL ValidateOS();
+prototype BOOL CreateCollectorDatabase();
+prototype BOOL CreateCollectorService();
+prototype BOOL UpgradeCollectorDatabase(byref string);
+prototype BOOL PortNumberIsValid(string);
+prototype NUMBER BABSizeSelectionDlg(byref string);  
+prototype NUMBER IPAddressSelectionDlg(byref string);  
+
+prototype NUMBER StartService(string, string);
+prototype NUMBER StopService(string);
+
+    // your global variables
+                                                                        
+#define CommonConsoleComponent     "Common Console"                                                                        
+#define DataCollectorComponent     "Data Collector and Database"                     
+#define MSDEComponent              "MSDE"
+#define InstallDllFilename         "dtcTDMFInstall.dll"
+#define DbUpgradeDllFilename       "dtcTdmfDbUpgrade" 
+#define SubPathForDBFiles          "MSDE\\MSSQL$DTC\\Data"   
+#define HostIdKey                  "SOFTWARE\\Softek\\Dtc\\CurrentVersion\\HostID"
+
+// MSDE install return codes
+
+#define MSDE2K_OBJ_ERROR_SUCCESS_REBOOT_REQUIRED  3010  
+#define MSDE2K_OBJ_ERROR_SUCCESS_REBOOT_INITIATED 1641
+
+// Global variables            
+
+string CollectorPortNb;          
+string CollectorIPAddress; 
+string CollectorComputerName;
+string DtcIPAddress;
+string InstalledDir;
+string BABSize;
+number IPValid;    // 0 = Valid
+number IPResolved; // 0 = Resolved 
+string UnusedString;
+number IsUninstalling;
+BOOL   CriticalErrorOccured;
+
+// used for modify and repair and states which component are installed     
+
+BOOL CommonConsoleInstalled; 
+BOOL DataCollectorInstalled;
+BOOL MSDEInstalled;
+
+// this global is used to determine if MSDE is actually installed, not
+// if the 'component' was installed. This is different. Since MSDE has its 
+// own install it could be uninstalled but the component would still say it is 
+// installed.
+BOOL MSDEWasFoundOnTarget;
+ 
+//---------------------------------------------------------------------------
+// OnBegin
+//
+// The OnBegin event is called directly by the framework after the setup
+// initializes.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnBegin()
+  number Result;
+  number Size;
+  number Type; 
+  string RegKey;
+  string RegKeyOld;
+  number MemorySize;  
+begin
+    // TODO: Perform custom initialization steps, check requirements, etc.
+  CriticalErrorOccured = FALSE;  
+  IsUninstalling = FALSE;         
+  UseDLL( SUPPORTDIR ^ InstallDllFilename ); 
+  UseDLL( SUPPORTDIR ^ DbUpgradeDllFilename ); 
+  
+  // Update Reg key location: Remove "Fujitsu"
+  RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE); 
+  RegKeyOld = "SOFTWARE\\Fujitsu Softek";
+  RegKey = "SOFTWARE\\Softek";
+  if (RegDBKeyExist(RegKeyOld)) then
+	if (RegDBCopyKeys(RegKeyOld, RegKey, HKEY_LOCAL_MACHINE, HKEY_LOCAL_MACHINE) >= ISERR_SUCCESS) then
+      RegDBDeleteKey(RegKeyOld);
+    endif;
+  endif;  
+
+  RegDBSetDefaultRoot(HKEY_CURRENT_USER); 
+  RegKeyOld = "SOFTWARE\\Fujitsu Softek";
+  RegKey = "SOFTWARE\\Softek";
+  if (RegDBKeyExist(RegKeyOld)) then
+	if (RegDBCopyKeys(RegKeyOld, RegKey, HKEY_CURRENT_USER, HKEY_CURRENT_USER) >= ISERR_SUCCESS) then
+      RegDBDeleteKey(RegKeyOld);
+    endif;
+  endif;  
+
+  RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE); 
+  
+  RegKey = "SOFTWARE\\Softek\\DTC\\CurrentVersion";
+  if (RegDBGetKeyValueEx(RegKey, "InstallPath", Type, InstalledDir, Size) < 0) then
+    InstalledDir = "";
+  endif; 
+
+  RegKey = "SOFTWARE\\Softek\\DTC\\CurrentVersion";
+  if (RegDBGetKeyValueEx(RegKey, "DtcCollectorPort", Type, CollectorPortNb, Size) < 0) then
+    CollectorPortNb = "576";        
+  endif;           
+  
+  if (RegDBGetKeyValueEx(RegKey, "DtcCollectorIP", Type, CollectorIPAddress, Size) < 0) then
+    CollectorIPAddress = "";   
+  endif;    
+  
+  if (RegDBGetKeyValueEx(RegKey, "DtcIP", Type, DtcIPAddress, Size) < 0) then
+    if (GetIPAddressFromList(0, DtcIPAddress) != 0) then 
+      DtcIPAddress = "";   
+    endif;
+  endif;
+  
+  if (RegDBGetKeyValueEx(RegKey, "DtcdbServer", Type, CollectorComputerName, Size) >= 0) then
+    StrReplace(CollectorComputerName, "\\DTC", "", 0);  
+  endif;  
+
+  IPResolved              = 1; // 1 = not resolved
+  MSDEWasFoundOnTarget    = FALSE;  
+end;
+ 
+//---------------------------------------------------------------------------
+// OnEnd
+//
+// The OnEnd event is called at the end of the setup. This event is not
+// called if the setup is aborted.
+//---------------------------------------------------------------------------
+function OnEnd()
+begin                       
+  UnUseDLL(InstallDllFilename);
+  UnUseDLL(DbUpgradeDllFilename); 
+  // This will delete the DisplayVersion entry in the registry for uninstall.
+  // This is done because we didn't want 'Click here for support information'
+  // showing up under the Add/Remove entry for TDMF OSE. 
+  if (!IsUninstalling) then
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    RegDBDeleteValue("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + INSTANCE_GUID, "DisplayVersion");
+  endif; 
+  // Setup the Uninstall Icon
+  if (!IsUninstalling) then
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    RegDBSetKeyValueEx("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + INSTANCE_GUID, 
+                       "DisplayIcon",
+                       REGDB_STRING,
+                       TARGETDIR ^ "dtc.ico",
+                       -1);
+  endif; 
+end;
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//                                                                           
+//  FUNCTION:   OnFirstUIBefore                                            
+//                                                                           
+//  EVENT:      The OnFirstUIBefore event is called by OnShowUI when the setup is
+//              running in first install mode. By default this event displays UI allowing
+//              the end user to specify installation parameters.
+//              
+//              Note: This event will not be called automatically in a
+//              program...endprogram style setup.                                                             
+//
+//////////////////////////////////////////////////////////////////////////////////////////
+function OnFirstUIBefore()
+    number  nResult;
+    number  nLevel;
+    number  nLoop; 
+    string  szTitle, szMsg;
+    string  svDir;
+    string  szComponents, szTargetdir;
+    string  szTargetDirAppendix;  
+    number  ComputerNameSize;
+begin	
+
+    if ( ALLUSERS ) then   
+        TARGETDIR = PROGRAMFILES ^ CompanyDirName ^ ApplicationDirName;
+    else
+        TARGETDIR = FOLDER_APPDATA ^ CompanyDirName ^ ApplicationDirName; 
+    endif;
+
+    if (InstalledDir != "") then // Target dir found in registry, use it.
+      TARGETDIR = InstalledDir;
+    endif;
+
+    // Customize the default TARGETDIR for multi-instance application.
+    // TODO: If you want something different customize the code below.	
+    if( MAINT_OPTION = MAINT_OPTION_MULTI_INSTANCE  && MULTI_INSTANCE_COUNT > 0) then
+        nLoop = 1;
+        svDir = TARGETDIR;
+        while(ExistsDir(TARGETDIR) = EXISTS)			
+            NumToStr(szTargetDirAppendix,nLoop);
+            TARGETDIR = svDir + szTargetDirAppendix;
+            nLoop = nLoop + 1;
+        endwhile;						
+    endif;
+
+    svDir = TARGETDIR; 
+           
+    // Make sure this key is removed. This key is created by the application
+    // and not removed. It may create havoc in multiple NIC card environnment
+    // if it exits. It is easier, because both the server and the collector
+    // uses it and I feel more comfortable making it sure it is gone before
+    // we start. This is also done in OnMaintUIBefore.
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    RegDBDeleteKey(HostIdKey);
+    
+    ComponentSelectItem (MEDIA, CommonConsoleComponent,  FALSE);
+    ComponentSelectItem (MEDIA, DataCollectorComponent,  FALSE); 
+    ComponentSelectItem (MEDIA, MSDEComponent,           FALSE);
+    
+// Beginning of UI Sequence
+Dlg_Start:
+
+Dlg_SdWelcome:
+    szTitle = "";
+    szMsg = "";
+    nResult = SdWelcome( szTitle, szMsg );
+    if (nResult = BACK) goto Dlg_Start;
+    #ifdef Debug
+    MessageBox(SetupDebugStr, WARNING);
+    #endif
+    #ifndef Debug
+    if (Is(USER_ADMINISTRATOR, UnusedString) = FALSE) then
+      MessageBox(AdminPrivilegesStr, SEVERE);
+      abort;
+    endif;
+    #endif
+
+Dlg_SdComponentTree: 
+    szTitle = "";
+    szMsg = "";
+    szTargetdir = TARGETDIR;
+    szComponents = "";   
+    nLevel = 2;             
+    nResult = SdComponentTree( szTitle, szMsg, szTargetdir, szComponents, nLevel );
+    if (nResult = BACK) goto Dlg_SdWelcome;  
+    if (!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) &&
+        !ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then  
+      MessageBox(NoComponentSelected, INFORMATION);
+      goto Dlg_SdComponentTree;
+    endif; 
+    if (!ValidateOS()) then 
+      abort;
+    endif;   
+    
+Dlg_SdIPAddressSelection:
+    if ((!ComponentIsItemSelected (MEDIA, DataCollectorComponent)) ||
+          GetIPCount() < 2) then
+      if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorName;
+      if (nResult = BACK) goto Dlg_SdComponentTree;
+    endif; 
+    nResult = IPAddressSelectionDlg(DtcIPAddress); 
+    if (nResult = BACK) goto Dlg_SdComponentTree;  
+    
+Dlg_SdShowDlgEditCollectorName:  
+    if (!ComponentIsItemSelected (MEDIA, CommonConsoleComponent)) then
+      if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorIP;
+      if (nResult = BACK) goto Dlg_SdIPAddressSelection;
+    endif;
+    nResult = SdShowDlgEdit1 (ComputerNameDlgTitleStr, ComputerNameDlgDescStr, 
+                              ComputerNameDlgLabelStr, CollectorComputerName);
+    if (nResult = BACK) goto Dlg_SdIPAddressSelection;  
+    // Try to get the IP address from the computer name
+    Enable(HOURGLASS);
+    IPResolved = GetIPFromComputerName(CollectorComputerName, CollectorIPAddress);
+    Disable(HOURGLASS);
+
+Dlg_SdShowDlgEditCollectorIP:   
+    // this dialog is only shown if we could not get the IP from
+    // the computer name entered in the previous dialog
+    if ((!ComponentIsItemSelected (MEDIA, CommonConsoleComponent)) ||
+        IPResolved = 0) then
+      if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorPort;
+      if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorName;
+    endif;
+    nResult = SdShowDlgEdit1 (CollectorIPDlgTitleStr, CollectorIPDlgDescStr, 
+                              IpDlgLabelStr, CollectorIPAddress);  
+    if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorName;    
+    // Validate if the IP address has a valid syntax
+    IPValid = ValidateIPAddress(CollectorIPAddress);
+    if (IPValid != 0) then
+      MessageBox(IpNotValidStr, SEVERE);
+      goto Dlg_SdShowDlgEditCollectorIP;
+    endif;        
+
+Dlg_SdShowDlgEditCollectorPort:  
+    if (!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) &&
+        !ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then   
+      if (nResult = NEXT) goto Dlg_SdAskDestPath2;
+      if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorIP;
+    endif;
+    nResult = SdShowDlgEdit1 (CollectorPortDlgTitleStr, CollectorPortDlgDescStr, 
+                              PortDlgLabelStr, CollectorPortNb); 
+    if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorIP; 
+    // Validate the port number
+    if (!PortNumberIsValid(CollectorPortNb)) then
+      MessageBox(PortNotValidStr, SEVERE);
+      goto Dlg_SdShowDlgEditCollectorPort;
+    endif;
+                                                
+Dlg_SdAskDestPath2:
+    szTitle = "";
+    szMsg = "";
+    nResult = SdAskDestPath2( szTitle, szMsg, svDir );
+    TARGETDIR = svDir;
+    if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorPort;
+
+Dlg_ObjDialogs:
+    nResult = ShowObjWizardPages( nResult );
+    if (nResult = BACK) goto Dlg_SdAskDestPath2;
+    
+Dlg_SdStartCopy2:
+    szTitle = "";
+    szMsg = "";
+    nResult = SdStartCopy2( szTitle, szMsg );	
+    if (nResult = BACK) goto Dlg_ObjDialogs; 
+    return 0;
+end;
+ 
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//
+// First Install UI Sequence - After Move Data
+//
+// The OnFirstUIAfter event called by OnShowUI after the file transfer
+// of the setup when the setup is running in first install mode. By default
+// this event displays UI that informs the end user that the setup has been
+// completed successfully.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
+    NUMBER bvOpt1, bvOpt2;  
+    number Result;
+    string ErrorMsgStr;
+    string ResultStr;
+ begin
+
+    ShowObjWizardPages(NEXT);
+    
+    if (ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then   
+      // Create the database and service but do not stop on error.
+      // This is done here because we must have the MSDE object installed beforehand
+      if (!CreateCollectorDatabase()) then
+        MessageBox(CollDBCreationErrorMsgStr, SEVERE); 
+        LogWriteCustomString("CollDBCreationError", CollDBCreationErrorMsgStr);
+      endif;  
+      if (!CreateCollectorService()) then
+        MessageBox(CollServiceErrorMsgStr, SEVERE);  
+        LogWriteCustomString("CollServiceError", CollServiceErrorMsgStr);
+      endif;                    
+    endif;  
+    
+    szTitle = "";
+    szMsg1 = ""; 
+    szMsg2 = "";
+    szOpt1 = "";
+    szOpt2 = "";
+	bvOpt1   = FALSE;
+    bvOpt2   = FALSE;    
+       
+    if (CriticalErrorOccured) then
+      MessageBox(CriticalErrorMsgStr, SEVERE);   
+    endif;
+    if ( BATCH_INSTALL ) then
+    	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
+    else
+		  SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
+		endif;
+end;
+ 
+//---------------------------------------------------------------------------
+// OnMaintUIBefore
+//
+// Maintenance UI Sequence - Before Move Data
+//
+// The OnMaintUIBefore event is called by OnShowUI when the setup is
+// running in maintenance mode. By default this event displays UI that
+// allows the end user to add or remove components, repair currently
+// installed components or uninstall the application.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMaintUIBefore()
+    number	nResult, nType, nMediaFlags;
+    string	szTitle, szMsg, szIgnore;
+    number  ComputerNameSize;
+begin
+	                          
+    // Record what is already installed on the machine
+    DataCollectorInstalled     = ComponentIsItemSelected (MEDIA, DataCollectorComponent);
+    CommonConsoleInstalled     = ComponentIsItemSelected (MEDIA, CommonConsoleComponent); 
+    MSDEInstalled              = ComponentIsItemSelected (MEDIA, MSDEComponent);  
+    
+    // Make sure this key is removed. This key is created by the application
+    // and not removed. It may create havoc in multiple NIC card environnment
+    // if it exits. It is easier, because both the server and the collector
+    // uses it and I feel more comfortable making it sure it is gone before
+    // we start. This is also done in OnFirstUIBefore. This must be done
+    // only if both the server and the collector are not present.
+    if (!DataCollectorInstalled) then
+      RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+      RegDBDeleteKey(HostIdKey);
+    endif;
+     
+	// nType defaults to MODIFY.
+	nType = MODIFY;
+    
+// Beginning of UI Sequence
+Dlg_Start:
+
+	// Show Standard Maintenance Dialog
+	Disable( BACKBUTTON );
+	nType = SdWelcomeMaint( szTitle, szMsg, nType );   
+	
+	Enable( BACKBUTTON );
+    nResult = NEXT;
+
+	// Show Uninstall Confirmation Dialog
+    if ( nType = REMOVEALL ) then 
+        IsUninstalling = TRUE;
+		nResult = MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO );
+		if (nResult != IDYES ) then
+			goto Dlg_Start;
+		endif;
+	endif;          
+
+Dlg_SdComponentTree:
+	if ( nType = MODIFY ) then
+		szTitle = "";
+		szMsg = SdLoadString( SD_STR_COMPONENT_MAINT_MSG );
+		nResult = SdComponentTree( szTitle, szMsg, TARGETDIR, "", -1 );
+		if ( nResult = BACK ) goto Dlg_Start;
+        if (!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) &&
+            !ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then  
+          MessageBox(RemovingAllComponents, INFORMATION);
+          goto Dlg_SdComponentTree;
+        endif; 
+        if (!ValidateOS()) then
+          abort;
+        endif;
+    endif;
+
+Dlg_SdIPAddressSelection:
+  	if ( nType = MODIFY ) then
+      if ((!ComponentIsItemSelected (MEDIA, DataCollectorComponent)) ||
+            GetIPCount() < 2) then
+        if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorName;
+        if (nResult = BACK) goto Dlg_SdComponentTree;
+      endif; 
+      nResult = IPAddressSelectionDlg(DtcIPAddress);
+      if (nResult = BACK) goto Dlg_SdComponentTree;   
+    endif;
+    
+Dlg_SdShowDlgEditCollectorName:  
+  	if ( nType = MODIFY ) then
+      if ((!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) || 
+           CommonConsoleInstalled)) then
+        if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorIP;
+        if (nResult = BACK) goto Dlg_SdIPAddressSelection;
+      endif;
+      nResult = SdShowDlgEdit1 (ComputerNameDlgTitleStr, ComputerNameDlgDescStr, 
+                                ComputerNameDlgLabelStr, CollectorComputerName);
+      if (nResult = BACK) goto Dlg_SdIPAddressSelection;  
+      // Try to get the IP address from the computer name
+      Enable(HOURGLASS);
+      IPResolved = GetIPFromComputerName(CollectorComputerName, CollectorIPAddress);
+      Disable(HOURGLASS);
+    endif;
+
+Dlg_SdShowDlgEditCollectorIP:  
+    // this dialog is only shown if we could not get the IP from
+    // the computer name entered in the previous dialog
+	if ( nType = MODIFY ) then
+      if (((!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) || 
+            CommonConsoleInstalled)) ||
+          IPResolved = 0) then
+        if (nResult = NEXT) goto Dlg_SdShowDlgEditCollectorPort;
+        if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorName;
+      endif;
+      nResult = SdShowDlgEdit1 (CollectorIPDlgTitleStr, CollectorIPDlgDescStr, 
+                                IpDlgLabelStr, CollectorIPAddress);  
+      if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorName;  
+      // Validate if the IP address has a valid syntax
+      IPValid = ValidateIPAddress(CollectorIPAddress);
+      if (IPValid != 0) then
+        MessageBox(IpNotValidStr, SEVERE);
+        goto Dlg_SdShowDlgEditCollectorIP;
+      endif;            
+    endif;
+
+Dlg_SdShowDlgEditCollectorPort:   
+	if ( nType = MODIFY ) then
+      if ((!ComponentIsItemSelected (MEDIA, CommonConsoleComponent) || 
+           CommonConsoleInstalled) &&
+          (!ComponentIsItemSelected (MEDIA, DataCollectorComponent) || 
+           DataCollectorInstalled)) then   
+        if (nResult = NEXT) goto Dlg_ObjDialogs;
+        if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorIP;
+      endif;
+      nResult = SdShowDlgEdit1 (CollectorPortDlgTitleStr, CollectorPortDlgDescStr, 
+                                PortDlgLabelStr, CollectorPortNb); 
+      if (nResult = BACK) goto Dlg_SdShowDlgEditCollectorIP;  
+      // Validate the port number
+      if (!PortNumberIsValid(CollectorPortNb)) then
+        MessageBox(PortNotValidStr, SEVERE);
+        goto Dlg_SdShowDlgEditCollectorPort;
+      endif;
+    endif;
+                                           
+Dlg_ObjDialogs:
+    nResult = ShowObjWizardPages( nResult );
+    if ( ( nResult = BACK ) && ( nType != MODIFY ) ) goto Dlg_Start;
+    if ( ( nResult = BACK ) && ( nType = MODIFY ) ) goto Dlg_SdShowDlgEditCollectorPort;
+
+	switch(nType)
+
+        case REMOVEALL:
+						
+			// Ensure that all previously installed components are removed
+			// for media that supports updating.
+			MediaGetData( MEDIA, MEDIA_FIELD_MEDIA_FLAGS, nMediaFlags, szIgnore );
+			
+			if( nMediaFlags & MEDIA_FLAG_UPDATEMODE_SUPPORTED ) then
+				ComponentRemoveAllInMediaAndLog();
+			else
+				ComponentRemoveAllInMedia();
+			endif;
+
+        case REPAIR:
+			ComponentReinstall();
+
+    endswitch;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnMaintUIAfter
+//
+// The OnMaintUIAfter event called by OnShowUI after the file transfer
+// of the setup when the setup is running in maintenance mode. By default
+// this event displays UI that informs the end user that the maintenance setup
+// has been completed successfully.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMaintUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
+    NUMBER bvOpt1, bvOpt2;   
+    string ErrorMsgStr;
+begin
+
+    ShowObjWizardPages(NEXT);
+    
+    if (ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then  
+      // Create the database and service but do not stop on error.
+      // This is done here because we must have the MSDE object installed beforehand
+      if (!DataCollectorInstalled) then 
+        if (!CreateCollectorDatabase()) then
+          MessageBox(CollDBCreationErrorMsgStr, SEVERE); 
+          LogWriteCustomString("CollDBCreationError", CollDBCreationErrorMsgStr);
+        endif;  
+      endif;
+      if (!DataCollectorInstalled) then
+        if (!CreateCollectorService()) then
+          MessageBox(CollServiceErrorMsgStr, SEVERE); 
+          LogWriteCustomString("CollServiceError", CollServiceErrorMsgStr);
+        endif;      
+      endif;
+    endif;  
+    
+	szTitle = SdLoadString(IFX_SDFINISH_MAINT_TITLE);    
+    szMsg1  = SdLoadString(IFX_SDFINISH_MAINT_MSG1);
+	  szMsg2 = "";    
+    szOpt1 = "";
+    szOpt2 = "";
+  	bvOpt1   = FALSE;
+    bvOpt2   = FALSE;    
+    
+    if (CriticalErrorOccured) then
+      MessageBox(CriticalErrorMsgStr, SEVERE);   
+    endif;
+    if ( BATCH_INSTALL ) then
+    	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
+    else    
+      SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
+    endif;
+end;    
+    
+// Script functions    
+     
+//----------------------------------------------------------------------------
+// ValidateOS
+//
+// This functions verifies, depending on the component selected, if the user
+// is running the correct OS.                                                    
+//----------------------------------------------------------------------------
+function BOOL ValidateOS()
+begin
+  #ifndef Debug     
+  if (ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then
+    if (SYSINFO.WINNT.bWin2000 = FALSE && SYSINFO.WINNT.bWinXP = FALSE) then
+      MessageBox(OSForDataCollectorStr, SEVERE);
+      return FALSE;
+    endif;
+  endif;   
+  if (ComponentIsItemSelected (MEDIA, CommonConsoleComponent)) then
+    if (SYSINFO.WINNT.bWin2000 = FALSE && SYSINFO.WINNT.bWinXP = FALSE) then
+      MessageBox(OSForCommonConsoleStr, SEVERE);
+      return FALSE;
+    endif;
+  endif;   
+  #endif 
+  return TRUE;
+end;
+
+//----------------------------------------------------------------------------
+// CreateDatabase
+//
+// This function will create the TDMF OSE database. It simply calls the install
+// DLL to do the job.
+//----------------------------------------------------------------------------
+function BOOL CreateCollectorDatabase()     
+  string PathForDBFiles;
+  number Result;  
+begin   
+  SdShowMsg(MSDEServiceStarting, TRUE);
+  StartService("MSSQL$DTC", "");
+
+  // If the database and MSDE exists ask the user if he want's to keep the database
+  // If he want's to keep it we exit without creating the database.
+  if (MSDEWasFoundOnTarget) then
+    if (AskYesNo(CollServiceExists1Str + CollServiceExists2Str + CollServiceExists3Str, NO) = NO) then 
+      return TRUE;
+    endif;
+  endif;   
+  // Create Database
+  PathForDBFiles = TARGETDIR ^ SubPathForDBFiles;
+  SdShowMsg (CollCreatingDBMsgStr, TRUE);
+  Result = CreateTdmfDB(PathForDBFiles, CollectorPortNb);
+  SdShowMsg("", FALSE);
+  if (Result != 0) then 
+    CriticalErrorOccured = TRUE;
+    return FALSE;
+  else
+    return TRUE;
+  endif;
+end; 
+  
+//----------------------------------------------------------------------------
+// CreateCollectorService
+//
+// This function will create the Collector service.
+//----------------------------------------------------------------------------
+function BOOL CreateCollectorService()
+  number Result;  
+  string Dependencies;
+begin         
+  // Create Service and start it only if there will be no reboot                              
+  SdShowMsg (CollCreatingServiceMsgStr, TRUE);
+  Dependencies = "MSSQL$DTC\000"; 
+  SERVICE_IS_PARAMS.lpDependencies = &Dependencies;
+  Result = ServiceAddService(CollectorServiceName, //ServiceName
+                             CollServiceDisplayNameStr, //ServiceDisplayName
+                             CollServiceDescStr, //ServiceDescription
+                             TARGETDIR ^ "DtcCollector.exe", //ServicePathFile
+                             !BATCH_INSTALL, //bStartService
+                             ""); // szStartServiceArgs   
+  SdShowMsg("", FALSE);
+  if (Result != 0) then 
+    CriticalErrorOccured = TRUE;
+    return FALSE;
+  else
+    return TRUE;
+  endif; 
+end;   
+
+//----------------------------------------------------------------------------
+// UpgradeCollectorDatabase
+//
+// This function will make sure the database is upgraded to the correct schema.
+// This functions return's TRUE on success. The ErrorMsgStr will be filled with
+// an appropriate string to display in case of failure.
+// The functionnality for this resides in an external DLL called 
+// TdmfDbUpgrade.dll. The function from that DLL is UpgradeTdmfDb and its 
+// return codes are:
+//   0  = Upgrade Successful
+//   1  = DB already upgraded
+//   2  = Could not get the local computer name
+//   3  = Could not connect to the TDMF DB
+//   4  = Could not get the TDMF DB version
+//   5  = Invalid TDMF DB version
+//   6  = Unable to update DBVersion info in DB
+//   10 = Upgrade from version 1.3.2 to 1.3.3 wasn't able to be applied to the TDMF DB
+//----------------------------------------------------------------------------
+function BOOL UpgradeCollectorDatabase(ErrorMsgStr)
+  number Result;  
+  string ResultStr;
+begin         
+  SdShowMsg(CollDBUpgradeMsgStr, TRUE);
+  Result = UpgradeTdmfDb(CollectorComputerName);
+  NumToStr(ResultStr, Result);
+  switch (Result)  
+    case 0:  ErrorMsgStr = "";
+    case 1:  ErrorMsgStr = CollDBUpgradeError1MsgStr; // not used because it is also success
+    case 2:  ErrorMsgStr = CollDBUpgradeError2MsgStr;
+    case 3:  ErrorMsgStr = CollDBUpgradeError3MsgStr;
+    case 4:  ErrorMsgStr = CollDBUpgradeError4MsgStr;
+    case 5:  ErrorMsgStr = CollDBUpgradeError5MsgStr;
+    case 6:  ErrorMsgStr = CollDBUpgradeError6MsgStr;
+    case 10: ErrorMsgStr = CollDBUpgradeError10MsgStr;
+    default: ErrorMsgStr = CollDBUpgradeDefErrorMsgStr + ResultStr;
+  endswitch;   
+  SdShowMsg("", FALSE);
+  if (Result = 0 || Result = 1) then  
+    return (TRUE);
+  else
+    CriticalErrorOccured = TRUE;
+    return (FALSE);
+  endif;    
+end;   
+
+//----------------------------------------------------------------------------
+// PortNumberIsValid
+//
+// Validates that the port number does not contain illegal characters and that
+// it is in the range of 0 and 65535
+//----------------------------------------------------------------------------
+function BOOL PortNumberIsValid(InitialPortNb)
+  number nPortNb;
+  string sPortNb;
+begin 
+  // Check for illegal characters. If we convert to a number
+  // and then back to a string we should get the same thing
+  // unless there where non-numeric characters in the string
+  StrToNum(nPortNb, InitialPortNb);
+  NumToStr(sPortNb, nPortNb);
+  if (sPortNb != InitialPortNb) then
+    return FALSE;
+  endif; 
+  // check if the PortNb is in the allowed range
+  if (nPortNb < 0 || nPortNb > 65535) then
+    return FALSE;
+  endif;
+  return TRUE;   
+end;  
+         
+//----------------------------------------------------------------------------
+// IPAddressSelectionDlg
+//   
+// Shows a dialog for the user to choose a BAB size.
+// Returns in the parameter a number corresponding to the BAB size. 0 means
+// it is a secondary server
+//----------------------------------------------------------------------------
+function NUMBER IPAddressSelectionDlg(IPAddressParam)
+  LIST listIPAddress, listComponents;
+  STRING szSaveMEDIAValue, IPAddressString;
+  LONG   nResult;
+  NUMBER DlgResult, i;
+  BOOL   bSelected; 
+begin    
+  listIPAddress = ListCreate(STRINGLIST);
+  for i = 0 to GetIPCount()      
+    if (GetIPAddressFromList(i, IPAddressString) = 0) then
+      ListAddString(listIPAddress, IPAddressString, AFTER); 
+    endif;
+  endfor; 
+  // Save the value of the system variable MEDIA so it can
+  // be restored for later calls to transfer data.
+  szSaveMEDIAValue = MEDIA;
+  // Specify a name for the script-created component set.
+  MEDIA = "IPAddress";
+  nResult = ListGetFirstString(listIPAddress, IPAddressString);
+  while (nResult != END_OF_LIST)
+    ComponentAddItem(MEDIA, IPAddressString, 0, FALSE); 
+    if (IPAddressString = IPAddressParam) then
+      ComponentSelectItem (MEDIA, IPAddressString, TRUE); 
+    endif;
+    nResult = ListGetNextString(listIPAddress, IPAddressString);
+  endwhile;
+  DlgResult = SdAskOptionsList(IPAddressDlgTitle, IPAddressDlgText, "" , EXCLUSIVE);
+  bSelected = FALSE;
+  nResult = ListGetFirstString(listIPAddress, IPAddressString);   
+  bSelected = ComponentIsItemSelected (MEDIA , IPAddressString);
+  while ((nResult != END_OF_LIST) && !bSelected);
+    nResult = ListGetNextString(listIPAddress, IPAddressString);
+    bSelected = ComponentIsItemSelected (MEDIA , IPAddressString);
+  endwhile;   
+  IPAddressParam = IPAddressString;
+  // Release the list from memory.
+  ListDestroy (listIPAddress);
+  // Restore MEDIA to its previous value for file transfer.
+  MEDIA = szSaveMEDIAValue;
+  return DlgResult;
+end;  
+
+//----------------------------------------------------------------------------
+// StartService
+//----------------------------------------------------------------------------
+function NUMBER StartService(ServiceName, ServiceArgs)
+  number State; 
+  number Seconds;
+  number Result;
+begin
+  Result = ServiceGetServiceState(ServiceName, State);
+  if (Result >= ISERR_SUCCESS) then
+    if (State != SERVICE_RUNNING) then
+      Result = ServiceStartService(ServiceName, ServiceArgs);
+      if (Result >= ISERR_SUCCESS) then  
+        Seconds = 0;
+        repeat 
+          Delay(1); // wait 1 second
+          Seconds += 1;
+          ServiceGetServiceState(ServiceName, State);
+        until (Seconds = 120 || State = SERVICE_RUNNING);
+      endif;
+    endif;  
+    if (State != SERVICE_RUNNING) then
+      MessageBox("The " + ServiceName + " service could not be started", SEVERE);
+      CriticalErrorOccured = TRUE;
+    endif;
+  else
+    MessageBox("The " + ServiceName + " service could not be started", SEVERE);
+    CriticalErrorOccured = TRUE;
+  endif; 
+  return Result;
+end;     
+         
+//----------------------------------------------------------------------------
+// StopService
+//----------------------------------------------------------------------------
+function NUMBER StopService(ServiceName)
+  number State; 
+  number Seconds;
+  number Result;  
+  string s;
+begin
+  Result = ServiceGetServiceState(ServiceName, State);
+  if (Result >= ISERR_SUCCESS) then
+    if (State != SERVICE_STOPPED) then
+      ServiceStopService(ServiceName);
+      Seconds = 0;
+      repeat 
+        Delay(1); // wait 1 second   
+        Seconds += 1;
+        ServiceGetServiceState(ServiceName, State);
+      until (Seconds = 120 || State = SERVICE_STOPPED);
+    endif;   
+    if (State != SERVICE_STOPPED) then  
+      MessageBox("The " + ServiceName + " service could not be stopped", SEVERE);
+      CriticalErrorOccured = TRUE;
+    endif;
+  else
+    MessageBox("The " + ServiceName + " service could not be stopped", SEVERE);
+    CriticalErrorOccured = TRUE;
+  endif;                        
+  return Result;
+end;     
+ 
+//---------------------------------------------------------------------------
+// OnUpdateUIBefore
+//
+// Update UI Sequence - Before Move Data
+//
+// The OnUpdateUIBefore event is called when the setup is running in update
+// mode. By default this event displays UI that allows the end user to
+// update the application to the current version.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnUpdateUIBefore()
+	string szTitle, szMsg, szIgnore, szVersionInstalled, szVersionSupported, szVersionUpdate;
+	number nVersionInstalled;
+	number nIgnore, nId, nMediaFlags;
+	number nResult;
+	string svVersionInstalled; 
+ 	number nvVersionResult, nvMajor, nvMinor, nvBuild;
+begin
+	// Determine the update media type.	
+	MediaGetData( MEDIA, MEDIA_FIELD_MEDIA_FLAGS, nMediaFlags, szIgnore );
+
+	// Compare Versions
+	nResult = VerProductCompareVersions();
+
+	// Make sure that valid data was returned by VerProductCompareVersions
+	if( nResult < ISERR_SUCCESS ) then
+		szMsg = SdLoadString( IDS_IFX_ERROR_UPDATE_VERSION_COMPARE_FAILURE );
+		MessageBox( szMsg, SEVERE );
+		abort;
+	endif;
+
+	// Make sure that the product is installed.
+	if( nResult = VERSION_COMPARE_RESULT_NOT_INSTALLED ) then
+		// Note: This result should occur only for differential media, since OnFirstUIBefore
+		// will be called by default for non-differential media in this case.
+		szMsg = SdLoadString( IDS_IFX_ERROR_UPDATE_PRODUCT_NOT_INSTALLED );
+		SdSubstituteProductInfo( szMsg );
+		MessageBox( szMsg, SEVERE );
+		abort;
+	endif;	
+
+	// Check whether the update is older than the currently installed version.
+	if( nResult = VERSION_COMPARE_RESULT_OLDER ) then
+		szMsg = SdLoadString( IDS_IFX_ERROR_UPDATE_NOT_APPROPRIATE );
+		SdSubstituteProductInfo( szMsg );
+		MessageBox( szMsg, SEVERE );
+		abort;
+	endif;
+
+	// Verify that this update is appropriate for the version of the application that is installed.
+	if( nResult = VERSION_COMPARE_RESULT_NEWER_NOT_SUPPORTED ) then
+		szMsg = SdLoadString( IDS_IFX_ERROR_UPDATE_NOT_SUPPORTED );
+		SdSubstituteProductInfo( szMsg );
+		MessageBox( szMsg, SEVERE );
+		abort;
+	endif;
+
+	// Check whether the update is needed.
+	if( nResult = VERSION_COMPARE_RESULT_SAME ) then
+		// Note: This result should occur only for differential media, since the setup
+		// will display OnMaintUIBefore or OnFirstUIBefore by default if the versions match
+		// for full setup media.
+		szMsg = SdLoadString( IDS_IFX_WARNING_UPDATE_NOT_NEEDED );
+		SdSubstituteProductInfo( szMsg );
+		if( MessageBox( szMsg, MB_ICONEXCLAMATION | MB_YESNO ) != IDYES ) then
+			abort;
+		endif;
+	endif;
+
+	// Automatically select newly added components, do this before UI sequence in case so that
+	// if a component dialog is added, it reflects newly selected components.
+	ComponentSelectNew( MEDIA, TRUE );
+
+	// TODO: Enable this line if you want the update to to automatically uninstall
+	// any components that are not contained in the media but are listed in the 
+	// log file.
+	// ComponentRemoveAllInLogOnly();
+           
+// Beginning of UI Sequence
+Dlg_Start:
+
+Dlg_SdWelcome:
+	szTitle = "";
+    szMsg = SdLoadString( IDS_IFX_SDWELCOMMESSAGE_UPDATE_WELCOME );
+    // Re-format version number
+	VerProductGetInstalledVersion (svVersionInstalled);
+	VerProductStrToNum (nvVersionResult, svVersionInstalled);
+	nvMajor = nvVersionResult >> 24;
+	nvMinor = (nvVersionResult >> 16) & 0xFF;
+	nvBuild = nvVersionResult & 0xFFFF;
+	Sprintf(svVersionInstalled, "%ld.%ld.%ld", nvMajor, nvMinor, nvBuild);
+    StrReplace(szMsg, "%VI", svVersionInstalled, 0);
+    nResult = SdWelcome( szTitle, szMsg );
+    if (nResult = BACK) goto Dlg_Start;
+
+Dlg_SdIPAddressSelection:
+    if ((!ComponentIsItemSelected (MEDIA, DataCollectorComponent) &&
+         IFX_INSTALLED_VERSION != "2.01.001") ||
+          GetIPCount() < 2) then
+      if (nResult = NEXT) goto Dlg_ObjDialogs;
+      if (nResult = BACK) goto Dlg_SdWelcome;
+    endif; 
+    nResult = IPAddressSelectionDlg(DtcIPAddress); 
+    if (nResult = BACK) goto Dlg_SdWelcome;  
+    
+Dlg_ObjDialogs:
+    nResult = ShowObjWizardPages( nResult );
+    if (nResult = BACK) goto Dlg_SdWelcome; 
+
+	if( nMediaFlags & MEDIA_FLAG_FORMAT_DIFFERENTIAL ) then
+		// Differential installs patch media.
+		ComponentPatch();
+	else
+		// Update reinstalls (updates) all components in media.
+		ComponentReinstall();
+	endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnUpdateUIAfter
+//
+// Update Mode UI Sequence - After Move Data
+//
+// The OnUpdateUIAfter event called by OnShowUI after the file transfer
+// of the setup when the setup is running in update mode. By default
+// this event displays UI that informs the end user that the maintenance setup
+// has been completed successfully.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnUpdateUIAfter()
+    string	szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
+    BOOL	bOpt1, bOpt2;
+    string  ErrorMsgStr;
+begin
+
+    ShowObjWizardPages(NEXT);
+
+    if (ComponentIsItemSelected (MEDIA, DataCollectorComponent)) then
+      SdShowMsg(MSDEServiceStarting, TRUE);
+      StartService("MSSQL$DTC", "");
+      if (!UpgradeCollectorDatabase(ErrorMsgStr)) then
+        MessageBox(ErrorMsgStr, SEVERE);
+        LogWriteCustomString("CollDBUpgradeError", ErrorMsgStr);
+      endif;
+    endif;
+
+	szTitle = SdLoadString(IDS_IFX_SDFINISH_UPDATE_TITLE);    
+    szMsg1  = SdLoadString(IDS_IFX_SDFINISH_UPDATE_MSG1);
+	szMsg2 = "";    
+    szOpt1 = "";
+    szOpt2 = "";
+	bOpt1   = FALSE;
+    bOpt2   = FALSE;    
+    
+    if ( BATCH_INSTALL ) then
+    	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
+    else    
+       	SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bOpt1 , bOpt2 );
+    endif;
+end;
+
+// --- include script file section ---
+
+#include "ComponentEvents.rul"

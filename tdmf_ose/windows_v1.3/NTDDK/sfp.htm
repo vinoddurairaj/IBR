@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>System File Protection</title>
+<link rel="stylesheet" type="Text/css" href="ddk.css">
+<META NAME="MS-HKWD" CONTENT="SFP">
+<META NAME="MS-HKWD" CONTENT="System File Protection">
+<META NAME="MS-HKWD" CONTENT="File Protection">
+<META NAME="MS-HKWD" CONTENT="Protected File List">
+<META NAME="MS-HKWD" CONTENT="Disabling System File Protection">
+</head>
+
+<body topmargin=0>
+<TABLE CLASS="buttonbarshade" CELLSPACING=0><TR><TD NOWRAP>&nbsp;</TD></TR></TABLE>
+<TABLE CLASS="buttonbartable" CELLSPACING=0>
+<TR ID="hdr"><TD CLASS="runninghead" NOWRAP>Windows Me DDK: System File Protection</TD></TR>
+</TABLE>
+<br><br>
+<!----------------------  TITLE  -------------------------->
+<h1><B><FONT FACE="Verdana, Arial, Helvetica">
+System File Protection
+</FONT></B></h1>
+<!----------------------  SUMMARY -------------------------->
+<FONT FACE="Verdana, Arial, Helvetica" SIZE=2>
+<p>Installation programs that are not part of the operating
+system can overwrite shared system files, even when it is
+incorrect to do so. This has been a common problem in the
+history of the Microsoft® Windows® operating systems. Overwriting shared system
+files with older versions or modified versions of the file can result in unpredictable system performance that ranges from
+application errors to operating system crashes. The files types that are most
+commonly affected by this problem are dynamic-link libraries (DLL) and
+executable files (EXE).</p>
+
+<p>In Windows Millennium Edition, a new feature called <b>System File Protection
+(SFP)</b> will prevent the unauthorized modification or replacement of critical
+system files that are essential for basic windows functionality.</p>
+
+<p>SFP protects system files by running in the background and
+detecting attempts to replace protected system files. System File Protection monitors
+all file changes and triggers when a file in the protected list is going to be changed.  
+Before allowing the changes, it makes a copy of the original file. Then, SFP looks up the file 
+signature in a catalog file to determine if the new file is the correct Microsoft version. If
+it is not, the operating system replaces the file with the copy it had made just before the file 
+was modified.</p>
+
+<p>SFP logs all its actions in sfplog.txt which is in the <a href="file://windows/system/sfp">windows\system\sfp</a>
+directory.</p>
+</FONT>
+
+<!--------------------Supported File Replacement Mechanisms------------>
+<br><br>
+<h1><B><FONT FACE="Verdana, Arial, Helvetica">Supported File Replacement Mechanisms</FONT></B></h1>
+<p><font face="Verdana, Arial, Helvetica" size="-1">Protected Files can be
+modified by Authorized packages authored in Microsoft. They will carry certified
+catalogs and will install these catalogs before changing any files. SFP will
+then use the new file signatures to validate files.</font>
+<p>
+
+<!------------------------Protected File List-------------------------->
+<br><br>
+<h1><B><FONT FACE="Verdana, Arial, Helvetica">Protected File List</FONT></B></h1>
+</p>
+<FONT FACE="Verdana, Arial, Helvetica" SIZE=-1>
+
+<p>There is a list of around 900 files that are identified to be critical to
+windows functionality. The list includes files with extensions .sys, .dlls,
+.exes, .ocx as well as files with other extensions. All these files are auhtored
+and owned by Microsoft. No 3rd party files are included in this list.</p>
+
+<p><a href="sfplist.htm">Protected File List</a></p>
+
+</FONT>
+
+<!-----------------Disabling Windows File Protection-------------------->
+<br><br>
+<h1><B><FONT FACE="Verdana, Arial, Helvetica">Disabling System File Protection</FONT></B></h1>
+
+<FONT FACE="Verdana, Arial, Helvetica" SIZE=-1>
+<p>SFP is not active during OS setup and upgrades. It also is inactive during
+&quot;Safe&quot; mode sessions.
+<p>SFP cannot be disabled by the users or application programs.</p>
+</body>
+</html>

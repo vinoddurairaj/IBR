@@ -1,0 +1,234 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved
+#
+#
+ifndef VARS_GMK
+VARS_GMK=defined
+ifndef MAKEFLAGS
+MAKEFLAGS=--no-print-directory
+endif
+DESTDIR=${TOP}/pkg.install/pkg
+Q=%%QNAME%%
+PDFQ=%%PDFQNAME%%
+CAPQ=%%CAPQNAME%%
+V=${TOP}/version.o
+PRODUCTNAME=%%PRODUCTNAME%%
+CAPPRODUCTNAME=%%CAPPRODUCTNAME%%
+COMPANYNAME=%%COMPANYNAME%%
+
+# where PRODUCTNAME contains token separators, 
+# put underscores...this is for using productname 
+# like variable tokens in tcl or shell scripts...
+PRODUCTNAME_TOKEN=%%PRODUCTNAME_TOKEN%%
+CAPPRODUCTNAME_TOKEN=%%CAPPRODUCTNAME_TOKEN%%
+
+SYSTYPE:= $(shell uname -s)
+SYSVERS:= $(shell ${TOP}/mk/unamevers.sh)
+
+# AIX: No pkginst, OEM is irrelevant
+ifeq (AIX,$(SYSTYPE))
+OEM=
+OEMNAME=%%OEMNAME%%
+else
+OEM=%%OEMNAME%%
+OEMNAME=%%OEMNAME%% 
+endif
+
+ifeq (${Q},qds)
+PKGNAME=QLIXds
+else
+PKGNAME=${OEM}${Q}
+endif
+ifeq (${Q},qds)
+DOCPKGNAME=QLIXdds
+else
+DOCPKGNAME=${OEM}${Q}d
+endif
+
+include ${TOP}/mk/Makefile.inc.${SYSTYPE}
+
+ifdef GCC_CHECKER
+GCC_CHEKER_DEFINES=-DGCC_CHECKER
+CC=gcc -Wformat
+endif
+VERSIONDEFINES=-DVERSION=\"${VERSION}\" -DPRODUCTNAME=\"${PRODUCTNAME}\" \
+	-DPRODUCTNAME_TOKEN=\"${PRODUCTNAME_TOKEN}\" \
+	-DOEM=\"${OEM}\" -DPKGNAME=\"${PKGNAME}\" -DQNM=\"${Q}\" \
+	-DCAPQ=\"${CAPQ}\" \
+	-DCAPPRODUCTNAME=\"${CAPPRODUCTNAME}\" \
+	-DCAPPRODUCTNAME_TOKEN=\"${CAPPRODUCTNAME_TOKEN}\" \
+	-DBLDSEQNUM=\"${BLDSEQNUM}\" -DSYSVERS=${SYSVERS}
+CFLAGS = ${VERSIONDEFINES} ${PLATFORMDEFINES} ${COPTFLAGS} \
+	${CINCLUDES} ${CDEFINES} ${GCC_CHECKER_DEFINES}
+LINKFLAGS =
+DEPEND = /usr/openwin/bin/makedepend
+RM=/bin/rm -f
+
+#
+# OK.  We have three parts to a release version.  There is rev.
+# This is supposed to change rarely.  The next is fix.  This is
+# anticpated to change approx monthly as we move forward with bug
+# fixes and the like.  VSUFF is generally unused except for things
+# like beta programs, or special one off versions.
+#
+# The reason we have REV and FIX different is that we want to keep
+# the same directory structure for all fix releases in a minor release
+# series.  $REV is used in paths which are painful to change for each
+# fix release.
+#
+REV=1.2
+FIX=.5
+VSUFF=
+ifeq (HP-UX,$(SYSTYPE))
+	ifeq ($(SYSVERS),1111)
+		VSUFF='-i'
+	endif
+endif
+#VSUFF=.BETA.`date +%y%m%d`
+BLDSEQNUM=" Build %%SEQNUM%%"
+VERSION=$(REV)$(FIX)$(VSUFF)
+#VERSION=$(REV)$(FIX)
+CVS_MAJREV=`echo $(REV) | sed -e 's/-.*$//g;s/\./-/g'`
+CVS_REV=`echo $(VERSION) | sed -e 's/-.*$//g;s/\./-/g'`
+
+CLEANS=$(OBJS) $(EXTRA_CLEANS) $(DEPLIBS) core *~ .depend *_pure_*.[oa] .pure
+ifdef PROGRAM
+CLEANS+= ${Q}${PROGRAM}
+endif
+ifdef PROGRAMS
+CLEANS+=${PROGRAMS}
+endif
+ifdef LIBRARY
+CLEANS+=lib${LIBRARY}.a
+endif
+ifdef SH_PROGRAM
+CLEANS+=${SH_PROGRAM}
+endif
+ifdef PLAT_SH_PROGRAM
+CLEANS+=${PLAT_SH_PROGRAM}
+endif
+ifdef BIN_PROGRAM
+CLEANS+=${BIN_PROGRAM}
+endif
+ifdef PKGHDRS
+CLEANS+=${PKGHDRS}
+endif
+
+TOPDIR=${DESTDIR}/${PKGNAME}
+BINDIR=${TOPDIR}/bin
+LIBEXECDIR=${TOPDIR}/libexec
+LIBDIR=${TOPDIR}/lib
+MANDIR=${TOPDIR}/man/man1
+ETCDIR=${DESTDIR}/etc/opt/${PKGNAME}
+CONFIGDIR=${DESTDIR}/etc/rc.config.d
+HTMLDIR=${TOPDIR}/doc/html
+IMGDIR=${TOPDIR}/doc/images
+HTMLIMGDIR=${TOPDIR}/doc/html/images
+PDFDIR=${TOPDIR}/doc/pdf
+PSDIR=${TOPDIR}/doc/postscript
+PKGDIR=${DESTDIR}/..
+SBINDIR=${DESTDIR}/sbin
+PKGUSRSBINDIR=${DESTDIR}/usr/sbin
+TCLDIR=${LIBDIR}/${Q}${REV}
+SAMPLEDIR=${TOPDIR}/samples
+
+INCLIC=-I${TOP}/lib/liblic
+INCMD5=-I${TOP}/lib/libmd5
+INCGEN=-I${TOP}/lib/libgen
+INCDEVICE=-I${TOP}/driver
+
+LIBLIC=${TOP}/lib/liblic/liblic.a
+LIBMD5=${TOP}/lib/libmd5/libmd5.a
+ifeq (HP-UX,$(SYSTYPE))
+   LIBGEN=${TOP}/lib/libgen/libgen.a  ${LIBMD5} -lm
+else 
+   LIBGEN=${TOP}/lib/libgen/libgen.a  ${LIBMD5}
+endif
+DEPLIBLIC=${TOP}/lib/liblic/liblic.a
+DEPLIBMD5=${TOP}/lib/libmd5/libmd5.a
+DEPLIBGEN=${TOP}/lib/libgen/libgen.a
+
+# product installation root vars.
+# product seems to have this minimal set of roots...
+# map roots according to SYSTYPE
+# for now, this is made consistent with
+# similar mapping performed in
+# installp/mklpp/aixbin/mkbaserel.sh
+# by looking in this file for definitions
+# delimited by the VARDIR_START VARDIR_STOP
+# macros below. please don't move them...
+ifeq (AIX,$(SYSTYPE))
+# %VARDIR_START%
+OPTDIR=usr
+VAROPTDIR=var
+OURCFGDIR=etc/${Q}/lib
+ETCOPTDIR=etc/${Q}/lib
+ETCINITDDIR=etc/${Q}/init.d
+ETCRSDDIR=etc/${Q}/rS.d
+ETCR3DDIR=etc/${Q}/r3.d
+USRKERNELDRVDIR=usr/lib/drivers
+USRSBINDIR=${OPTDIR}/sbin
+FTDLIBDIR=${OPTDIR}/${Q}/lib
+FTDBINDIR=${OPTDIR}/${Q}/bin
+FTDLIBEXECDIR=${OPTDIR}/${Q}/libexec
+FTDCFGDIR=etc/${Q}/lib
+FTDCONFDIR=${OPTDIR}/lib/drivers
+FTDVAROPTDIR=${VAROPTDIR}/${Q}
+# %VARDIR_STOP%
+else
+OPTDIR=opt
+VAROPTDIR=var/opt
+ETCOPTDIR=etc/opt
+ETCINITDDIR=etc/init.d
+ETCRSDDIR=etc/rS.d
+ETCR3DDIR=etc/r3.d
+FTDLIBDIR=opt/${PKGNAME}/lib
+FTDLIBEXECDIR=opt/${PKGNAME}/libexec
+FTDBINDIR=opt/${PKGNAME}/bin
+FTDCFGDIR=etc/opt/${PKGNAME}
+FTDCONFDIR=usr/kernel/drv
+FTDVAROPTDIR=${VAROPTDIR}/${PKGNAME}
+USRKERNELDRVDIR=usr/kernel/drv
+USRSBINDIR=usr/sbin
+OURCFGDIR=etc/opt/${PKGNAME}
+# HPUX: Put the driver conf file in with the cfg files
+ifeq (HPUX,$(SYSTYPE))
+FTDCONFDIR=${FTDCFGDIR}
+USRKERNELDRVDIR=${FTDCFGDIR}
+endif
+endif
+
+# Vars to help the translation
+PKGIFY=@rm -f $@; \
+	echo Making $@ from $?; \
+	sed \
+	 -e '\@%PKGNM%@s@@${PKGNAME}@g' \
+	 -e '\@%PRODUCTNAME%@s@@${PRODUCTNAME}@g' \
+	 -e '\@%PRODUCTNAME_TOKEN%@s@@${PRODUCTNAME_TOKEN}@g' \
+	 -e '\@%CAPPRODUCTNAME%@s@@${CAPPRODUCTNAME}@g' \
+	 -e '\@%CAPPRODUCTNAME_TOKEN%@s@@${CAPPRODUCTNAME_TOKEN}@g' \
+	 -e '\@%COMPANYNAME%@s@@${COMPANYNAME}@g' \
+	 -e '\@%FTDLIBEXECDIR%@s@@${FTDLIBEXECDIR}@g' \
+	 -e '\@%FTDBINDIR%@s@@${FTDBINDIR}@g' \
+	 -e '\@%FTDLIBDIR%@s@@${FTDLIBDIR}@g' \
+	 -e '\@%VERSION%@s@@${VERSION}@g' \
+	 -e '\@%REV%@s@@${REV}@g' \
+         -e '\@%FIX%@s@@${FIX}@g' \
+         -e '\@%VSUFF%@s@@${VSUFF}@g' \
+	 -e '\@%OEM%@s@@${OEM}@g' \
+	 -e '\@%Q%@s@@${Q}@g' \
+         -e '\@%PDFQ%@s@@${PDFQ}@g' \
+	 -e '\@%CAPQ%@s@@${CAPQ}@g' \
+	 -e '\@%OPTDIR%@s@@${OPTDIR}@g' \
+	 -e '\@%VAROPTDIR%@s@@${VAROPTDIR}@g' \
+	 -e '\@%ETCOPTDIR%@s@@${ETCOPTDIR}@g' \
+	 -e '\@%ETCINITDDIR%@s@@${ETCINITDDIR}@g' \
+	 -e '\@%ETCRSDDIR%@s@@${ETCRSDDIR}@g' \
+	 -e '\@%ETCR3DDIR%@s@@${ETCR3DDIR}@g' \
+	 -e '\@%FTDCFGDIR%@s@@${FTDCFGDIR}@g' \
+	 -e '\@%FTDCONFDIR%@s@@${FTDCONFDIR}@g' \
+	 -e '\@%FTDVAROPTDIR%@s@@${FTDVAROPTDIR}@g' \
+	 -e '\@%OURCFGDIR%@s@@${OURCFGDIR}@g' \
+	 -e '\@%USRKERNELDRVDIR%@s@@${USRKERNELDRVDIR}@g' \
+	 -e '\@%USRSBINDIR%@s@@${USRSBINDIR}@g' $? > $@; 
+endif

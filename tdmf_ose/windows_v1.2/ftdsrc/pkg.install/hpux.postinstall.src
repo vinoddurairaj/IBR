@@ -1,0 +1,185 @@
+#! /sbin/sh
+###############
+# Product: %Q%
+# Fileset: %Q%.Programs
+# postinstall
+################
+#
+#	Copyright (c) 1997, 1998 FullTime Software, Inc.  All rights reserved.
+#
+########################################################################
+#                                                                      #
+
+UTILS=/usr/lbin/sw/control_utils
+SEDTMP=/tmp/mod_bcheckrc.sed
+BCHECKRC=/sbin/bcheckrc
+
+if [[ ! -f $UTILS ]]
+then
+    print "ERROR:   Cannot find the sh functions library $UTILS"
+    exit 1
+fi
+. $UTILS
+
+exitval=$SUCCESS                # Anticipate success
+
+########################################################
+# Only modify the system file on the root file system. #
+# If this is an NFSdiskless installation, or alternate #
+# root, then configure will handle it.                 #
+########################################################
+
+if [[ -z "${SW_DEFERRED_KERNBLD}" ]]
+then
+    
+    ########################################
+    #                                      #
+    # Place ftd driver into system file.   #
+    #                                      #
+    ########################################
+    
+    mod_systemfile $SW_SYSTEM_FILE_PATH -a %Q% 
+    if [[ $? -ne 0 ]]
+    then
+        print "ERROR:   Cannot update $SW_SYSTEM_FILE_PATH to"
+        print "         include %Q%."
+        exitval=$FAILURE 
+    fi
+    
+    #############
+    # Finished. #
+    #############
+
+fi	# end of "if [[ -z ${SW_DEFERRED_KERNBLD}" ]]
+
+#
+# Update /etc/PATH to include /opt/FTSWftd/bin
+#
+mod_pathfile -a P /%FTDBINDIR%
+
+#
+# make links from /usr/local/bin to /opt/FTSWftd/bin/*
+#
+if [ -d /usr/local/bin -a -w /usr/local/bin ]; then
+	ln -s /%FTDBINDIR%/* /usr/local/bin/. > /dev/null 2>&1
+fi
+
+#
+# make links in rc.* directories
+#
+ln -s /sbin/init.d/%PKGNM%-chkpt_boot /sbin/rc3.d/S024%PKGNM%-chkpt_boot
+ln -s /sbin/init.d/%PKGNM%-scan /sbin/rc1.d/K925%PKGNM%-scan
+ln -s /sbin/init.d/%PKGNM%-startdaemons /sbin/rc3.d/S025%PKGNM%-startdaemons
+
+#
+# Add %Q%start into /etc/bcheckrc
+#
+grep "%Q%start" ${BCHECKRC} > /dev/null 2>&1
+if [ $? -ne 0 ]
+then
+    echo "\nAdding driver start hooks to ${BCHECKRC}.\n" 
+    #
+    # not found, add it in
+    #
+    # First backup original bcheckrc
+    cp ${BCHECKRC} ${BCHECKRC}.pre%CAPQ%
+    #
+    # find the line 2 lines past the last line with /sbin/lvmrc in it
+    #
+    lineno=`cat ${BCHECKRC} | sed -n -e '/\/sbin\/lvmrc/=' | tail -1`
+    lineno=`expr $lineno + 2`
+    if [ xx"${lineno}" = "xx" ]
+    then
+        echo "${BCHECKRC} context to modify not found";
+    else
+        cat > ${SEDTMP} << EOSEDCMD
+${lineno} a\\
+#*********************************************************************\\
+# The following lines were added by the %PRODUCTNAME% Installation\\
+#*********************************************************************\\
+if [ -c /dev/%Q%/ctl ]\\
+then\\
+    echo "Starting %PRODUCTNAME% groups"\\
+    /sbin/%Q%start -ba\\
+fi\\
+#*********************************************************************\\
+# End of %PRODUCTNAME% modifications\\
+#*********************************************************************\\
+
+EOSEDCMD
+        # apply the patch
+        cat ${BCHECKRC} | sed -f ${SEDTMP} > ${BCHECKRC}.new%CAPQ%
+	chmod 544 ${BCHECKRC}.new%CAPQ%
+        mv ${BCHECKRC}.new%CAPQ% ${BCHECKRC}
+        # clean up
+        rm -f ${SEDTMP}
+        # notify user of change
+        echo "The following lines have been added to ${BCHECKRC} after the"
+        echo "activation of LVM volume groups and before the filesystem checks."
+        echo '\nif [ -c /dev/%Q%/ctl ]'
+        echo '    echo "Starting %PRODUCTNAME% groups"'
+        echo '    /sbin/%Q%start -ba'
+        echo 'fi'
+        echo "\nPlease inspect ${BCHECKRC} to verify this modification."
+        echo "The original ${BCHECKRC} file has been saved to ${BCHECKRC}.pre%CAPQ%"
+        echo "so that you may restore it if necessary.\n"
+    fi
+fi
+
+# Copy the config files from past revs
+
+if [ -d /%VAROPTDIR%/%PKGNM% ]; then
+    cd /%VAROPTDIR%/%PKGNM%
+    a=`find . -type d -print | xargs ls -td | egrep / | head -1`
+    if [ "$a" != "" ]; then
+	echo Restoring earlier configuration and license files from /%VAROPTDIR%/%PKGNM%/$a.
+	mkdir -p %OURCFGDIR%
+	for i in $a/*.lic
+	do	
+	    cp $i /%OURCFGDIR% > /dev/null 2>&1
+	done
+	for i in $a/*.sh
+	do	
+	    cp $i /%OURCFDIR% > /dev/null 2>&1
+	done
+    fi
+else
+    mkdir -p /%VAROPTDIR%/%PKGNM% 
+    # -- see if a previous installation of FullTime Data exists instead
+    if [ -d /var/opt/FTSWftd ]; then
+        cd /var/opt/FTSWftd
+        a=`find . -type d -print | xargs ls -td | egrep / | head -1`
+        if [ "$a" != "" ]; then
+            if [ "${a}/*.lic" != "" ]; then
+                echo "Converting and restoring previously saved FullTime Data"
+                echo "   license key file to the %PRODUCTNAME% %VERSION% installation."
+            fi
+            for i in ${a}/*.lic
+            do
+                cat ${i} | sed 's/FTD_LICENSE/%CAPQ%_LICENSE/g' > /%FTDCFGDIR%/%CAPQ%.lic
+            done
+            /bin/chmod 0755 /%FTDCFGDIR%/%CAPQ%.lic
+            # see if there are any shell scripts for checkpointing
+            chdir ${a}
+            if [ "*.sh" != "" ]; then
+                echo "Migrating previously saved FullTime Data checkpoint shell script files."
+                echo "*** WARNING" 
+                echo "\07*** WARNING:  Automatic conversion of checkpoint script files "
+                echo "*** WARNING:  is being attempted.  These files may require "
+                echo "*** WARNING:  additional editing before use!!!"
+                echo "*** WARNING" 
+            fi
+            for i in *.sh
+            do
+                /bin/cat $i | /bin/sed '{
+s/FTSWftd/%PKGNM%/g
+s/ftd/%Q%/g
+s/FTD/%CAPQ%/g
+}' > /etc/opt/%PKGNM%/$i
+            chmod 755 /etc/opt/%PKGNM%/$i
+            done
+        fi
+    fi
+fi
+
+cd / ; /sbin/init.d/%PKGNM%-startdaemons start

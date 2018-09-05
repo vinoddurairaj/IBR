@@ -1,0 +1,55 @@
+# Copyright (c) %COPYRIGHTYEAR 2001% %COMPANYNAME%. All rights reserved.
+# Post-removal script 
+# $Id: sun.postremove.src,v 1.27 2014/09/15 20:25:44 paulclou Exp $
+
+SERVICES=/etc/inet/services
+
+killproc() {            # kill the named process(es)
+    pid=`/usr/bin/ps -e |
+             /usr/bin/grep -w $1 |
+             /usr/bin/sed -e 's/^  *//' -e 's/ .*//'`
+        [ "$pid" != "" ] && kill $2 $pid
+}
+
+FTDLINKS="%Q%checkpoint %Q%configtool %Q%debugcapture %Q%hostinfo %Q%info %Q%init %Q%killpmd %Q%killrefresh %Q%killrmd %Q%licinfo %Q%monitortool %Q%override %Q%perftool %Q%pmd %Q%refresh %Q%rmdreco %Q%set %Q%start %Q%stop in.%Q% in.pmd in.rmd kill%Q%master killpmds killrefresh killrmds launch%Q%master launchpmds launchrefresh throtd %Q%modfs %Q%automount in.%QAGN% %Q%agentset launchagent killagent %Q%psmigrate %Q%panalyze launchnetanalysis %Q%netanalysis %Q%stopnetanalysis %Q%psmigrate272"
+FTDLINKS="$FTDLINKS %Q%monitortty %Q%hrdb_maths %Q%failover %Q%sendfailover"
+# Note: launchbackfresh, killbackfresh, %Q%backfresh, %Q%killbackfresh deactivated as of TDMF IP 2.8.0
+#
+# dynamic volume expansion feature disabled
+# %Q%reconfig %Q%expand %Q%limitsize
+#
+# delete the links in /usr/local/bin
+#
+if [ -d "/usr/local/bin" -a -w "/usr/local/bin" ]; then
+	echo "Removing %PRODUCTNAME% Symbolic Links from /usr/local/bin" 
+    for LINK in $FTDLINKS
+    do
+        rm -f /usr/local/bin/${LINK}
+    done
+fi
+
+echo "Removing %PRODUCTNAME% device tree: /dev/%Q%"
+rm -rf /dev/%Q%/*
+rm -rf /dev/%Q%
+
+/bin/sleep 5
+# delete /var/opt/%PKGNM%/Agn_tmp directory
+b=/var/opt/%PKGNM%/Agn_tmp
+if [ -d $b ]; then
+    rm -fr ${b} > /dev/null 2>&1
+fi
+
+echo "Removing temporary files from /var/opt/%PKGNM%"
+rm -f "/var/opt/%PKGNM%/*" > /dev/null 2>&1
+
+if [ "$BASEDIR" != "/opt" ]; then
+	rm -f /opt/$PKGINST
+fi
+
+echo "Removing %PRODUCTNAME% master daemon from $SERVICES"
+/usr/bin/cp -p $SERVICES $SERVICES.%Q%
+if [ $? -eq 0 ]; then
+    egrep -v 'in\.%Q%' $SERVICES.%Q% > $SERVICES
+fi
+
+exit 0

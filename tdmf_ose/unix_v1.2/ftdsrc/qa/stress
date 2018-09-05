@@ -1,0 +1,78 @@
+#!/bin/sh
+
+tenk()
+{
+  for i do
+    for i1 in 0 1 2 3 4 5 6 7 8 9; do
+      for i2 in 0 1 2 3 4 5 6 7 8 9; do
+        for i3 in 0 1 2 3 4 5 6 7 8 9; do
+          for i4 in 0 1 2 3 4 5 6 7 8 9; do
+            echo $i/$i1$i2$i3$i4
+          done
+        done
+      done
+    done
+  done
+}
+
+hundred()
+{
+  for i do
+    for i1 in 0 1 2 3 4 5 6 7 8 9; do
+      for i2 in 0 1 2 3 4 5 6 7 8 9; do
+        echo $i/$i1$i2
+      done
+    done
+  done
+}
+
+ten()
+{
+  for i do
+    for i1 in 0 1 2 3 4 5 6 7 8 9; do
+      echo $i/$i1
+    done
+  done
+}
+
+dofile()
+{
+  size=$1
+  shift
+  for i do
+    mkfile $size $i/dummy-file
+  done
+}
+
+# clean up from before
+rm -rf /mnt/[0-9]* /mnt/junk
+
+# Stress that bad boy!
+while true; do
+  echo "Copying lots of files from /usr to mnt"
+  mkdir /mnt/junk
+  (cd /usr ; tar cf - bin sbin lib share kernel css platform) | \
+	(cd /mnt/junk ; tar xf -)
+  sync
+  echo "Cleaning up"
+  rm -rf /mnt/junk
+  echo "Making 100 dirs flat"
+  hundred /mnt | xargs mkdir
+  echo "Rming 100 dirs flat"
+  hundred /mnt | xargs rmdir
+  sync
+  echo "Making tree {0-9}/{0-9}"
+  ten `ten /mnt` | xargs mkdir -p
+  echo "Making files in tree {0-9}/{0-9}"
+  dofile 100k `find /mnt/[0-9]* -print`
+  echo "---Cleaning tree---"
+  rm -rf /mnt/[0-9]*
+  sync
+  echo "Making 10000 dirs flat"
+  tenk /mnt | xargs mkdir
+  echo "Rming 10000 dirs flat"
+  tenk /mnt | xargs rmdir
+  sync
+  fsck -n /dev/rdsk/c0t1d0s1
+  echo
+done

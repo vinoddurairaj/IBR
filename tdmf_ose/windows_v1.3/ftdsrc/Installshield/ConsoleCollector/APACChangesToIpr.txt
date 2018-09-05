@@ -1,0 +1,34 @@
+[Components:Common Console:Properties]
+Description:=The TDMF OSE Common Console. This should be the second component to be installed.
+;DisplayText:=
+
+[Components:Data Collector and Database:Properties]
+Description:=The TDMF OSE Data Collector and Database engine. It is strongly suggested that the installation of this component is done first.
+;DisplayText:=
+
+[Components:Replication Server 2000:Properties]
+Description:=The TDMF OSE Agent and utilities. The device driver is automatically started when the system is rebooted.
+;DisplayText:=Replication Server
+
+[Components:Replication Server NT4:Properties]
+Description:=The TDMF OSE Agent and utilities. The device driver is automatically started when the system is rebooted.
+;DisplayText:=Replication Server
+
+[Project:Properties:Product]
+CompanyName:=Fujitsu Softek
+;URL:=
+;EmailAddress:=
+;Copyright:=
+;Summary:=
+Name:=TDMF OSE 
+;Version:=1.3.1
+;ExeFile:=
+;Comments:=
+
+[ShellObj:Data]
+Folder4:=Folder2\TDMF OSE 
+;Shortcut0:=Folder4\TDMF OSE
+
+[ShellObj:Shortcut0]
+;DisplayText:=Common Console
+

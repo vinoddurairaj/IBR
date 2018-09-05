@@ -1,0 +1,15 @@
+/WMarkPS.rc////*////
+/command.cpp////*////
+/command.h////*////
+/dirs////*////
+/dllentry.cpp////*////
+/drawmark.ps////*////
+/fdebug.cpp////*////
+/fdevmode.cpp////*////
+/intrface.cpp////*////
+/intrface.h////*////
+/precomp.h////*////
+/resource.h////*////
+/sources.inc////*////
+/wmark.ps////*////
+/wmarkps.h////*////

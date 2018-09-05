@@ -1,0 +1,16 @@
+/Collector.dsp////*////
+/Collector.vcproj////*////
+/DBServer.cpp////*////
+/DBServer.h////*////
+/DBServer_AgentAliveSocket.cpp////*////
+/DBServer_AgentMonitor.cpp////*////
+/DBServer_NotificationEvents.cpp////*////
+/DBServer_NotificationEvents.h////*////
+/DBServer_sock.cpp////*////
+/FileVersion.RC////*////
+/StdAfx.cpp////*////
+/StdAfx.h////*////
+/WinService.cpp////*////
+/dbserver_db.cpp////*////
+/resource.h////*////
+/test.cpp////*////

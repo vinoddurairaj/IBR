@@ -1,0 +1,201 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All rights reserved.
+#
+# $Id: Makefile.txt,v 1.1 2002/11/20 02:55:56 FJjapan Exp $
+#
+
+TOP=../..
+
+CDEFINES= -D_KERNEL -DKERNEL  
+
+include ${TOP}/Makefile.inc
+SUBDIRS= aixmethods
+whattodo:
+	@echo "Making aix43 driver ${Q}"
+
+all:: whattodo ${Q} ${Q}.conf
+
+VERSSRC=$(TOP)/version.c
+
+AIXHDRS=	../ftd_all.h ../ftd_bab.h ../ftd_bits.h \
+	../ftd_buf.h ../ftd_ddi.h ../ftd_def.h \
+	../ftd_disk.h ../ftd_kern_cproto.h ../ftd_kern_ctypes.h \
+	../ftd_klog.h ../ftd_timers.h ../ftd_var.h ../ftdio.h 
+
+AIXSRCS=	../ftd_.c ../ftd_buf.c ../ftd_bab.c ../ftd_bits.c \
+	../ftd_ioctl.c ../ftd_all.c ../ftd_klog.c ../memset.c \
+	../ftd_aix.c ../ftd_ddi.c ftd_timers.c $(VERSSRC) 
+
+AIXOBJS= ftd_aix.o ftd_buf.o ftd_bab.o ftd_bits.o \
+	ftd_ioctl.o ftd_all.o ftd_klog.o memset.o \
+	ftd_ddi.o ftd_timers.o version.o 
+
+EXTRA_CLEANS+=	${AIXOBJS} ${Q}
+
+#
+# installation rules
+#
+install::
+
+#
+# obj dep's
+#
+# $(V9OBJS): $(V9HDRS) $(V9SRCS)
+
+# load v9 driver
+${Q}: $(AIXOBJS) version.o ${Q}_syms.exp 
+	@echo "Linking driver: ${Q}"
+	@ld -b32 -H4096 -eftd_config_drv -bI:/lib/kernex.exp \
+	-bI:/lib/syscalls.exp -bloadmap:${Q}.map -bE:${Q}_syms.exp  \
+	-lcsys -o ${Q} $(AIXOBJS) 
+
+# production rules
+ftd_aix.o: ../ftd_aix.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_buf.o: ../ftd_buf.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_bab.o: ../ftd_bab.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_bits.o:  ../ftd_bits.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_ioctl.o: ../ftd_ioctl.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_all.o: ../ftd_all.c
+	${CC} ${CFLAGS} -c $<
+	
+ftd_ddi.o: ../ftd_ddi.c
+	${CC} ${CFLAGS} -c $<
+
+ftd_timers.o: ../ftd_timers.c
+	${CC} ${CFLAGS} -c $<
+	
+ftd_klog.o: ../ftd_klog.c
+	${CC} ${CFLAGS} -c $<
+	
+${Q}_syms.exp:
+	./aixmethods/mkexpsyms.sh ./*.o > dtc_syms.exp 2>&1
+
+memset.o: ../memset.c
+	${CC} ${CFLAGS} -c $<
+
+version.o: ${VERSSRC}
+	${CC} ${CFLAGS} -c $<
+
+#
+# misc targets
+#
+
+# driver config file
+${Q}.conf: ../driver.conf
+	$(PKGIFY)
+
+# hmmm...
+master.d-${Q}: ../master.d.src
+	$(PKGIFY)
+
+# make deps
+ftd_sun.o: ../ftd_sun.c
+ftd_sun.o: ../ftd_kern_ctypes.h
+ftd_sun.o: ../ftd_ddi.h
+ftd_sun.o: ../ftd_def.h
+ftd_sun.o: ../ftd_bab.h
+ftd_sun.o: ../ftd_def.h
+ftd_sun.o: ../ftdio.h
+ftd_sun.o: ../ftd_kern_ctypes.h
+ftd_sun.o: ../ftd_buf.h
+ftd_sun.o: ../ftdio.h
+ftd_sun.o: ../ftd_klog.h
+ftd_sun.o: ../ftd_bab.h
+ftd_sun.o: ../ftd_all.h
+ftd_sun.o: ../ftd_klog.h
+ftd_sun.o: ../ftd_kern_cproto.h
+ftd_buf.o: ../ftd_buf.c
+ftd_buf.o: ../ftd_kern_ctypes.h
+ftd_buf.o: ../ftd_buf.h
+ftd_buf.o: ../ftd_def.h
+ftd_buf.o: ../ftd_bab.h
+ftd_buf.o: ../ftd_def.h
+ftd_buf.o: ../ftdio.h
+ftd_buf.o: ../ftd_kern_ctypes.h
+ftd_buf.o: ../ftd_buf.h
+ftd_buf.o: ../ftdio.h
+ftd_buf.o: ../ftd_klog.h
+ftd_buf.o: ../ftd_kern_cproto.h
+ftd_bab.o: ../ftd_bab.c
+ftd_bab.o: ../ftd_kern_ctypes.h
+ftd_bab.o: ../ftd_ddi.h
+ftd_bab.o: ../ftd_def.h
+ftd_bab.o: ../ftd_bab.h
+ftd_bab.o: ../ftd_def.h
+ftd_bab.o: ../ftdio.h
+ftd_bab.o: ../ftd_kern_ctypes.h
+ftd_bab.o: ../ftd_buf.h
+ftd_bab.o: ../ftdio.h
+ftd_bab.o: ../ftd_klog.h
+ftd_bab.o: ../ftd_bab.h
+ftd_bab.o: ../ftd_klog.h
+ftd_bab.o: ../ftd_kern_cproto.h
+ftd_bits.o: ../ftd_bits.c
+ftd_bits.o: ../ftd_kern_ctypes.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftd_bab.h
+ftd_bits.o: ../ftd_buf.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_kern_ctypes.h
+ftd_bits.o: ../ftd_klog.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_bits.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftd_def.h
+ftd_bits.o: ../ftdio.h
+ftd_bits.o: ../ftd_klog.h
+ftd_bits.o: ../ftd_kern_cproto.h
+ftd_ioctl.o: ../ftd_ioctl.c
+ftd_ioctl.o: ../ftd_kern_ctypes.h
+ftd_ioctl.o: ../ftd_ddi.h
+ftd_ioctl.o: ../ftd_def.h
+ftd_ioctl.o: ../ftd_bab.h
+ftd_ioctl.o: ../ftd_def.h
+ftd_ioctl.o: ../ftdio.h
+ftd_ioctl.o: ../ftd_kern_ctypes.h
+ftd_ioctl.o: ../ftd_buf.h
+ftd_ioctl.o: ../ftdio.h
+ftd_ioctl.o: ../ftd_klog.h
+ftd_ioctl.o: ../ftd_bab.h
+ftd_ioctl.o: ../ftd_bits.h
+ftd_ioctl.o: ../ftd_def.h
+ftd_ioctl.o: ../ftd_var.h
+ftd_ioctl.o: ../ftd_all.h
+ftd_ioctl.o: ../ftdio.h
+ftd_ioctl.o: ../ftd_klog.h
+ftd_ioctl.o: ../ftd_kern_cproto.h
+ftd_all.o: ../ftd_all.c
+ftd_all.o: ../ftd_kern_ctypes.h
+ftd_all.o: ../ftd_ddi.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftd_bab.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftdio.h
+ftd_all.o: ../ftd_kern_ctypes.h
+ftd_all.o: ../ftd_buf.h
+ftd_all.o: ../ftdio.h
+ftd_all.o: ../ftd_klog.h
+ftd_all.o: ../ftd_bab.h
+ftd_all.o: ../ftd_bits.h
+ftd_all.o: ../ftd_def.h
+ftd_all.o: ../ftd_var.h
+ftd_all.o: ../ftd_all.h
+ftd_all.o: ../ftd_klog.h
+ftd_all.o: ../ftd_kern_cproto.h
+ftd_klog.o: ../ftd_klog.c
+ftd_klog.o: ../ftd_kern_ctypes.h
+ftd_klog.o: ../ftd_klog.h
+memset.o: ../memset.c
+memset.o: ../ftd_kern_ctypes.h
+version.o: ../../version.c

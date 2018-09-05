@@ -1,0 +1,902 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "DTCConfigTool"=.\gui\configtool\DTCConfigTool.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LibLic2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblic
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LibLic2"=.\lib\Liblic2\LibLic2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LogMsg"=.\libexec\LogMsg\LogMsg.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "MonitorTool"=.\gui\monitortool\MonitorTool.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Perf"=.\libexec\Perf\Perf.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "checkpoint"=.\libexec\checkpoint\checkpoint.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "createkey"=.\bin\createkey\createkey.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "debugcapture"=.\libexec\debugcapture\debugcapture.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "driver"=.\driver\driver.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "hostinfo"=.\libexec\hostinfo\hostinfo.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblic
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "info"=.\libexec\info\info.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "init"=.\libexec\init\init.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "killbackfresh"=.\daemons\kill\killbackfresh.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "killpmd"=.\daemons\kill\killpmd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "killrefresh"=.\daemons\kill\killrefresh.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "killrmd"=.\daemons\kill\killrmd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "launchbackfresh"=.\daemons\launch\launchbackfresh.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "launchpmd"=.\daemons\launch\launchpmd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "launchrefresh"=.\daemons\launch\launchrefresh.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "libcomp"=.\lib\libcomp\libcomp.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "liberr"=.\lib\liberr\liberr.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libftd"=.\lib\libftd\libftd.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "liblic"=.\lib\liblic\liblic.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "liblst"=.\lib\liblst\liblst.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libmd5"=.\lib\libmd5\libmd5.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libproc"=.\lib\libproc\libproc.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libsock"=.\lib\libsock\libsock.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libutil"=.\lib\libutil\libutil.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "license"=.\Installshield\license\license.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "licinfo"=.\libexec\licinfo\licinfo.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "override"=.\libexec\override\override.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "reco"=.\libexec\reco\reco.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "service"=.\daemons\service\service.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "set"=.\libexec\set\set.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "start"=.\libexec\start\start.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "stop"=.\libexec\stop\stop.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name libcomp
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liberr
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libftd
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name liblst
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmd5
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libproc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libsock
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libutil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "trace"=.\libexec\trace\trace.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

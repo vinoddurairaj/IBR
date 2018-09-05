@@ -1,0 +1,73 @@
+#! /usr/local/bin/perl5
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+use strict;
+use qaLib;
+
+my($F);
+while ($F = shift @ARGV) {
+	my $g = ParseCfgFile($F);
+
+	my $kw;
+	for $kw (qw(NOTES CHUNKSIZE NODATASLEEP SYNCINTERVAL SYNCCOUNT CHUNKDELAY DEFAULTRMDPORT
+			 STATINTERVAL MAXSTATFILESIZE LOGSTATS TRACETHROTTLE)) {
+		print "$kw: $g->{$kw}\n"
+			if defined($g->{$kw});
+	}
+
+	print "SYSTEM-TAG: " . $g->{PRIMARY}{SYSTEMTAG} . " PRIMARY\n";
+	print " HOST: $g->{PRIMARY}{HOST}\n";
+	print " HOSTID: $g->{PRIMARY}{HOSTID}\n";
+	print " IP: $g->{PRIMARY}{IP}\n";
+	my $wl;
+	for $wl ( @{$g->{PRIMARY}{WLEXTENSIONS}} ) {
+		if (defined($wl->{STARTSECTOR}) && $wl->{STARTSECTOR} ne '') {
+			print " WRITELOG-EXTENSION: $wl->{DEVICE} $wl->{STARTSECTOR} $wl->{ENDSECTOR}\n";
+		}
+		else {
+			print " WRITELOG-EXTENSION: $wl->{DEVICE}\n";
+		}
+	}
+
+	print "SYSTEM-TAG: " . $g->{SECONDARY}{SYSTEMTAG} . " SECONDARY\n";
+	print " HOST: $g->{SECONDARY}{HOST}\n";
+	print " HOSTID: $g->{SECONDARY}{HOSTID}\n";
+	print " IP: $g->{SECONDARY}{IP}\n";
+
+	my $i = 0;
+	my $profileRef;
+	for $profileRef ( @{$g->{PROFILES}} ) {
+		next unless $profileRef; # ($g->{PROFILES}[$i]);
+		$i++;
+		print "PROFILE: $i\n";
+		print " REMARK:" . ($profileRef->{REMARK} ? ' ' . $profileRef->{REMARK} . "\n" : "\n");
+		print " PRIMARY: $profileRef->{PRIMARY}{SYSTEMTAG}\n";
+		print " DATASTAR-DEVICE: $profileRef->{DATASTARDEVICE}\n";
+		print " DATADISK: $profileRef->{DATADISK}\n";
+		for $wl (@{$profileRef->{WRITELOG}}) {
+			if (defined($wl->{STARTSECTOR}) && $wl->{STARTSECTOR} ne '') {
+				print " WRITELOG: $wl->{DEVICE} $wl->{STARTSECTOR} $wl->{ENDSECTOR}\n";
+			}
+			else {
+				print " WRITELOG: $wl->{DEVICE}\n";
+			}
+		}
+
+		print " SECONDARY: $profileRef->{SECONDARY}{SYSTEMTAG}\n";
+		print " MIRROR-DISK: $profileRef->{MIRRORDISK}\n";
+	}
+
+	my $throttref;
+	for $throttref (@{$g->{THROTTLES}}) {
+		print "THROTTLE $throttref->{STARTTIME} $throttref->{ENDTIME} $throttref->{PARAM} $throttref->{OPER} $throttref->{VALUE}\n";
+		print " ACTIONLIST\n";
+		my $actionref;
+		for $actionref (@{$throttref->{ACTIONS}}) {
+			print " ACTION: $actionref\n";
+		}
+		print " ENDACTIONLIST\n";
+	}
+	print "Done with $F\n";
+}
+print "Done.\n";

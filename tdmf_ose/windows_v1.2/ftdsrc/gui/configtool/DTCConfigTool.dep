@@ -1,0 +1,123 @@
+# Microsoft Developer Studio Generated Dependency File, included by DTCConfigTool.mak
+
+.\AddGroup.cpp : \
+	".\AddGroup.h"\
+	".\DTCConfigTool.h"\
+	
+
+.\AddModMirrors.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\AddModMirrors.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	
+
+.\Config.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	"..\..\lib\libutil\misc.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	
+
+.\DeleteGroup.cpp : \
+	".\DeleteGroup.h"\
+	".\DTCConfigTool.h"\
+	
+
+.\DTCConfigPropSheet.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\AddModMirrors.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\System.h"\
+	
+
+.\DTCConfigTool.cpp : \
+	".\DTCConfigTool.h"\
+	".\DTCConfigToolDlg.h"\
+	
+
+.\DTCConfigTool.rc : \
+	".\res\DTCConfigTool.rc2"\
+	".\res\Icon_legato.ico"\
+	".\res\mti.ico"\
+	".\res\stk.ico"\
+	
+
+.\DTCConfigToolDlg.cpp : \
+	"..\..\driver\ftdio.h"\
+	"..\..\lib\libftd\ftd_lic.h"\
+	"..\..\lib\liblic\license.h"\
+	"..\..\lib\liblic\licplat.h"\
+	"..\..\lib\liblic\licprod.h"\
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\sockerrnum.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\AddGroup.h"\
+	".\Config.h"\
+	".\DeleteGroup.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\DTCConfigToolDlg.h"\
+	".\DTCDevices.h"\
+	".\System.h"\
+	".\Throttles.h"\
+	".\TunableParams.h"\
+	
+
+.\DTCDevices.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\AddModMirrors.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\DTCDevices.h"\
+	
+
+.\StdAfx.cpp : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\StdAfx.h"\
+	
+
+.\System.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\DTCConfigToolDlg.h"\
+	".\System.h"\
+	
+
+.\Throttles.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\Throttles.h"\
+	
+
+.\TunableParams.cpp : \
+	"..\..\lib\libsock\sock.h"\
+	"..\..\lib\libsock\tcp.h"\
+	"..\..\lib\libutil\iov_t.h"\
+	".\Config.h"\
+	".\DTCConfigPropSheet.h"\
+	".\DTCConfigTool.h"\
+	".\TunableParams.h"\
+	

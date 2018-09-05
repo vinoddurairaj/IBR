@@ -1,0 +1,1 @@
+This folder will eventually be used to implement the product in different languages.

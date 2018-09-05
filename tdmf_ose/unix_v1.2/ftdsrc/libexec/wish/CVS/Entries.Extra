@@ -1,0 +1,6 @@
+/Makefile////*////
+/dtcwish.AIX.rs6000////*////
+/dtcwish.HP-UX.parisc////*////
+/dtcwish.Linux.i686////*////
+/dtcwish.Linux.x86_64////*////
+/dtcwish.SunOS.sparc////*////

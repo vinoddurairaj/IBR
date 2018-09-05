@@ -1,0 +1,24 @@
+#!/usr/bin/ksh
+#
+# Package Fileset Name.
+#
+# AIX format of Fileset names:
+# 	PackageName[[ .SubProduct]. Option]
+#
+# Product will install as single, independent, fileset.
+# In this case, it is permitted to use PackageName as
+# the fileset name. 
+# For clarity, use the Option component to distinguish
+# this as a fileset name. 
+# Use the ".rte" extension (for `run-time environment').
+
+OPTAFFIX=".rte"
+
+#
+# get the product name
+#
+PRODUCT=`./PRODUCT`
+
+FSETNAME=${PRODUCT}
+
+echo ${FSETNAME}${OPTAFFIX}

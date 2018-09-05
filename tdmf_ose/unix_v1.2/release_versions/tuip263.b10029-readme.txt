@@ -1,0 +1,38 @@
+This is a Limited Availability Release of 
+Softek TDMF UNIX (IP) Release Version 2.6.3.0 Build 10029
+for Solaris.
+
+Documentation from the previously released TUIP 2.6.1
+   9575681 2008-10-16 10:39:48 TUIP261.docs.zip
+
+The associated Data Mobility Console may be found in the
+data-mobility-console directory
+
+A gzip tar of all Solaris platform installation packages:
+  39311810 2008-10-29 13:32:29 TUIP263.B10029.solaris.tar.gz
+
+Individual platform packages, in zip or gzip archives:
+gzip:
+   9515257 2008-10-29 13:32:20 TUIP263.B10029-solaris-7.pkg.gz
+   9898395 2008-10-29 13:32:22 TUIP263.B10029-solaris-8.pkg.gz
+   9928795 2008-10-29 13:32:26 TUIP263.B10029-solaris-9.pkg.gz
+   9972850 2008-10-29 13:32:30 TUIP263.B10029-solaris-10.pkg.gz
+zip:
+   9515389 2008-10-29 13:32:20 TUIP263.B10029-solaris-7.zip
+   9898527 2008-10-29 13:32:22 TUIP263.B10029-solaris-8.zip
+   9928927 2008-10-29 13:32:26 TUIP263.B10029-solaris-9.zip
+   9972982 2008-10-29 13:32:30 TUIP263.B10029-solaris-10.zip
+
+cksum:
+934084086 39311810 TUIP263.B10029.solaris.tar.gz
+2627266780 9972850 TUIP263.B10029-solaris-10.pkg.gz
+3284741599 9515257 TUIP263.B10029-solaris-7.pkg.gz
+2215306780 9898395 TUIP263.B10029-solaris-8.pkg.gz
+1206199842 9928795 TUIP263.B10029-solaris-9.pkg.gz
+3823484020 9972982 TUIP263.B10029-solaris-10.zip
+1725016503 9515389 TUIP263.B10029-solaris-7.zip
+1211778530 9898527 TUIP263.B10029-solaris-8.zip
+1082820827 9928927 TUIP263.B10029-solaris-9.zip
+
+dmsopen@us.ibm.com
+Tue Nov  4 14:22:03 PST 2008 - posted to ftp.softek.com

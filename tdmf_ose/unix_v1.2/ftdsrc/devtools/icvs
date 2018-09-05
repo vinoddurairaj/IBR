@@ -1,0 +1,247 @@
+#!/usr/bin/ksh
+[[ -f ~/.icvs ]] && . ~/.icvs
+
+typeset -r CHANGELOGFILE=Change.log
+typeset update_icvs
+
+for a in rm cvs vi ex grep cat
+do
+    [[ -z "$(whence -p $a)" ]] && {
+	print "Could not find the executable $a within your path."; exit 1; }
+done
+
+function cleanup
+{
+    trap - EXIT HUP INT QUIT
+    [[ -f /tmp/icvs.desc.$$ ]] && rm -f /tmp/icvs.desc.$$ 
+    [[ -f /tmp/icvs.log.$$ ]] && rm -f /tmp/icvs.log.$$ 
+    # TODO - restore .icvs file if needed
+    [[ -n "${update_icvs}" ]] && {
+	rm -f ~/.icvs
+	print "Removing icvs history file because the history file creation interupted."
+    }
+    : ;
+    exit $1
+}
+
+#
+# ksh has this idiosyncrasy trap behavior because it supports traps within
+# functions.  You must reset the the trap to avoid multple calls at the same
+# level as the orignal trap.  Putting the trap inside the funtion means the
+# trap is for the function.  Without doing this, an INT signal will
+# also trigger an EXIT signal and cause the wrong return value to be
+# used.
+#
+
+trap "trap '' EXIT HUP INT QUIT; cleanup 0" EXIT
+trap "trap '' EXIT HUP INT QUIT; cleanup 1" HUP INT QUIT
+
+# Verify all WR numbers are non-zero numbers and there are no duplicate numbers
+# TODO add Clearquest integration
+
+function has_good_wrs
+{
+    [[ "${ICVS_CURRENT_WRS}" =  +(+(unknown|[1-9]*([0-9]))*([ ])) ]] &&
+    [[ -z "$(for a; do print $a; done | sort | uniq -d)" ]]
+}
+
+function count_wrs
+{
+	print $#
+}
+
+function find_changelog
+{
+    while [[ ! -f ${CHANGELOGFILE} && "${PWD}" != "${OLDPWD}" ]]
+    do
+	cd ..
+    done
+    [[ -f ${CHANGELOGFILE} ]] && print $PWD/${CHANGELOGFILE}
+}
+
+function get_author
+{
+    typeset login=$1
+    typeset name=
+    typeset default=${ICVS_DEFAULT_USER}
+
+    # Attempt to get the user's name from the password file
+    # otherwise prompt the user. Root user is always prompted.
+    # Use root's password description if no default value already
+    # Also escape double quotes in strings
+
+    name=$( IFS=:; set -- $(grep "^${login}:" /etc/passwd);
+	    print $5 | sed -e '/"/ s/"/\\"/g'; )
+    if [[ "${login}" = root ]]
+    then
+	[[ -z "${default}" && -n "${name}" ]] && default="${name}"
+	name=
+    fi
+    until [[ -n "${name}" ]]
+    do
+	read name?"Enter Author(${default:-none}): " || { print; exit 1; }
+	name=$(print ${name:-${default}} | sed -e 's/\"/\\"/g')
+    done
+    ICVS_CURRENT_USER="${name}"
+}
+
+function update_changelog
+{
+    typeset state=looking
+    typeset line file revision
+    typeset -i changes=0 maxlength=0 length
+    typeset pathname revision
+    typeset timestamp=$(date "+%d-%b-%Y %H:%M")
+
+    # Build arrays of paths and revisions to format
+
+    while read line
+    do
+	print $line
+	if [[ ${line} = *+(\ )\<--+(\ )* ]]
+	then
+	    # Strip off the repository root
+	    # Calculate max pathname length for formatting
+
+	    file="${line%,v+([ ])<--*}"
+	    pathname[${changes}]="${file#${CVSROOTDIR}/}"
+	    length=${#pathname[$changes]}
+	    [[ $maxlength -lt $length ]] && ((maxlength=length))
+	    state="revision"
+	elif [[ $state = revision && ${line} = @(new|initial)\ revision* ]]
+	then
+	    revision[${changes}]=$(set -- ${line};print ${3%;})
+	    ((changes+=1))
+	    state=looking
+	else
+	    state=looking
+	fi
+    done
+
+    # Return with error if nothing was collected
+
+    [[ ${changes} -ne 0 ]] || return
+
+    # Format up the log information by using the 
+
+    exec 3>$1
+    ((maxlength+=4)) 
+    typeset -i i=0
+    typeset WRlabel="WR"
+    [[ $(set -- ${ICVS_CURRENT_WRS}; print $#) -gt 1 ]] && WRlabel="${WRlabel}s"
+    print -u3 "\n${timestamp}   ${WRlabel}: ${ICVS_CURRENT_WRS}   Author: ${ICVS_CURRENT_USER}\n"
+    while [[ $i -lt $changes ]]
+    do
+	typeset -L${maxlength}  path="${pathname[$i]}"
+	print -u3 "  ${path} ${revision[$i]}"
+	((i+=1))
+    done
+    print -u3 "CVS: EOF"
+    exec 3>&-
+}
+
+ICVS_CURRENT_WRS=
+ICVS_CURRENT_USER=
+
+# Use CVSROOTDIR if set in the environment otherwise try CVSROOT or else default it
+# Also strip off any trailing slashes 
+
+CVSROOTDIR="${CVSROOTDIR:-${CVSROOT:+$(IFS=: ; set -- ${CVSROOT}; print "$4")}}"
+CVSROOTDIR="${CVSROOTDIR:-/cvs2/sunnyvale}"
+CVSROOTDIR="${CVSROOTDIR%%+(/)}"
+
+get_author $(who am i)
+
+if [[ -z "${CHANGELOGPATH}" ]]
+then
+    CHANGELOGPATH=$(find_changelog)
+    if [[ "$?" -ne 0 ]]
+    then
+	print "Could not find a change log file within the path of"
+	print "${PWD}."
+	print "Either a create a change log named \"${CHANGELOGFILE}\" or set the"
+	print "enviromental variable CHANGELOGPATH to the change log pathname." 
+	exit 1
+    fi
+else
+    if [[ ! -f "${CHANGELOGPATH}" ]]
+    then
+	print "Could not find a change log file ${CHANGELOGPATH}."
+	print "Either a create a change log named \"${CHANGELOGFILE}\" or set the"
+	print "enviromental variable CHANGELOGPATH to the change log pathname." 
+	exit 1
+    fi
+fi
+
+# Validate we only get numbers and no duplicates
+
+typeset error_msg=
+until has_good_wrs ${ICVS_CURRENT_WRS}
+do
+    [[ -n "${error_msg}" ]] && print ${error_msg}
+    read ICVS_CURRENT_WRS?"Enter WR numbers(${ICVS_DEFAULT_WRS:-none}): " || { print; exit 1; }
+    ICVS_CURRENT_WRS=$(print ${ICVS_CURRENT_WRS:-${ICVS_DEFAULT_WRS}})
+    error_msg="Invalid or duplicate WR numbers entered. Correct your WR numbers."
+done
+
+# TODO Check WR against ClearQuest
+
+num_wrs=$(count_wrs ${ICVS_CURRENT_WRS}) 
+
+if [[ num_wrs -gt 1 ]]
+then
+    wr_string="WRs:"
+else
+    wr_string="WR:"
+fi
+
+print "CVS: ${wr_string} ${ICVS_CURRENT_WRS}\n\n" >/tmp/icvs.desc.$$
+
+vi +\$ /tmp/icvs.desc.$$
+
+# Add the WR line after the user edits his message so he cannot remove it
+# Remove CVS: line because so some reason it is not being removed consistently
+# After committing then remove the WR line before adding to the change log
+
+ex - /tmp/icvs.desc.$$ <<-EOD
+	1i
+	${wr_string} ${ICVS_CURRENT_WRS}
+	.
+	g/^CVS:/d
+	w
+	q
+EOD
+
+cvs commit -F /tmp/icvs.desc.$$ "$@" | update_changelog /tmp/icvs.log.$$
+if [[ $? -eq 0 ]]
+then
+    ex - /tmp/icvs.desc.$$ <<-EOD
+	1d
+	w
+	q
+EOD
+    ex - /tmp/icvs.log.$$ <<-EOD
+	\$r /tmp/icvs.desc.$$
+	/CVS: EOF/+1,\$s/^/  /
+	g/^[ 	]*CVS:/d
+	w
+	q
+EOD
+    [[ $? -eq 0 ]] && cat /tmp/icvs.log.$$ >> $CHANGELOGPATH
+else
+    print "no changes reported to the change log"
+fi
+
+[[ "${ICVS_DEFAULT_WRS}" != "${ICVS_CURRENT_WRS:-${ICVS_DEFAULT_WRS}}" ]] && update_icvs=1
+[[ "${ICVS_DEFAULT_USER}" != "${ICVS_CURRENT_USER:-${ICVS_DEFAULT_USER}}" ]] && update_icvs=1
+
+if [[ -n "${update_icvs}" ]]
+then
+    print "Updating " ~/.icvs
+    # TODO Backup user's .icvs file
+    exec 3>|~/.icvs
+    print -u3 "ICVS_DEFAULT_WRS=\"${ICVS_CURRENT_WRS:-${ICVS_DEFAULT_WRS}}\""
+    print -u3 "ICVS_DEFAULT_USER=\"${ICVS_CURRENT_USER:-${ICVS_DEFAULT_USER}}\""
+    exec 3>&-
+    update_icvs=
+fi

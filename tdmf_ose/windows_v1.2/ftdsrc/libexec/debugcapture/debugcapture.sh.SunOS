@@ -1,0 +1,578 @@
+#!/bin/sh
+######################################################################
+# Program:
+# --------
+# %Q%debugcapture (1.2.2) for Solaris 2.5.1, 2.6
+#
+# Copyright (c) 1996, 1997, 1998, 1999 Legato Systems, Inc.  
+# All Rights Reserved.
+#
+# $RCSfile: debugcapture.sh.SunOS,v $
+# $Revision: 1.1.1.1 $
+# $Date: 2001/09/14 13:48:25 $
+#
+# Usage:
+# ------
+# One simply executes the program, for example,
+#
+#       nodename1# %Q%debugcapture
+#
+# Borne or Korn shell:
+#
+#       nodename1# echo y | %Q%debugcapture > %Q%debugcapture.log 2>&1
+#
+# C-shell:
+#
+#       nodename1# echo y | %Q%debugcapture >& %Q%debugcapture.log
+#
+# Description:
+# ------------
+# This program will attempt to collect system and %PRODUCTNAME% %VERSION%
+# configuration and state information for Solaris information which can be 
+# used for resolving issues with the %PRODUCTNAME% %VERSION% environment 
+# of a customer.  Please save the file created by this program and send 
+# a copy to the support organization of the vendor or reseller from whom
+# this software was obtained. 
+#
+# Remarks:
+# --------
+#       . One may wish to change the variable "work_dir".  One may
+#         need to change this variable because of a lack of file
+#         system free space.
+#
+work_dir="/tmp"
+#         work_dir="/var/tmp"
+#
+######################################################################
+
+#
+# Use Bourne shell's built-in "echo"
+#
+E="echo"
+
+#
+# Define "check_executable" and "verify_executable".
+#
+check_executable() {
+    if [ ! -x "${1}" ]; then
+        $E "Warning: unable to find an executable \"${1}\"." >&2
+    fi
+}
+
+verify_executable() {
+    if [ ! -x "${1}" ]; then
+        $E "Error: unable to find an executable \"${1}\"." >&2
+        exit 1
+    fi
+}
+
+#
+# Verify executables.
+#
+# These are required:
+awk="/bin/awk"
+cat="/bin/cat"
+grep="/bin/grep"
+id="/bin/id"
+pkginfo="/usr/bin/pkginfo"
+uname="/bin/uname"
+
+for command in ${awk} ${cat} ${id} ${grep} ${pkginfo} ${uname}; do
+    verify_executable ${command}
+done
+
+#
+# Determine the Operating System (OS).
+#
+OS=`${uname} -s -r`
+case "${OS}" in
+    "SunOS 5.5.1"* | "SunOS 5.6"*)
+     :
+     ;;
+     *)      ${cat} >&2 <<EOF
+"${OS}" is not currently supported.  Currently, the following
+operating systems are supported:  Solaris 2.5.1 and Solaris 2.6.
+EOF
+     exit 1
+     ;;
+esac
+
+#
+# Who am I?  One must be root.
+#
+# Note: "uid=0(root)" appears only once in this script.
+#
+whoami=`${id} | ${awk} '/uid=0\(root\)/'`
+if [ -z "${whoami}" ]; then
+    $E "Error: `${id}`.  One must be root." >&2
+    exit 1
+fi
+
+#
+# Determine the %PRODUCTNAME% %VERSION% installation directory.
+#
+# Note: "BASEDIR" appears only once in this script.
+# Note: "ERROR" appears only once in this script.
+#
+# This is required:
+PKGNM="%PKGNM%"
+$E "Determining the installation directory; please wait ..."
+basedir=`(${pkginfo} -l ${PKGNM} | ${awk} '/BASEDIR/{print $2}') 2>&1`
+if
+    $E ${basedir} | ${grep} "ERROR" > /dev/null 2>&1
+then
+    $E "Error: ${basedir}" >&2
+    $E "Error: Package \"${PKGNM}\" not installed on this system." >&2
+    exit 1
+else
+    install_dir="${basedir}/${PKGNM}"
+    if [ ! -d "${install_dir}" ]; then
+        $E "Error: \"${install_dir}\" is not a directory." >&2
+        $E "Error: Cannot determine the %PRODUCTNAME% %VERSION% installation directory." >&2
+        $E "Error: Package \"${PKGNM}\" contains an error." >&2
+        exit 1
+    else
+        $E "The %PRODUCTNAME% %VERSION% installation directory is \"${install_dir}\"."
+        $E ""
+    fi
+fi
+
+#
+# Check the suitability of "${work_dir}".
+#
+if   [ ! -d "${work_dir}" ]; then
+    $E "Error: \"${work_dir}\" is not a directory." >&2
+    $E "Error: The variable \"work_dir\" is not set correctly." >&2
+    exit 1
+else
+    $E "The working directory is \"${work_dir}\"."
+    $E ""
+fi
+
+#
+# Display an informational message.
+#
+######################################################################
+${cat}  <<EOF
+This program will collect system and %PRODUCTNAME% %VERSION% diagnostic
+information which can be used for diagnosing and resolving issues with 
+this product in a specific customer environment.  Please save the file 
+created by this program and send a copy to the support organization of
+the vendor or reseller from whom the product was obtained.
+
+EOF
+######################################################################
+#
+# Does one continue or stop?
+#
+$E "Continue? [y]: \c"; read anwser
+if [ ! -z "${anwser}" -a "${anwser}" != "y" ]; then
+    $E "bye."
+    exit 0
+else
+    $E "ok ..."
+fi
+
+#
+# Set up command variables to be absolute pathnames.
+#
+# Required commands.
+#
+basename="/bin/basename"
+chmod="/bin/chmod"
+compress="/bin/compress"
+cp="/bin/cp"
+dirname="/bin/dirname"
+ls="/bin/ls"
+mkdir="/bin/mkdir"
+rm="/bin/rm"
+tar="/usr/sbin/tar"
+touch="/bin/touch"
+uuencode="/bin/uuencode"
+#
+req_commands="
+    ${basename}
+    ${chmod}
+    ${compress}
+    ${cp}
+    ${dirname}
+    ${ls}
+    ${mkdir}
+    ${rm}
+    ${tar}
+    ${touch}
+    ${uuencode}"
+#
+# Optional commands for system data generation.
+#
+arpinfo="/bin/netstat -pn"
+crash="/usr/sbin/crash"
+df="/usr/sbin/df"
+dmesg="/usr/sbin/dmesg"
+eeprom="/usr/sbin/eeprom"
+ifconfig="/usr/sbin/ifconfig"
+ipcs="/bin/ipcs"
+metadb="/usr/opt/SUNWmd/sbin/metadb"
+metaset="/usr/opt/SUNWmd/sbin/metaset"
+metastat="/usr/opt/SUNWmd/sbin/metastat"
+mount="/sbin/mount"
+netstat="/bin/netstat"
+nawk="/bin/nawk"
+ndd="/usr/sbin/ndd"
+pkgchk="/usr/sbin/pkgchk"
+[ `${uname} -r` != "5.4" ] && \
+   prtdiag="/usr/platform/`uname -i`/sbin/prtdiag" || \
+      prtdiag="prtdiag"
+ps="/bin/ps"
+prtvtoc="/usr/sbin/prtvtoc"
+showrev="/bin/showrev"
+swap="/usr/sbin/swap"
+sysdef="/usr/sbin/sysdef"
+tail="/bin/tail"
+true="/bin/true"
+vxdg="/usr/sbin/vxdg"
+vxprint="/usr/sbin/vxprint"
+vxsaveconfig="${install_dir}/bin/vxvm_saveconfig.sh"
+#
+# Optional functions for system data generation.
+#
+#
+# Obtain VxVM data, if possible and if any.
+#
+# The variable data_file and dest_dir are defined below.
+#
+vxvm_data () {
+if [ -x "${vxdg}" -a -x "${vxprint}" ]; then
+    dgs=`${vxdg} list | ${awk} '$0 !~ /NAME/ {print $1}'`
+    for dg in ${dgs}; do
+        $E "++++++++++++++++++++[ ${vxprint} -g ${dg} -vpshm ]:" >> ${data_file}
+        ${vxprint} -g ${dg} -vpshm >> ${data_file}; $E "" >> ${data_file}
+    done
+    if [ -x "${vxsaveconfig}" ]; then
+        for dg in ${dgs}; do
+            $E "++++++++++++++++++++[ ${vxsaveconfig} ${dg} ]:" >> ${data_file}
+            (cd ${dest_dir}; ${vxsaveconfig} ${dg} >> ${data_file} 2>&1)
+        done
+    fi
+fi
+}
+#
+# Obtain SDS data, if possible and if any.
+#
+# The variable data_file is defined below.
+#
+sds_data() {
+if [ -x "${nawk}" -a -x "${metadb}" -a -x "${metaset}" -a "${metastat}" ]
+then
+   $E "++++++++++++++++++++[ ${metaset} ]:" >> ${data_file}
+   ${metaset} >> ${data_file}; $E "" >> ${data_file}
+   $E "++++++++++++++++++++[ ${metadb} ]:" >> ${data_file}
+   ${metadb} >> ${data_file}; $E "" >> ${data_file}
+   $E "++++++++++++++++++++[ ${metastat} -p ]:" >> ${data_file}
+   ${metastat} -p >> ${data_file}; $E "" >> ${data_file}
+   $E "++++++++++++++++++++[ ${metastat} ]:" >> ${data_file}
+   ${metastat} >> ${data_file}; $E "" >> ${data_file}
+   for ds in `${metaset} | ${nawk} '/^Set name =/{sub(",","",$0); print $4}'`
+   do
+      $E "++++++++++++++++++++[ ${metadb} -s ${ds} ]:" >> ${data_file}
+      ${metadb} -s ${ds} >> ${data_file}; $E "" >> ${data_file}
+      $E "++++++++++++++++++++[ ${metastat} -s ${ds} -p ]:" >> ${data_file}
+      ${metastat} -p -s ${ds} >> ${data_file}; $E "" >> ${data_file}
+      $E "++++++++++++++++++++[ ${metastat} -s ${ds} ]:" >> ${data_file}
+      ${metastat} -s ${ds} >> ${data_file}; $E "" >> ${data_file}
+   done
+fi
+}
+#
+# Used to generate system data.
+#
+# Note: "${data_commands}" is essentially an array of
+#       commands, commands "${command00}" through ... .
+#
+command00="${sysdef} -h"
+command02="${cat} /etc/motd"
+command03="${showrev}"
+command04="${showrev} -p"
+command05a="${df} -k"
+command05b="${mount}"
+command05c="${prtvtoc} /dev/rdsk/c*t*d*s2"
+command06="${swap} -s"
+command07="${swap} -l"
+command08="${ifconfig} -a"
+command09="${ndd} /dev/ip ip_forwarding"
+command10a="${netstat} -rn"
+command10b="${netstat} -gn"
+command11="${netstat} -in"
+command12="${netstat} -m"
+command13="${netstat} -s"
+command14="${netstat} -an"
+command15="${arpinfo}"
+command16="${ps} -efl"
+#
+# Note: Because of the use of "check_executable" below,
+#       use "/bin/echo", an executable, so as to be
+#       sure not to use the Bourne shell's built-in echo
+#       for "command17".
+#
+command17="/bin/echo p | ${crash}"
+command18="${sysdef}"
+command19="${eeprom}"
+command20="${dmesg}"
+command21="${prtdiag} -v"
+command22="${ipcs} -a"
+command23="${vxdg} list"
+command24="${vxprint} -Aht"
+#
+# Note: Because of the use of "check_executable" below,
+#       the construct "${true} && sds_data" is a
+#       trick so as to be able to include functions
+#       in the for loop below.
+#
+command25="${true} && vxvm_data"
+command26="${true} && sds_data"
+#
+# Check the package integrity last.
+#
+command99="${pkgchk} ${PKGNM}"
+#
+# Note: The commands are executed in the order
+#       of top to bottom to generate system data.
+#
+data_commands='
+    ${command00}
+    ${command02}
+    ${command03}
+    ${command04}
+    ${command05a}
+    ${command05b}
+    ${command05c}
+    ${command06}
+    ${command07}
+    ${command08}
+    ${command09}
+    ${command10a}
+    ${command10b}
+    ${command11}
+    ${command12}
+    ${command13}
+    ${command14}
+    ${command15}
+    ${command16}
+    ${command17}
+    ${command18}
+    ${command19}
+    ${command20}
+    ${command21}
+    ${command22}
+    ${command23}
+    ${command24}
+    ${command25}
+    ${command26}
+    ${command99}
+    '
+#
+# Verify the executability of ${req_commands}.
+#
+# These are required:
+for command in ${req_commands}; do
+    verify_executable ${command}
+done
+
+#
+# Set up list of files to archive.
+#
+files="/.cshrc
+    /.profile
+    /.rhosts
+    /etc/auto_*
+    /etc/defaultdomain
+    /etc/defaultrouter
+    /etc/gateways
+    /etc/hostname.*
+    /etc/hosts*
+    /etc/inetd.conf
+    /etc/inittab
+    /etc/name_to_major
+    /etc/netmasks
+    /etc/nodename
+    /etc/notrouter
+    /etc/nsswitch.conf
+    /etc/path_to_inst
+    /etc/resolv.conf
+    /etc/rpc
+    /etc/services
+    /etc/system
+    /etc/vfstab
+    /etc/dfs/dfstab
+    /etc/init.d/${PKGNM}*
+    /etc/rcS.d/S89${PKGNM}-scan
+    /etc/rc3.d/S25${PKGNM}-startdaemons
+    "
+#
+# Set up destination directory and file names.
+#
+archive=`${uname} -n`
+dest_dir="${work_dir}/${archive}"
+data_file="${dest_dir}/misc_system_info_data_file"
+rc_listing="${dest_dir}/rc_listing"
+
+#
+# Set up destination directory.
+#
+(
+    cd ${work_dir}
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+
+${mkdir} ${dest_dir}; ${chmod} 700 ${dest_dir}
+
+#
+# Define cleanup function and install interrupt handler
+#
+cleanup() {
+(
+    cd ${work_dir}
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z ${archive}.tar.Z.uu
+)
+exit 1
+}
+
+trap cleanup 1 2 3 4 10 15
+
+#
+# Copy OS specific files.
+#
+for file in ${files}; do
+    $E "Copying ${file} to ${dest_dir} ..."
+    ${cp} -p ${file} ${dest_dir}
+done
+
+#
+# Copy OS specific log files.
+#
+nlines="10000"
+logs="/var/adm/messages /%VAROPTDIR%/%PKGNM%/%Q%error.log /%VAROPTDIR%/%PKGNM%/%Q%error.log.1"
+for log in ${logs}; do
+    if [ -f ${log} ]; then
+        $E "Copying ${nlines} lines of ${log} ..."
+        ${tail} -${nlines} ${log} > ${dest_dir}/`${basename} ${log}`
+    fi
+done
+
+#
+# Copy SDS (ODS) specific files.
+#
+sds="/etc/opt/SUNWmd"
+if [ -d "${sds}" ]; then
+    $E "Copying Solstice DiskSuite files ..."
+    parent_dir=`${dirname} ${sds}`
+    child_dir=`${basename} ${sds}`
+    (cd ${parent_dir}; ${tar} -cf - ./${child_dir}) | \
+        (cd ${dest_dir}; ${tar} -xf -)
+fi
+
+#
+# Copy VxVM (vxfs) specific files.
+#
+vxvm="/etc/vx"
+vx=`${basename} ${vxvm}`
+list="./elm ./reconfig.d ./type ./volboot"
+if [ -d "${vxvm}" ]; then
+    $E "Copying VxVM files ..."
+    ${mkdir} -p ${dest_dir}/${vx}
+    (cd ${vxvm}; ${tar} -cf - ${list}) | \
+        (cd ${dest_dir}/${vx}; ${tar} -xf -)
+fi
+
+#
+# Generate the "rc" listing.
+#
+$E "Generating an \"rc\" listing ..."
+${ls} -al /etc/rc?.d > ${rc_listing}
+
+#
+# capture process information
+$E "Capturing a snapshot of running processes"
+${ps} -efl >${dest_dir}/ps-output
+#
+# Copy Legato Data installation directory.
+$E "Copying Legato Data directory listings"
+${ls} -laRF /opt/${PKGNM} >${dest_dir}/ls--opt-${PKGNM}
+${ls} -laRF /etc/opt/${PKGNM} >${dest_dir}/ls--etc-opt-${PKGNM}
+${ls} -laRF /var/opt/${PKGNM} >${dest_dir}/ls--var-opt-${PKGNM}
+${ls} -laRF /dev/%Q% >${dest_dir}/ls--dev-%Q%
+${ls} -laRF /devices/pseudo/%Q%* >${dest_dir}/ls--devices-pseudo-%Q%
+(cd /etc/opt; ${tar} -cf ${dest_dir}/etc-opt-${PKGNM}.tar ${PKGNM})
+(cd /var/opt; ${tar} -cf ${dest_dir}/var-opt-${PKGNM}.tar ${PKGNM})
+dest_dir="${work_dir}/${archive}"
+$E "Verifying Legato Data binaries - writing to ${dest_dir}/bin-info-${PKGNM}.txt"
+for file in /opt/${PKGNM}/bin/*; do
+   /bin/echo "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+   /bin/echo "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+    ${ls} -laF ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+   /bin/sum ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+   /bin/strings ${file} | /bin/grep Version >> ${dest_dir}/bin-info-${PKGNM}.txt
+done
+file="/usr/kernel/drv/%Q%"
+/bin/echo "----------" >> ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/echo "checking ${file}"  >> ${dest_dir}/bin-info-${PKGNM}.txt
+${ls} -laF ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/sum ${file} >>  ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/strings ${file} | /bin/grep Version >> ${dest_dir}/bin-info-${PKGNM}.txt
+/bin/echo "---DONE---" >> ${dest_dir}/bin-info-${PKGNM}.txt
+$E "Attempting to capture the output of %Q%info"
+/opt/${PKGNM}/bin/%Q%info -a > ${dest_dir}/%Q%info.out 2>&1
+$E "capturing license key validation information"
+/opt/${PKGNM}/bin/%Q%licinfo > ${dest_dir}/%Q%licinfo.out 2>&1
+#$E "Capturing tunable parameters
+#/opt/${PKGNM}/bin/%Q%set -a > ${dest_dir}/%Q%set.out 2>&1
+#
+# Generate the data file.
+#
+# Note: The use of "check_executable ${command}" will work when
+#       "${command}" has the form "<command> <flags>".  This usage
+#       could give somewhat misleading information in some cases,
+#       for example, "/bin/echo p | crash".
+#
+$E "Generating Legato Data / system data .\c"
+${touch} ${data_file}
+#
+for command in ${data_commands}; do
+    eval execute="${command}"
+    $E "++++++++++++++++++++[ ${execute} ]:" >> ${data_file} 
+    result=`check_executable ${execute} 2>&1`
+    if [ -z "${result}" ]; then
+        eval ${execute} >> ${data_file} 2>&1
+    else
+        $E "${result}" >> ${data_file}
+    fi
+    $E "" >> ${data_file}
+    $E ".\c" 
+done
+$E ""
+
+#
+# Make the archive.
+#
+$E "Making the archive ..."
+(
+    cd ${work_dir}
+    ${tar} -cvf - ./${archive} | ${compress} > ${archive}.tar.Z
+    ${uuencode} ${archive}.tar.Z < ${archive}.tar.Z > ${archive}.tar.Z.uu
+    ${rm} -rf ${archive} ${archive}.tar ${archive}.tar.Z
+    ${chmod} 600 ${archive}.tar.Z.uu
+)
+
+${cat} <<EOF
+
+Done:
+-----
+`${ls} -l ${work_dir}/${archive}.tar.Z.uu`
+
+EOF
+exit 0
+
+
+
+
+

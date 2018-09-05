@@ -1,0 +1,435 @@
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            
+//  IIIIIII SSSSSS                                                            
+//    II    SS                          InstallShield (R)                     
+//    II    SSSSSS      (c) 1996-2000, InstallShield Software Corporation     
+//    II        SS      (c) 1990-1996, InstallShield Corporation              
+//  IIIIIII SSSSSS                     All Rights Reserved.                   
+//                                                                            
+//                                                                            
+//  This code is generated as a starting setup template.  You should   
+//  modify it to provide all necessary steps for your setup.
+//                                                                            
+//                                                                            
+//    File Name:  Setup.rul                                                   
+//                                                                            
+//  Description:  InstallShield script                                        
+//                                                                            
+//     Comments:  This template script performs a basic setup. With minor           
+//                modifications, this template can be adapted to create       
+//                new, customized setups.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+// Include header files
+    
+#include "ifx.h" //DO NOT REMOVE
+    
+////////////////////// string defines ////////////////////////////
+
+//////////////////// installation declarations ///////////////////
+
+// ----- DLL function prototypes -----
+
+
+    // your DLL function prototypes
+	prototype  license.verify(BYREF INT, BYREF STRING);
+
+// ---- script function prototypes -----
+
+
+    // your script function prototypes
+    prototype logmsg(STRING);
+    prototype add_registry_eventlog();
+    
+    // your global variables
+   	STRING		ftd_logs;             	//  ...  logs
+  	STRING		install_log_name;   	// Installation log file name
+  	STRING	 	install_log;    		// full path to ...
+  	STRING	 	uninstall_log_name;    	// uninstall log file name
+  	STRING	 	uninstall_log;    		// full path to ...
+    STRING  	svName, svCompany, svSerial;
+    STRING 		svSetupType;
+
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           
+//  FUNCTION:   OnFirstUIBefore                                            
+//                                                                           
+//  EVENT:      FirstUIBefore event is sent when installation is run for the first
+//              time on given machine. In the handler installation usually displays
+//              UI allowing end user to specify installation parameters. After this
+//              function returns, ComponentTransferData is called to perform file
+//              transfer.
+//                                                                           
+///////////////////////////////////////////////////////////////////////////////
+function OnFirstUIBefore()
+    NUMBER  nResult;
+    STRING  szTitle, szMsg;
+    STRING  szLicenseFile, szQuestion;
+    STRING  szFile;
+    STRING  szTargetPath;
+    STRING  szDir;
+    STRING  szfolder;
+    STRING  szComponents, szTargetdir;
+    NUMBER  nLevel;
+    LIST    list;
+    NUMBER  nvSize;
+    STRING	szDLL, svReturn;
+    
+begin	
+    SetTitle( @TITLE_MAIN, 24, WHITE );                                        
+    SetTitle( @TITLE_CAPTIONBAR, 0, BACKGROUNDCAPTION ); 	                   
+    // Enable( FULLWINDOWMODE );						   
+    // Enable( BACKGROUND );							  
+    // SetColor(BACKGROUND,RGB (0, 128, 128));					   
+   
+    TARGETDIR = PROGRAMFILES ^@FOLDER_NAME;	
+    szDir = TARGETDIR;
+    SHELL_OBJECT_FOLDER = @FOLDER_NAME;
+    svName    = "";
+    svCompany = "";
+    svSerial = "";
+
+  	ftd_logs = TARGETDIR ^ "logs";
+  	install_log_name = "install.log";
+  	install_log = ftd_logs ^ install_log_name;
+  	uninstall_log_name = "uninstall.log";
+  	uninstall_log = ftd_logs ^ uninstall_log_name;
+
+Dlg_Start:
+//	if ( !SYSINFO.WINNT.bWinNT4 || !(SYSINFO.WINNT.nServicePack >= 5) || !SYSINFO.WINNT.bAdmin_Logged_On) then
+//		MessageBox("This software may only be installed by an administrator on\nWindows NT 4.0, SP5 and above",SEVERE);
+//		abort;
+//	endif;
+	
+    // beginning of dialogs label
+
+Dlg_SdWelcome:
+    szTitle = "";
+    szMsg   = "";
+    nResult = SdWelcome( szTitle, szMsg );
+    if (nResult = BACK) goto Dlg_Start;
+/*
+Dlg_SdLicense:
+    szLicenseFile = SUPPORTDIR ^ "license.txt";
+    szTitle    = "";
+    szMsg      = "";
+    szQuestion = "";
+    nResult    = SdLicense( szTitle, szMsg, szQuestion, szLicenseFile );
+    if (nResult = BACK) goto Dlg_SdWelcome;
+
+Dlg_SdShowInfoList:
+    szFile = SUPPORTDIR ^ "infolist.txt";
+    list = ListCreate( STRINGLIST );
+    ListReadFromFile( list, szFile );
+    szTitle  = "";
+    szMsg    = "";
+    nResult  = SdShowInfoList( szTitle, szMsg, list );	
+    ListDestroy( list );
+    if (nResult = BACK) goto Dlg_SdLicense;
+*/
+Dlg_SdRegisterUserEx:
+    szMsg   = "";
+    szTitle = "";	
+    nResult = SdRegisterUserEx( szTitle, szMsg, svName, svCompany, svSerial );
+    if (nResult = BACK) then
+    	goto Dlg_SdWelcome;
+    else
+    	szDLL = SUPPORTDIR ^ "LICENSE.DLL";    // Set up the path to load the DLL.
+   		nResult = UseDLL (szDLL);		
+    	if( nResult < 0 ) then
+        	MessageBox( "Unable to load license DLL", SEVERE ); 
+        	exit;
+		endif;
+		verify(nResult, svSerial);
+		UnUseDLL (szDLL);
+
+		if (nResult == -2) then
+			MessageBox("License Key Is Empty", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+			
+		if (nResult == -3) then
+			MessageBox("Bad Checksum", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+		
+		if (nResult == -4) then
+			MessageBox("Expired License", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+		
+		if (nResult == -5) then
+			MessageBox("Wrong Host", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+		
+		if (nResult == -7) then
+			MessageBox("Wrong Machine Type", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+		
+		if (nResult == -8) then
+			MessageBox("Bad Feature Mask", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+		
+		if (nResult <= 0) then
+			MessageBox("Bad License", WARNING);
+			
+			goto Dlg_SdRegisterUserEx;
+		endif;
+			
+    endif;
+
+Dlg_SdAskDestPath:
+    szTitle = "";
+    szMsg   = "";
+    nResult = SdAskDestPath( szTitle, szMsg, szDir, 0 );
+    TARGETDIR = szDir;
+    if (nResult = BACK) goto Dlg_SdRegisterUserEx;
+
+Dlg_SetupTypeEx:   
+    szTitle    = @TITLE_MAIN;
+    szMsg      = "";
+	svSetupType = @PRIMARY;
+    nResult = SdSetupTypeEx ( szTitle , szMsg , "" , svSetupType , 0 );
+    if (nResult = BACK) then
+        goto Dlg_SdAskDestPath;
+    else
+       	szTargetPath = TARGETDIR;
+	    nvSize = 0;
+	    ComponentCompareSizeRequired(MEDIA,szTargetPath,nvSize);
+	    if (nvSize != 0) then      
+        	MessageBox( szSdStr_NotEnoughSpace, WARNING );
+	        goto Dlg_SetupTypeEx;
+      	endif;
+    endif;
+
+Dlg_ObjDialogs:
+    nResult = ShowObjWizardPages(nResult);
+    if (nResult = BACK) goto Dlg_SetupTypeEx;
+    
+Dlg_SdSelectFolder:
+    szfolder = SHELL_OBJECT_FOLDER; 
+    szTitle    = @TITLE_MAIN;
+    szMsg      = "";
+    nResult    = SdSelectFolder( szTitle, szMsg, szfolder );
+    SHELL_OBJECT_FOLDER = szfolder;
+    if (nResult = BACK) goto Dlg_ObjDialogs;
+   
+    // setup default status
+    SetStatusWindow(0, "");
+    Enable(STATUSEX);
+    StatusUpdate(ON, 100);
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCTION:   OnMaintUIBefore
+//
+//  EVENT:      MaintUIBefore event is sent when end user runs installation that
+//              has already been installed on the machine. Usually this happens 
+//              through Add/Remove Programs applet. In the handler installation 
+//              usually displays UI allowing end user to modify existing installation
+//              or uninstall application. After this function returns, 
+//              ComponentTransferData is called to perform file transfer.
+//
+///////////////////////////////////////////////////////////////////////////////
+function OnMaintUIBefore()
+    STRING svResult,szCaption;
+    NUMBER nResult;
+begin
+	   // TO DO:   if you want to enable background, window title, and caption bar title   								
+	   // SetTitle( @TITLE_MAIN, 24, WHITE );					
+	   // SetTitle( @TITLE_CAPTIONBAR, 0, BACKGROUNDCAPTION );  
+	   // SetColor(BACKGROUND,RGB (0, 128, 128));					
+	   // Enable( FULLWINDOWMODE );						
+	   // Enable( BACKGROUND );							
+	
+    //Maintenance Mode
+    svResult = SdLoadString(IFX_MAINTUI_MSG);
+    szCaption = SdLoadString(IFX_ONMAINTUI_CAPTION);
+	   nResult = SprintfBox(MB_OKCANCEL,szCaption,"%s",svResult);
+	   if (nResult = IDCANCEL) then
+	       exit;
+	   elseif(nResult = IDOK) then
+	       // setup default status
+        SetStatusWindow(0, "");
+        Enable(STATUSEX);
+        StatusUpdate(ON, 100);
+
+	       //-->Remove all components
+	       ComponentRemoveAll();
+    endif;
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCTION:   OnMoving
+//
+//  EVENT:      Moving event is sent when file transfer is started as a result of
+//              ComponentTransferData call, before any file transfer operations 
+//              are performed.
+//
+///////////////////////////////////////////////////////////////////////////////
+function OnMoving()
+    STRING szAppPath, VarValue;
+begin
+	if !MAINTENANCE then
+	    szAppPath = TARGETDIR;
+	    RegDBSetItem(REGDB_APPPATH, szAppPath);
+	    RegDBSetItem(REGDB_APPPATH_DEFAULT, szAppPath ^ @PRODUCT_KEY);
+	
+		RegDBSetAppInfo ("InstallPath", REGDB_STRING, szAppPath, -1);
+		RegDBSetAppInfo ("max_dev", REGDB_NUMBER, "32", -1);
+		RegDBSetAppInfo ("max_lg", REGDB_NUMBER, "1000", -1);
+		RegDBSetAppInfo ("port", REGDB_NUMBER, "575", -1);
+		RegDBSetAppInfo ("tcp_window_size", REGDB_NUMBER, "262144", -1);
+		RegDBSetAppInfo ("license", REGDB_STRING, svSerial, -1);
+	
+		add_registry_eventlog();
+	else
+		VarValue = "\"" + @PRODUCT_NAME + "\"";
+		LaunchApp ("unlodctr", VarValue);
+	endif;
+end;
+ 
+//////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCTION:   OnBegin
+//
+//  EVENT:      Begin event is always sent as the first event during installation.
+//
+//////////////////////////////////////////////////////////////////////////////
+function OnBegin()
+begin
+    SetInstallationInfo(@COMPANY_NAME, @PRODUCT_NAME, @PRODUCT_VERSION, @PRODUCT_KEY);
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+// Function: logmsg
+// Purpose: writes msg string to install_log, prefixed with timestamp
+///////////////////////////////////////////////////////////////////////////////
+function logmsg(msg)
+   STRING hhmmss, tsmsg;
+   NUMBER nResult;
+   int h;
+ begin
+   nResult = GetSystemInfo(TIME, nResult, hhmmss);
+   tsmsg = hhmmss + ": " + msg;
+   OpenFileMode(FILE_MODE_APPEND);
+   nResult = OpenFile(h, ftd_logs, install_log_name);
+   nResult = WriteLine(h, tsmsg);
+   nResult = CloseFile(h);
+ end;
+
+///////////////////////////////////////////////////////////////////////////////
+// Function: add_registry_eventlog                                         	//
+// Purpose: Add the registry errorlog      									//
+///////////////////////////////////////////////////////////////////////////////
+function add_registry_eventlog()
+  	string szClass, VarValue, VarValue1;
+  	number nType, nType1;
+begin
+
+   	nType1  = REGDB_NUMBER;
+	VarValue1 = "7";
+	
+   	nType  = REGDB_STRING_EXPAND;
+	VarValue = TARGETDIR + "\\" + @LOGMSG_NAME;
+	
+   	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+   	if (RegDBKeyExist(@EVENTLOG_SERVICE_KEY) < 0) then  // not in the registry
+      	szClass = "";
+      	if (RegDBCreateKeyEx(@EVENTLOG_SERVICE_KEY, szClass) < 0) then
+         	logmsg("Cannot create the registry key:" + @EVENTLOG_SERVICE_KEY);
+         	return(-1);
+      	endif;
+   	endif;
+   	if (RegDBSetKeyValueEx(@EVENTLOG_SERVICE_KEY, @EVENTLOG_KEY_NAME, nType, VarValue, -1) < 0) then
+      	logmsg("Failed to set registry key value:" + @EVENTLOG_SERVICE_KEY + ":" + @EVENTLOG_KEY_NAME + ":" + VarValue);
+   	endif;
+   	if (RegDBSetKeyValueEx(@EVENTLOG_SERVICE_KEY, @EVENTLOG_KEY_VALUE, nType1, VarValue1, -1) < 0) then
+      	logmsg("Failed to set registry key value:" + @EVENTLOG_SERVICE_KEY + ":" + @EVENTLOG_KEY_VALUE + ":" + VarValue1);
+   	endif;
+
+	VarValue = @EVENTLOG_DEFAULT_VALUE + ";" + TARGETDIR + "\\" + @LOGMSG_NAME;
+	
+   	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+   	if (RegDBKeyExist(@EVENTLOG_DRIVER_KEY) < 0) then  // not in the registry
+      	szClass = "";
+      	if (RegDBCreateKeyEx(@EVENTLOG_DRIVER_KEY, szClass) < 0) then
+         	logmsg("Cannot create the registry key:" + @EVENTLOG_DRIVER_KEY);
+         	return(-1);
+      	endif;
+   	endif;
+   	if (RegDBSetKeyValueEx(@EVENTLOG_DRIVER_KEY, @EVENTLOG_KEY_NAME, nType, VarValue, -1) < 0) then
+      	logmsg("Failed to set registry key value:" + @EVENTLOG_DRIVER_KEY + ":" + @EVENTLOG_KEY_NAME + ":" + VarValue);
+   	endif;
+   	if (RegDBSetKeyValueEx(@EVENTLOG_DRIVER_KEY, @EVENTLOG_KEY_VALUE, nType1, VarValue1, -1) < 0) then
+      	logmsg("Failed to set registry key value:" + @EVENTLOG_DRIVER_KEY + ":" + @EVENTLOG_KEY_VALUE + ":" + VarValue1);
+   	endif;
+end;
+ 
+//////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCTION:   OnMoved
+//
+//  EVENT:      Moved event is sent when file transfer started by ComponentTransferData call
+//              has finished. At this point all file transfer operations are completed 
+//              except for batch self-registration which is performed immediately after this
+//              function returns. During uninstallation this event sent after uninstallation
+//              is completed. For that reason you should not modify system state in this
+//              event handler.
+//
+///////////////////////////////////////////////////////////////////////////////
+function OnMoved()
+begin
+	if !MAINTENANCE then
+		if (ChangeDirectory (TARGETDIR) < 0 || LaunchApp ("lodctr", @PERF_COUNTERS_NAME) < 0) then
+			abort;
+		endif;
+	endif;
+end;
+ 
+///////////////////////////////////////////////////////////////////////////////
+//
+//  FUNCTION:   OnFirstUIAfter
+//
+//  EVENT:      FirstUIAfter event is sent after file transfer, when installation 
+//              is run for the first time on given machine. In this event handler 
+//              installation usually displays UI that will inform end user that
+//              installation has been completed successfully.
+//
+///////////////////////////////////////////////////////////////////////////////
+function OnFirstUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOption1, szOption2;
+    NUMBER bOpt1, bOpt2;
+begin
+    Disable(STATUSEX);
+
+    ShowObjWizardPages(NEXT);
+
+	bOpt1  = FALSE;
+    bOpt2  = FALSE;
+    szMsg1 = SdLoadString(IFX_SDFINISH_MSG1);
+	if ( svSetupType == @PRIMARY ) then
+		SdFinishReboot ("", "", SYS_BOOTMACHINE, "", 0);
+	else	
+    	SdFinishEx(szTitle, szMsg1, szMsg2, szOption1, szOption2, bOpt1, bOpt2);
+	endif;
+end;
+ 
+// --- include script file section ---

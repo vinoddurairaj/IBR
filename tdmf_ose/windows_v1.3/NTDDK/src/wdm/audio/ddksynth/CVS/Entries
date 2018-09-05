@@ -1,0 +1,27 @@
+/DDKSynth.rc/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/adapter.cpp/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/clist.cpp/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/clist.h/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/common.h/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/control.cpp/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/csynth.cpp/1.1.1.1/Wed Dec 17 15:45:11 2003//
+/csynth.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/ddksynth.htm/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/ddksynth.inf/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/instr.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/kernhelp.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/kernhelp.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/makefile/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/midi.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/miniport.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/mix.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/mmx.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/muldiv32.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/plclock.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/plclock.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/private.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/sources/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/synth.h/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/syslink.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+/voice.cpp/1.1.1.1/Wed Dec 17 15:45:12 2003//
+D

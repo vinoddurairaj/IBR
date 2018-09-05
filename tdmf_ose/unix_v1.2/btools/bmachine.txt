@@ -1,0 +1,3 @@
+host	dmsbuilds.sanjose.ibm.com
+user	bmachine
+pass	moose2

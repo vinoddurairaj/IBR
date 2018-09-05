@@ -1,0 +1,29 @@
+trap 'exit 3' 15
+
+BACKUP_PATH=
+
+DEMAND="0.1"
+
+# determine where old files should be placed
+echo 1>&2 "\nIf you want a backup of the current system,"
+echo 1>&2 "it will take about $DEMAND M bytes free disk spaces."
+echo 1>&2 "When you want a backup,"
+echo 1>&2 "you can specify where backup files should be placed."
+DOBACKUP=`ckyorn -d y -p "Would you like to take a backup"` || exit $?
+if [ "$DOBACKUP" = y ]; then
+	ans=`ckyorn -d y -p "Do you use default directory for backup"` || exit $?
+	if [ "$ans" = n ]; then
+		BACKUP_PATH=`ckpath -aoy \
+			-p "Where should backup files be placed"
+		` || exit $?
+	fi
+else
+	echo 1>&2 "You chose no backup !"
+	echo 1>&2 "It is your own risk to take a backup."
+	ans=`ckyorn -d n -p "Do you want to continue with this PTF installation"` || exit $?
+	if [ "$ans" = 'n' ]; then
+		exit 1
+	fi
+fi
+
+exit 0

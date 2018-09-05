@@ -1,0 +1,257 @@
+#!/bin/sh
+############ Nust be a Super User !! ############
+
+home=`pwd`
+fileset="dua.rte"
+pkgname="dua"
+vers="02.01.0001.0001"
+os="AIX"
+
+echo "###### making ${fileset} package starts ######"
+
+echo "# set path variable"
+pkg_path=`echo "${home}/out"`
+cd_image_path=`echo "${home}/CD-ROM"`
+
+data_path=`echo "${home}/data"`
+ar1_path=`echo "${pkg_path}/usr/lpp/${fileset}"`
+ar2_path=`echo "${pkg_path}/usr/lpp/${fileset}/inst_root"`
+
+ar1_work=`echo "${pkg_path}/ar1"`
+ar2_work=`echo "${pkg_path}/ar2"`
+
+usr_path=`echo "${pkg_path}/usr/${pkgname}"`
+bin_path=`echo "${usr_path}/bin"`
+etc_path=`echo "${pkg_path}/etc/${pkgname}"`
+initd_path=`echo "${pkg_path}/etc/${pkgname}/init.d"`
+var_path=`echo "${pkg_path}/var/${pkgname}"`
+
+echo "# clean up"
+rm -fR ${cd_image_path}
+rc_1=`echo ${?}`
+rm -fR ${pkg_path}
+rc_2=`echo ${?}`
+if [ ${rc_1} != 0 -o ${rc_2} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! Fail to clean up"
+	exit 1
+fi
+
+
+echo "# make directories"
+mkdir ${pkg_path}/
+chown root:sys ${pkg_path}/
+mkdir ${pkg_path}/usr/
+mkdir ${pkg_path}/usr/${pkgname}/
+mkdir ${pkg_path}/usr/${pkgname}/bin/
+rc_1=`echo ${?}`
+mkdir ${pkg_path}/etc/
+mkdir ${pkg_path}/etc/${pkgname}/
+mkdir ${pkg_path}/etc/${pkgname}/init.d
+mkdir ${pkg_path}/etc/${pkgname}/lib
+rc_2=`echo ${?}`
+mkdir ${pkg_path}/var/
+mkdir ${pkg_path}/var/${pkgname}/
+mkdir ${pkg_path}/var/${pkgname}/Agn_tmp
+rc_3=`echo ${?}`
+mkdir ${pkg_path}/usr/lpp/
+mkdir ${pkg_path}/usr/lpp/${fileset}/
+mkdir ${pkg_path}/usr/lpp/${fileset}/inst_root/
+mkdir ${pkg_path}/usr/lpp/${fileset}/inst_root/var/
+mkdir ${pkg_path}/usr/lpp/${fileset}/inst_root/var/opt/
+mkdir ${pkg_path}/usr/lpp/${fileset}/inst_root/var/opt/${pkgname}/
+rc_4=`echo ${?}`
+mkdir ${cd_image_path}
+mkdir ${cd_image_path}/usr
+mkdir ${cd_image_path}/usr/sys
+mkdir ${cd_image_path}/usr/sys/inst.images
+rc_5=`echo ${?}`
+mkdir ${pkg_path}/ar1/
+rc_6=`echo ${?}`
+mkdir ${pkg_path}/ar2/
+rc_7=`echo ${?}`
+if [ ${rc_1} != 0 -o ${rc_2} != 0 -o ${rc_3} != 0 -o ${rc_4} != 0 -o ${rc_5} != 0 -o ${rc_6} != 0 -o ${rc_7} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! Fail to make directory"
+	exit 1
+fi
+
+
+echo "# copy binaries and datas"
+cp -p ../dtcAgent ${bin_path}/
+rc_1=`echo ${?}`
+cp -p ../killdua.aix ${bin_path}/killdua
+rc_2=`echo ${?}`
+cp -p ../SFTKdua.aix ${initd_path}/SFTKdua
+rc_3=`echo ${?}`
+cp -p ../dtcAgent.cfg ${etc_path}/lib
+rc_4=`echo ${?}`
+
+if [ ${rc_1} != 0 -o ${rc_2} != 0 -o ${rc_3} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! Fail to copy binaries"
+	exit 1
+fi
+
+echo "# set directory permition"
+chmod 755 ${usr_path}
+rc_1=`echo ${?}`
+chown root:sys ${usr_path}
+rc_2=`echo ${?}`
+chmod 755 ${bin_path}
+rc_3=`echo ${?}`
+chown root:sys ${bin_path}
+rc_4=`echo ${?}`
+chmod 755 ${etc_path}
+rc_5=`echo ${?}`
+chown root:sys ${etc_path}
+rc_6=`echo ${?}`
+chmod 755 ${var_path}
+rc_7=`echo ${?}`
+chown root:sys ${var_path}
+rc_8=`echo ${?}`
+chmod 755 ${var_path}/Agn_tmp
+rc_9=`echo ${?}`
+chown root:sys ${var_path}/Agn_tmp
+rc_10=`echo ${?}`
+chmod 755 ${pkg_path}/usr
+rc_11=`echo ${?}`
+chown root:system ${pkg_path}/usr
+rc_12=`echo ${?}`
+chmod 755 ${pkg_path}/etc
+rc_13=`echo ${?}`
+chown root:system ${pkg_path}/etc
+rc_14=`echo ${?}`
+chmod 755 ${etc_path}/init.d
+rc_15=`echo ${?}`
+chown root:sys ${etc_path}/init.d
+rc_16=`echo ${?}`
+chmod 755 ${etc_path}/lib
+rc_17=`echo ${?}`
+chown root:sys ${etc_path}/lib
+rc_18=`echo ${?}`
+chmod 755 ${pkg_path}/var
+rc_19=`echo ${?}`
+chown root:sys ${pkg_path}/var
+rc_20=`echo ${?}`
+
+if [ ${rc_1} != 0 -o ${rc_2} != 0 -o ${rc_3} != 0 -o ${rc_4} != 0 -o ${rc_5} != 0 \
+  -o ${rc_6} != 0 -o ${rc_7} != 0 -o ${rc_8} != 0 -o ${rc_9} != 0 -o ${rc_10} != 0 \
+  -o ${rc_11} != 0 -o ${rc_12} != 0 -o ${rc_13} != 0 -o ${rc_14} != 0 -o ${rc_15} != 0 \
+  -o ${rc_16} != 0 -o ${rc_17} != 0 -o ${rc_18} != 0 -o ${rc_19} != 0 -o ${rc_20} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! Fail to set directory permition"
+	exit 1
+fi
+
+
+echo "# set file permition"
+chmod 555 ${bin_path}/*
+rc_1=`echo ${?}`
+chown bin:bin ${bin_path}/*
+rc_2=`echo ${?}`
+chmod 755 ${etc_path}/*
+rc_3=`echo ${?}`
+chown root:sys ${etc_path}/*
+rc_4=`echo ${?}`
+chmod 555 ${initd_path}/*
+rc_5=`echo ${?}`
+chmod 666 ${etc_path}/lib/*
+rc_6=`echo ${?}`
+chown bin:bin ${etc_path}/lib/*
+rc_7=`echo ${?}`
+chown bin:bin ${initd_path}/*
+rc_8=`echo ${?}`
+if [ ${rc_1} != 0 -o ${rc_2} != 0 -o ${rc_3} != 0 -o ${rc_4} != 0 -o ${rc_5} != 0 \
+  -o ${rc_6} != 0 -o ${rc_7} != 0 -o ${rc_8} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! Fail to set file permition"
+	exit 1
+fi
+
+
+echo "# make inventory, size, and al"
+cd ${pkg_path}/
+${data_path}/makelist ${ar1_work}/${fileset} > /dev/null
+chown root:sys ${ar1_work}
+chown root:sys ${ar2_work}
+rc_1=`echo ${?}`
+cd ${home}/
+chmod 755 ${ar1_work}/*
+rc_2=`echo ${?}`
+cp -p ${data_path}/${fileset}.copyright ${ar1_work}/${fileset}.copyright
+cp -p ${data_path}/${fileset}.config ${ar1_work}/${fileset}.config
+cp -p ${data_path}/${fileset}.err ${ar1_work}/${fileset}.err
+#cp -p ${data_path}/${fileset}.pre_rm ${ar1_work}/${fileset}.pre_rm
+cp -p ${data_path}/${fileset}.unconfig ${ar1_work}/${fileset}.unconfig
+chmod 644 ${ar1_work}/${fileset}.inventory ${ar1_work}/${fileset}.al ${ar1_work}/${fileset}.size ${ar1_work}/${fileset}.copyright
+rc_3=`echo ${?}`
+chown bin:bin ${ar1_work}/*
+rc_4=`echo ${?}`
+cd ${ar2_path}/
+${data_path}/makelist ${ar2_work}/${fileset} > /dev/null
+rc_5=`echo ${?}`
+cd ${home}/
+chmod 755 ${ar2_work}/*
+rc_6=`echo ${?}`
+chmod 644 ${ar2_work}/${fileset}.inventory ${ar2_work}/${fileset}.al ${ar2_work}/${fileset}.size
+rc_7=`echo ${?}`
+chown bin:bin ${ar2_work}/*
+rc_8=`echo ${?}`
+if [ ${rc_1} != 0 -o ${rc_2} != 0 -o ${rc_3} != 0 -o ${rc_4} != 0 -o ${rc_5} != 0 -o ${rc_6} != 0 -o ${rc_7} != 0 -o ${rc_8} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! make inventory fail."
+	exit 1
+fi
+
+echo "# archive data files"
+cd ${ar1_work}
+ar -rv ${ar1_path}/liblpp.a *
+rc_1=`echo ${?}`
+cd ${ar2_work}
+ar -rv ${ar2_path}/liblpp.a *
+rc_2=`echo ${?}`
+cd ${home}/
+if [ ${rc_1} != 0 -o ${rc_2} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! archive fail."
+	exit 1
+fi
+
+
+echo "# make lpp_name"
+echo "4 R I ${fileset} {\n${fileset} ${vers} 1 N U en_US Replicator Agent\n[\n*instreq dtc.rte 1.2.0.0\n%" > ${pkg_path}/lpp_name
+cat ${ar1_work}/${fileset}.size >> ${pkg_path}/lpp_name
+echo "%\n%\n]\n}" >> ${pkg_path}/lpp_name
+
+echo "# make CD-ROM image"
+cd ${pkg_path}
+find . | backup -i -v -f - | dd of=${cd_image_path}/usr/sys/inst.images/${fileset}
+rc_1=`echo ${?}`
+if [ ${rc_1} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! make CD-ROM image fail."
+	exit 1
+fi
+
+echo "# make .toc file"
+today=`date '+%m%d%H%M%S%y%n'`
+echo "0 ${today} 2\n${fileset} 4 R I ${fileset} {\n${fileset} ${vers} 1 N U en_US Replicator Agent\n[\n*instreq dtc.rte 1.2.0.0\n%" > ${cd_image_path}/usr/sys/inst.images/.toc
+cat ${ar1_work}/${fileset}.size >> ${cd_image_path}/usr/sys/inst.images/.toc
+echo "%\n%\n%\n]\n}" >> ${cd_image_path}/usr/sys/inst.images/.toc
+
+echo "# set permition to CD-ROM"
+chmod 644 ${cd_image_path}/usr/sys/inst.images/*
+rc_1=`echo ${?}`
+chown -R bin:bin ${cd_image_path}
+rc_2=`echo ${?}`
+if [ ${rc_1} != 0 -o ${rc_2} != 0 ]
+then
+	echo "\n## STOP ## !ERROR! set CD-ROM permition fail."
+	exit 1
+fi
+
+cp ${cd_image_path}/usr/sys/inst.images/${fileset} ${home}/
+
+echo "# complete!!"
+exit 0

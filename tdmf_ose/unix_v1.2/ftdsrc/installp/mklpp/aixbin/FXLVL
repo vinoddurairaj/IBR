@@ -1,0 +1,11 @@
+#!/usr/bin/ksh
+#
+# Product Fix Level
+#
+# Derive fix level by looking at $VERSION and then decomposing
+#
+. ../../../mk/vars.sh
+
+IFS=.; set -- $VERSION
+typeset -Z4 VERSION_PART=$4
+print ${VERSION_PART}

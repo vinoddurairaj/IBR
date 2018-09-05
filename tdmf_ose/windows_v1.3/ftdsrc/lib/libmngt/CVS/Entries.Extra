@@ -1,0 +1,12 @@
+/StdAfx.cpp////*////
+/StdAfx.h////*////
+/TDMFNotificationSubscriptionMessage.cpp////*////
+/TDMFNotificationSubscriptionMessage.h////*////
+/libmngt.cpp////*////
+/libmngt.h////*////
+/libmngt_lib.dsp////*////
+/libmngt_lib.vcproj////*////
+/libmngtdef.h////*////
+/libmngtmsg.h////*////
+/libmngtnep.cpp////*////
+/libmngtnep.h////*////

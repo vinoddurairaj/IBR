@@ -1,0 +1,190 @@
+#############################################################
+###########################################################
+bRrfx.tuip.build.instructions.txt
+
+	how to push the RFXTUIP combined build button
+
+	2006/11/15
+###########################################################
+#############################################################
+
+
+#############################################################
+###########################################################
+HEAD
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)  
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd dev/trunk/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP253
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)  
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP253/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+#############################################################
+###########################################################
+RFXTUIP26x
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP26/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP261maintenance_p
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP261maintenance/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP262
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP262/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+
+#############################################################
+###########################################################
+RFXTUIP263
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP263/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP264
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP264/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP265
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP265/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+#############################################################
+###########################################################
+RFXTUIP26 (when implemented)
+###########################################################
+#############################################################
+
+Build Machine to initiate build  :  bmlinux0.sanjose.ibm.com (9.43.90.30)    
+
+userid  :  bmachine
+passwd  :  priviledged information
+ 
+cd $HO/dev/branch/RFXTUIP266/tdmf_ose/unix_v1.2/btools
+
+perl -w bRMain.pl
+
+FORCE build  :
+
+perl -w bRMain.pl -f
+
+
+
+
+
+
+
+########################################################
+########################################################

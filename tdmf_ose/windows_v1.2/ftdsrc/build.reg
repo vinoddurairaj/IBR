@@ -1,0 +1,27 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
+"TOP"="c:\\tdmf_ose\\windows_v1.2\\ftdsrc"
+"TOS"="W2K"
+
+"LIBLICDBG"="lib\\liblic\\Debug\\liblic.lib"
+"LIBLIC2DBG"="lib\\liblic2\\Debug\\liblic2.lib"
+"LIBMD5DBG"="lib\\libmd5\\Debug\\libmd5.lib"
+"LIBFTDDBG"="lib\\libftd\\Debug\\libftd.lib"
+"LIBSOCKDBG"="lib\\libsock\\Debug\\libsock.lib"
+"LIBCOMPDBG"="lib\\libcomp\\Debug\\libcomp.lib"
+"LIBLSTDBG"="lib\\liblst\\Debug\\liblst.lib"
+"LIBPROCDBG"="lib\\libproc\\Debug\\libproc.lib"
+"LIBUTILDBG"="lib\\libutil\\Debug\\libutil.lib"
+"LIBERRDBG"="lib\\liberr\\Debug\\liberr.lib"
+
+"LIBLICREL"="lib\\liblic\\Release\\liblic.lib"
+"LIBLIC2REL"="lib\\liblic2\\Release\\liblic2.lib"
+"LIBMD5REL"="lib\\libmd5\\Release\\libmd5.lib"
+"LIBFTDREL"="lib\\libftd\\Release\\libftd.lib"
+"LIBSOCKREL"="lib\\libsock\\Release\\libsock.lib"
+"LIBCOMPREL"="lib\\libcomp\\Release\\libcomp.lib"
+"LIBLSTREL"="lib\\liblst\\Release\\liblst.lib"
+"LIBPROCREL"="lib\\libproc\\Release\\libproc.lib"
+"LIBUTILREL"="lib\\libutil\\Release\\libutil.lib"
+"LIBERRREL"="lib\\liberr\\Release\\liberr.lib"

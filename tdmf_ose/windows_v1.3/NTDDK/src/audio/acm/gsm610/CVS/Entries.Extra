@@ -1,0 +1,15 @@
+/codec.c////*////
+/codec.h////*////
+/codec.rc////*////
+/codec.rcv////*////
+/config.c////*////
+/debug.c////*////
+/debug.h////*////
+/gsm610.c////*////
+/gsm610.h////*////
+/init.c////*////
+/makefile////*////
+/msgsm610.def////*////
+/msgsm610.htm////*////
+/oemsetup.inf////*////
+/sources////*////

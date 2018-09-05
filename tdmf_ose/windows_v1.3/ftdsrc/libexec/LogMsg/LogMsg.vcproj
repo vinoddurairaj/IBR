@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="LogMsg"
+	RootNamespace="LogMsg"
+	SccProjectName=""
+	SccLocalPath="">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				ReBuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				CleanCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				ReBuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				CleanCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "/>
+		</Configuration>
+		<Configuration
+			Name="W2K_Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				ReBuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				CleanCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "/>
+		</Configuration>
+		<Configuration
+			Name="W2K_Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				ReBuildCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "
+				CleanCommandLine="mc -c -h $(SolutionDir)ftdsrc -a -A logmsg.mc "/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="LogMsg.mc">
+				<FileConfiguration
+					Name="Release|Win32">
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+				</FileConfiguration>
+				<FileConfiguration
+					Name="W2K_Release|Win32">
+				</FileConfiguration>
+				<FileConfiguration
+					Name="W2K_Debug|Win32">
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+		</Filter>
+		<File
+			RelativePath="ReadMe.txt">
+			<FileConfiguration
+				Name="Release|Win32">
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+			</FileConfiguration>
+			<FileConfiguration
+				Name="W2K_Release|Win32">
+			</FileConfiguration>
+			<FileConfiguration
+				Name="W2K_Debug|Win32">
+			</FileConfiguration>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

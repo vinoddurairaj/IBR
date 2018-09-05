@@ -1,0 +1,69 @@
+/bDATE.pl/1.3/Wed Jan 13 21:21:35 2010//
+/bIcallPathFileSize.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bIcheck_deliverables.pl/1.7/Wed Jan 13 21:21:35 2010//
+/bIcheck_filesize.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bIcheck_special.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bIftppkg.pl/1.23/Wed Jan 13 21:21:35 2010//
+/bRMain.pl/1.39/Tue Jan 26 23:49:12 2010//
+/bRbmachine1.txt/1.3/Wed Jan 13 21:21:35 2010//
+/bRbranch_notes.txt/1.15/Wed Jan 13 21:21:35 2010//
+/bRbuildnuminc.pl/1.9/Wed Jan 13 21:21:35 2010//
+/bRcallAIX.pl/1.16/Wed Jan 13 21:21:35 2010//
+/bRcallHP.pl/1.9/Wed Jan 13 21:21:35 2010//
+/bRcallIA64.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRcallLINUX.pl/1.16/Wed Jan 13 21:21:35 2010//
+/bRcallREDHAT.pl/1.6/Wed Jan 13 21:21:35 2010//
+/bRcallSOL.pl/1.7/Wed Jan 13 21:21:35 2010//
+/bRcallSUSE.pl/1.10/Tue Jan 26 23:18:05 2010//
+/bRcallzLinux.pl/1.13/Wed Jan 13 21:21:35 2010//
+/bRcheckOMP.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRcheck_deliverables.pl/1.6/Wed Jan 13 21:21:35 2010//
+/bRcheck_filesize.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRcheck_special.pl/1.3/Wed Jan 13 21:21:35 2010//
+/bRcp3rdParty.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRcpDocs.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRcvsWR.pl/1.13/Wed Jan 13 21:21:35 2010//
+/bRcvscommit.pl/1.7/Wed Jan 13 21:21:35 2010//
+/bRcvstag.pl/1.9/Wed Jan 13 21:21:35 2010//
+/bRdirs.pl/1.40/Wed Jan 27 18:25:58 2010//
+/bRemail.pl/1.67/Wed Mar 10 20:32:30 2010//
+/bRftpBAD.pl/1.2/Tue Jan 26 23:49:12 2010//
+/bRftpBuildServer.pl/1.9/Tue Jan 26 23:49:12 2010//
+/bRftpOMP.pl/1.5/Tue Jan 26 23:18:05 2010//
+/bRftppkg.pl/1.76/Wed Jan 27 16:45:04 2010//
+/bRmakeVARS.pl/1.9/Wed Jan 13 21:21:35 2010//
+/bRmd5sum.pl/1.5/Wed Jan 13 21:21:35 2010//
+/bRnobuildemail.pl/1.14/Wed Jan 13 21:21:35 2010//
+/bRparlog.pl/1.52/Tue Jan 26 23:49:12 2010//
+/bRrdiff.pl/1.12/Wed Jan 13 21:21:35 2010//
+/bRrefineGold.pl/1.3/Wed Jan 13 21:21:35 2010//
+/bRresetPrevious.pl/1.6/Wed Jan 13 21:21:35 2010//
+/bRrfx.tuip.build.instructions.txt/1.11/Thu Feb 11 17:03:54 2010//
+/bRrmPreviousBldTree.pl/1.3/Wed Jan 13 21:21:35 2010//
+/bRsetGMT.pl/1.7/Wed Jan 13 21:21:35 2010//
+/bRspecialimage.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRtarBAD.pl/1.2/Tue Jan 26 23:49:12 2010//
+/bRtarDELIV.pl/1.13/Fri Feb  5 16:55:57 2010//
+/bRtarDRIVER.pl/1.8/Fri Feb  5 16:55:57 2010//
+/bRtarImage.pl/1.15/Wed Jan 13 21:21:35 2010//
+/bRtarOMP.pl/1.4/Wed Jan 13 21:21:35 2010//
+/bRthreadCALLS.pl/1.26/Wed Jan 13 21:21:35 2010//
+/bmachine.txt/1.5/Wed Jan 13 21:21:35 2010//
+/nobuild.txt/1.3/Wed Jan 13 21:21:35 2010//
+/notification.txt/1.720/Wed Feb 24 04:26:30 2010//
+D/BRANCH_NOTES////
+D/DEV////
+D/REBOOT////
+D/cron////
+D/iso////
+D/logs////
+D/pms////
+D/qa.tools////
+D/recreateiso////
+D/rsync////
+D/special////
+D/template////
+D/testscripts////
+D/totalWR////
+D/unix////
+D/validation////

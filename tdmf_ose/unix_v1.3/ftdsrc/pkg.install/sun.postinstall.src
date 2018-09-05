@@ -1,0 +1,87 @@
+#
+# Copyright (c) 2001 Fujitsu Software Technology Corporation. All rights reserved.
+# Post-installation script for %PKGNM%
+#
+# $Id: sun.postinstall.src,v 1.4 2001/09/05 16:30:54 bouchard Exp $
+
+SERVICES=/etc/inet/services
+
+if [ "$BASEDIR" != "/opt" ]; then
+	ln -s $BASEDIR/$PKGINST /opt/$PKGINST > /dev/null 2>&1
+fi
+
+if [ -d /usr/local/bin ];then
+    if [ -w /usr/local/bin ]; then
+	echo Creating Symbolic Links in /usr/local/bin
+	ln -s ${BASEDIR}/%PKGNM%/bin/* /usr/local/bin/. > /dev/null 2>&1
+    fi
+fi
+
+# Place in.%Q% in $SERVICES
+cp /etc/inet/services $SERVICES.pre%Q%
+(egrep -v 'in\.%Q%' $SERVICES.pre%Q% ; \
+ echo "in.%Q%		${RMD_PORT}/tcp			# %PKGNM% master daemon" ) \
+	> $SERVICES
+
+# Restore license file and shell script files from past revs
+THISDIR="`/bin/pwd`"
+if [ -d /var/opt/%PKGNM% ]; then
+    chdir /var/opt/%PKGNM%
+    a="`find . -type d -print | xargs ls -td | egrep / | head -1`"
+    if [ "${a}" != "" ]; then
+        for i in ${a}/*.lic
+	do	
+            echo "Restoring previously saved %PKGNM% license key file."
+            cp ${i} /etc/opt/%PKGNM% > /dev/null 2>&1
+	done
+        for i in ${a}/*.sh
+        do
+            cp $i /etc/opt/%PKGNM% > /dev/null 2>&1
+        done
+        chmod +x /etc/opt/%PKGNM%/*.sh > /dev/null 2>&1
+    fi
+fi
+# see if Previous Softek TDMF Installation saves exist
+chdir /var/opt/%PKGNM%
+b="`find . -type d -print | xargs ls -td | egrep / | head -1`"
+if [ "${b}" = "" ]; then
+    if [ -d /var/opt/FTSWftd ]; then
+        chdir /var/opt/FTSWftd
+        a="`find . -type d -print | xargs ls -td | egrep / | head -1`"
+        if [ "${a}" != "" ]; then
+            if [ "${a}/*.lic" != "" ]; then
+                echo "Converting and restoring previously saved Softek TDMF Data"
+                echo "   license key file to the %PRODUCTNAME% %VERSION% installation."
+            fi
+            for i in ${a}/*.lic
+            do
+                cat ${i} | sed 's/FTD_LICENSE/%CAPQ%_LICENSE/g' > /etc/opt/%PKGNM%/%CAPQ%.lic
+            done
+            # see if there are any shell scripts for checkpointing
+            chdir ${a}
+            if [ "*.sh" != "" ]; then
+                echo "Migrating previously saved Softek TDMF checkpoint shell script files."
+                echo "*** WARNING" 
+                echo "\07*** WARNING:  Automatic conversion of checkpoint script files "
+                echo "*** WARNING:  is being attempted.  These files may require "
+                echo "*** WARNING:  additional editing before use!!!"
+                echo "*** WARNING" 
+            fi
+            for i in *.sh
+            do
+                /bin/cat $i | /bin/sed '{
+s/FTSWftd/%PKGNM%/g
+s/ftd/%Q%/g
+s/FTD/%CAPQ%/g
+}' > /etc/opt/%PKGNM%/$i
+            chmod 755 /etc/opt/%PKGNM%/$i
+            done
+        fi
+    fi
+fi
+           
+
+(chdir / ; /etc/init.d/%PKGNM%-startdaemons start) 
+
+exit 0
+

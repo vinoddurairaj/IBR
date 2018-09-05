@@ -1,0 +1,13 @@
+/Makefile.inc////*////
+/Makefile.inc.AIX////*////
+/Makefile.inc.FreeBSD////*////
+/Makefile.inc.HP-UX////*////
+/Makefile.inc.SunOS////*////
+/Makefile.inc.gmake////*////
+/Makefile.inc.make////*////
+/debug.gmk////*////
+/depend.gmk////*////
+/lib.gmk////*////
+/prog.gmk////*////
+/subdir.gmk////*////
+/vars.GMK////*////

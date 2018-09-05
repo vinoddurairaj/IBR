@@ -1,0 +1,17 @@
+/config.c////*////
+/dialogs.c////*////
+/dialogs.h////*////
+/local.h////*////
+/localui.c////*////
+/localui.def////*////
+/localui.h////*////
+/localui.htm////*////
+/localui.prf////*////
+/localui.rc////*////
+/makefile////*////
+/precomp.h////*////
+/resource.h////*////
+/resource.rcv////*////
+/sources////*////
+/spltypes.h////*////
+/util.c////*////

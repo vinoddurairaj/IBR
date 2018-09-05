@@ -1,0 +1,16 @@
+#!/bin/sh
+
+dir=`pwd`
+
+cd ..
+
+cp -p dtcAgent pkg.hp/opt/SFTKdua/bin
+cp -p killdua pkg.hp/opt/SFTKdua/bin
+cp -p SFTKdua pkg.hp/opt/SFTKdua/bin
+cp -p dtcAgent.cfg pkg.hp/etc/opt/SFTKdua
+ls -la pkg.hp/opt/SFTKdua/bin
+ls -la pkg.hp/etc/opt/SFTKdua
+
+rm -R pkg.hp/CD-ROM
+/usr/sbin/swpackage -v -s pkg.hp/product.psf -x write_remote_files=true -x create_target_acls=false -x layout_version=1.0 -x target_type=tape @ pkg.hp/DUA.depot
+cd pkg.hp

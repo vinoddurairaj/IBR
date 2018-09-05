@@ -1,0 +1,124 @@
+#
+# Copyright (c) %COPYRIGHTYEAR 2001% %COMPANYNAME%. All rights reserved.
+# Post-installation script for %PKGNM%
+#
+# $Id: sun.postinstall.src,v 1.31 2014/10/15 20:10:05 paulclou Exp $
+
+SERVICES=/etc/inet/services
+
+if [ "$BASEDIR" != "/opt" ]; then
+	ln -s $BASEDIR/$PKGINST /opt/$PKGINST > /dev/null 2>&1
+fi
+
+FTDLINKS="%Q%checkpoint %Q%configtool %Q%debugcapture %Q%hostinfo %Q%info %Q%init %Q%killpmd %Q%killrefresh %Q%killrmd %Q%licinfo %Q%monitortool %Q%override %Q%perftool %Q%pmd %Q%refresh %Q%rmdreco %Q%set %Q%start %Q%stop in.%Q% in.pmd in.rmd kill%Q%master killpmds killrefresh killrmds launch%Q%master launchpmds launchrefresh throtd %Q%modfs %Q%automount in.%QAGN% %Q%agentset launchagent killagent %Q%psmigrate %Q%expand %Q%limitsize %Q%panalyze launchnetanalysis %Q%netanalysis %Q%stopnetanalysis %Q%psmigrate272"
+FTDLINKS="$FTDLINKS %Q%monitortty %Q%hrdb_maths %Q%failover %Q%sendfailover"
+# Note: launchbackfresh, killbackfresh, %Q%backfresh, %Q%killbackfresh deactivated as of TDMF IP 2.8.0
+#
+# dynamic volume expansion feature disabled
+# %Q%reconfig %Q%expand %Q%limitsize
+
+# make links from /usr/local/bin to ${BASEDIR}/%PKGNM%/bin/*
+#
+if [ -d /usr/local/bin -a -w /usr/local/bin ]; then
+	echo Creating Symbolic Links in /usr/local/bin
+	for LINK in $FTDLINKS
+	do
+		ln -s ${BASEDIR}/%PKGNM%/bin/${LINK} /usr/local/bin/${LINK} > /dev/null 2>&1
+	done
+fi
+
+# Place in.%Q% in $SERVICES
+/usr/bin/cp -p $SERVICES $SERVICES.pre%Q%
+(egrep -v 'in\.%Q%' $SERVICES.pre%Q% ; \
+ echo "in.%Q%		${RMD_PORT}/tcp			# %PKGNM% master daemon" ) \
+	> $SERVICES
+
+# Check if the flag file exists indicating that we use the legacy licensing mechanism
+# in which case the license is provided by Product Support or we reuse the already existing customer license.
+if [ -f /var/opt/SFTKdtc/SFTKdtc_use_legacy_mechanism ]
+then
+    rm -f /etc/opt/%PKGNM%/DTC.lic.perm
+else
+    # Rename the new packaged permanent license file to the effective name
+    echo "Making DTC.lic.perm the effective DTC.lic."
+    mv /etc/opt/%PKGNM%/DTC.lic.perm /etc/opt/%PKGNM%/DTC.lic
+    chmod 0444 /etc/opt/%PKGNM%/DTC.lic
+fi
+# Restore shell script files and devlist.conf from past revs, and license file if legacy mechanism used.
+THISDIR="`/bin/pwd`"
+if [ -d /var/opt/%PKGNM% ]; then
+    cd /var/opt/%PKGNM%
+    a="`find . -type d -print | xargs ls -td | egrep '^'\./%PKGNM% | head -1`"
+    if [ "${a}" != "" ]; then
+        # Starting with release 2.8.0 (product ownership going to IBM STG), the license file is now
+        # part of the package; we do not need to restore a previously installed license
+        # UNLESS the flag file exists indicating that we use the legacy licensing mechanism.
+        if [ -f /var/opt/SFTKdtc/SFTKdtc_use_legacy_mechanism ]
+        then
+            for i in ${a}/*.lic
+	        do	
+                echo "Restoring previously saved %PKGNM% license key file."
+                cp ${i} /etc/opt/%PKGNM% > /dev/null 2>&1
+	        done
+        fi
+        for i in ${a}/*.sh
+        do
+            cp $i /etc/opt/%PKGNM% > /dev/null 2>&1
+        done
+        chmod +x /etc/opt/%PKGNM%/*.sh > /dev/null 2>&1
+	if [ -f /var/opt/%PKGNM%/${a}/devlist.conf ]; then
+            echo "Restoring previously saved %PKGNM% device list file."
+            cp /var/opt/%PKGNM%/${a}/devlist.conf /etc/opt/%PKGNM% > /dev/null 2>&1
+        fi
+    fi
+fi
+# see if Previous %PRODUCTNAME% Installation saves exist
+cd /var/opt/%PKGNM%
+b="`find . -type d -print | xargs ls -td | egrep '^'\./%PKGNM% | head -1`"
+if [ "${b}" = "" ]; then
+    if [ -d /var/opt/FTSWftd ]; then
+        cd /var/opt/FTSWftd
+        a="`find . -type d -print | xargs ls -td | egrep / | head -1`"
+        if [ "${a}" != "" ]; then
+            # Starting with release 2.8.0 (product ownership going to IBM STG), the license file is now
+            # part of the package; we do not need to restore a previously installed license
+            # UNLESS the flag file exists indicating that we use the legacy licensing mechanism.
+            if [ -f /var/opt/SFTKdtc/SFTKdtc_use_legacy_mechanism ]
+            then
+                if [ "${a}/*.lic" != "" ]; then
+                    echo "Converting and restoring previously saved Softek %PRODUCTNAME% Data"
+                    echo "   license key file to the %PRODUCTNAME% %VERSION% installation."
+                fi
+                for i in ${a}/*.lic
+                do
+                    cat ${i} | sed 's/FTD_LICENSE/%CAPQ%_LICENSE/g' > /etc/opt/%PKGNM%/%CAPQ%.lic
+                done
+            fi
+            # see if there are any shell scripts for checkpointing
+            cd ${a}
+            if [ "*.sh" != "" ]; then
+                echo "Migrating previously saved %PRODUCTNAME% checkpoint shell script files."
+                echo "*** WARNING" 
+                echo "\07*** WARNING:  Automatic conversion of checkpoint script files "
+                echo "*** WARNING:  is being attempted.  These files may require "
+                echo "*** WARNING:  additional editing before use!!!"
+                echo "*** WARNING" 
+            fi
+            for i in *.sh
+            do
+                /bin/cat $i | /bin/sed '{
+s/FTSWftd/%PKGNM%/g
+s/ftd/%Q%/g
+s/FTD/%CAPQ%/g
+}' > /etc/opt/%PKGNM%/$i
+            chmod 755 /etc/opt/%PKGNM%/$i
+            done
+        fi
+    fi
+fi
+           
+
+(cd / ; /etc/init.d/%PKGNM%-startdaemons start) 
+
+exit 0
+

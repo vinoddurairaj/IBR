@@ -1,0 +1,12 @@
+Tue Dec 24 09:09:44 PST 1996 (hle@qualix.com)
+
+	Here is the license stuffs.
+
+	create_key.c has the function that create a key. Note that 
+create_key.c will not compile as-is because it depends on a data structure
+which has the configuration info. This data structure is a part of
+the HA+ configuration data structure and it will take too much time for me
+to trim it down to include it in this distribution. 
+
+	misc.c has a function called check_key() that can be used to verify
+the key.

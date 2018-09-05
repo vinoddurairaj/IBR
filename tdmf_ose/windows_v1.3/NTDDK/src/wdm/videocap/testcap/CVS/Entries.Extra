@@ -1,0 +1,17 @@
+/capdebug.h////*////
+/capirq.c////*////
+/capmain.c////*////
+/capmain.h////*////
+/capprop.c////*////
+/capprop.h////*////
+/capstrm.h////*////
+/capvideo.c////*////
+/capxfer.c////*////
+/capxfer.h////*////
+/ddraw.c////*////
+/makefile////*////
+/mediums.h////*////
+/sources////*////
+/testcap.htm////*////
+/testcap.inf////*////
+/testcap.rc////*////

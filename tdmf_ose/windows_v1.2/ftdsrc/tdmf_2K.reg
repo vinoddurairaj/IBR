@@ -1,0 +1,8 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
+"CL" = "@c:\\tdmf_ose\\windows_v1.2\\ftdsrc\\tdmf_2K.cl"
+"QNM" = "tdmf"
+"CAPQ" = "TDMF"
+"MASTERNAME" = "TdmfServer"
+"PRODUCTNAME" = "TDMF"

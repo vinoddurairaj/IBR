@@ -1,0 +1,1121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>INF Guide Documentation</TITLE>
+<link rel="Stylesheet" type="Text/css" href="ddk.css">
+<META NAME="MS-HKWD" CONTENT="Inf Guide">
+</HEAD>
+<BODY TOPMARGIN="0">
+<DIV STYLE="display:none;">
+<OBJECT ID="hhobj_1" TYPE="application/x-oleobject" CLASSID="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11" width="14" height="14">
+	<PARAM NAME="Command" VALUE="ALink,MENU">
+	<PARAM NAME="DefaultTopic" VALUE="../notopic_0pk4.htm">
+	<PARAM NAME="Item1" VALUE="">
+	<PARAM NAME="Item2" VALUE="_crypto2_cryptoapi_start_page">
+</OBJECT>
+<OBJECT ID="hhobj_2" TYPE="application/x-oleobject" CLASSID="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11" width="14" height="14">
+	<PARAM NAME="Command" VALUE="ALink,MENU">
+	<PARAM NAME="DefaultTopic" VALUE="../notopic_0pk4.htm">
+	<PARAM NAME="Item1" VALUE="">
+	<PARAM NAME="Item2" VALUE="_cryptotools_cryptoapi_tools_start_page">
+</OBJECT>
+<OBJECT ID="hhobj_3" TYPE="application/x-oleobject" CLASSID="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11" width="14" height="14">
+	<PARAM NAME="Command" VALUE="ALink,MENU">
+	<PARAM NAME="DefaultTopic" VALUE="../notopic_0pk4.htm">
+	<PARAM NAME="Item1" VALUE="">
+	<PARAM NAME="Item2" VALUE="_cryptcsp_cryptographic_service_providers_start_page">
+</OBJECT>
+<OBJECT ID="hhobj_4" TYPE="application/x-oleobject" CLASSID="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11" width="14" height="14">
+	<PARAM NAME="Command" VALUE="ALink,MENU">
+	<PARAM NAME="DefaultTopic" VALUE="../notopic_0pk4.htm">
+	<PARAM NAME="Item1" VALUE="">
+	<PARAM NAME="Item2" VALUE="_win32_wintrust_start_page">
+</OBJECT>
+</DIV>
+
+
+<TABLE CLASS="buttonbarshade" CELLSPACING=0><TR><TD NOWRAP>&nbsp;</TD></TR></TABLE>
+<TABLE CLASS="buttonbartable" CELLSPACING=0>
+<TR ID="hdr"><TD CLASS="runninghead" NOWRAP>Windows&nbsp;Me DDK: INF Guide</TD></TR>
+</TABLE>
+
+<br><br><br>
+
+<H1><A NAME="_crypto2_cryptography"></A>Windows&nbsp;Me INF Guide</H1>
+
+<P><font face="Arial" size="2">A basic INF file will have the following sections
+(more complex .INF files will have additional sections). Bold section names are
+actual keywords. Italicized section names are arbitrary names created by the
+.INF author:</font></P>
+
+<TABLE>
+
+<TR VALIGN="top">
+<TH align=left width=48%>Section</TH>
+<TH align=left width=52%>Description</TH>
+</TR>
+
+<TR VALIGN="top">
+<TD width=48%><a href="#version">[Version]</a></TD>
+<TD width=52%>Basic version information for validating the .INF file </TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=48%><a HREF="#installsections">[DefaultInstall]</a></TD>
+<TD width=52%>Installation section that is executed by default. Has pointers to
+  other sections specifying files to copy &amp; delete, registry updates, .ini
+  file updates, etc.</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=48%><a href="#installsections"><i>[OtherInstall]</i></a></TD>
+<TD width=52%>Uses same format as [DefaultInstall] section, but must be
+  explicitly called. Useful for defining how a component should be uninstalled.</TD>
+</TR>
+
+<TR VALIGN="top">
+<TD width=48%><a href="#destdir">[DestinationDirs]</a></TD>
+<TD width=52%>Specifies the location on the hard drive where a section's files
+  will be copied, deleted or renamed (i.e. Windows dir, Windows\System dir,
+  etc.)</TD>
+</TR>
+
+<tr valign="top">
+<td width="48%"><a href="#optional">[OptionalComponents]</a></td>
+<td width="52%">Lists Install sections that are displayed when the user selects the .INF file
+from the &quot;Have Disk…&quot; button in the Windows Setup tab</td>
+
+<tr valign="top">
+<td width="48%"><i>[FileCopy/Delete/RenameSection]</i></td>
+<td width="52%">Lists files to be copied, deleted or renamed.</td>
+</tr>
+
+<tr valign="top">
+<td width="48%"><i>[RegistryUpdateSection]</i></td>
+<td width="52%">Specifies registry additions or deletions.</td>
+</tr>
+
+<tr valign="top">
+<td width="48%"><i>[IniFileUpdateSection]</i></td>
+<td width="52%">Specifies updates to .ini files. Links are created in this section.</td>
+</tr>
+
+<tr valign="top">
+<td width="48%"><a href="#sourcedisksnames">[SourceDisksNames]</a></td>
+<td width="52%">Lists disks that contain the files.</td>
+</tr>
+
+
+<tr valign="top">
+<td width="48%"><a href="#sourcedisksfiles">[SourceDisksFiles]</a></td>
+<td width="52%">Lists the specific disk that each file is on.</td>
+</tr>
+
+<tr valign="top">
+<td width="48%"><a href="#Strings">[Strings]</a></td>
+<td width="52%">Lists localizable strings used above.</td>
+</tr>
+</TABLE><BR>
+<hr>
+<h1><a name="version" href="#version">Version Section</a></h1>
+
+<b>[Version]<br>
+Signature=&quot;$Chicago$&quot;<br>
+LayoutFile=</b><i>filename.inf</i>
+<p>Defines the standard header for all Windows&nbsp;Me INF Files. Note that if the
+signature is not $Chicago$ then Windows&nbsp;Me will not accept the INF file as an
+INF file for any of the classes of devices recognized by Windows&nbsp;Me.</p>
+<p>Note the signature string recognition is case-insensitive. So, for example,
+you can use either $Chicago$ or $CHICAGO$.</p>
+<p><i>filename.inf<br>
+</i>Names the INF file that contains the layout information (source disks and
+files) required to install this component. This line is optional. If not given,
+the SourceDisksNames and SourceDisksFiles sections must be given in this INF.</p>
+<p>This example shows a typical <b>Version</b> section:</p>
+<p>[Version]<br>
+Signature=&quot;$Chicago$&quot;<br>
+</p>
+<hr>
+
+<h1><a name="installsections" href="#installsections"><b>Install Sections</b></h1></a>
+
+<P><b>[install-section-name]</b></P>
+
+<P><b><a href="#copyfiles">CopyFiles<br></a>
+</b>=file-list-section[,file-list-section]...</P>
+
+<P><b><a href="#renamefiles">RenFiles</a><br>
+</b>=file-list-section[,file-list-section]...</P>
+
+<P><b><a href="#deletefiles">DelFiles</a><br>
+</b>=file-list-section[,file-list-section]...</P>
+
+<P><b><a href="#updateini">UpdateInis</a><br>
+</b>=update-ini-section[,update-ini-section]...</P>
+
+<P><b><a href="#updateinifields">UpdateIniFields</a><br>
+</b>=update-inifields-section[,update-inifields-section]...</P>
+
+<P><b><a href="#addreg">AddReg</a><br>
+</b>=add-registry-section[,add-registry-section]...</P>
+
+<P><b><a href="#delreg">DelReg</a><br>
+</b>=del-registry-section[,del-registry-section]...</P>
+
+<P><b><a href="#initoreg">Ini2Reg</a><br>
+</b>=ini-to-registry-section[,ini-to-registry-section]...</P>
+
+<P><b><a href="#updatecfgsys">UpdateCfgSys</a><br>
+</b>=update-config-section</P>
+
+<P><b><a href="#updateautoexec">UpdateAutoBat</a><br>
+</b>=update-autoexec-section</P>
+
+<P>Identifies the additional sections in the INF file that contain installation
+information for the component.</P>
+
+<P>Not all the types of items shown in the syntax above are neeeded or required
+in an Install section. If an item type is used, it must specify the name of a
+section in the INF file. (An exception to this is the CopyFiles item, which may
+use the &quot;@&quot; characther along with a filename to copy a single file
+without specifying a section name.) The section name must consist of printable
+characters.</P>
+
+<P>Only one of each type of item can be used in any one Install section. More
+than one section name can be listed in an item, but each additional name must be
+preceded with a comma.</P>
+
+<P><i>install-section-name<br>
+</i>Naming the install section <b>[DefaultInstall]</b> will cause the install
+section to be executed when the &quot;Install&quot; verb is selected when the
+INF file is right clicked. It is also the section that is executed when
+selecting an INF file as the setup option using the Cabpack wizard.</P>
+
+<P>This example shows a typical Install section. It contains CopyFiles and
+AddReg items that identify the sections containing information about which files
+to install.</P>
+
+<P>[MyApplication]<br>
+CopyFiles=MyAppWinFiles, MyAppSysFiles, @SRSutil.exe<br>
+AddReg=MyAppRegEntries</P>
+
+<P>Note that in the above example, by renaming the [MyApplication] section to <b>[DefaultInstall]</b>,
+this install section would be executed when the &quot;Install&quot; verb is
+selected when right clicking the INF file.</P>
+
+<P>The CopyFiles item provides a special notation which will allow a single file
+to be copied directly from the copy line. An individual file can be copied by
+prefixing the file name with an @ symbol. The destination for any file copied
+using this notation will be the DefaultDestDir as defined in the DestinationDirs
+section. The following example shows how to copy individual files:</P>
+
+<P>CopyFiles=FileSection1, @myfile.txt,@anotherfile.txt,LastSectionName</P>
+<hr>
+<B><a name="copyfiles" href="#copyfiles">Copy Files Sections (CopyFiles)</a></b>
+<p>[CopyFiles-section-name]<br>
+destination-file-name[, source-file-name][, temporary-file-name][,flag]<br>
+<br>
+Lists the names of files to be copied from a source disk to a destination
+directory. The source disk and destination directory associated with each file
+are specified in other sections of the INF file. The file-list-section name must
+appear in the CopyFiles item of an Install section.</p>
+<p>Note that you can specify the copying of a single file in the CopyFiles item
+of the Install section itself, without building a CopyFiles section. To do this,
+use the special character &quot;@&quot; to force a single file copy. An example
+of using the &quot;@&quot; character in a CopyFiles-type item is in the Install
+section reference topic. Copying a single file in this way is somewhat limited
+because the source and destination filenames must be the same in this case and
+you cannot use a temporary file.</p>
+<p>destination-file-name<br>
+Name of the destination file. If no source filename is given, this is also the
+name of the source file.</p>
+<p>source-file-name<br>
+Name of the source file. If the source and destination filenames for the file
+copy operation are the same, this is not required.</p>
+<p>temporary-file-name<br>
+Name of a temporary file for the file copy operation. The installer copies the
+source file but gives it the temporary file name. The next time the operating
+system starts, it renames the temporary file to the destination file name. This
+is useful for copying files to a destination which is currently open or in use
+by Windows.</p>
+<p>flag<br>
+Optional parameter used to perform special actions during the installation
+process. Multiple flags can be used by adding the values to create the combined
+flag. The following valid flags can be used:</p>
+<p>1 On CopyFiles: Warn if user tries to skip file.<br>
+1 On DelFiles: If file is in use, queue up delayed delete in wininit.ini.
+Otherwise an in-use file will not be deleted.<br>
+2 Setup Critical: don't allow user to skip file.<br>
+4 Ignore version check and always copy file. This will overwrite a newer file.<br>
+8 Force Rename (trick engine into thinking that file is in use). Only happens if
+file already exists on target.<br>
+16 If file already exists on target, don't copy.<br>
+32 Suppress version conflict dialog and don't overwrite newer files.</p>
+<p>This example copies three files:</p>
+<p>[CopyTheseFilesSec]<br>
+file11 ; copies file11<br>
+file21, file22, file23 ; copies file22, temporarily naming it file23<br>
+file31, file32 ; copies file32 to file31
+</p>
+<p>All the source filenames used in this example must be defined in a
+SourceDisksFiles section and the logical disk numbers that appear in the
+SourceDisksFiles section must have been defined in a SourceDisksNames section.
+As an alternative, you can use a LAYOUT.INF file to supply this information.<br>
+<br>
+<hr>
+<b><a href="#renamefiles" name="renamefiles">Rename Files Sections (RenFiles)</a>
+</b><a href="#renamefiles" name="renamefiles"><br><br>
+</a>
+[rename-files-section-name]<br>
+new-file-name, old-file-name<br>
+<br>
+Lists the names of files to be renamed. The name of the section must appear in a
+Renfiles item in an Install section of the INF file.
+<p>new-file-name<br>
+New name of the file.</p>
+<p>old-file-name<br>
+Old name of the file.</p>
+<p>This example renames the files file42 to file41, file52 to file51, and file62
+to file61:</p>
+<p>[RenameOldFilesSec]<br>
+file41, file42<br>
+file51, file52<br>
+file61, file62</p>
+<p>All the old filenames used in this example (file42, file52, and file62) must
+be defined in a SourceDisksFiles section and the logical disk numbers that
+appear in the SourceDisksFiles section must have been defined in a
+SourceDisksNames section.<br>
+<br>
+<hr>
+<b><a name="deletefiles" href="#deletefiles">Delete Files Sections (DelFiles)<br></a></b>
+<p>[file-list-section]<br>
+file-name[,,,flag]<br>
+<br>
+A DelFiles section lists the names of files to be deleted. The file-list-section
+name must appear in the Delfiles item of an Install section.</p>
+<p>file-name<br>
+Identifies a file to be deleted.</p>
+<p>flag<br>
+Optional parameter used to force Windows&nbsp;Me to delete the file named in the item
+if it is in use during the installation process. Set the flag parameter value to
+1 to cause Windows 95 to queue the file deletion operation until the system has
+restarted. If a file marked with the flag=1 parameter setting cannot be deleted
+because it is in use, a system restart will occur after the device installation
+is complete.</p>
+<p>If you do not use the flag parameter value equal to 1 along with a file-name
+parameter, then if that file is in use when the DelFiles section is executed
+that file will not be deleted from the system.</p>
+<p>This example deletes three files:</p>
+<p>[DeleteOldFilesSec]<br>
+file1<br>
+file2<br>
+file3<br>
+<br>
+<hr>
+<b><a name="updateini" href="#updateini">Update INI File Sections (UpdateInis)<br></a></b>
+<p>[update-ini-section-name]<br>
+ini-file, ini-section, [old-ini-entry], [new-ini-entry], [flags]<br>
+<br>
+<br>
+Replaces, deletes, or adds complete entries in the given INI file. The section
+name, update-ini-section-name, must appear in the UpdateInis item in an Install
+section of the INF file.</p>
+<p>ini-file<br>
+Name of the INI file containing the entry to change. For more information about
+specifying the INI filename, see the comments below.</p>
+<p>ini-section<br>
+Name of the section containing the entry to change.</p>
+<p>old-ini-entry<br>
+Optional. Usually in the form Key=Value.</p>
+<p>new-ini-entry<br>
+Optional. Usually in the form Key=Value. Either the key or value may specify
+replaceable strings. For example, either the key or value specified in the new-ini-entry
+parameter may be %String1%, where the string that replaces %String1% is defined
+in the Strings section of the INF file.</p>
+<p>flags<br>
+Optional action flags. Can be one of these values:<br>
+0 Default. If old-ini-entry key is present in an INI file entry, that entry is
+replaced with new-ini-entry. Note that only the keys of the old-ini-entry
+parameter and the INF file entry must match, the value of each entry is ignored.</p>
+<p>To add new-ini-entry to the INI file unconditionally, set old-ini-entry to
+NULL. To delete old-ini-entry from the INI file unconditionally, set new-ini-entry
+to NULL.<br>
+1 If both key and value of old-ini-entry exist in an INI file entry, that entry
+is replaced with new-ini-entry. Note that the old-ini-entry parameter and the
+INF file entry must match on both key and value for the replacement to be made
+(this is in contrast to using an action flag value of 0, where only the keys
+must match for the replacement to be made).<br>
+2 If the key in the old-ini-entry parameter does not exist in the INI file, then
+no operation is performed on the INI file.</p>
+<p>If the key in the old-ini-entry parameter exists in an INI file entry and the
+key in the new-ini-entry parameter exists in an INI file entry, then the INI
+file entry that matches the key in the new-ini-entry parameter is deleted and
+the INI file entry that matches the old-ini-entry parameter is operated on in
+the following way: the key of the INI file entry is replaced with the key in the
+new-ini-entry parameter.</p>
+<p>If the key in the old-ini-entry parameter exists in an INI file entry and the
+key in the new-ini-entry parameter does not exist in an INI file entry, then an
+entry is added to the INI file made up of the key in the new-ini-entry parameter
+and the old value.</p>
+<p>Note that the match of the old-ini-entry parameter and an INI file entry is
+based on key alone, not key and value.<br>
+3 Same as flag parameter value of 2 described above, except match of the old-ini-entry
+parameter and an entry in the INF file is based on matching both key and value,
+not just the key.</p>
+<p>The wild card character (*) can be used in specifying the key and value and
+they will be interpreted correctly.</p>
+<p>The ini-file name can be a string or a strings key. A strings key has the
+form %strkey% where strkey is defined in the Strings section in the INF file. In
+either case, the name must be a valid filename.</p>
+<p>The name should include the name of the directory containing the file, but
+the directory name should be given as a logical directory identifier (LDID)
+rather than an actual name. The installer replaces an LDID with an actual name
+during installation.</p>
+<p>An LDID has the form %ldid% where ldid is one of the predefined identifiers
+or an identifier defined in the DestinationDirs section. Note that when the
+constants LDID_BOOT and LDID_BOOTHOST are replaced, the backslash is included in
+the path. For example LDID_BOOT may be replaced with C:\. However, in your INF
+file you can either use the backslash character or not. For example, either
+&quot;%30%boot.ini&quot; and &quot;%30%\boot.ini&quot; can be used to reference
+BOOT.INI in the root of the boot drive.</p>
+<p>The following examples illustrate individual items in an Update INI File
+section of an INF file:</p>
+<p>%11%\sample.ini, Section1,, Value1=2 ; adds new entry<br>
+%11%\sample.ini, Section2, Value3=*, ; deletes old entry<br>
+%11%\sample.ini, Section4, Value5=1, Value5=4 ; replaces old entry</p>
+<p>The following set of items in an Update INI File-type section of an INF file
+work together to operate on the Boot section of SYSTEM.INI. The conditionality
+built into the flags parameter of the INF file items is used to add the entry
+&quot;comm.drv=comm.drv&quot; to the Boot section unless the entries &quot;comm.drv=*vcoscomm.drv&quot;
+or &quot;comm.drv=*r0dmdcom.drv&quot; exist in the Boot section, in which case
+the existing entry is preserved and the entry &quot;comm.drv=comm.drv&quot; is
+not added to the INI file. In other words, after the four INF file entries shown
+below are executed, there will be one &quot;comm.drv=&quot; entry in the Boot
+section of the INI file: &quot;comm.drv=*vcoscomm.drv&quot; or &quot;comm.drv=*r0dmdcom.drv&quot;
+or &quot;comm.drv=comm.drv.&quot;</p>
+<p>system.ini, boot, &quot;comm.drv=*vcoscomm.drv&quot;,&quot;~CommDrvTemp~=*&quot;,
+3<br>
+system.ini, boot, &quot;comm.drv=*r0dmdcom.drv&quot;,&quot;~CommDrvTemp~=*&quot;,
+3<br>
+system.ini, boot,,&quot;comm.drv=comm.drv&quot;<br>
+system.ini, boot, &quot;~CommDrvTemp~=*&quot;,&quot;comm.drv=*&quot;, 3<br>
+<br>
+<hr>
+<b><a name="updateinifields" href="#updateinifields">Update INI Fields Sections
+(UpdateIniFields)<br></a></b>
+<p>[update-inifields-section-name]<br>
+ini-file, ini-section, profile-name, [old-field], [new-field],[flags]<br>
+<br>
+Replaces, adds, and deletes fields in the value of a given INI entry. Unlike the
+Update INI File section type, this type of section replaces, adds, or deletes
+portions of a value in an INI file entry rather than the whole value. The
+section name, update-inifields-section-name, must appear in the UpdateIniFields
+item in an Install section of the INF file.</p>
+<p>ini-file<br>
+Name of the INI file containing the entry to change. For more information about
+specifying the INI filename, see the topic that describes the Update INI File
+section type.</p>
+<p>ini-section<br>
+Name of the INI file section containing the entry to change.</p>
+<p>profile-name<br>
+Name of the entry to change.</p>
+<p>old-field<br>
+Field value to delete.</p>
+<p>new-field<br>
+Field value to add, if not already there.</p>
+<p>flags<br>
+Specifies whether to treat the old-field and new-field parameters as if they
+have a wild card character or not and/or what separator character to use when
+appending a new field to an INI file entry. Can be any of these values:</p>
+<p>Value Meaning<br>
+0 (Default) Treat &quot;*&quot; character literally when matching fields, and
+not as a wild card character. Use blank (&quot; &quot;) as a separator when
+adding a new field to an entry.<br>
+</p>
+<p>1 Treat &quot;*&quot; character as a wild card character when matching
+fields. Use blank (&quot; &quot;) as a separator when adding a new field to an
+entry.<br>
+2 Treat &quot;*&quot; character literally when matching fields, and not as a
+wild card character. Use comma (&quot;,&quot;) as a separator when adding a new
+field to an entry.<br>
+3 Treat &quot;*&quot; character as a wild card character when matching fields.
+Use comma (&quot;,&quot;) as a separator when adding a new field to an entry.</p>
+<p>Any comments in the INI file line are removed as they might not be applicable
+after changes. When looking for fields in the line in the INI file, spaces, tabs
+and commas are used as field delimiters. However, a space is used as the
+separator when the new field is appended to the line.<br>
+<br>
+<hr>
+<b><a name="addreg" href="#addreg">Add Registry Sections (AddReg)</b></a><br>
+<p>[add-registry-section]<br>
+reg-root-string, [subkey], [value-name], [flag], [value]<br>
+</p>
+<p>
+Adds subkeys or value names to the registry, optionally setting the value. The
+add-registry-section name must appear in an AddReg-type item in an Install
+section.</p>
+<p>reg-root-string<br>
+Registry root name. Can be one of these values:</p>
+<p>HKCR Same as HKEY_CLASSES_ROOT<br>
+HKCU Same as HKEY_CURRENT_USER<br>
+HKLM Same as HKEY_LOCAL_MACHINE<br>
+HKU Same as HKEY_USERS.<br>
+HKR Means relative from the Key passed into GenInstallEx</p>
+<p>subkey<br>
+Optional. Identifies the subkey to set. Has the form key1\key2\key3.... This
+parameter can be expressed as a replaceable string. For example, you could use
+%Subkey1% where the string to replace %Subkey1% is defined in the Strings
+section of the INF file.</p>
+<p>value-name<br>
+Optional. Identifies the value name for the subkey. For string type, if the
+value-name parameter is left empty, the value of the subkey specified in the
+subkey parameter is set to a NULL string. Note that the value-name parameter can
+be expressed as a replaceable string. For example, you could use %Valname1%
+where the string to replace %Valname1% is defined in the Strings section of the
+INF file.</p>
+<p>flag<br>
+Optional. Determines both the value type and whether the registry key is
+replaced if it already exists.</p>
+<p>Value Meaning<br>
+0 (Default) Value is an ANSI string. Replace key if it exists.<br>
+</p>
+<p>1 Value is a hexadecimal number. Replace key if it exists.<br>
+2 Value is an ANSI string. Do not replace key if it exists.<br>
+3 Value is a hexadecimal number. Do not replace key if it exists.</p>
+<p>value<br>
+Optional. Value to set. Can be either an ANSI string or a number in hexadecimal
+notation and Intel format. Any item containing a binary value can be extended
+beyond the 128-byte line maximum by using a backslash (\) character. A string
+key of the form %strkey% can also be given. The strkey must be defined in the
+Strings section of the INF file. To use a % character in the line, use %%.</p>
+<p>At least two fields are required, however one can be null thus at least one
+comma is required when using this form.</p>
+<p>The two items in the example AddReg-type section below add two value names to
+the registry. Note that %25% will be expanded to the machine's Windows
+directory.</p>
+<p>[MyAppRegEntries]<br>
+HKLM,Software\MyApp,ProgramName,,&quot;My Application&quot;<br>
+HKLM,Software\MyApp,&quot;Program Location&quot;,,&quot;%25%\MyApp.exe&quot;<br>
+<br>
+</p>
+<p>Note: Using an INF there is not a way to add dwords in Windows&nbsp;Me.<br>
+<br>
+<hr>
+<b><a name="delreg" href="#delreg">Delete Registry Sections (DelReg)</b></a>
+<br>
+<p>[del-registry-section]<br>
+reg-root-string, subkey, [value-name]<br>
+<br>
+Deletes a subkey or value name from the registry. The del-registry-section name
+must appear in an DelReg item in an Install section.</p>
+<p>reg-root-string<br>
+Registry root name. Can be one of these values:</p>
+<p>HKCR Same as HKEY_CLASSES_ROOT<br>
+HKCU Same as HKEY_CURRENT_USER<br>
+HKLM Same as HKEY_LOCAL_MACHINE<br>
+HKU Same as HKEY_USERS.<br>
+HKR Means relative from the Key passed into GenInstallEx</p>
+<p>subkey<br>
+Identifies the subkey to delete. Has the form key1\key2\key3... This parameter
+can be expressed as a replaceable string. For example, you could use %Subkey1%
+where the string to replace %Subkey1% is defined in the Strings section of the
+INF file.</p>
+<p>value-name<br>
+Optional. Identifies the value name for the subkey. Note that the value-name
+parameter can be expressed as a replaceable string. For example, you could use
+%Valname1% where the string to replace %Valname1% is defined in the Strings
+section of the INF file.</p>
+<p>This type of section can contain any number of items. Each item deletes one
+subkey or value name from the registry.<br>
+<br>
+<hr>
+<b><a name="initoreg" href="#initoreg">Ini File to Registry Sections (Ini2Reg)</a></b>
+<br>
+<p>[ini-to-registry-section]<br>
+ini-file, ini-section, [ini-key], reg-root-string, subkey[,flags]<br>
+<br>
+Moves lines or sections from an INI file to the registry, creating or replacing
+a registry entry under the given key in the registry. The section name ini-to-registry-section
+must appear in an Ini2Reg item in an Install section of the INF file.</p>
+<p>ini-file<br>
+Name of the INI file containing the key to copy. For more information about
+specifying the INI filename, see the comments in the Reference topic about the
+Update Ini File Section.</p>
+<p>ini-section<br>
+Name of the section in the INI file containing the key to copy.</p>
+<p>ini-key<br>
+Name of the key in the INI file to copy to the registry. If ini-key is empty the
+whole section is transferred to the specified registry key.</p>
+<p>reg-root-string<br>
+Registry root name. Can be one of these values:</p>
+<p>HKCR Same as HKEY_CLASSES_ROOT<br>
+HKCU Same as HKEY_CURRENT_USER<br>
+HKLM Same as HKEY_LOCAL_MACHINE<br>
+HKU Same as HKEY_USERS.<br>
+HKR Means relative from the Key passed into GenInstallEx</p>
+<p>subkey<br>
+Identifies the subkey to receive the value. Has the form key1\key2\key3...</p>
+<p>flags<br>
+Indicates whether to delete the INI key after transfer to the registry and
+whether to overwrite the value in the registry if the registry key already
+exists. Can be one of these values:</p>
+<p>Value Meaning<br>
+0 (Default) Do not delete the INI entry from the INI file after moving the
+information in the entry to the registry. If the registry subkey already exists,
+do not replace its current value.<br>
+</p>
+<p>1 Delete the INI entry from the INI file after moving the information in the
+entry to the registry. If the registry subkey already exists, do not replace its
+current value<br>
+2 Do not delete the INI entry from the INI file after moving the information in
+the entry to the registry. If the registry subkey already exists, replace its
+current value with the value from the INI file entry.<br>
+3 Delete the INI entry from the INI file after moving the information in the
+entry to the registry. If the registry subkey already exists, replace its
+current value with the value from the INI file entry.</p>
+<p>For example, suppose the following entry exists in the WIN.INI file:</p>
+<p>[Windows]<br>
+CursorBlinkRate=15<br>
+<br>
+</p>
+<p>If a CursorBlinkRate subkey does not exist under the Control Panel\Desktop,
+then the following item in an Ini File to Registry section creates the subkey,
+sets the value of the subkey to 15, and leaves the original line in WIN.INI
+unchanged:</p>
+<p>win.ini,Windows,CursorBlinkRate,HKCU,&quot;Control Panel\Desktop&quot;</p>
+<p>If the subkey already exists, the INF file item sets the value of the subkey
+to 15, and leaves the original line in WIN.INI unchanged.<br>
+<br>
+<hr>
+<b><a name="updatecfgsys" href="#updatecfgsys">Update Config.sys Sections (UpdateCfgSys)</b></a>
+<br>
+<p>[update-config-section]<br>
+Buffers=legal-dos-buffer-value<br>
+DelKey=key<br>
+DevAddDev=driver-name,configkeyword[,flag][,param-string]<br>
+DevDelete=device-driver-name<br>
+DevRename=current-dev-name,new-dev-name<br>
+Files=legal-dos-files-value<br>
+PrefixPath=ldid[,ldid]<br>
+RemKey=key<br>
+Stacks=dos-stacks-values</p>
+<p>Provides commands to add, delete, or rename commands in the CONFIG.SYS file.
+The section name, update-config-section-name, must appear in the UpdateConfigSys
+item in an Install section of the INF file.</p>
+<p>Not all item types shown in the syntax above are needed or required. An
+Update Config.sys section may contain as many DevRename, DevDelete, DevAddDev,
+DelKey, and RemKey items as needed, but the Buffers, Files, and Stacks items may
+only be used once in a section. When processing an Update Config.sys section,
+the Installer processes all DevRenames items first, all DevDelete items second,
+and all DevAddDev items last. The syntax and meaning of each of the types of
+items that can be used in an Update Config.sys section are given later in this
+topic.<br>
+<br>
+</p>
+<p>Buffers Item</p>
+<p>Buffers</p>
+<p>=legal-dos-buffer-value<br>
+Sets the number of file buffers. As it does with the Stacks item, the Installer
+compares the existing value with the proposed value and always sets the file
+buffers to the larger of the two values.</p>
+<p>legal-dos-buffers-value<br>
+A legal MS-DOS buffers value.<br>
+<br>
+</p>
+<p>DelKey Item</p>
+<p>DelKey</p>
+<p>=key<br>
+Causes the CONFIG.SYS command with the specified key to be remarked out in the
+CONFIG.SYS file. For example, the INF file item</p>
+<p>DelKey=Break</p>
+<p>would cause a Break=on command to be remarked out in the CONFIG.SYS file.</p>
+<p>The DelKey item has the same effect as the RemKey item. There can be multiple
+DelKey and/or RemKey items in a section of the INF file.</p>
+<p>key<br>
+The key of the CONFIG.SYS command to be remarked out.<br>
+<br>
+</p>
+<p>DevAddDev Item</p>
+<p>DevAddDev</p>
+<p>=driver-name,configkeyword[,flag][,param-string]<br>
+Adds a device or install command to the CONFIG.SYS file.</p>
+<p>driver-name<br>
+Name of the driver or executable file to add. The installer validates the
+filename extension, ensuring that it is .SYS or .EXE.</p>
+<p>configkeyword<br>
+Command name. Can be device or install.</p>
+<p>flag<br>
+Optional placement flag. If 0, the command is placed at the bottom of the file.
+If 1, it is placed at the top. If flag is not given, 0 is used by default.</p>
+<p>param-string<br>
+Optional command parameters. Must be valid for the given device driver or
+executable file.<br>
+<br>
+</p>
+<p>DevDelete Item</p>
+<p>DevDelete</p>
+<p>=device-driver-name<br>
+Deletes any line containing the specified filename from the CONFIG.SYS file.</p>
+<p>device-driver-name<br>
+Name of a file or device driver. The Installer searches the CONFIG.SYS file for
+the name and deletes any line containing it. Because MS-DOS does not permit
+implicit filename extensions in CONFIG.SYS, each device-driver-name must
+explicitly specify the filename extension.</p>
+<p>This example DevDelete item in an Update Config.sys section deletes lines 1
+and 3 but not line 2 of the example CONFIG.SYS file:</p>
+<p>DevDelete=Foo.sys</p>
+<p>;; lines in CONFIG.SYS<br>
+Device=Foo.sys ;; line #1<br>
+Install=foo.exe ;; line #2<br>
+Device=Foo.sys /d:b800 /I:3 ;; line #3<br>
+<br>
+</p>
+<p>DevRename Item</p>
+<p>DevRename</p>
+<p>=current-dev-name,new-dev-name<br>
+Renames a device driver in the CONFIG.SYS file.</p>
+<p>current-dev-name<br>
+Name of the device driver or executable file to rename. The installer looks for
+the name on the right side of a device or install command in the CONFIG.SYS.</p>
+<p>new-dev-name<br>
+New name for driver or executable file.<br>
+<br>
+</p>
+<p>Files Item</p>
+<p>Files</p>
+<p>=legal-dos-files-value<br>
+Sets the maximum number of open files in the CONFIG.SYS file. As it does with
+the Stacks item, the Installer compares the existing value with the proposed
+value and always sets the maximum number of open files to the larger of the two
+values.</p>
+<p>legal-dos-files-value<br>
+A legal MS-DOS files value.<br>
+<br>
+</p>
+<p>PrefixPath Item</p>
+<p>PrefixPath</p>
+<p>=ldid[,ldid]...<br>
+Appends the path associated with the given LDID to the path command.</p>
+<p>ldid<br>
+Can be any of the predefined LDID values or a new value defined in the INF. For
+a definition of all the predefined LDID values, see the &quot;Reference&quot;
+topic about the DestinationDirs section.<br>
+<br>
+</p>
+<p>RemKey Item</p>
+<p>RemKey</p>
+<p>=key<br>
+Causes the CONFIG.SYS command with the specified key to be remarked out in the
+CONFIG.SYS file. For example, the INF file item</p>
+<p>RemKey=Break</p>
+<p>would cause a Break=on command to be remarked out in the CONFIG.SYS file.</p>
+<p>The RemKey item has the same effect as the DelKey item. There can be multiple
+RemKey and/or DelKey items in a section of the INF file.</p>
+<p>key<br>
+The key of the CONFIG.SYS command to be remarked out.<br>
+<br>
+</p>
+<p>Stacks Item</p>
+<p>Stacks</p>
+<p>=dos-stacks-values<br>
+Sets the number and size of stacks in the CONFIG.SYS file. The Installer
+compares the existing value with the proposed value and always sets the stacks
+to the larger of the two values. For example, if CONFIG.SYS contains
+stacks=9,218 and an INF contains stacks=5,256, the installer sets to new value
+to stacks=9,256.</p>
+<p>legal-dos-stacks-value<br>
+A legal MS-DOS stacks value.<br>
+<br>
+<hr>
+<b><A name="updateautoexec" href="#updateautoexec">Update Autoexec.bat Sections (UpdateAutoBat)</a></b>
+<br>
+<p>[update-autoexec-section]<br>
+CmdAdd=command-name[,command-parameters]<br>
+CmdDelete=command-name<br>
+PrefixPath=ldid[,ldid]<br>
+RemOldPath=ldid[,ldid]<br>
+TmpDir=ldid[,subdir]<br>
+UnSet=env-var-name</p>
+<p>Provides commands to manipulate lines in the AUTOEXEC.BAT file. The section
+name, update-autoexec-section-name, must appear in the UpdateAutoBat item in an
+Install section of the INF file.</p>
+<p>Not all item types shown in the syntax above are needed or required in an
+Update Autoexec.bat section. The section can contain as many CmdAdd, CmdDelete
+and UnSet<br>
+items as needed, but only one PrefixPath, RemOldPath and TmpDir items can be
+used in an INF file. The syntax and meaning of each of the item types is
+described later in this topic.<br>
+The installer processes all CmdDelete items before any CmdAdd items.<br>
+<br>
+</p>
+<p>CmdAdd</p>
+<p>Item</p>
+<p>CmdAdd</p>
+<p>=command-name[,&quot;command-parameters&quot;]<br>
+Adds the given command and optional command parameters to the AUTOEXEC.BAT file,
+at the end of the file.</p>
+<p>command-name<br>
+Name of an executable file, with or without an extension. If the filename is
+also defined in the SourceDisksFiles and DestinationDirs sections of the INF
+file, the installer adds the appropriate path to the filename before writing it
+to the AUTOEXEC.BAT file.</p>
+<p>command-parameters<br>
+A string enclosed in double quotation marks or a replaceable string like
+%String1% or %Myparam%, where the strings that replace %String1% and %Myparam%
+are defined in the Strings section of the INF file. The installer appends the
+string to the command-name before appending the line to the end of the
+AUTOEXEC.BAT file. The format of this line is dependent on the command line
+requirements of the given executable file.<br>
+<br>
+</p>
+<p>CmdDelete Item</p>
+<p>CmdDelete</p>
+<p>=command-name<br>
+Deletes any lines from AUTOEXEC.BAT that include the given command name. The
+installer searches for and deletes any occurrence of the given name that has a
+filename extension of .EXE, .COM, and .BAT.</p>
+<p>command-name<br>
+Name of an executable file without an extension.<br>
+<br>
+</p>
+<p>PrefixPath</p>
+<p>Item</p>
+<p>PrefixPath</p>
+<p>=ldid[,ldid]...<br>
+Appends the path associated with the given LDID to the path command.</p>
+<p>ldid<br>
+Can be any of the predefined LDID values or a new value defined in the INF. For
+a definition of all the predefined LDID values, see the &quot;Reference&quot;
+topic about the DestinationDirs section.<br>
+<br>
+</p>
+<p>RemOldPath Item</p>
+<p>RemOldPath</p>
+<p>=ldid[,ldid]<br>
+Removes the path associated with the given LDID from the path command. For
+example, if the user installs the new version of Windows into c:\newwin and has
+an old copy of Windows in c:\windows, the following INF file item removes
+c:\windows from the path environmental variable:</p>
+<p>RemOldPath=10</p>
+<p>ldid<br>
+Can be any of the predefined LDID values or a new value defined in the INF. For
+a definition of all the predefined LDID values, see the &quot;Reference&quot;
+topic about the DestinationDirs section.<br>
+<br>
+</p>
+<p>TmpDir Item</p>
+<p>TmpDir</p>
+<p>=ldid[,subdir]<br>
+Creates a temporary directory within the directory given by the LDID, if it does
+not already exist.</p>
+<p>ldid<br>
+Can be any of the predefined LDID values or a new value defined in the INF. For
+a definition of all the predefined LDID values, see the &quot;Reference&quot;
+topic about the DestinationDirs section.</p>
+<p>subdir<br>
+A path name. If ldid\subdir does not already exist, it is created.<br>
+<br>
+</p>
+<p>UnSet Item</p>
+<p>UnSet</p>
+<p>=env-var-name<br>
+Removes any set command from the AUTOEXEC.BAT file that includes the given
+environment variable name.</p>
+<p>env-var-name<br>
+Name of an environment variable.<br>
+<br>
+<hr>
+<h1><a name="destdir" href="#destdir">DestinationDirs Section</a></h1>
+<br>
+<p>[DestinationDirs]<br>
+file-list-section=ldid[, subdir ]
+<br>
+</p>
+<p>[DefaultDestDir=ldid[, subdir ]]</p>
+<p>The DestinationDirs section defines the destination directories for the
+operations specified in file-list sections, which are either CopyFiles, RenFiles,
+or DelFiles sections. Optionally, a default destination directory may be
+specified for any CopyFiles, RenFiles, or DelFiles sections in the INF file that
+are not explicitly named in the DestinationDirs section.</p>
+<p>file-list-section<br>
+Name of a CopyFiles, RenFiles, or DelFiles section. This name must be referred
+to in a Copyfiles, RenFiles, or DelFiles item in an Install section.</p>
+<p>ldid<br>
+A logical disk identifier (LDID). Can be one of these values:</p>
+<p>00 Null LDID. This LDID can be used to create a new LDID<br>
+01 Source Drive:\pathname<br>
+10 Machine directory (Maps to the Windows directory on a Server-Based Setup.)<br>
+11 System directory<br>
+12 IOSubsys directory<br>
+13 Command directory<br>
+17 INF Directory<br>
+18 Help directory<br>
+20 Fonts<br>
+21 Viewers<br>
+22 VMM32<br>
+23 Color directory<br>
+24 Root of drive containing the Windows directory<br>
+25 Windows directory<br>
+26 Guarenteed boot device for Windows (Winboot)<br>
+28 Host Winboot<br>
+30 Root directory of the boot drive<br>
+31 Root directory for Host drive of a virtual boot drive</p>
+<p>subdir<br>
+Name of the directory, within the directory named by ldid, to be the destination
+directory.</p>
+<p>The optional DefaultDestDir item provides a default destination for any
+CopyFiles items that use the direct copy (@filename) notation or any CopyFiles,
+RenFiles, or DelFiles sections not specified in the DestinationDirs section. If
+a DefaultDestDir is not used in a DestinationDirs section, then the default
+directory is set to LDID_WIN.</p>
+<p>This example sets the destination directory for the MoveMiniPort section to
+WINDOWS\IOSUBSYS and sets the default directory for other sections to be the BIN
+directory on the boot drive:</p>
+<p>[DestinationDirs]<br>
+MoveMiniPort=12 ; Destination for MoveMiniPort Section is<br>
+; windows\iosubsys<br>
+DefaultDestDirs=30,bin ; Direct copies go to Boot:\bin<br>
+<br>
+<hr>
+<h1><a name="sourcedisksnames" href="#sourcedisksnames">SourceDisksNames Section<br>
+</a></h1>
+<p>[SourceDisksNames]<br>
+disk-ordinal=&quot;disk-description&quot;,disk-label,disk-serial-number<br>
+<br>
+Identifies and names the disk(s) that contain the source files for file copying
+and renaming operations.</p>
+<p>disk-ordinal<br>
+A unique number that identifies a source disk. If there is more than one source
+disk, each must have a unique ordinal.</p>
+<p>disk-description<br>
+A string or a strings key describing the contents or purpose of the disk. The
+installer displays this string to the user to identify the disk. The description
+is enclosed in double quotation marks.</p>
+<p>disk-label<br>
+Volume label of the source disk that is set when the source disk is formatted.</p>
+<p>disk-serial-number<br>
+Unused. Value must be 0.</p>
+<p>This example identifies one source disk. The disk description is given as a
+strings key:</p>
+<p>[SourceDisksNames]<br>
+55 = %ID1%, Instd1, 0</p>
+<p>[Strings]<br>
+ID1=&quot;My Application Installation Disk 1&quot;<br>
+<br>
+<hr>
+<h1><a name="sourcedisksfiles" href="#sourcedisksfiles">SourceDisksFiles Section</a></h1>
+<p>[SourceDisksFiles]<br>
+filename=disk-number[,subdir] [,file-size]<br>
+<br>
+Names the source files used during installation and identifies the source disks
+that contain the files.</p>
+<p>filename<br>
+Name of the file on the source disk.</p>
+<p>disk-number<br>
+Ordinal of the source disk that contains the file. This ordinal must be defined
+in the SourceDisksNames section, and must have a value greater than or equal to
+1 (zero is not a valid disk-number parameter value).</p>
+<p>subdir<br>
+Optional parameter that specifies the subdirectory on the source disk where the
+file resides. If this parameter is not used, the source disk root directory is
+the default.</p>
+<p>file-size Optional parameter that specifies the size of the file, in Bytes.</p>
+<p>This example SourceDisksFiles section identifies a single source file,
+SRS01.386, on the disk having ordinal 1:</p>
+<p>[SourceDisksFiles]<br>
+SRS01.386 = 1<br>
+<br>
+<hr>
+<h1><a name="Strings" href="#Strings">Strings Section</a></h1>
+<br>
+<p>[Strings]<br>
+strings-key=value<br>
+<br>
+Defines one or more strings keys. A strings key is a name that represents a
+string of printable characters. Although the Strings section is generally the
+last section in the INF files, a string key defined in this section may be used
+anywhere in the INF file that the corresponding string would be used. The
+Installer expands the string key to the given string and uses it for further
+processing. Using a strings key requires that it be enclosed in percent signs
+(%).
+</p>
+<p>strings-key<br>
+A unique name consisting of letters and digits.</p>
+<p>value<br>
+A string consisting of letters, digits, or other printable characters. It should
+be enclosed in double-quotation marks if the corresponding strings key is used
+in a type of item that requires double quotation marks.</p>
+<p>The Strings section makes translation of strings for international markets
+easier by placing all strings that can be displayed at the user interface when
+the INF file is used in a single section of the INF file. Strings keys should be
+used whenever possible.</p>
+<p>The following example shows the strings section for a sample INF file.</p>
+<p>[Strings]<br>
+String0=&quot;My Application&quot;<br>
+String1=&quot;My Application Readme File&quot;<br>
+String2=&quot;CX2590 SCSI Adapter&quot;<br>
+<br>
+<hr>
+<h1><a name="optional" href="#optional">Optional Components Section</a></h1>
+<br>
+<p>[Optional Components]<br>
+install-section-name<br>
+<br>
+Lists Install sections that are displayed when the user selects the .INF file
+from the &quot;Have Disk…&quot; button in the Windows Setup tab in the
+Add-Remove Programs control panel. The Install sections show up as choices in
+the list of check-boxes.
+</p>
+<p>Note that the Optional Comonents section is ignored execting an .INF file by
+right-clicking on the .INF file and selecting the &quot;install&quot; verb. When
+executing an .INF file in this manner, the [DefaultInstall] section is executed.
+The Optional Components section is also ignored if the .INF file is being
+executed via the SETUPX.DLL InstallHinfSection entry point. When executing an
+.INF via the SETUPX entry point, the Install section specified in parameter to
+the entry point is executed.</p>
+<p>The Install sections follow the same format as described previously, and the
+following additional keys can be added to the Install section to drive the UI in
+the &quot;Have Disk&quot; dialog:<br>
+<br>
+</p>
+<p>OptionDesc</p>
+<p>=option-description<br>
+Tip</p>
+<p>=tip-description<br>
+InstallDefault</p>
+<p>=0 | 1 ; Whether to install this component by default. 1=Yes, 0=No.<br>
+IconIndex</p>
+<p>=icon-index<br>
+Parent=install-section-name<br>
+Needs</p>
+<p>=install-section-name, [install-section-name]…<br>
+Include</p>
+<p>=inf-file,</p>
+<p>[inf-file]…</p>
+<p>option-description<br>
+String value that is used as the component name in the list box. The
+option-description parameter may be %String1%, where the string that replaces
+%String1% is defined in the Strings section of the INF file.</p>
+<p>tip-description<br>
+String value that is displayed in the &quot;description&quot; box when the
+component is selected in the list box. The tip-description parameter has a 255
+character limit, and may be %String1%, where the string that replaces %String1%
+is defined in the Strings section of the INF file.</p>
+<p>icon-index<br>
+Numeric value that determines the mini-icon that is displayed next to the
+component name. Valid values are:<br>
+0 Machine (base and display)<br>
+1 Integrated Circuit Chip<br>
+2 Display<br>
+3 Network wires<br>
+4 Windows Flag<br>
+5 Mouse<br>
+6 Keyboard (3 keys)<br>
+7 Phone<br>
+8 Speaker<br>
+9 Hard Disks<br>
+10 Comm Connector<br>
+11 Diamond (default value)<br>
+12 Checked box<br>
+13 Un-checked box<br>
+14 Printer<br>
+15 Net Card<br>
+16 Same as 0<br>
+17 Same as 0 w/ a sharing hand underneath<br>
+18 Unknown (question mark)<br>
+19 Atwork<br>
+20 Greyed Check box<br>
+21 Dial up networking<br>
+22 Direct cable connection<br>
+23 Briefcase<br>
+24 Exchange<br>
+25 Partial check<br>
+26 Accessories Group<br>
+27 Multimedia Group<br>
+28 Quick View<br>
+29 MSN<br>
+30 Calculator<br>
+31 Defrag<br>
+32 Generic Document<br>
+33 DriveSpace<br>
+34 Solitaire<br>
+35 HyperTerminal<br>
+36 Object Packager<br>
+37 Paint<br>
+38 Screen Saver<br>
+39 WordPad<br>
+40 Clipboard Viewer<br>
+41 Accessibility<br>
+42 Backup<br>
+43 Bitmap Document<br>
+44 Character Map<br>
+45 Mouse Pointers<br>
+46 Net Watcher<br>
+47 Phone Dialer<br>
+48 System Monitor<br>
+49 Help book<br>
+50 Globe (international settings)<br>
+51 Audio compression<br>
+52 CD Player<br>
+53 Media Player<br>
+54 Sound Scheme<br>
+55 Video Clip<br>
+56 Video Compression<br>
+57 Volume control<br>
+58 Musica Sound Scheme<br>
+59 Jungle Sound Scheme<br>
+60 Robotz Sound Scheme<br>
+61 Utopia Sound Scheme</p>
+<p>Parent<br>
+The list box displayed in the optional components UI can can sub-levels. If the
+optional component is a child, the Parent= keyword defines the Install section
+that is the Parent.</p>
+<p>Needs<br>
+If this component has dependencies on other components, this defines Install
+sections that are required by this component. If the component is selected, the
+user will be warned that the component requires the component(s) desribed in the
+Install section(s) listed on the Needs= line.</p>
+<p>Note that the Install sections listed on the Needs= line must be in the same
+.INF file. However, if dependent components from other .INF are listed in the
+Needs= line, the .INF files must be specified on the Include= line.</p>
+<p>Include<br>
+The Include item enables you to specify INF files that Setup must also load into
+memory when it loads your INF file because these INF files contain sections that
+must be run in addition to the install sections in your INF file. The Needs item
+specifies the names of the sections you intend to run in the included INF file(s).<br>
+<br>
+</p>
+<p>The following example defines two optional component install sections, and
+each install section uses the additional entries to specify UI elements and
+dependencies:</p>
+<p>[Optional Components]<br>
+InstallMyToys<br>
+InstallGames</p>
+<p>[InstallMyToys]<br>
+OptionDesc=%Toys_DESC%<br>
+Tip=%Toys_TIP%<br>
+IconIndex=35 ;Phone mini-icon for dialogs<br>
+Parent=MailApps<br>
+Needs=MSMAIL, MAPI, MicrosoftNetwork<br>
+Include=mos.inf, msmail.inf<br>
+CopyFiles=MyToysFiles<br>
+UpdateInis=MyToysLinks<br>
+AddReg=MyToysRegItems</p>
+<p>[InstallOtherApps]<br>
+OptionDesc=%Other_DESC%<br>
+Tip=%Other_TIP%<br>
+IconIndex=4 ;windows mini icon for dialogs<br>
+CopyFiles=OtherFiles<br>
+UpdateInis=OtherLinks<br>
+AddReg=OtherRegItems</p>
+<p>[Strings]<br>
+Toys_DESC=&quot;Mail Utilities&quot;<br>
+Toys_TIP=&quot;Additional utilities for sending and organizing mail&quot;<br>
+Other_DESC=&quot;Other Helpful Utilities&quot;<br>
+Other_TIP=&quot;Calculator, disk checker and performance montitor&quot;<br>
+</p>
+<P ALIGN="center"><a href="#top">Top of Page</a>
+<br><br>
+</BODY>
+</HTML>

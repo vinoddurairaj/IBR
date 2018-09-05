@@ -1,0 +1,32 @@
+# .bashrc
+
+PS1='<\h : \u \w \s \! > '
+
+# User specific aliases and functions
+
+# Source global definitions
+
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+CVSROOT=:pserver:bmachine@bmachine0.sanjose.ibm.com:/cvs2/sunnyvale
+export CVSROOT
+
+HO=/work/buildTrees
+export HO
+
+# do not implement on tdmrb01
+#if [ -d /work/buildTrees ]
+#then
+#   cd $HO
+#else
+#   echo warning  :  /work/buildTrees does not exist
+#fi
+
+branch=$HO/branch
+export branch
+trunk=$HO/trunk
+export trunk
+
+

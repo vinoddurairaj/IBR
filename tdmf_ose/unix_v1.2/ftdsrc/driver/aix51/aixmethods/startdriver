@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+# invoked during boot processing from /etc/rc
+
+# assert a few things that need to 
+# hold before the driver can be started
+
+# for logging
+err=0;
+drvnm="%Q%0"
+logf=/var/%Q%/%Q%error.log;
+datestr=`date "+%Y/%m/%d %T"`;
+errhdr="[${datestr}] FTD: ";
+
+# Check if SFTKdtc services have been disabled (in case of a root drive failover)
+if [ -e /etc/dtc/lib/SFTKdtc_services_disabled ]
+then
+        # report messages
+		err=0;
+		errmsg=`echo "${errhdr} "$0: presence of file /etc/dtc/lib/SFTKdtc_services_disabled detected. The groups that were previously started will be placed in Tracking mode."`;
+        echo ${errmsg} 1>> ${logf} 2>&1;
+		errmsg=`echo "${errhdr} "$0: if you want to restart replication groups PMDs on this server, you must run dtcstop for the group that was used for failover."`;
+        echo ${errmsg} 1>> ${logf} 2>&1;
+		errmsg=`echo "${errhdr} "$0: then you must rename the configuration file pxxx.cfg of the group that was used for failover, ex.: rename to pxxx.cfg.for_failover, to prevent it from starting."`;
+        echo ${errmsg} 1>> ${logf} 2>&1;
+		errmsg=`echo "${errhdr} "$0: after that, you can delete the file /etc/dtc/lib/SFTKdtc_services_disabled and start the desired replication groups PMDs, i.e. launchpmds."`;
+        echo ${errmsg} 1>> ${logf} 2>&1;
+fi
+
+# whether the driver is in an available state
+lsdev -C -l ${drvnm} -S A | grep "Available" 1> /dev/null 2>&1;
+if [ $? -ne 0 ]
+then
+	err=1;
+	errmsg=`echo "${errhdr} $0: %Q%0 driver state not Available"`;
+else
+	# driver is in Available state, start it
+	/usr/%Q%/bin/%Q%start -ba 1> /dev/null 2>&1;
+	if [ $? -ne 0 ]
+	then
+		err=2;
+		errmsg=`echo "${errhdr} "$0: %Q%0 driver start failed"`;
+	else
+		err=0;
+		errmsg=`echo "${errhdr} "$0: %Q%0 driver started"`;
+	fi
+fi
+
+# report errors
+echo ${errmsg} 1>> ${logf} 2>&1;
+exit ${err};

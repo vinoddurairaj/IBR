@@ -1,0 +1,97 @@
+;Codewright Project File (do not remove or modify this line)
+[ProjInit]
+ConfigSetExtMode=2
+ProjSetConfigFlags=0x04110940
+
+[State]
+SysSetCwd='C:\TDMF'
+SrchSetFlags=0x2428704b
+SrchSetAgainFlags=0x20006043,0
+SrchSetAgainFlags=0x2200604b,1
+FileSortMode=0x2
+_StateView='C:\TDMF\PB_notes.txt',0,0,1080,674,-1,-1,163,33,133,1,1,'',0x0110000d,0,80,2048,0,''
+_StateBuffer='C:\TDMF\PB_notes.txt',0x8400044a,163,33,25,'4 8','',0x0,'',1,72,1,0
+_StateHistory=FILELIST,'C:\TDMF\Rep_5_01_NT\ftdsrc\libexec\LogMsg\LogMsg.dep','C:\TDMF\PB_notes.txt'
+_StateHistory=EDITFILE,'C:\TDMF\PB_notes.txt'
+_StateHistory=DOCUMENTVISIT,'1           1           C:\TDMF\Rep_5_01_NT\ftdsrc\libexec\LogMsg\LogMsg.dep'
+_StateDocumentVisit=1
+
+[Editor]
+VCSProject=''
+VCSProjectPath=''
+VCSProjectLocalPath=''
+ScrapSetCount=1
+ClipboardSetCount=1
+ClipboardEnableSepStr=1
+ClipboardSetSepStr='\r\n',0
+ClipboardEnableTermStr=1
+ClipboardSetTermStr='\r\n',0
+
+[Tools]
+ToolDeleteList 
+ToolAddCmd='$_custom_tool_$_1','API Database Editor',1342177312,'cwtedit.exe'
+ToolAddCmd='$_custom_tool_$_2','Paint',1342177312,'pbrush.exe'
+
+[Compiler]
+TagSetFile=''
+BrowseSetFile=''
+CompilerNewExt=.v
+CompilerNewExt=.htm
+CompilerNewExt=.bas
+CompilerNewExt=.awk
+CompilerNewExt=.jsp
+CompilerNewExt=.cfml
+CompilerNewExt=.adb
+CompilerNewExt=.vhd
+CompilerNewExt=.pl
+CompilerNewExt=.pas
+CompilerNewExt=.tk
+CompilerNewExt=.rul
+CompilerNewExt=.asp
+CompilerNewExt=.js
+CompilerNewExt=.cob
+CompilerNewExt=.tcl
+CompilerNewExt=.rc
+CompilerNewExt=.php
+CompilerNewExt=.ini
+CompilerNewExt=.cs
+CompilerNewExt=.html
+CompilerNewExt=.bat
+CompilerNewExt=.txt
+CompilerNewExt=.nrx
+CompilerNewExt=.java
+CompilerNewExt=.xml
+CompilerNewExt=.sqlj
+TagSetCmd='"${HOME}${WTAGS}" -oc -d -t"${TAGFILE}.tag" -p"${TAGFILE}.ptg"',0x8000060
+CompilerAddCmdEx='$_cw_proj_hash_$','',1073741824,'',0,'${FTEE} nmake',176,'${FTEE} nmake',176,'${FTEE} nmake',176,'${FTEE} nmake',176,'',0,'',0,'_ErrorInfoDefault','','','proj.err','%x'
+CompilerAddResponse='$_cw_proj_hash_$',
+
+[VersionControl:PVCS]
+VCSSetCmd=VCS_CHECKIN_ID,'put -n -T@"%Q" -M@"%Q" "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKINLOCK_ID,'put -n -T@"%Q" -M@"%Q" -l "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKOUT_ID,'get -y "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKOUTLOCK_ID,'get -y -l "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKLOCK_ID,'vcs -y -l "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKUNLOCK_ID,'vcs -y -u "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKLABEL_ID,'vcs -y -v"${VCSLABEL}" "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKLOG_ID,'vlog "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKPROP_ID,'vlog -b "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKDIFF_ID,'vdiff -r "%b%e"',0x8000040
+VCSSetCmd=VCS_CHECKMENU_ID,'pvcsvmwn',0x8000000
+VCSSetCmd=VCS_ADD_ID,'vcs -i -t@"%Q" "%b%e"',0x8000040
+VCSSetCmd=VCS_REMOVE_ID,'del /f "%b%{??v|___}e"',0x8000040
+
+[Project]
+ConfigSetUserMakefile='C:\TDMF\Rep_5_01_NT\ftdsrc\libexec\LogMsg\LogMsg.dsp'
+ConfigSetUserMakefileParser='Microsoft MSDEV 6.0'
+ConfigSetUserMakefileTimeStamp=0
+ConfigSetUserMakefileAutoSync=1
+
+[Files]
+.\ReadMe.txt
+.\LogMsg.rc
+.\StdAfx.cpp
+.\LogMsg.mc
+.\StdAfx.h
+.\LogMsg.cpp
+

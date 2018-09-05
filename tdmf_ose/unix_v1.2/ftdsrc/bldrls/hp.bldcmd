@@ -1,0 +1,54 @@
+#!/bin/sh -x
+
+#
+# build HP-UX vers, according to brand
+#
+
+# parameters
+there=$1;
+what=$2;
+brand=$3;
+
+# rebrand with sequence number
+seqnum=$4
+seqnum=`echo ${seqnum} | awk '{printf "%03d", $1}'`;
+
+# include configuration defines
+cd ${there}
+. ./reng.conf
+. ${hpbldconf}
+
+# clear the log file
+log=${there}/${what}.blderrata;
+rm -f ${log};
+
+# environment
+PATH=/usr/sbin:/opt/langtools/bin:/opt/LGTOdtc/bin:$PATH:.
+
+# supporting tools
+make=/usr/local/bin/gmake;
+
+# obtain a build lock, or not
+bldlck=${there}/${what}.lck 
+if [ -f ${bldlck} ]
+then
+	echo "$0: cannot build. ${bldlck} exists"; 1>> ${log} 2>&1;
+	exit 1;
+else
+	touch ${bldlck};
+fi
+
+
+# define OEM branding parameters
+cd ${there}/${what}; 
+cd rebrand;  
+${make} ${brand} seqnum=${seqnum} 1>> ${log} 2>&1;
+cd ..; 
+
+# build an installation package
+${make} clean cdrom CDROMDIR=${cdromdir}/${what} 1>> ${log} 2>&1 
+
+# clean up
+rm -f ${bldlck}; 
+
+exit 0;

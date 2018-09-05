@@ -1,0 +1,26 @@
+HKCR
+{
+	TDMFObjects.System.1 = s 'System Class'
+	{
+		CLSID = s '{EB789DA6-9310-48D9-816E-21A881E8C4EC}'
+	}
+	TDMFObjects.System = s 'System Class'
+	{
+		CLSID = s '{EB789DA6-9310-48D9-816E-21A881E8C4EC}'
+		CurVer = s 'TDMFObjects.System.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {EB789DA6-9310-48D9-816E-21A881E8C4EC} = s 'System Class'
+		{
+			ProgID = s 'TDMFObjects.System.1'
+			VersionIndependentProgID = s 'TDMFObjects.System'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{B15F8DB8-7BC4-4643-8880-3FB191E335BF}'
+		}
+	}
+}

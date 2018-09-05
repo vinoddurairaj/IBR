@@ -1,0 +1,3 @@
+DIRS= \
+     dosioctl \
+     com_vdd

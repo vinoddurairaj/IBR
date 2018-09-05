@@ -1,0 +1,100 @@
+#! /usr/local/bin/perl5
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+########################################
+# Preliminaries
+#
+use Getopt::Std;
+
+########################################
+# Initialize constants
+#
+$BIN='/opt/QLIXds/bin';
+$CFGFMT='/etc/opt/QLIXds/dsgrp%03d.cfg';
+$CONF='/usr/kernel/drv/qds.conf';
+$SECONDARY='safedata-b';
+
+########################################
+# Process arguments
+#
+$scriptName = $0;
+getopts('cdg:inrpqs:') || Usage();
+
+$#ARGV == -1 && do {
+	Usage() unless ($opt_d && $opt_p && $opt_r || $opt_c);
+};
+
+$#ARGV == 0 && do {
+	if ($opt_d) {
+		$newCfgFile = $ARGV[0];
+	}
+	elsif ($opt_p && $opt_r) {
+		$newConfFile = $ARGV[0];
+	}
+	else {
+		Usage();
+	}
+};
+
+$#ARGV == 1 && do {
+	$newCfgFile = $ARGV[0];
+	$newConfFile = $ARGV[1];
+};
+
+$#ARGV > 1 && Usage();	
+
+$SECONDARY = $opt_s
+	if defined($opt_s);
+
+if ( defined($NewCfgFile) && ! -f $NewCfgFile ) {
+    die "$scriptName: $NewCfgFile: file not found.\n";
+}
+elsif ( defined($NewConfFile) && ! -f $NewConfFile ) {
+    die "$scriptName: $NewConfFile: file not found.\n";
+}
+
+$CFG = sprintf($CFGFMT, $opt_g);
+
+$| = 1;
+
+# Shutdown qds
+#
+doShell("$BIN/killpmds") unless $opt_p;
+doShell("rsh $SECONDARY $BIN/killrmds") unless $opt_r;
+doShell("rem_drv qds") unless $opt_d;
+
+# Copy configurations into place
+#
+doShell("cp $newCfgFile $CFG")				unless $opt_c || $opt_p;
+doShell("rcp $newCfgFile $SECONDARY:$CFG")	unless $opt_c || $opt_r;
+doShell("cp $newConfFile $CONF")			unless $opt_c || $opt_d;
+
+# Start qds
+doShell("add_drv qds") unless $opt_d;
+doShell(sprintf("%s/qdswlinit -g%d", $BIN, $opt_g)) unless $opt_i;
+doShell(sprintf("%s/qdswlscan -g%d", $BIN, $opt_g)) unless $opt_p;
+doShell("rsh $SECONDARY $BIN/launchrmds") unless $opt_r;
+doShell("$BIN/launchpmds") unless $opt_p;
+
+
+sub Usage {
+	die <<EOF;
+Usage: $scriptName [options] [[<cfgfile>] <conffile>]
+  Options:
+	-c:		Do not copy configfiles into place.
+	-d:		Do not unload/reload the driver.
+	-g <grp>:	Install <cfgfile> for logical group <grp> (default: 0).
+	-i:		Do not initialize the writelog(s).
+	-n:		Do not execute any commands (just print them).
+	-r:		Do not reset the RMD.
+	-p:		Do not reset the PMD or run qdswlscan.
+	-q:		Do not echo commands.
+	-s <host>:	Use <host> as the name of the secondary (default: safedata-b).
+EOF
+}
+
+sub doShell {
+    print(@_, "\n") unless ($opt_q);
+    system @_ unless ($opt_n);
+}

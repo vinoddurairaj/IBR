@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Copyright (c) 2002,2003 Softek Technology Corporation. 
+# All rights reserved.
+#
+# This script kills Softek Replicator Agent.
+#
+#
+#
+
+# -- now kill Replicator Agent.
+FTDPIDS=`/bin/ps -e | /bin/grep "dtcAgent" | /bin/grep -v "grep" | /bin/awk '{print $1}'`
+if [ "$FTDPIDS" != "" ]; then
+    /bin/kill -15 $FTDPIDS >/dev/null 2>&1  
+    
+    # -- give it a chance to die
+    sleep 1
+
+    # -- if that failed, try harder 
+    FTDPIDS=`/bin/ps -e | /bin/grep "dtcAgent" | /bin/grep -v "grep" | /bin/awk '{print $1}'`
+
+    if [ "$FTDPIDS" != "" ]; then
+        /bin/kill -9 $FTDPIDS >/dev/null 2>&1 
+    fi
+    rm /var/opt/SFTKdua/Agn_tmp/* >/dev/null 2>&1
+    echo "Replicator Agent has been shutdown"
+else
+    echo "Replicator Agent is not running"
+fi

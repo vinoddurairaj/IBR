@@ -1,0 +1,703 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "Cfx4Lang.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef UNDER_CE
+#include "winres.h"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "Cfx4Lang.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#ifndef UNDER_CE\r\n"
+    "#include ""winres.h""\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PRINTING DIALOG DISCARDABLE  11, 19, 121, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_JOBNAME,5,18,109,16,NOT WS_GROUP
+    LTEXT           "Printing  ...",IDC_STATIC,6,3,80,8,NOT WS_GROUP
+    CTEXT           "",IDC_PAGENUMBER,5,42,109,10
+    PUSHBUTTON      "&Cancel",IDCANCEL,38,59,43,14
+END
+
+IDD_PAGESETUP DIALOG DISCARDABLE  23, 29, 202, 156
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Page setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Options",IDC_STATIC,5,2,95,55
+    CONTROL         "&Separate Legend",IDC_CHKSEPLEY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,14,67,10
+    CONTROL         "&Use printer resolution",IDC_NOASSCREEN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,26,79,8
+    CONTROL         "&Force colors",IDC_FORCECOLORS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,37,80,10
+    GROUPBOX        "Margins (inches)",IDC_STATIC,5,59,95,74
+    LTEXT           "&Left:",IDC_STATIC,15,71,17,8,NOT WS_GROUP
+    EDITTEXT        IDC_GRAPHLEFT,45,71,32,12
+    LTEXT           "&Top:",IDC_STATIC,15,85,17,8,NOT WS_GROUP
+    EDITTEXT        IDC_GRAPHTOP,45,86,32,12
+    LTEXT           "&Right:",IDC_STATIC,15,101,24,8,NOT WS_GROUP
+    EDITTEXT        IDC_GRAPHRIGHT,45,101,32,12
+    LTEXT           "&Bottom:",IDC_STATIC,15,115,24,8,NOT WS_GROUP
+    EDITTEXT        IDC_GRAPHBOTTOM,45,116,32,12
+    GROUPBOX        "Orientation",IDC_STATIC,105,88,91,45
+    CONTROL         "P&ortrait",IDC_PORTRAIT,"Button",BS_AUTORADIOBUTTON,112,
+                    100,45,10
+    CONTROL         "L&andScape",IDC_LANDSCAPE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,112,115,50,10
+    CONTROL         "Use as &default",IDC_DEFAULT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,138,60,9
+    DEFPUSHBUTTON   "&Ok",IDOK,90,138,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,146,138,50,14
+    CONTROL         "",IDC_FRAME1,"Static",SS_BLACKFRAME,105,6,91,80
+END
+
+IDD_PAGESERIES DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_SERIES,5,10,100,58,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_VOLUME,165,35,30,12,ES_NUMBER
+    CONTROL         "Spin1",IDC_VOLUMEA,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,195,35,10,12
+    CONTROL         "&Square",IDC_SQUARE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,115,50,50,8
+    CONTROL         "C&ylinder",IDC_CYLINDER,"Button",BS_AUTORADIOBUTTON,115,
+                    60,50,9
+    CONTROL         "&Cone",IDC_CONE,"Button",BS_AUTORADIOBUTTON,115,70,50,
+                    10
+    GROUPBOX        "Styles",IDC_TITLE1,110,5,100,115
+    CONTROL         "Show &point labels",IDC_POINTLABELS,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,115,85,79,10
+    EDITTEXT        IDC_CYLSIDES,160,70,30,12,ES_NUMBER | NOT WS_VISIBLE
+    CONTROL         "Spin1",IDC_CYLSIDESA,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS | NOT WS_VISIBLE,190,70,10,12
+    GROUPBOX        "Fill",IDC_TITLE2,5,25,100,30
+    CONTROL         "Custom1",IDC_SAMPLE,"SFX_CFX40_Util",WS_TABSTOP,125,130,
+                    75,20
+    CONTROL         "",IDC_COLOR,"SFXTool30x_Combo",WS_BORDER | WS_TABSTOP | 
+                    0x10,40,35,60,15
+    GROUPBOX        "Border",IDC_TITLE3,5,60,100,95
+    LTEXT           "St&yle:",IDC_STATIC,10,112,30,9
+    LTEXT           "C&olor:",IDC_STATIC,10,95,25,9
+    CONTROL         "",IDC_LINECOLOR,"SFXTool30x_Combo",WS_BORDER | 
+                    WS_TABSTOP | 0x10,40,94,60,15
+    LTEXT           "&Weight:",IDC_STATIC,10,131,30,9
+    LTEXT           "&Gap width %:",IDC_VOLUMET,115,35,45,8
+    CONTROL         "",IDC_MARKERSHAPE,"SFXTool30x_Combo",WS_TABSTOP | 0x10,
+                    165,35,30,15
+    EDITTEXT        IDC_MARKERSTEP,165,55,30,12,ES_NUMBER | NOT WS_VISIBLE
+    CONTROL         "Spin1",IDC_MARKERSTEPA,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS | NOT WS_VISIBLE,195,55,
+                    10,12
+    EDITTEXT        IDC_MARKERSIZE,165,70,30,12,ES_NUMBER | NOT WS_VISIBLE
+    CONTROL         "Spin1",IDC_MARKERSIZEA,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS | NOT WS_VISIBLE,195,70,
+                    10,12
+    LTEXT           "Shape:",IDC_MARKERSHAPET,115,35,43,8
+    LTEXT           "Show every:",IDC_MARKERSTEPT,115,55,40,8
+    LTEXT           "Size:",IDC_MARKERSIZET,115,71,40,8
+    CONTROL         "&Drop lines",IDC_AREALINES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,115,105,80,8
+    COMBOBOX        IDC_LINESTYLE,40,112,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_LINEWIDTH,40,130,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        "Sample",IDC_STATIC,110,120,100,35
+    CONTROL         "&Custom",IDC_BORDER,"Button",BS_AUTORADIOBUTTON,10,80,
+                    90,10
+    CONTROL         "&None",IDC_NOBORDER,"Button",BS_AUTORADIOBUTTON,10,70,
+                    90,10
+    CONTROL         "",IDC_GALLERY,"SFXTool30x_Combo",WS_TABSTOP | 0x10,165,
+                    15,30,15
+    LTEXT           "&Gallery:",IDC_STATIC,115,19,35,8
+    LTEXT           "C&olor:",IDC_STATIC,10,37,25,9
+    CONTROL         "&Visible",IDC_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,115,95,65,10
+END
+
+IDD_PAGESCALE DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Mi&nimum:",IDC_STATIC,10,27,30,10
+    EDITTEXT        IDC_MIN,65,27,55,12
+    LTEXT           "Ma&ximum:",IDC_STATIC,10,42,30,10
+    EDITTEXT        IDC_MAX,65,42,55,12
+    LTEXT           "Scale &unit:",IDC_STATIC,10,57,35,10
+    EDITTEXT        IDC_SCALEUNIT,65,57,55,12
+    LTEXT           "&Format:",IDC_STATIC,10,72,35,10
+    COMBOBOX        IDC_FORMAT,65,72,80,70,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Decimal places:",IDC_STATIC,10,87,55,10
+    EDITTEXT        IDC_DECIMALS,65,87,35,12,ES_NUMBER
+    CONTROL         "Spin1",IDC_DECIMALSA,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,100,87,9,15
+    CONTROL         "&Logarithmic scale",IDC_LOGSCALE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,107,90,10
+    CONTROL         "&Zero line",IDC_BREAKZERO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,118,65,10
+    LTEXT           "",IDC_AXISTITLE,10,10,110,12
+END
+
+IDD_PAGELABELS DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_AXISTITLE,10,10,110,12
+    GROUPBOX        "&Orientation",IDC_STATIC,5,20,75,88
+    CONTROL         "Custom1",IDC_SAMPLE,"SFX_CFX40_Util",WS_BORDER,11,35,35,
+                    45
+    LTEXT           "&Degrees",IDC_STATIC,49,88,28,8
+    EDITTEXT        IDC_LABELANGLE,11,85,35,14
+    CONTROL         "Spin1",IDC_LABELANGLEA,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,20,90,9,14
+    CONTROL         "&Show labels",IDC_SHOWLABELS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,91,23,54,10
+    CONTROL         "&2 Levels",IDC_2LEVELS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,91,33,55,10
+    CONTROL         "&Rotate with chart",IDC_ROTATETEXT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,91,43,70,10
+    LTEXT           "&Title:",IDC_STATIC,5,113,50,10
+    EDITTEXT        IDC_TITLE,5,125,205,31,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
+END
+
+IDD_PAGEGRIDLINES DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "St&yle:",IDC_STATIC,14,58,25,9
+    LTEXT           "C&olor:",IDC_STATIC,14,41,25,9
+    CONTROL         "",IDC_LINECOLOR,"SFXTool30x_Combo",WS_BORDER | 
+                    WS_TABSTOP | 0x10,39,40,60,15
+    LTEXT           "&Weight:",IDC_STATIC,14,77,25,9
+    COMBOBOX        IDC_LINESTYLE,39,58,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_LINEWIDTH,39,76,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        "Major gridlines",IDC_STATIC,5,25,100,75
+    LTEXT           "St&yle:",IDC_STATIC,116,57,25,9
+    LTEXT           "C&olor:",IDC_STATIC,116,41,20,9
+    CONTROL         "",IDC_LINECOLOR2,"SFXTool30x_Combo",WS_BORDER | 
+                    WS_TABSTOP | 0x10,141,40,60,15
+    LTEXT           "&Weight:",IDC_STATIC,116,78,25,9
+    COMBOBOX        IDC_LINESTYLE2,141,57,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_LINEWIDTH2,141,77,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | WS_VSCROLL | 
+                    WS_TABSTOP
+    GROUPBOX        "Minor gridlines",IDC_STATIC,110,25,100,75
+    CONTROL         "&Interlaced",IDC_INTERLACED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,115,65,10
+    CONTROL         "&Align with labels",IDC_ALIGNTICK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,105,70,10
+    LTEXT           "",IDC_AXISTITLE,10,10,110,12
+END
+
+IDD_PAGEGENERAL DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Effects",IDC_STATIC,5,10,85,125
+    CONTROL         "&3D",IDC_3D,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,25,
+                    50,12
+    CONTROL         "&Cluster (Z-Axis)",IDC_CLUSTER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,37,65,11
+    LTEXT           "&Stacked:",IDC_STATIC,10,58,35,8
+    CONTROL         "",IDC_STACKED,"SFXTool30x_Combo",WS_TABSTOP | 0x10,51,
+                    53,30,15
+    LTEXT           "&Axes style:",IDC_STATIC,10,76,34,8
+    CONTROL         "",IDC_AXESSTYLE,"SFXTool30x_Combo",WS_TABSTOP | 0x10,51,
+                    72,30,15
+    LTEXT           "&Grid lines:",IDC_STATIC,10,94,35,8
+    CONTROL         "",IDC_GRID,"SFXTool30x_Combo",WS_TABSTOP | 0x10,51,91,
+                    30,15
+    GROUPBOX        "Colors",IDC_STATIC,95,10,115,125
+    LTEXT           "&Palette:",IDC_STATIC,100,27,25,10
+    COMBOBOX        IDC_PALETTE,130,25,75,75,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&Scheme:",IDC_STATIC,100,76,29,8
+    CONTROL         "",IDC_SCHEME,"SFXTool30x_Combo",WS_TABSTOP | 0x10,146,
+                    73,30,15
+    RTEXT           "&Background:",IDC_STATIC,100,97,42,8
+    CONTROL         "",IDC_BKCOLOR,"SFXTool30x_Combo",WS_BORDER | WS_TABSTOP | 
+                    0x10,146,93,60,15
+    RTEXT           "C&hart box:",IDC_STATIC,100,115,33,8
+    CONTROL         "",IDC_2D3DBKCOLOR,"SFXTool30x_Combo",WS_BORDER | 
+                    WS_TABSTOP | 0x10,146,112,60,15
+    CONTROL         "Custom1",IDC_PALETTEPREVIEW,"SFX_CFX40_Util",WS_TABSTOP,
+                    110,45,95,25
+    LTEXT           "Title:",IDC_STATIC,10,142,20,10
+    EDITTEXT        IDC_TITLE,30,140,180,12,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL
+END
+
+IDD_PAGECONSTANTSTRIPES DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Color &stripes",IDC_STRIPES,"Button",BS_AUTORADIOBUTTON,
+                    5,10,85,10
+    CONTROL         "&Constant lines",IDC_CONSTANTS,"Button",
+                    BS_AUTORADIOBUTTON,5,20,90,10
+    LISTBOX         IDC_LIST,5,35,105,100,LBS_OWNERDRAWFIXED | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Axis:",IDC_STATIC,120,37,16,8
+    COMBOBOX        IDC_AXIS,148,35,60,55,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&From:",IDC_FROMT,120,55,25,8
+    EDITTEXT        IDC_FROM,147,53,60,13
+    LTEXT           "&To:",IDC_TOT,120,71,25,8
+    EDITTEXT        IDC_TO,147,69,60,12,ES_AUTOHSCROLL
+    LTEXT           "C&olor:",IDC_STATIC,120,86,25,9
+    CONTROL         "",IDC_LINECOLOR,"SFXTool30x_Combo",WS_BORDER | 
+                    WS_TABSTOP | 0x10,147,85,60,15
+    LTEXT           "St&yle:",IDC_LINESTYLET,120,104,25,9,NOT WS_VISIBLE
+    COMBOBOX        IDC_LINESTYLE,148,103,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | NOT 
+                    WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Weight:",IDC_LINEWIDTHT,120,121,25,9,NOT WS_VISIBLE
+    COMBOBOX        IDC_LINEWIDTH,148,121,60,90,CBS_DROPDOWNLIST | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL | NOT 
+                    WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "&Delete",IDC_DELETE,147,140,60,15
+END
+
+IDD_PAGEAXES DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_AXISTITLE,10,10,80,12
+    CONTROL         "&Visible",IDC_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,95,12,45,8
+    COMBOBOX        IDC_AXIS,5,10,80,65,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Major &unit:",IDC_STATIC,5,33,35,10
+    EDITTEXT        IDC_STEP,45,31,65,12
+    CONTROL         "Show &gridlines",IDC_MAJORGRIDLINE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,121,32,61,10
+    GROUPBOX        "Tick mark type",IDC_STATIC,5,47,205,30
+    CONTROL         "&None",IDC_MAJORNONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,41,61,35,10
+    CONTROL         "&Outside",IDC_MAJOROUTSIDE,"Button",BS_AUTORADIOBUTTON,
+                    75,61,39,9
+    CONTROL         "&Inside",IDC_MAJORINSIDE,"Button",BS_AUTORADIOBUTTON,
+                    121,61,34,9
+    CONTROL         "&Cross",IDC_MAJORCROSS,"Button",BS_AUTORADIOBUTTON,161,
+                    61,34,9
+    LTEXT           "M&inor unit:",IDC_STATIC,5,86,35,10
+    EDITTEXT        IDC_MINORSTEP,45,83,65,12
+    CONTROL         "Show g&ridlines",IDC_MINORGRIDLINE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,121,84,61,10
+    GROUPBOX        "Tick mark type",IDC_STATIC,5,99,205,30
+    CONTROL         "&None",IDC_MINORNONE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,45,112,30,10
+    CONTROL         "I&nside",IDC_MINORINSIDE,"Button",BS_AUTORADIOBUTTON,
+                    125,112,34,9
+    CONTROL         "O&utside",IDC_MINOROUTSIDE,"Button",BS_AUTORADIOBUTTON,
+                    80,112,39,9
+    CONTROL         "C&ross",IDC_MINORCROSS,"Button",BS_AUTORADIOBUTTON,165,
+                    112,34,9
+    PUSHBUTTON      "&Details ...",IDC_DETAILS,150,140,60,15
+END
+
+IDD_PAGE3D DIALOG DISCARDABLE  0, 0, 216, 161
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Shape",IDC_ANGLES3D,"SFX_CFX40_Util",WS_TABSTOP,5,5,85,
+                    76
+    RTEXT           "&X Angle:",IDC_STATIC,5,100,30,9
+    EDITTEXT        IDC_ROTX,40,100,30,12,ES_NUMBER
+    CONTROL         "Spin1",IDC_ROTXA,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,70,100,9,10
+    RTEXT           "&Y Angle:",IDC_STATIC,5,121,30,9
+    EDITTEXT        IDC_ROTY,40,121,30,12,ES_NUMBER
+    CONTROL         "Spin2",IDC_ROTYA,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | 
+                    UDS_NOTHOUSANDS,70,120,9,10
+    CONTROL         "&Rotated view",IDC_3DVIEW,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,85,58,10
+    CONTROL         "Shape",IDC_SAMPLE3D,"SFX_CFX40_Util",WS_TABSTOP,115,5,
+                    85,75
+    LTEXT           "&Depth:",IDC_STATIC,105,85,65,10
+    CONTROL         "Shape",IDC_DEPTH,"msctls_trackbar32",TBS_AUTOTICKS | 
+                    WS_TABSTOP,111,100,90,17
+    LTEXT           "&Perspective:",IDC_STATIC,105,120,55,10
+    CONTROL         "Shape",IDC_PERSPECTIVE,"msctls_trackbar32",
+                    TBS_AUTOTICKS | WS_TABSTOP,111,135,90,17
+    COMBOBOX        IDC_SHADOW,40,140,55,50,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Shadows:",IDC_STATIC,5,140,30,10
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  8, 25, 196, 101
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Chart FX 98"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Ok",IDOK,148,82,43,15,WS_GROUP
+    ICON            711,IDC_STATIC,5,5,21,20
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,5,46,188,1
+    CTEXT           "",IDC_FILEVERSION,0,25,30,20
+    EDITTEXT        IDC_ABOUTFRAME,3,52,137,45,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_VISIBLE | WS_DISABLED
+    CTEXT           "",IDC_FRAME1,35,5,140,35
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PAGESETUP, DIALOG
+    BEGIN
+        RIGHTMARGIN, 142
+        BOTTOMMARGIN, 105
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NOGRID              "None"
+    IDS_GRIDHORZ            "Horiz."
+    IDS_GRIDVERT            "Vertical"
+    IDS_GRIDBOTH            "Both"
+    IDS_NOSTACKED           "Syde by side"
+    IDS_STACKED             "Stacked"
+    IDS_STACKED100          "Stacked 100%"
+    IDS_LINESHAPE           "3D Line's Shape"
+    IDS_BARSHAPE            "3D Bar's shape"
+    IDS_NOVERTEX            "No. of s&ides:"
+    IDS_LINETHICK           "3D Line &thick:"
+    IDS_PAGENUMBER          "Page %d of %d"
+    IDS_NODATA              "No groups or statistics selected"
+    IDS_AUTO                "Auto"
+    IDS_SHADOWNONE          "None (unlit)"
+    IDS_SHADOWFIXED         "Fixed angle"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SHADOWREALISTIC     "Realistic"
+    IDS_CHARTAREA           "Chart area"
+    IDS_PLOTAREA            "Plot area"
+    IDS_DATASERIES          "Data series"
+    IDS_YAXIS               "Y Axis"
+    IDS_YAXIS2              "Secondary Y axis"
+    IDS_XAXIS               "X Axis"
+    IDS_XAXIS2              "Secondary X Axis"
+    IDS_FROM                "&From:"
+    IDS_VALUE               "&Value"
+    IDS_NEWITEM             "<< New >>"
+    IDS_ALLSERIES           "<< All series >>"
+    IDS_TO                  "&To"
+    IDS_LABEL               "&Label"
+    IDS_PROPERTIES          "Chart FX 98."
+    IDS_HELPFILE            "ChartFX_98_API.chm"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LEFTTIT             "&Left title"
+    IDS_RIGHTTIT            "&Right title"
+    IDS_TOPTIT              "&Top title"
+    IDS_BOTTOMTIT           "&Bottom title"
+    IDS_EXIT                "E&xit"
+    IDS_FILE                "&File"
+    IDS_EDIT                "&Edit"
+    IDS_VIEW                "&View"
+    IDS_HELP                "&Help"
+    IDS_HELPCONTENTS        "&Contents"
+    IDS_SEPARATOR           "Separator"
+    IDS_EXPORTOBJECT        "As &OLE Object"
+    IDS_CM_AXIS2LEVELS      "&2 Levels"
+    IDS_CM_AXISROTATED      "&Rotated"
+    IDS_CM_EDITTITLE        "&Edit title"
+    IDS_CM_SERIES           "Series"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_HELPFILEGUI         "ChartFX_98_GUI.hlp"
+    IDS_PROJNAME            "Cfx4032"
+    IDS_TITLEGeneralPage    "General"
+    IDS_DOCSTRINGGeneralPage "Chart FX. General Properties."
+    IDS_TITLESeriesPage     "Series"
+    IDS_DOCSTRINGSeriesPage "Chart FX. Series properties."
+    IDS_TITLEAxesPage       "Axes"
+    IDS_DOCSTRINGAxesPage   "Chart FX. Axes Properties."
+    IDS_TITLEPage3D         "3D"
+    IDS_DOCSTRINGPage3D     "Chart FX. 3D Properties."
+    IDS_TITLEScalePage      "Scale"
+    IDS_DOCSTRINGScalePage  "Chart FX. Axis scale Properties."
+    IDS_TITLELabelsPage     "Labels"
+    IDS_DOCSTRINGLabelsPage "Chart FX. Axis labels Properties."
+    IDS_TITLEGridLinesPage  "Grid lines"
+    IDS_DOCSTRINGGridLinesPage "Chart FX. Grid lines properties."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TITLEConstantStripesPage "Stripes"
+    IDS_DOCSTRINGConstantStripesPage 
+                            "Chart FX. Constant lines and color stripes Properties."
+    IDS_LEGENDBOX           "Legend"
+    IDS_TRANSPARENT         "Transparent"
+    IDS_NEXT                "Next"
+    IDS_PREV                "Previous"
+    IDS_SERIESLEGENDBOX     "Series Legend"
+    IDS_PALETTE             "Palette"
+    IDS_FORMATNONE          "None"
+    IDS_FORMATNUMBER        "Number"
+    IDS_FORMATCURRENCY      "Currency"
+    IDS_FORMATSCIENTIFIC    "Scientific notation"
+    IDS_FORMATPERCENTAGE    "Percentage"
+    IDS_FORMATDATE          "Date"
+    IDS_FORMATLONGDATE      "Long Date"
+    IDS_FORMATTIME          "Time"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CM_BACKGROUND       "Background"
+    IDS_CM_AXIS             "Axis"
+    IDS_CM_TITLE            "Title"
+    IDS_CM_FONT             "&Font ..."
+    IDS_CM_POINTLABELS      "&Point labels"
+    IDS_CMB_AUTOSIZE        "AutoSize"
+    IDS_CMB_FIXED           "Fixed"
+    IDS_CMB_FLOAT           "Floating"
+    IDS_CMB_LEFT            "Left"
+    IDS_CMB_TOP             "Top"
+    IDS_CMB_RIGHT           "Right"
+    IDS_CMB_BOTTOM          "Bottom"
+    IDS_CM_BAR              "Bar"
+    IDS_CMB_HIDE            "&Hide"
+    IDS_TOOLBARS            "Toolbars"
+    IDS_DATAEDITOR          "&Data Editor"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FORMATDATETIME      "Date/Time"
+    IDS_FORMATCUSTOM        "Custom"
+    IDS_AXESNONE            "None"
+    IDS_AXES3DFRAME         "3D Frame"
+    IDS_AXESMATH            "Math"
+    IDS_AXESFLATFRAME       "Flat Frame"
+    IDS_MARKERS             "Markers"
+    IDS_MARKERFILL          "Marker fill"
+    IDS_LINES               "Lines"
+    IDS_SAMECOLOR           "&Same color as markers"
+    IDS_INVALIDFILE         "Invalid file format or version"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEFAULT             "<Default>"
+    IDS_FILL                "Fill"
+    IDS_BORDER              "Border"
+    IDS_NONE                "&None"
+    IDS_EXPORTFILEEXT       "Chart FX 98 files|*.CHD|Chart FX 98 templates (no data)|*.CHD|Text files (data only)|*.TXT|Metafile pictures|*.EMF|Bitmap pictures|*.BMP|"
+    IDS_IMPORTFILEEXT       "Chart FX 98 files and templates|*.CHD|Text files (data only)|*.TXT|All files|*.*|"
+    IDS_STYLES              "Styles"
+    IDS_XYVALUEMASK         "%s\n%l\nX: %x, Y: %v"
+    IDS_VALUEMASK           "%s\n%l\n%v"
+    IDS_VALUEMASK2          "%s\n%l - %l\n%v - %v"
+    IDS_PIEMASK             "%s\n%l\n%v out of %t\n(%p%%)"
+    IDS_BARINIMASK          "%s\n%l\nFrom %i to\n%v"
+    IDS_HILOWMASK           "%l\nHigh: %v3 - Low: %v1\nClose %v2"
+    IDS_OPENHILOWMASK       "%l\nOpen: %v2\nHigh: %v4  - Low: %v1\nClose: %v3"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RGBSOLID            "Solid"
+    IDS_RGBBWPAT            "BW Patterns"
+    IDS_RGBPAT              "Color Patterns"
+    IDS_RGBBWHATCH          "BW Hatched"
+    IDS_RGBHATCH            "Hatched"
+    IDS_SERIESMASK          "Series #%d"
+    IDS_VALUESMASK          "Value #%d"
+    IDS_AREALINES           "&Area Lines"
+    IDS_NONEMK              "None"
+    IDS_RECTANGLE           "Rectangle"
+    IDS_CIRCLE              "Circle"
+    IDS_TRIANGLE            "Triangle"
+    IDS_MARBLE              "Marble"
+    IDS_CUBE                "Cube"
+    IDS_MANY                "Variable"
+    IDS_PREVIOUSCOLOR       "Original Color"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_XLTIT               "&X-Axis labels"
+    IDS_YLTIT               "&Y-Axis labels"
+    IDS_FXTIT               "&Constant lines"
+    IDS_LYTIT               "Legend &box"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_VALUESTIT           "&Point labels"
+    IDS_POINTTIT            "&Point markers"
+    IDS_OPENCHART           "&Open Chart"
+    IDS_SAVECHART           "&Save Chart"
+    IDS_LOADTEMPLATE        "Open Template"
+    IDS_PRINT               "Print"
+    IDS_PREVIEW             "Print preview"
+    IDS_SAVETEMPLATE        "Save Template"
+    IDS_GALLERY             "&Gallery"
+    IDS_STATUSBAR           "StatusBar"
+    IDS_COLOR               "Color"
+    IDS_MENUBAR             "Menu"
+    IDS_3D                  "3D/2D"
+    IDS_ROTATE              "Rotate"
+    IDS_CLUSTER             "Z-Clustered."
+    IDS_HELPSEARCH          "&Search"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LINE                "Line"
+    IDS_AREA                "Area"
+    IDS_CURVE               "Curve"
+    IDS_CURVEAREA           "Area-Curve"
+    IDS_STEP                "Step"
+    IDS_BUBBLE              "Bubble"
+    IDS_SCATTER             "Scatter"
+    IDS_BAR                 "Bar"
+    IDS_GANTT               "Gantt"
+    IDS_CUBEGAL             "Cube"
+    IDS_CANDLESTICK         "Candlestick"
+    IDS_OPENHILOWCLOSE      "Open-High-Low-Close"
+    IDS_HILOWCLOSE          "High-Low-Close"
+    IDS_PARETO              "Pareto"
+    IDS_PIE                 "Pie"
+    IDS_DOUGHNUT            "Doughnut"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ZOOM                "Zoom"
+    IDS_VALUES              "&Values legend"
+    IDS_SERVALUES           "&Series legend"
+    IDS_VGRID               "Vertical grid"
+    IDS_HGRID               "Horizontal grid"
+    IDS_ABOUT               "&About ChartFX"
+    IDS_FONT                "Fonts"
+    IDS_OPTIONS             "Properties ..."
+    IDS_EXPORTBITMAP        "As a &Bitmap"
+    IDS_EXPORTMETAFILE      "As a &Metafile"
+    IDS_EXPORTDATA          "As &Text (data only)"
+    IDS_EXPORTCLIPBOARD     "Copy to clipboard"
+    IDS_TOOLBAR             "&Toolbar"
+    IDS_PALETTEBAR          "&PaletteBar"
+    IDS_PATTERNBAR          "P&atternBar"
+    IDS_TOOLS               "&Tools"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PYRAMID             "Pyramid"
+    IDS_RADAR               "Radar"
+    IDS_CONTOUR             "Contour/Spectral"
+    IDS_SURFACE             "Surface"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DLGPRINT            "Print ..."
+    IDS_PASTE               "&Paste data"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

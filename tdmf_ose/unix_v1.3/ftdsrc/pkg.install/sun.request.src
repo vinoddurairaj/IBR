@@ -1,0 +1,18 @@
+# Prompts go here
+while [ "$ACCEPT_LICENSE" != "y" ]; do
+	# NOTE: The space after the ? is important!
+	ACCEPT_LICENSE=`ckyorn -Q -p "Do you accept the above license terms? "`
+	if [ "$ACCEPT_LICENSE" != "y" ]; then
+		echo "You must accept the license terms to install this product"
+		exit 1
+	fi
+done
+
+if [ $PKGINST = "%PKGNM%" ]; then
+        RMD_PORT=`ckrange -Q -d 575 \
+	        -p "Port for %PRODUCTNAME% master daemon to listen on? [575]" \
+                -l 1 -u 65535`
+        # Export the above variables to pkgadd's $1.  This ensures that 
+        # they get added to the package's install enviornment.
+        echo "RMD_PORT=${RMD_PORT}" >> $1
+fi

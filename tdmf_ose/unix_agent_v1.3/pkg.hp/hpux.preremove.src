@@ -1,0 +1,30 @@
+#! /sbin/sh
+###############
+# Product: Replicator Agent
+# preremove
+########
+#
+# Copyright (c) 2003 Softek Technology Corporation. All rights reserved.
+#
+########
+
+# Kill Replicator Agent daemon
+/opt/SFTKdua/bin/killdua
+
+if [ -h /sbin/rc0.d/K26SFTKdua ]
+then
+	/usr/bin/rm /sbin/rc0.d/K26SFTKdua
+fi
+
+if [ -h /sbin/rc3.d/S26SFTKdua ]
+then
+	/usr/bin/rm /sbin/rc3.d/S26SFTKdua
+fi
+
+if [ -h /sbin/init.d/SFTKdua ]
+then
+	/usr/bin/rm /sbin/init.d/SFTKdua
+fi
+
+exit 0
+

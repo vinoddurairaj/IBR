@@ -1,0 +1,171 @@
+#! /usr/local/bin/perl5
+eval 'exec perl -S $0 ${1+"$@"}'
+        if $running_under_some_shell;
+
+########################################
+# Preliminaries
+#
+use Getopt::Std;
+use qaLib;
+
+########################################
+# Initialize constants
+#
+$DFLT_SectorsPerBlock = 8 * 1024 / 512;	# application block size, in sectors.  Default is 16 (8KB)
+$DFLT_FirstSector = -1;					# first sector to verify. Default is -1: 1 if s0, 0 otherwise
+$DFLT_LastSector  = -1;					# last sector to verify, or -1 for all the rest (the default)
+
+########################################
+# Process arguments
+#
+$scriptName = $0;
+getopts('DK:f:l:s:') || Usage();
+$#ARGV == 0 || Usage();
+defined($opt_K) || Usage();
+
+
+########################################
+# Initialize parameters
+#
+$sectorsPerBlock		= ((defined $opt_s) ? $opt_s : $DFLT_SectorsPerBlock);
+$firstSector			= ((defined $opt_f) ? $opt_f : $DFLT_FirstSector);
+$lastSector				= ((defined $opt_l) ? $opt_l : $DFLT_LastSector);
+$keyString				= sprintf('%8.8x', $opt_K) x (512/8 - 2);
+
+
+########################################
+# Validate parameters
+#
+($sectorsPerBlock > 0 && int($sectorsPerBlock) == $sectorsPerBlock)
+	|| die "Application block size (-s<size>) must be an integer greater than 0\n";
+
+
+########################################
+# Validate the device and open it
+#
+$device = $ARGV[0];
+$device =~ s|^/dev/r?dsk/||;
+
+$device = '/dev/rdsk/' . $device;
+(($sliceStartSector, $sliceEndSector) = GetStdDeviceGeometry($device))
+	|| die "Couldn't get geometry for $device.  Exiting";
+
+$| = 1;
+open(DEVICE, '<' . $device)
+	|| die "$device: open failed: $!";
+
+########################################
+# Get ready for our loop.
+#
+if ($firstSector < 0) {
+	$firstSector = 0;
+#	$firstSector = ($sliceStartSector == 0 ? 1 : 0);
+}
+if ($lastSector < 0) {
+	$lastSector =  $sliceEndSector - $sliceStartSector;
+}
+($firstSector <= $lastSector)
+	|| die "First sector ($firstSector) must be less than last sector ($lastSector).\n";
+
+$numSectors = $lastSector - $firstSector + 1;
+$numBlocks = int($numSectors / $sectorsPerBlock);
+
+# Read 'em.
+#
+doRead($firstSector, $sectorsPerBlock, $numBlocks);
+doRead($numBlocks * $sectorsPerBlock, $numSectors % $sectorsPerBlock, 1)
+	if ($numSectors % $sectorsPerBlock);
+
+close DEVICE;
+exit 0;
+
+
+##############################################################################
+# Subroutines & Functions
+#
+
+sub VerifySector {
+	my($sNum, $sContents) = @_;
+
+	if (   substr($sContents, 0, 8)       ne sprintf("%08x", $sNum)
+		|| substr($sContents, 512 - 8, 8) ne sprintf("%08x", $sNum)) {
+
+		printf STDERR ("Sector %d found to contain '%s' and '%s', should both be '%08x'\n",
+					   $sNum,
+					   substr($sContents, 0, 8),
+					   substr($sContents, 512 - 8, 8),
+					   $sNum);
+	}
+
+	if (substr($sContents, 8, 512-(2*8)) ne $keyString) {
+
+		my($key, $loc, $dword);
+		$key = $opt_K;
+
+		# We found a difference from what the sector contents should be.  Report it.
+		#
+		printf STDERR ("Found garbage in sector %d. Should be filled with '%s':\n", $sNum, $key);
+
+		$loc = 0;
+		while ($loc < 512 - 8) {
+
+			# Find the next difference
+			#
+			do {
+				$loc += 8;
+				$dword = substr($sContents, $loc, 8);
+			} until ($dword ne $key || $loc >= 512 - (2 * 8));
+
+			if ($dword ne $key) {
+
+				# Found a difference, report it.
+				printf STDERR ("\tAt offset %3d, found '", $loc);
+				do {
+					printf STDERR ("%s", $dword);
+					$loc += 8;
+					$dword = substr($sContents, $loc, 8);
+				} while ($loc < 512 - 8 && $dword ne $key);
+				printf STDERR ("'\n");
+			}
+		}
+	}
+}
+
+
+sub doRead {
+	my($startingSector, $sectorsPerBlock, $blocksAccessed) = @_;
+	my($i, $s);
+
+	Log("Reading %d sectors: %8d - %8d.\n", $sectorsPerBlock * $blocksAccessed, $startingSector,
+		$startingSector + $sectorsPerBlock * $blocksAccessed - 1);
+	seek(DEVICE, $startingSector * 512, 0);
+	for ($i = 0; $i < $blocksAccessed; $i++) {
+		sysread(DEVICE, $ioBuffer, $sectorsPerBlock * 512)
+			|| die "$device: read failed: $!";
+
+		for ($s = 0; $s < $sectorsPerBlock; $s++) {
+			VerifySector($startingSector + ($i * $sectorsPerBlock) + $s, substr($ioBuffer, $s * 512, 512));
+		}
+		Log('.') unless (($i + 1) % (16384 / $sectorsPerBlock));
+		Log("%d\n", $i * $sectorsPerBlock)
+			unless (($i + 1) % ((16384 / $sectorsPerBlock) * 64));
+	}
+	Log ("\n");
+}
+
+
+sub Usage {
+	print <<EOF;
+Usage: $scriptName [options] -K<key> <dev>
+\t-D:            print a running commentary on the action
+\t-K<key>:       the 'key' used by InitDisk (the raw time-of-day at its startup, in hex)
+\t-f<sector>:    verify starting at <sector> (default: 0, or 1 if 0 is disk label)
+\t-l<sector>:    verify up to <sector> (default: last sector of the device)
+\t-s<size>:      sectors per block, in 512 byte sectors (default: $DFLT_SectorsPerBlock)
+EOF
+	die "\n";
+}
+
+sub Log {
+	$opt_D && printf @_;
+}

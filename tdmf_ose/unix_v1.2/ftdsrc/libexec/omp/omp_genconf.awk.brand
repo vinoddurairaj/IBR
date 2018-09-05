@@ -1,0 +1,1499 @@
+#!/usr/bin/gawk -f
+###############################################################################
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+#
+# Offline Migration Package (OMP)   Version %VERSION%
+#
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2007%.  All Rights Reserved.
+#
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+#
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+# $Id: omp_genconf.awk.brand,v 1.6 2010/01/13 19:37:51 naat0 Exp $
+#
+# Function: Validate and Generate Configuration Files
+#
+###############################################################################
+
+function NoStdOutput()
+{
+    discard_output = discard_output " no_std "
+}
+
+function NoLogOutput()
+{
+    discard_output = discard_output " no_log "
+}
+
+function Display( msgcode, arg1, arg2, arg3,    exitcode, message, idx, timestamp, severity )
+{
+    exitcode = EC_ERROR
+    if (msgcode == "MissingField") # field, file
+    {
+	message[0] = "Cannot find field \"" arg1 "\" in file \"" arg2 "\""
+    }
+    else if (msgcode == "ReadError") # file
+    {
+	if (omp_linecnt == 0)
+	{
+	    message[0] = "Unable to open or read file \"" arg1 "\"." 
+	}
+	else
+	{
+	    message[0] = "Unexpected read error on file \"" arg1 "\" around line " omp_linecnt "." 
+	}
+    }
+    else if (msgcode == "MissingPstores") # file
+    {
+	message[0] = "No persistent store devices were processed from file \"" arg1 "\"."
+    }
+    else if (msgcode == "DupPstore") # field, file
+    {
+	message[0] = "Persistent store device \"" arg1 "\" is a duplicate value in file \"" arg2 "\" on line " omp_linecnt "."
+    }
+    else if (msgcode == "MissingValue") # field, file
+    {
+	message[0] = "Field \"" arg1 "\" must have a value in file \"" arg2 "\" on line " omp_linecnt "."
+    }
+    else if (msgcode == "InvalidValue") # field, file
+    {
+	message[0] = "Field \"" arg1 "\" must have a valid value in file \"" arg2 "\" on line " omp_linecnt "."
+    }
+    else if (msgcode == "UnexpectedEod") # file
+    {
+	message[0] = "Unexpected of end of file reached on file \"" arg1 "\"." 
+    }
+    else if (msgcode == "CreateRepGroup") # file
+    {
+	exitcode = EC_OK
+	if (arg3 == 1)
+	{
+	    message[0] = "Migration group " arg1 " created for schedule group \"" arg2 "\" with " arg3 " device."
+	}
+	else
+	{
+	    message[0] = "Migration group " arg1 " created for schedule group \"" arg2 "\" with " arg3 " devices."
+	}
+    }
+    else if (msgcode == "TunableSyntax") # file
+    {
+	message[0] = "Errors detected while processing  \"" arg1 "\" fle on line " omp_linecnt "." 
+    }
+    else if (msgcode == "CommentMismatch") # file
+    {
+	message[0] = "Unexpected comment found in file \"" arg1 "\" on line " omp_linecnt "." 
+    }
+    else if (msgcode == "LineMismatch") # file
+    {
+	message[0] = "File \"" arg1 "\" has less lines than \"" arg2 "\"."
+    }
+    else if (msgcode == "SizeInvalid") # field, file
+    {
+	message[0] = "Field \"" arg1 "\" has a value less than or equal to zero in file \"" arg2 "\" on line " omp_linecnt "."
+    }
+    else if (msgcode == "SizeMismatch") # field
+    {
+	message[0] = "Field \"" arg1 "\" in the target file is too small for the source file on line " omp_linecnt "."
+    }
+    else if (msgcode == "FieldCount") # file
+    {
+	message[0] = "The number of expected fields in file \"" arg1 "\"does not match on line " omp_linecnt "."
+    }
+    else if (msgcode == "DosFormat") # file
+    {
+	exitcode = EC_WARN
+	message[0] ="File \"" arg1 "\" is in DOS format."
+    }
+    else if (msgcode == "NoPstores") # file
+    {
+	message[0] ="There are not enough pstore devices configured to support this migration."
+    }
+    else if (msgcode == "RepGrpCnt") # schedulegroup, devicecnt, repgroupcnt
+    {
+	exitcode = EC_OK
+	if (arg2 == 1)
+	{
+	    message[0] ="Schedule Group \"" arg1 "\" has " arg2 " device and will be using " arg3 " migration group."
+	}
+	else if (arg3 == 1)
+	{
+	    message[0] ="Schedule Group \"" arg1 "\" has " arg2 " devices and will be using " arg3 " migration group."
+	}
+	else
+	{
+	    message[0] ="Schedule Group \"" arg1 "\" has " arg2 " devices and will be using " arg3 " migration groups."
+	}
+    }
+    else if (msgcode == "NoMigration") # schedule_group
+    {
+	message[0] = "No migration devices are available for a migration."
+    }
+    else if (msgcode == "SchedError") # schedule_group
+    {
+	message[0] = "The scheduling file cannot be processed because there are too"
+	message[1] = "many scheduling groups.  Either minimize the number of scheduling groups"
+	message[2] = "or break the source and target files into multiple files."
+    }
+    else if (msgcode == "DuplicateDevice") # device, file
+    {
+	message[0] = "Device \"" arg1 "\" in file \"" arg2 "\" is already in use in file \""  arg3  "\"."
+    }
+    else
+    {
+	message[0] = "Cannot find message for message code \"" msgcode "\" \"" arg1 "\" \"" arg2 "\" \"" arg3 "\""
+	msgcode = "OMP_MISSINGMSG"
+    }
+    if (exitcode == EC_OK)
+    {
+	severity = "INFO: "
+    }
+    else if (exitcode == EC_WARN)
+    {
+	severity = "WARNING: "
+    }
+    else if (exitcode == EC_ERROR)
+    {
+	severity = "ERROR: "
+    }
+    else if (exitcode == EC_FATAL)
+    {
+	severity = "FATAL: "
+    }
+    timestamp = strftime( "%Y.%m.%d--%T" )
+
+    for (idx = 0; (idx in message); idx++)
+    {
+	if (discard_output !~ / no_std /)
+	{
+	    print severity message[idx]  " [" msgcode "]"
+	}
+	if (discard_output !~ / no_log /)
+	{
+	    print "[" timestamp "] " "genconf[" PROCINFO["pid"] "] " severity message[idx]  " [" msgcode "]" >> omp_logpath
+	}
+    }
+    close (omp_logpath)
+    if (exitcode > EC_WARN)
+	exit( exitcode )
+}
+
+function GetTunables(   ot_status, ot_line, ot_nf, pos1, pos2, variable, value )
+{
+    omp_linecnt = 0
+    ot_status = 1
+    ot_status = getline ot_line < omp_tunablespath
+    close( omp_tunablespath )
+    if (ot_status < 0)
+    {
+	return
+    }
+
+    while (ot_status > 0)
+    {
+	ot_status = getline ot_line < omp_tunablespath
+	omp_linecnt++
+
+	if (ot_status < 0)
+	{
+	    Display( "ReadError", omp_tunablespath )
+	}
+
+	if (ot_status == 0 )
+	{
+	    close( omp_tunablespath )
+	    break
+	}
+
+	sub(/\r$/,"", ot_line)
+
+	# Ignore empty lines
+
+	if (ot_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    ot_line = ""
+	}
+
+	if (ot_line == "" )
+	{
+	    continue
+	}
+
+	if (ot_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    continue
+	}
+	pos1=index( ot_line, "=" )
+	pos2=index( ot_line, "\"" )
+	if (pos1 == 0 || (pos2 > 0 && pos1 > pos2))
+	{
+	    Display( "TunableSyntax", omp_tunablespath )
+	    continue
+	}
+	variable=substr(ot_line, 1, pos1 - 1)
+	value=substr(ot_line, pos1 + 1)
+	sub( /^[ \t]+/, "", variable )
+	sub( /[ \t]+$/, "", variable )
+	sub( /^[ \t]+/, "", value )
+	sub( /[ \t]+$/, "", value )
+
+	if (variable ~ /MigrationGroupsPerScheduleGroup/)
+	{
+	    value = ShStringToNumber( value )
+	    if (value == "!")
+	    {
+		Display( "TunableSyntax", omp_tunablespath )
+		continue
+	    }
+	    omp_max_replication_groups_per_schedule_group = value
+	}
+	else if (variable ~ /MaxMigrationGroups/)
+	{
+	    value = ShStringToNumber( value )
+	    if (value == "!")
+	    {
+		Display( "TunableSyntax", omp_tunablespath )
+		continue
+	    }
+	    omp_max_replication_groups = value
+	}
+    }
+}
+
+function ShStringToNumber( cvtstr,   num, numarray, n, negate, numstr, base, digit, value )
+{
+
+    gsub(/[ \t]+/,"", cvtstr)
+    negate=0
+    num=0
+    if (cvtstr ~ /^-/)
+    {
+	cvtstr=substr(cvtstr, 2)
+	negate=1
+    }
+
+    n = split( cvtstr, numarray, /#/ )
+    if (n == 1)
+    {
+	base=10
+	numstr=numarray[1]
+    }
+    else if (n == 2)
+    {
+	if (numarray[1] ~ /^[0-9]+$/)
+	{
+	    base=numarray[1] + 0
+	}
+	else
+	{
+	    return "!"
+	}
+	if (base > 36 || base < 2)
+	{
+	    return "!"
+	}
+	numstr=numarray[2]
+    }
+    else
+    {
+	return "!"
+    }
+    digit="!"
+    for (n=1; n <= length(numstr); n++)
+    {
+	digit=substr(numstr,n,1)
+	if (digit in DigitToValue)
+	{
+	    value = DigitToValue[digit]
+	    if (negate)
+	    {
+		value = -value
+	    }
+	    num = num * base + value
+	}
+	else
+	{
+	    return "!"
+	}
+    }
+    if (digit == "!")
+    {
+	return "!"
+    }
+    return num
+}
+
+#**************************************************************************
+#
+# In the event of an error -1 is returned and csv_error is set to the error.
+# Parameters:
+# string  = The string to parse.
+# csv     = The array to parse the fields into.
+# option  = option array for controling the csv parsing.  The function
+#	    csv_set_default_option sets the option array with default values
+#
+#   option["separator"] = pattern
+#
+#	Defines the separator string between fields.  It may be a regular
+#	expression.  Remember to use the rules for string regexp constants
+#
+#   option["quote-pattern"] = pattern
+#
+#	Defines the quote string for fields. The quote string used for a field
+#	is determined by string matched when looking for a the beginning of a
+#	field.
+#
+#   option["trim-record"] = "LEFT|RIGHT|BOTH|NONE"
+#
+#	The input string will be trimmed before the parsing for csv fields.
+#
+#   option["trim-field"] = "LEFT|RIGHT|BOTH|NONE"
+#
+#	The fields will be trimmed after all the fields have been determined. 
+#
+#   option["trim-pattern] = pattern
+#
+#	The trim regular expression used when trimming fields or records
+#
+#   option["quote-pattern] = pattern
+#
+#	The quote regular expression used when determining if fields
+#	begin with a quote.
+#	Examples: "\"", "'|\""
+#
+#   option["quote-escape"] = DOUBLE|string
+#
+#	The escape character used to escape the quote character for quoted
+#	fields. If the word DOUBLE used then the found field quote is
+#	doubled.  Otherwise the value is the string for the escape quote.
+#	It is assumed the escape qoute can be doubled.
+#
+#   option["embedded-newline"] = "string|<empty_string>" 
+#
+#	Allows for embedded newlines in files.  Normally the input string
+#	is the complete csv record.  Set this value to the record separator
+#	string.  When the parser comes to the end of a quoted string and 
+#	no ending quote was found, the function csv_getline will be called
+#	to get the next part of the input record
+#
+#   option["getline-param"]= ""
+#
+#	A user defined value to assist the csv_getline function to determine
+#	which csv file is being processed.  
+#
+#**************************************************************************
+
+
+function csv_set_default_option( csv_option ) 
+{
+    csv_option["separator"] = ","
+    csv_option["quote-pattern"] = "\""
+    csv_option["trim-record"] = "NONE"
+    csv_option["trim-field"] = "NONE"
+    csv_option["trim-pattern"] = "[ \\t]+"
+    csv_option["quote-escape"] = "DOUBLE"
+    csv_option["embedded-newline"] = "" 
+    csv_option["getline-param"]= ""
+}
+
+#
+# csv_getline
+#
+# This function returns the next csv line if embedded newlines are supported
+# Modify this function to return the next csv line
+#
+# The return value defined the same way as getline.
+#
+#   -1 read error
+#    0 end of file
+#    1 line being returned
+#
+# The csv line is returned through line[0] array element.
+# 
+# The arg parameter  is caller defined value settable through the option array
+# It is meant to assist in determining the proper csv that needs to be read.
+#
+function csv_getline( param, line ) 
+{
+    line[0] = ""
+    return -1
+}
+
+function csv_parse(string, csv_field, csv_option,    csv_fields, pattern, pos, len, fld_quote, csv_line, temp )
+{
+
+    if (csv_option["trim-record"] ~/LEFT|BOTH/)
+    {
+	pattern = "^(" csv_option["trim-pattern"] ")"
+	sub( pattern, "", string )
+    }
+
+    if (csv_option["trim-record"] ~ /RIGHT|BOTH/)
+    {
+	pattern = "(" csv_option["trim-pattern"] ")$"
+	sub( pattern, "", string )
+    }
+	    
+    split( "", csv_field)		 # clear out field array
+    csv_fields = 0
+
+    # Make sure there is something to parse.
+    if (length(string) == 0) return 0;
+
+    pattern = csv_option["quote-pattern"]
+    if (string !~ pattern) 
+    {
+	pattern = csv_option["separator"]
+	# print "debug doing split processing" 
+	csv_fields = split( string, csv_field, pattern )
+    }
+    else
+    {
+	# print "debug doing quote processing" 
+	csv_fields = 0
+	while (length(string) > 0)
+	{
+	    pattern = "^(" csv_option["quote-pattern"] ")"
+
+	    if (match(string, pattern))		# handle quoted string
+	    {
+		fld_quote = substr( string, RSTART, RLENGTH )
+		string = substr( string, RLENGTH + 1 )
+
+		# print "debug found start quote |" string "|"
+
+		#
+		# Attempt to escape \ and | when building the escape
+		# pattern string. Should escape all regexp metacharacters
+		# 
+
+		pattern = toupper( csv_option["quote-escape"] )
+		if (pattern == "DOUBLE")
+		{
+		    pattern = fld_quote fld_quote
+		    gsub( /\\/, "\\\\", pattern )
+		    gsub( /\|/, "\\|", pattern )
+		}
+		else
+		{
+		    pattern = csv_option["quote-escape"] fld_quote
+		    gsub( /\\/, "\\\\", pattern )
+		    gsub( /\|/, "\\|", pattern )
+		    pattern = pattern "|"
+
+		    temp = csv_option["quote-escape"] csv_option["quote-escape"]
+		    gsub( /\\/, "\\\\", temp )
+		    gsub( /\|/, "\\|", temp )
+		    pattern = pattern temp
+		}
+
+		# print "debug pattern " pattern
+		csv_fields++
+		csv_field[csv_fields] = ""
+		while (length(string) > 0)
+		{
+		    pos = 0
+		    len = -1
+
+		    if (match( string, pattern ))
+		    {
+			pos = RSTART
+			len = RLENGTH
+		    }
+		    if (match( string, fld_quote ))
+		    {
+			if (pos == 0 || RSTART < pos) 
+			{
+			    # Found the end of the string.
+			    if (RSTART -1 > 0)
+			    {
+				csv_field[csv_fields] = csv_field[csv_fields] substr( string, 1, RSTART - 1)
+			    }
+			    if (length(string) > RSTART + RLENGTH)
+			    {
+				string = substr( string, RSTART + RLENGTH )
+			    }
+			    else
+			    {
+				string = ""
+			    }
+			    # print "debug found end quote |" string "|"
+			    pos = 0
+			    len = -1
+			    break
+			}
+		    }
+		    if (pos > 0)
+		    {
+			if (pos - 1 > 0)
+			{
+			    csv_field[csv_fields] = csv_field[csv_fields] substr( string, 1, pos - 1)
+			}
+			csv_field[csv_fields] = csv_field[csv_fields] substr( string, pos + 1, len - 1 )
+			string = substr( string, pos + len )
+			# print "debug found escaped quote |" string "|"
+		    }
+		    else
+		    {
+			csv_field[csv_fields] = csv_field[csv_fields]  string
+			string = ""
+			if (csv_option["embedded-newline"])
+			{
+			    csv_line[0] = ""
+			    pos = csv_getline( csv_option["getline-param"], csv_line )
+
+			    if (pos <= 0)
+			    {
+				if (pos == 0)
+				    csv_error = "Missing end quote.";
+				else
+				    csv_error = "Unable to read the next line" 
+				return -1
+			    }
+			    string = csv_option["embedded-newline"] csv_line[0]
+			}
+			else
+			{
+			    csv_error = "Missing end quote.";
+			    return -1;
+			}
+		    }
+		}
+
+		if (length( string ) == 0)
+		{
+		    # print "debug found end of record |" string "|"
+		    break;
+		}
+
+		pattern = "^(" csv_option["separator"] ")"
+		if (match( string, pattern ))
+		{
+		    string = substr( string, RLENGTH + 1 )
+		    # print "debug found separator |" string "|"
+
+		    if (length( string ) == 0)
+		    {
+			csv_fields++
+			csv_field[csv_fields] = ""
+			# print "debug found end of record |" string "|"
+			break
+		    }
+		}
+		else
+		{
+		    csv_error = "Missing Separator.";
+		    return -1;
+		}
+	    }
+	    else	# handle unquoted field
+	    {
+
+		# print "debug found unquoted string |" string "|"
+		pattern = csv_option["separator"]
+		if (match( string, pattern ))
+		{
+		    csv_fields++
+		    csv_field[csv_fields] = substr( string, 1, RSTART - 1 )
+
+		    string = substr( string, RSTART + RLENGTH  )
+		    # print "debug found separator |" string "|"
+
+		    if (length( string ) == 0)
+		    {
+			csv_fields++
+			csv_field[csv_fields] = ""
+			break
+		    }
+		}
+		else		# last unquoted field
+		{
+		    csv_fields++;
+		    csv_field[csv_fields] = string
+		    break
+		}
+	    }
+	}
+    }
+
+    if (csv_fields > 0)
+    {
+	if (csv_option["trim-field"] ~/LEFT|BOTH/)
+	{
+	    pattern = "^" csv_option["trim-pattern"]
+	    for (pos in csv_field) sub( pattern, "", csv_field[pos] )
+	}
+
+	if (csv_option["trim-field"] ~ /RIGHT|BOTH/)
+	{
+	    pattern = csv_option["trim-pattern"] "$"
+	    {
+		for (pos in csv_field) sub( pattern, "", csv_field[pos] )
+	    }
+	}
+    }
+    return csv_fields;
+}
+
+function InitializeConstants()
+{
+    discard_output=""
+    omp_max_replication_groups = 512 
+    omp_max_replication_groups_per_schedule_group = 64
+    omp_homedir = "/etc/opt/SFTKomp"
+    omp_logdir = omp_homedir "/log"
+    omp_jobsdir = omp_homedir "/jobs"
+    omp_prepdir = omp_jobsdir "/staging" 
+    omp_sandir = omp_jobsdir "/san"
+    omp_srcfile = "source.csv"
+    omp_tgtfile = "target.csv"
+    omp_schedfile = "schedule_groups"
+    omp_pstorefile = "pstore_devices"
+    omp_logfile = "omp_genconf.log"
+    omp_tunablesfile="omp_tunables"
+    omp_separator = ","
+    FS=omp_separator
+    omp_tunablespath  = omp_homedir "/" omp_tunablesfile
+    omp_source = omp_sandir "/" omp_srcfile
+    omp_target = omp_sandir "/" omp_tgtfile
+    omp_schedpath  = omp_prepdir "/" omp_schedfile
+    omp_pstorepath = omp_prepdir "/" omp_pstorefile
+    omp_logpath = omp_logdir "/" omp_logfile
+    omp_pstore_devices_per_mb = 5
+
+    fldname_secsize = "sectorsz"
+    fldname_sectors = "sectors"
+    fldname_size = "sizeMB"
+    fldname_vendor = "vendor"
+    fldname_osdevice = "devfile"
+    fldname_prodid = "prodid"
+    fldname_schedgrp = "schedgrp"
+    fldname_lunnum = "lun#"
+    fldname_serialnum = "serial#"
+
+    #
+    # Return codes
+    #
+
+    EC_TRAP=8
+    EC_FATAL=4
+    EC_ERROR=2
+    EC_WARN=1
+    EC_OK=0
+    GetTunables()
+}
+
+function GetPstoreDevices(   ps_stauts, ps_line, ps_nf, ps_fields, idx, device, size)
+{
+    omp_linecnt = 0
+    ps_status = 1
+    idx = 0
+
+    while (ps_status > 0)
+    {
+	ps_status = getline ps_line < omp_pstorepath
+	omp_linecnt++
+
+	if (ps_status < 0)
+	{
+	    Display( "ReadError", omp_pstorepath )
+	}
+
+	if (ps_status == 0 )
+	{
+	    close( omp_pstorepath )
+	    if (omp_linecnt == 1)
+	    {
+		Display( "MissingPstores", omp_pstorepath)
+	    }
+	    break
+	}
+
+	sub(/\r$/,"", ps_line)
+
+	# Ignore empty lines
+
+	if (ps_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    ps_line = ""
+	}
+
+	if (ps_line == "" )
+	{
+	    continue
+	}
+
+	if (ps_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    continue
+	}
+
+	ps_nf = csv_parse( ps_line, ps_fields, omp_csv_option );
+
+	if (ps_nf != 2)
+	{
+	    Display("FieldCount", omp_pstorepath )
+	}
+
+	device = ps_fields[1]
+	size   = ps_fields[2]
+
+	if (device  == "")
+	{
+	    Display( "InvalidValue", "device", omp_pstorepath )
+	}
+	if (size <= 0)
+	{
+	    Display( "InvalidValue", "device", omp_pstorepath )
+	}
+
+	idx++
+	if ((device) in Pstore)
+	{
+	    Display( "DupPstore", device, omp_pstorepath )
+	}
+
+	Pstore[device] = idx
+	Pstore[idx,"device"] = device
+	Pstore[idx,"maxdevices"] = size * omp_pstore_devices_per_mb
+	Pstore[idx,"devicecnt"]  = 0
+    }
+    if (idx > 0)
+    {
+	MaxPstoreIdx = idx
+	PstoreIdx = 1
+    }
+    else
+    {
+	Display( "MissingPstores", omp_pstorepath)
+    }
+    return 0
+}
+
+
+function GetFieldIndex( fldname, header,     idx )
+{
+    for (idx in header)
+    {
+	if (header[idx] == fldname)
+	{
+	    return idx
+	}
+    }
+    return 0
+}
+
+function InitializeIndices()
+{
+    srcidx_size = GetFieldIndex( fldname_size, src_header )
+    if (srcidx_size == 0)
+	Display( "MissingField", fldname_size, omp_source ) 
+    srcidx_vendor = GetFieldIndex( fldname_vendor, src_header )
+    if (srcidx_vendor == 0)
+	Display( "MissingField", fldname_vendor, omp_source ) 
+    srcidx_prodid = GetFieldIndex( fldname_prodid, src_header )
+    if (srcidx_prodid == 0)
+	Display( "MissingField", fldname_prodid, omp_source ) 
+    srcidx_osdevice = GetFieldIndex( fldname_osdevice, src_header )
+    if (srcidx_osdevice == 0)
+	Display( "MissingField", fldname_osdevice, omp_source ) 
+    srcidx_lunnum = GetFieldIndex( fldname_lunnum, src_header )
+    if (srcidx_lunnum == 0)
+	Display( "MissingField", fldname_lunnum, omp_source ) 
+    srcidx_serialnum = GetFieldIndex( fldname_serialnum, src_header )
+    if (srcidx_serialnum == 0)
+	Display( "MissingField", fldname_serialnum, omp_source ) 
+    srcidx_group = GetFieldIndex( fldname_schedgrp, src_header )
+    if (srcidx_group == 0)
+	Display( "MissingField", fldname_schedgrp, omp_source ) 
+    srcidx_secsize = GetFieldIndex( fldname_secsize, src_header )
+    if (srcidx_secsize == 0)
+	Display( "MissingField", fldname_secsize, omp_source ) 
+    srcidx_sectors = GetFieldIndex( fldname_sectors, src_header )
+    if (srcidx_sectors == 0)
+	Display( "MissingField", fldname_sectors, omp_source ) 
+
+    tgtidx_size = GetFieldIndex( fldname_size, tgt_header )
+    if (tgtidx_size == 0)
+	Display( "MissingField", fldname_size, omp_target ) 
+    tgtidx_vendor = GetFieldIndex( fldname_vendor, tgt_header )
+    if (tgtidx_vendor == 0)
+	Display( "MissingField", fldname_vendor, omp_target ) 
+    tgtidx_prodid = GetFieldIndex( fldname_prodid, tgt_header )
+    if (tgtidx_prodid == 0)
+	Display( "MissingField", fldname_prodid, omp_target ) 
+    tgtidx_osdevice = GetFieldIndex( fldname_osdevice, tgt_header )
+    if (tgtidx_osdevice == 0)
+	Display( "MissingField", fldname_osdevice, omp_target ) 
+    tgtidx_lunnum = GetFieldIndex( fldname_lunnum, tgt_header )
+    if (tgtidx_lunnum == 0)
+	Display( "MissingField", fldname_lunnum, omp_target ) 
+    tgtidx_serialnum = GetFieldIndex( fldname_serialnum, tgt_header )
+    if (tgtidx_serialnum == 0)
+	Display( "MissingField", fldname_serialnum, omp_target ) 
+    tgtidx_secsize = GetFieldIndex( fldname_secsize, tgt_header )
+    if (tgtidx_secsize == 0)
+	Display( "MissingField", fldname_secsize, omp_target ) 
+    tgtidx_sectors = GetFieldIndex( fldname_sectors, tgt_header )
+    if (tgtidx_sectors == 0)
+	Display( "MissingField", fldname_sectors, omp_target ) 
+}
+
+function GenerateHeader( schedule_group, groupnum,       filename, pathname, timestamp, pstoredevices )
+{
+    filename = sprintf( "p%03d.cfg", groupnum ) 
+    pathname = sprintf( "%s/%s", omp_prepdir, filename ) 
+    timestamp = strftime()
+
+    pstoredevices = int( DevicesPerSchedGroup[schedule_group] / RepGroupsPerSchedGroup[schedule_group] )
+    if (pstoredevices * RepGroupsPerSchedGroup[schedule_group] < DevicesPerSchedGroup[schedule_group])
+    {
+	pstoredevices++
+    }
+    Pstore[PstoreIdx,"devicecnt"] += pstoredevices
+    if (Pstore[PstoreIdx,"devicecnt"] > Pstore[PstoreIdx,"maxdevices"])
+    {
+	Pstore[PstoreIdx,"devicecnt"] -= pstoredevices
+	PstoreIdx++
+	if (PstoreIdx > MaxPstoreIdx)
+	{
+	    Display( "NoPstores" )
+	}
+    }
+
+    print "#==============================================================================" > pathname 
+    print "# %COMPANYNAME2% %PRODUCTNAME% Offline Migration Package Configuration File: " filename > pathname
+    print "#" > pathname
+    print "# Last Updated: ", timestamp > pathname
+    print "#==============================================================================" > pathname 
+    print "#" > pathname
+    print "NOTES:\t" schedule_group > pathname 
+    print "#" > pathname
+    print "# Primary System Definition:" > pathname
+    print "#" > pathname
+    print "SYSTEM-TAG:\tSYSTEM-A PRIMARY" > pathname
+    print "HOST:\t\t127.0.0.1" > pathname
+    print "PSTORE:\t\t/dev/" Pstore[PstoreIdx,"device"] > pathname
+    print "#" > pathname
+    print "# Secondary System Definition:" > pathname
+    print "#" > pathname
+    print "SYSTEM-TAG:\tSYSTEM-B SECONDARY" > pathname
+    print "HOST:\t\t127.0.0.1" > pathname
+    print "JOURNAL:\t/usr/tmp" > pathname
+    print "SECONDARY-PORT:\t575" > pathname
+    print "CHAINING:\toff" > pathname
+    print "#" > pathname
+    print "# Device Definitions:" > pathname
+    close ( pathname )
+}
+
+function GenerateMigrationVolume( groupnum,    filename, pathname, devicenum, remark )
+{
+    filename = sprintf( "p%03d.cfg", groupnum ) 
+    pathname = sprintf( "%s/%s", omp_prepdir, filename ) 
+
+    devicenum = NextRepGroupDevice[groupnum]++
+    
+    remark = src_fields[srcidx_vendor]
+    remark = remark " " src_fields[srcidx_prodid]
+    remark = remark " " src_fields[srcidx_serialnum]
+    remark = remark " " src_fields[srcidx_lunnum]
+    remark = remark " ==> "
+    remark = remark tgt_fields[tgtidx_vendor]
+    remark = remark " " tgt_fields[tgtidx_prodid]
+    remark = remark " " tgt_fields[tgtidx_serialnum]
+    remark = remark " " tgt_fields[tgtidx_lunnum]
+    remark = remark ":SIZEMB:" src_fields[srcidx_size]
+
+    print "#" >> pathname
+    print "PROFILE:\t" (devicenum + 1) >> pathname
+    print "REMARK:\t\t" remark >> pathname
+    print "PRIMARY:\tSYSTEM-A" >> pathname
+    print "DTC-DEVICE:\t/dev/dtc/lg" groupnum "/rdsk/dtc" devicenum >> pathname
+    print "DATA-DISK:\t/dev/" src_fields[srcidx_osdevice] >> pathname
+    print "SECONDARY:\tSYSTEM-B" >> pathname
+    print "MIRROR-DISK:\t/dev/" tgt_fields[tgtidx_osdevice] >> pathname
+    close( pathname )
+}
+
+function GenerateConfiguration( schedule_group,    groupnum, idx )
+{
+
+    if (!((schedule_group,"idx") in SchedGroupToRepGroupMap))
+    {
+	SchedGroupToRepGroupMap[schedule_group,"idx"] = 0
+    }
+
+    idx=SchedGroupToRepGroupMap[schedule_group,"idx"] 
+    idx++
+    if (idx > RepGroupsPerSchedGroup[schedule_group])
+    {
+	idx = 1
+    }
+    SchedGroupToRepGroupMap[schedule_group,"idx"] = idx
+
+    if (!((schedule_group, idx) in SchedGroupToRepGroupMap))
+    {
+	SchedGroupToRepGroupMap[schedule_group,idx] = omp_nextgroupnum++
+	groupnum = SchedGroupToRepGroupMap[schedule_group,idx]
+	NextRepGroupDevice[groupnum] = 0
+	GenerateHeader( schedule_group, groupnum )
+    }
+    else
+    {
+	groupnum = SchedGroupToRepGroupMap[schedule_group,idx]
+    }
+
+    GenerateMigrationVolume( groupnum )
+}
+
+function CalculateLimits(    repgroups, schedule_group, devices, idx, selected_schedule_group )
+{
+    if (omp_devicecnt <= omp_max_replication_groups)
+    {
+	for ( idx = 0; idx < omp_schedgroupcnt; idx++) 
+	{
+	    schedule_group = SchedGroup[idx] 
+	    devices = DevicesPerSchedGroup[schedule_group]
+	    if (devices > omp_max_replication_groups_per_schedule_group)
+	    {
+		devices = omp_max_replication_groups_per_schedule_group
+	    }
+	    RepGroupsPerSchedGroup[schedule_group]=devices
+	    Display( "RepGrpCnt", schedule_group, DevicesPerSchedGroup[schedule_group], devices )
+	}
+	return 0
+    }
+
+    #
+    # Must calculate the number of migration groups each schedule group can use
+    #
+    # First see if the maximum migration groups per schedule group would work
+    #
+
+    repgroups = omp_max_replication_groups
+
+    for ( idx = 0; idx < omp_schedgroupcnt; idx++) 
+    {
+	schedule_group = SchedGroup[idx] 
+	devices = DevicesPerSchedGroup[schedule_group]
+	RepGroupsPerSchedGroup[schedule_group] = devices
+	if (devices > omp_max_replication_groups_per_schedule_group)
+	{
+	    devices = omp_max_replication_groups_per_schedule_group
+	    RepGroupsPerSchedGroup[schedule_group] = devices
+	}
+	repgroups -= devices
+    }
+
+    if (repgroups < 0)
+    {
+	#
+	# Lower the migration group count from the largest schedule group
+	# until we reach the maximum replication groups or the count goes to
+	# zero.  Precedence is given to the ordered schedule group map.
+	#
+
+	do
+	{
+	    selected_schedule_group = ""
+	    repgroups = -1
+	    for (idx = omp_schedgroupcnt - 1; idx >= 0; idx--)
+	    {
+		schedule_group = SchedGroup[idx] 
+		if (RepGroupsPerSchedGroup[schedule_group] > repgroups)
+		{
+		    repgroups = RepGroupsPerSchedGroup[schedule_group] 
+		    selected_schedule_group = schedule_group
+		}
+	    }
+
+	    RepGroupsPerSchedGroup[selected_schedule_group]--
+	    repgroups = 0
+	    for (idx = 0; idx < omp_schedgroupcnt; idx++)
+	    {
+		schedule_group = SchedGroup[idx] 
+		if (RepGroupsPerSchedGroup[schedule_group] <= 0)
+		{
+		    repgroups = -1
+		}
+		repgroups += RepGroupsPerSchedGroup[schedule_group] 
+	    }
+	} while (repgroups >= 0 && repgroups > omp_max_replication_groups)
+    }
+    if (repgroups < 0)
+    {
+	Display( "SchedError" ) 
+	return 1
+    }
+    else
+    {
+	for ( idx = 0; idx < omp_schedgroupcnt; idx++) 
+	{
+	    schedule_group = SchedGroup[idx] 
+	    Display( "RepGrpCnt", schedule_group, DevicesPerSchedGroup[schedule_group], RepGroupsPerSchedGroup[schedule_group] )
+	}
+    }
+}
+
+function CollectSchedulingGroupCounts( schedule_group )
+{
+    if (!(schedule_group in DevicesPerSchedGroup))
+    {
+	SchedGroup[omp_schedgroupcnt++] = schedule_group 
+	DevicesPerSchedGroup[schedule_group] = 1
+    }
+    else
+    {
+	DevicesPerSchedGroup[schedule_group] += 1
+    }
+}
+
+function IsOsDeviceNameAlreadyUsed( osdevice, file  )
+{
+    if (osdevice in OsDeviceDefined)
+	return 1
+    OsDeviceDefined[osdevice] = file  
+    return 0
+}
+
+function CalculateMigrationGroupsPerScheduleGroup(    schedule_group, src_sizemb, tgt_sizemb, src_sizeb, tgt_sizeb, osdevice )
+{
+    # src_status and tgt_status is global scope
+    
+    while(src_status > 0 && tgt_status > 0)
+    {
+	src_status = getline src_line < omp_source
+	tgt_status = getline tgt_line < omp_target
+	omp_linecnt++
+
+	if (src_status < 0)
+	{
+	    Display( "ReadError", omp_source )
+	}
+
+	if (tgt_status < 0)
+	{
+	    Display( "ReadError", omp_target )
+	}
+
+	if (src_status == 0 && tgt_status == 0)
+	{
+	    close( omp_source )
+	    close( omp_target )
+	    break
+	}
+
+	if (src_status == 0)
+	{
+	    Display( "LineMismatch", omp_source, omp_target )
+	}
+	if (tgt_status == 0)
+	{
+	    Display( "LineMismatch", omp_target, omp_source )
+	}
+
+	sub(/\r$/,"", src_line)
+	sub(/\r$/,"", tgt_line)
+
+	if (src_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    src_line = ""
+	}
+
+	if (tgt_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    tgt_line = ""
+	}
+
+	# Ignore matching empty lines
+
+	if (src_line == "" && tgt_line == "")
+	{
+	    continue
+	}
+
+	# Ignore matching comment lines
+
+	if (src_line ~ /^[ \t]*#|^"[ \t]*#/ && tgt_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    continue
+	}
+
+	if (src_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    Display("CommentMismatch", omp_source )
+	}
+
+	if (tgt_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    Display("CommentMismatch", omp_target )
+	}
+
+	src_nf = csv_parse( src_line, src_fields, omp_csv_option );
+	tgt_nf = csv_parse( tgt_line, tgt_fields, omp_csv_option );
+
+	if (expected_src_nf != src_nf)
+	{
+	    Display("FieldCount", omp_source )
+	}
+
+	if (expected_tgt_nf != tgt_nf)
+	{
+	    Display("FieldCount", omp_target )
+	}
+
+	src_sizemb = src_fields[srcidx_size]
+	tgt_sizemb = tgt_fields[tgtidx_size]
+
+	if (src_sizemb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_source )
+	}
+
+	if (tgt_sizemb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_target )
+	}
+
+	src_sizeb = src_fields[srcidx_sectors] * src_fields[srcidx_secsize]
+	tgt_sizeb = tgt_fields[tgtidx_sectors] * tgt_fields[tgtidx_secsize]
+
+	if (src_sizeb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_sectors, omp_source )
+	}
+
+	if (tgt_sizeb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_sectors, omp_target )
+	}
+
+	if (src_sizeb > tgt_sizeb)
+	{
+	    Display( "SizeMismatch", fldname_sectors )
+	}
+
+	schedule_group = src_fields[srcidx_group]
+
+	if (schedule_group == "")
+	{
+	    Display( "MissingValue", fldname_schedgrp, omp_source )
+	}
+
+	if (schedule_group !~ /^([A-Za-z0-9_])+$/)
+	{
+	    Display( "InvalidValue", fldname_schedgrp, omp_source )
+	}
+
+	CollectSchedulingGroupCounts( schedule_group )
+
+	# Make sure the OS device names is not used already
+	# We are trying to trap when the scsi device names changed but 
+	# omp and csv files have not been updated.
+ 
+	osdevice = src_fields[srcidx_osdevice]
+
+	if (IsOsDeviceNameAlreadyUsed(osdevice, omp_source))
+	{
+	    Display( "DuplicateDevice", osdevice, omp_source, OsDeviceDefined[osdevice] )
+	}
+
+	osdevice = tgt_fields[tgtidx_osdevice]
+
+	if (IsOsDeviceNameAlreadyUsed(osdevice, omp_target))
+	{
+	    Display( "DuplicateDevice", osdevice, omp_target, OsDeviceDefined[osdevice] )
+	}
+
+	omp_devicecnt++
+    }
+    if (omp_devicecnt <= 0) 
+    {
+	Display( "NoMigration" )
+    }
+    return CalculateLimits()
+}
+
+function CreateConfiguration(    schedule_group, src_sizemb, tgt_sizemb, src_sizeb, tgt_sizeb)
+{
+    # src_status and tgt_status is global scope
+    
+    while(src_status > 0 && tgt_status > 0)
+    {
+	src_status = getline src_line < omp_source
+	tgt_status = getline tgt_line < omp_target
+	omp_linecnt++
+	if (src_status < 0)
+	{
+	    Display( "ReadError", omp_source )
+	}
+	if (tgt_status < 0)
+	{
+	    Display( "ReadError", omp_target )
+	}
+
+	if (src_status == 0 && tgt_status == 0)
+	{
+	    close( omp_source )
+	    close( omp_target )
+	    return 0
+	}
+
+	if (src_status == 0)
+	{
+	    Display( "UnexpectedEod", omp_source )
+	}
+	if (tgt_status == 0)
+	{
+	    Display( "UnexpectedEod", omp_target)
+	}
+
+	sub(/\r$/,"", src_line)
+	sub(/\r$/,"", tgt_line)
+
+	if (src_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    src_line = ""
+	}
+
+	if (tgt_line ~ /^([ \t]*,)*([ \t])*$/)
+	{
+	    tgt_line = ""
+	}
+
+	# Ignore matching empty lines
+
+	if (src_line == "" && tgt_line == "")
+	{
+	    continue
+	}
+
+	# Ignore matching comment lines
+
+	if (src_line ~ /^[ \t]*#|^"[ \t]*#/ && tgt_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    continue
+	}
+
+	if (src_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    Display("CommentMismatch", omp_source )
+	}
+
+	if (tgt_line ~ /^[ \t]*#|^"[ \t]*#/)
+	{
+	    Display("CommentMismatch", omp_target )
+	}
+
+	src_nf = csv_parse( src_line, src_fields, omp_csv_option );
+	tgt_nf = csv_parse( tgt_line, tgt_fields, omp_csv_option );
+
+	if (expected_src_nf != src_nf)
+	{
+	    Display("FieldCount", omp_source )
+	}
+
+	if (expected_tgt_nf != tgt_nf)
+	{
+	    Display("FieldCount", omp_target )
+	}
+
+	src_sizemb = src_fields[srcidx_size]
+	tgt_sizemb = tgt_fields[tgtidx_size]
+
+	if (src_sizemb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_source )
+	}
+
+	if (tgt_sizemb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_target )
+	}
+
+	if (src_sizemb > tgt_sizemb)
+	{
+	    Display( "SizeMismatch", fldname_size )
+	}
+
+	src_sizeb = src_fields[srcidx_sectors] * src_fields[srcidx_secsize]
+	tgt_sizeb = tgt_fields[tgtidx_sectors] * tgt_fields[tgtidx_secsize]
+
+	if (src_sizeb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_source )
+	}
+
+	if (tgt_sizeb <= 0)
+	{
+	    Display( "SizeInvalid", fldname_size, omp_target )
+	}
+
+	if (src_sizeb > tgt_sizeb)
+	{
+	    Display( "SizeMismatch", fldname_sectors )
+	}
+
+	schedule_group = src_fields[srcidx_group]
+
+	if (schedule_group == "")
+	{
+	    Display( "MissingValue", fldname_schedgrp, omp_source )
+	}
+	if (schedule_group !~ /^([A-Za-z0-9_])+$/)
+	{
+	    Display( "InvalidValue", fldname_schedgrp, omp_source )
+	}
+
+	GenerateConfiguration( schedule_group )
+    }
+}
+
+function PrintConfigurationFile(   idx1, idx2, schedule_group, repgroups, groupnum, devices, filename)
+{
+    for ( idx1 = 0; idx1 < omp_schedgroupcnt; idx1++) 
+    {
+	schedule_group = SchedGroup[idx1]
+	print schedule_group >omp_schedpath
+	repgroups=RepGroupsPerSchedGroup[schedule_group]
+	if (DetailDisplay != "")
+	{
+	    for ( idx2 = 1; idx2 <= repgroups; idx2++) 
+	    {
+		groupnum = SchedGroupToRepGroupMap[schedule_group, idx2]
+		devices = NextRepGroupDevice[groupnum]
+
+		filename = sprintf( "%03d", groupnum ) 
+		Display( "CreateRepGroup", filename, schedule_group, devices )
+	    }
+	}
+    }
+    if (idx1 > 0)
+    {
+	close( omp_schedpath )
+    }
+}
+
+BEGIN \
+{
+    DigitToValue["0"] = 0
+    DigitToValue["1"] = 1
+    DigitToValue["2"] = 2
+    DigitToValue["3"] = 3
+    DigitToValue["4"] = 4
+    DigitToValue["5"] = 5
+    DigitToValue["6"] = 6
+    DigitToValue["7"] = 7
+    DigitToValue["8"] = 8
+    DigitToValue["9"] = 9
+    DigitToValue["a"] = 10
+    DigitToValue["b"] = 11
+    DigitToValue["c"] = 12
+    DigitToValue["d"] = 13
+    DigitToValue["e"] = 14
+    DigitToValue["f"] = 15
+    DigitToValue["g"] = 16
+    DigitToValue["h"] = 17
+    DigitToValue["i"] = 18
+    DigitToValue["j"] = 19
+    DigitToValue["k"] = 20
+    DigitToValue["l"] = 21
+    DigitToValue["m"] = 22
+    DigitToValue["n"] = 23
+    DigitToValue["o"] = 24
+    DigitToValue["p"] = 25
+    DigitToValue["q"] = 26
+    DigitToValue["r"] = 27
+    DigitToValue["s"] = 28
+    DigitToValue["t"] = 29
+    DigitToValue["u"] = 30
+    DigitToValue["v"] = 31
+    DigitToValue["w"] = 32
+    DigitToValue["x"] = 33
+    DigitToValue["y"] = 34
+    DigitToValue["z"] = 35
+    DigitToValue["A"] = 10
+    DigitToValue["B"] = 11
+    DigitToValue["C"] = 12
+    DigitToValue["D"] = 13
+    DigitToValue["E"] = 14
+    DigitToValue["F"] = 15
+    DigitToValue["G"] = 16
+    DigitToValue["H"] = 17
+    DigitToValue["I"] = 18
+    DigitToValue["J"] = 19
+    DigitToValue["K"] = 20
+    DigitToValue["L"] = 21
+    DigitToValue["M"] = 22
+    DigitToValue["N"] = 23
+    DigitToValue["O"] = 24
+    DigitToValue["P"] = 25
+    DigitToValue["Q"] = 26
+    DigitToValue["R"] = 27
+    DigitToValue["S"] = 28
+    DigitToValue["T"] = 29
+    DigitToValue["U"] = 30
+    DigitToValue["V"] = 31
+    DigitToValue["W"] = 32
+    DigitToValue["X"] = 33
+    DigitToValue["Y"] = 34
+    DigitToValue["Z"] = 35
+    InitializeConstants()
+    csv_set_default_option( omp_csv_option )
+    GetPstoreDevices()
+
+    omp_linecnt = 0
+    omp_nextgroupnum = 0
+    omp_schedgroupcnt = 0
+    omp_devicecnt = 0
+    src_status = getline src_line < omp_source
+    if (src_status <= 0)
+	Display( "ReadError", omp_source )
+
+    if (sub(/\r$/,"", src_line))
+	Display( "DosFormat", omp_source )
+
+    expected_src_nf = csv_parse( src_line, src_header, omp_csv_option );
+    
+    tgt_status = getline tgt_line < omp_target
+    if (tgt_status <= 0)
+	Display( "ReadError", omp_target )
+
+    if (sub(/\r$/,"", tgt_line))
+	Display( "DosFormat", omp_target )
+
+    omp_linecnt++
+
+    expected_tgt_nf = csv_parse( tgt_line, tgt_header, omp_csv_option );
+
+    InitializeIndices()
+
+    if (CalculateMigrationGroupsPerScheduleGroup())
+    {
+	exit( EC_ERROR )
+    }
+    if (ValidateOnly != "")
+    {
+	exit( EC_OK )
+    }
+
+    omp_linecnt = 0
+    src_status = getline src_line < omp_source
+    if (src_status <= 0)
+	Display( "ReadError", omp_source )
+
+    tgt_status = getline tgt_line < omp_target
+    if (tgt_status <= 0)
+	Display( "ReadError", omp_target )
+
+    omp_linecnt++
+
+    CreateConfiguration() 
+    PrintConfigurationFile()
+    exit( EC_OK )
+}

@@ -1,0 +1,230 @@
+ABEXIT	Received an abnormal exit from a logical group PMD
+ACKCMD	Receive bad ACK command from RMD for group [%s]
+ACKMAGIC	Read of ACK magic value wrong for group [%s]
+BABGET	PMD unable to get data from driver for device [%s], reason code [%d]
+BABOFLOW	BAB exhausted during normal operation [%s] 
+BADAUTH	Received bad authentication or config path from [%s]: %s
+BADCMD	Received bad command: errno = %d devid = %d cmd = %d
+BADDEVID	Received write command with bad device ID %d
+BADHDR	Invalid magic number in BAB entry header.
+BADHOSTNAM	Configuration file [%s/%d] network hostname [%s] cannot be resolved
+BADIPADDR	Configuration file [%s/%d] hostname = [%s] IP = %s: IP address doesn't resolve
+BADKEY	Key '%s' is invalid in %s
+BADNAMIP	Configuration file [%s/%d] hostname = [%s], host does not match IP address given
+BADOFF	Bad offset error, file [%s] pos [%llu]: %s
+BADPROTO	Received a message in violation of the network protocol.
+BADTUNABLE      [%s] is not a valid tunable parameter name
+BACKAGAIN	Backfresh operation already running. Use killbackfresh first. 
+BACKEND		Backfresh operation completed 
+BACKREFR	Backfresh operation cannot be started. Logical group is currently in refresh mode 
+BACKFAILJRN	Backfresh operation could not start due to coherent journal files in journal area. Use -f option to diregard journal files. 
+BACKFRESH	Backfresh operation started
+BACKTERM	Backfresh operation terminated
+CFGBDKEY	Configuration file [%s] line [%d] has an unrecognized keyword [%s]
+CFGERR	Configuration file [%s] error at or before line [%d]
+CFGFILE	Unable to read config file [%s]: %s
+CFGPROB	Encountered a configuration file problem at startup
+CFGPS [%s] Unable to retrieve pstore location from configuration file [%s]
+CHKSUM	failed computing device [%s] checksum
+CHUNKDELAY      CHUNKDELAY parameter outside of range: [%u] (Max: [%d] Min: [%d])
+CHUNKSZ	        CHUNKSIZE parameter outside of range: [%u] (Max: [%d] Min: [%d])
+CMDIGNORE	%s command ignored. '%s' is currently running in a 'uninitialized' state and is unable to accomodate the '%s' request.
+COMPRESSVAL     COMPRESSION parameter value must be [off | 0] or [on | 1].
+CPEXEC   [%s] received non-zero return from [%s] 
+CPOFF	[%s] successfully transitioned out of checkpoint mode
+CPOFFAGAIN	[%s] is NOT in or is transitioning out of checkpoint mode 
+CPOFFERR	[%s] DID NOT transition out of checkpoint mode due to error(s)
+CPON	[%s] is in checkpoint mode
+CPONAGAIN	[%s] is already in or is transitioning to checkpoint mode
+CPONERR	[%s] DID NOT transition to checkpoint mode due to error(s)
+CPPEND	[%s] Will transition to checkpoint mode when all journaled data has been applied (ie. RMDAEND)
+CPSTARTAGAIN	[%s] is currently transitioning to checkpoint mode
+CPSTOPAGAIN	[%s] is currently transitioning from checkpoint mode
+CRTEEVENT	Could not create NT event [%d]: %s 
+CTLOPEN		Unable to open master control device: %s
+DEVLOCK	Could not lock device [%s]: %s
+DEVMISS	Profile in config file [%s] prior to line [%d] missing data device specification
+DEVOPEN     Could not stop group [%d]: Device(s) busy
+DEVSYNC     Failed to synchronize primary device [%s]: %s
+DEVTYPERR	Primary data device [%s] defined in [%s], is not a character special device
+DEVVERIFY   Device [%s] has been altered, please run 'QNM\configtool'.
+DISMOUNT	Failed to 'dismount' device [%s] from group [%s]
+DRVADDDEV	Driver failed to add device [%s] to group [%s]
+DRVADDGRP	Driver failed to add group [%s] 
+DRVBACK		Logical Group driver state is 'backfresh' conflicting with current operational state of daemons. Logical Group daemons exiting. 
+DRVREFR		Logical Group driver state is 'refresh' conflicting with current operational state of daemons. Logical Group daemons exiting. 
+DRVCONFBAD	Config file and driver don't agree on local data device [%s]: %s
+DRVDELDEV	Driver failed to delete device %s from group %s
+DRVDELGRP	Driver failed to delete group %s 
+DRVERR	Got driver error in [%s] [%s]
+EXEC	Failed to exec a subprocess [%s]: %s
+FILE 	Failed opening file [%s]: %s
+FORK	Received error on a fork, exiting [%s]
+HDRMAGIC	Received bad magic value in message header
+IODELAY         IODELAY parameter outside of range: [%u] (Max: [%d] Min: [%d])
+IPFMT		Config file [%s/%d] hostname: [%s] IP: [%s] - IP address is invalid
+JRNACCESS	Can't access secondary journal area [%s]: %s  
+JRNFILDEL   Journal file %s delete failed: %s
+JRNINIT     Secondary journal initialization failed 
+JRNLOCK     Secondary journal file [%s] lock failure: %s 
+JRNMAGIC	Secondary journal file [%s] contains bad magic value in header
+JRNMISS	Config file %s near line %d does not contain a secondary journal entry
+JRNNAME	Unable to parse secondary journal name [%s] 
+JRNOPEN	Unable to open secondary journal [%s]: %s 
+JRNPATH	Unable to locate secondary journal path [%s]: %s
+JRNREAD	Journal read error %s - header reported bogus data length [%d]
+JRNSPACE	Out of space writing to secondary journal [%s]
+JRNUNLOCK   Secondary journal [%s] unlock failure by: %s 
+JRNWRITE	[%s] Secondary journal write failed for [%s]
+LGDOPEN	Unable to open logical group device [%s]: %s. Kill logical group PMD if it's running. 
+LGCPON	Logical group is in checkpoint mode. Backfresh operation aborted.
+LICBADWORD	License file has keyword that is not %s_LICENSE:
+LICBDHOST	License found is not for this system
+LICBDMODL	License found is not for this system machine model
+LICBDSITE	Site license is not for this site
+LICCHKSUM	License has bad checksum value - re-verify it is as issued
+LICEXPIRE	Demo license has expired
+LICFILE	License file (//%s) empty or non-extistent 
+LICFILFMT	License file (//%s) incorrectly formatted
+LICFILMIS	License file missing (//%s) or cannot be opened
+LICGENERR	License error
+LOCSIZ	Primary data device [%s] open/ioctl failure: %s
+LOGSTATS        LOGSTATS parameter value must be "off" or "on".
+MALLOC	Failed to allocate %d bytes of memory
+MIGRATE	Driver migrate failure for logical group [%d]: %s
+MIR2SMAL	Config [%s] primary's local data disk [%s] larger than secondary's disk [%s] (%ld vs %ld)
+MIRDEVID	Bad device id [%08x]. Device not found in group device list
+MIRDISABLE	Mirroring has been disabled by file [%s] being present. See 'QNM\reco -d'.
+MIRMISMTCH	Configuration mismatch between primary and secondary for disk PROFILE: %d
+MIRMISS	Profile in config file [%s] prior to line %d missing mirror device specification
+MIRSIZ	Secondary mirror device [%s] open/ioctl failure: %s
+MIRSTAT	Secondary mirror device [%s] stat failure: %s
+MIRTYPE	NULL Secondary mirror device defined in [%s], line [%d]
+MIRTYPERR	Secondary mirror device [%s] defined in [%s], is not a character special device
+MIRWRITE	Mirror device [%s] write error: [%s]
+MKCONF	Failed for [%s]: [%s] [%s]: %s
+NEEDPS  You must specify both -b and -p for initial use of 'QNM\init'. 
+NETBROKE	Lost connection to [%s]. 
+NETMAXERR NETMAXKBPS parameter outside of range: [%u] (Max: [%d] Min: [%d])
+NETPROB	Encountered a network initialization problem at startup
+NETREAD	RMD (Remote Mirror Daemon) network read error [%s] 
+NETTIMEO  Timeout communicating on network connection [%s] <-> [%s]. Check link and/or remote service.
+NO0WRITE	Write to sector 0 disallowed for group [%d] device [%s].
+NOCONFIG Could not find config files for target logical group(s)
+NODEVS	Config file: %s contains no device profiles. 
+NOGROUP Target groups not started. Use 'QNM\start'. 
+NOHRT	Could not get HRT for device: %s, device id: %d
+NOPMD       Checkpoint issued for primary group: %d but PMD is not running
+NORMAL	PMD (Primary Mirror Daemon) is in normal mode
+NORMD       Checkpoint issued for secondary group: %d but PMD is not running
+NOTROOT	You must be root to run this process...aborted
+OPEN	Could not open device [%s]: %s 
+OPENEVENT	Could not open NT event [%d]: %s 
+PARENTNOTMASTER	Parent process must be master [%s]
+PASSTHRU	Logical group is in driver PASSTHRU mode. PMD exiting. 
+PIPE 	Failed creating a pipe: %s
+PMDAGAIN	Logical Group PMD already running. Use killpmds first. 
+PMDEXIT	PMD (Primary Mirror Daemon) exited
+PMDSTART	PMD (Primary Mirror Daemon) started [%s]
+PROTDEV	Invalid device id [%08x] in protocol header
+PROTVERS	Primary and Secondary don't agree on "DataCast" version
+PSADDDEV	Failed to add device %s to pstore %s
+PSADDGRP	Failed to add group %s to pstore %s
+PSBADHDR	Bad header in pstore [%s] - this pstore is invalid
+PSCREATE	Failed to create pstore %s [%d]
+PSCREAT_SUCCESS Initialized pstore %s for group %d.  This pstore can support up to a maximum of %d devices.
+PSDELDEV	Failed to delete device %s from pstore %s
+PSDELGRP	Failed to delete group %s from pstore %s
+PSDNOTFOUND	Device [%s] not found in pstore. Has it been started ?
+PSERROR	Pstore error: %s
+PSGNOTFOUND	Group [%s] not found in pstore. Has it been started ?
+PSNOROOM	Pstore [%s] full. Cannot add Device [%s]. Reinitialize pstore.
+PSOPEN	Failed to open pstore: %s
+PSRDDATTR	Failed to read attributes for device %s from pstore %s
+PSRDGATTR	Failed to read attributes for group %s from pstore %s
+PSRDHDR	Failed to read header from pstore %s 
+PSRDHRDB	Failed to read HRT for device %s from pstore %s
+PSRDLRDB	Failed to read LRT for device %s from pstore %s
+PSSTAT          Couldn't stat pstore device: %s
+PSWTDATTR	Failed to write attributes for device %s to pstore %s
+PSWTGATTR	Failed to write attributes for group %s to pstore %s
+PSWTHDR	Failed to write header to pstore %s 
+PSWTHRDB	Failed to write HRT for device %s to pstore %s
+PSWTLRDB	Failed to write LRT for device %s to pstore %s
+READERR	Read error on [%s], offset [%llu] length [%d]: %s 
+RECONN	PMD attempting to reconnect to RMD
+RECOFAIL	'%s' failed. %s
+RECOOFF	'QNM\reco' couldn't create a .off file for group [%d]: %s
+REPMD		PMD_%03d exited with non-fatal status, automated relaunch underway
+RETHROTD	throtd no longer running, automated relaunch underway
+REFRAGAIN	Refresh operation already running. Use killrefresh first. 
+REFRBACK	Refresh operation cannot be started. Logical group is in backfresh mode 
+REFREND		Refresh operation completed 
+REFRESH	Refresh operation started
+REFRTERM	Refresh operation terminated
+REMOTERR	%s
+REFRTIMEO	Refresh operation timed out. Increase REFRESHTIMEOUT (current: %d secs.). Run launchrefresh FULL for group. 
+REFRTIMEOUT	REFRTIMEOUT parameter outside of range: [%u] (Max: [%d] Min: [%d])
+RMDAEND	RMDA (Remote Mirror Apply Daemon) ended - applying journal(s) to mirror(s)
+RMDAPPLY	RMD [%s] failed applying journal entries to mirrors
+RMDASTART	RMDA (Remote Mirror Apply Daemon) started - applying journal(s) to mirror(s)
+RMDEXIT	RMD (Remote Mirror Daemon) exited
+RMDAEXIT	RMDA (Remote Mirror Apply Daemon) exited - journal apply terminated !
+RMDINIT	Failed initialization [%s]
+RMDSTART	RMD (Remote Mirror Daemon) started
+RSYNCCPOFF	Cannot transition from checkpoint mode during a rsync operation [%s]
+RSYNCCPON	Cannot transition to checkpoint mode during a rsync operation [%s]
+RUNAGAIN	Master daemon [%s] already running. Use killQNM\master first.
+SEEKERR		Seek error on [%s], offset: %llu: %s  
+SENDLGMSG	Failed writing message sentinel to BAB: %s	
+SETIODELAY	[%s / %s] set I/O delay ioctl error [%d] = %s
+SIGNAL	%s terminated due to signal %d
+SOCKACCEPT	Failed accepting socket on listener descriptor %d: %s
+SOCKBIND	Failed binding socket : %s
+SOCKCONNECT	Failed connecting socket to server [%s -> %s:%d]: %s
+SOCKCREAT	Failed creating socket : %s
+SOCKFAIL	Failed creating socket: %s
+SOCKINIT	Failed initializing socket : %s
+SOCKLISTEN	Failed listening on socket %d: %s
+SOCKNOTME	Hostname/IP [%s] does not resolve to this machine 
+SOCKOP		Failed setting socket option: %s
+SOCKRECONN	Failed connecting socket to server [%s -> %s:%d]: %s - Retrying connection
+SOCKRECV	Failed reading from socket [%s <- %s:%d]: %s
+SOCKSEND	Failed writing to socket [%s -> %s:%d]: %s
+SOCKSETB	Failed setting socket to blocking: %s
+SOCKSETNONB	Failed writing to socket to non-blocking: %s
+STARTGRP	Failed to start group %d
+STAT	stat error on [%s]: %s 
+STATINT         STATINTERVAL parameter outside of range: [%u] (Max: [%d] Min: [%d])
+STATRERR	Failed reading state information file: %s
+STATSIZE        MAXSTATFILESIZE parameter outside of range: [%u] (Max: [%d] Min: [%d])
+STATWERR	Failed writing state information file: %s
+STOPGRP	Failed to stop group %d
+SYNCDEPTH       SYNCMODEDEPTH parameter outside of range: [%u] (Max: [%d] Min: [%d])
+SYNCMODE	Could not place device [%s] into syncronous mode
+SYNCPARAMS	Could not set SYNCMODE parameters in driver for device [%s] 
+SYNCPEND	PMD (Primary Mirror Daemon) not started due to pending RSYNC state
+SYNCTIMEOUT     SYNCMODETIMEOUT parameter outside of range: [%u] (Max: [%d] Min: [%d])
+SYNCVAL         SYNCMODE parameter value must be "off" or "on".
+SYSCFGERR	System config file error: %s
+THROT2TST	Configuration file error [%s line: %d] Too many throttle test clauses
+THROTACT	Configuration file error [%s line: %d] Too many throttle actions [limit 16]
+THROTDOWM	Configuration file error [%s line: %d] Improper days-of-week / days of month specification
+THROTLOG	THROTTLE MSG: %s
+THROTLOGOP	Configuration file error [%s line: %d] Unrecognized throttle logical operator
+THROTMES	Configuration file error [%s line: %d] Unrecognized throttle measurement keyword
+THROTMON	Could not open monitor file var/opt/LGTOQNM\/lgstats
+THROTMONLK      Could not open monitor lock file var/opt/LGTOQNM\/lgstats.lk
+THROTREL	Configuration file error [%s line: %d] Unrecognized throttle relational operator
+THROTSTA	Configuration file error [%s line: %d] Throttle definition structure incorrect
+THROTSYN	Configuration file error [%s line: %d] Throttle definition syntax error
+THROTTIM	Configuration file error [%s line: %d] Improper time value (need HH:MM:SS or - )
+THROTTRC	THROTTLE TRACE: group=%d test=(%s) action=(%s)
+THROTVAL	Configuration file error [%s line: %d] Throttle action has numeric value error
+THROTVER	Configuration file error [%s line: %d] Unrecognized throttle action verb
+THROTWER	Configuration file error [%s line: %d] Unrecognized throttle action command
+THROTWHA	Configuration file error [%s line: %d] Throttle action command conflicts with the verb
+TRACEVAL        TRACETHROTTLE parameter value must be "off" or "on".
+VERSION	primary [%s] secondary [%s] version mismatch.
+WARNMOUNT	WARNING: [%s] is mounted as [%s], but is data device for [%s].  No mirroring to filestem will take place.
+WRITEERR	Write error on %s, devid: %d, offset: %llu, length: %d: %s

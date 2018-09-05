@@ -1,0 +1,5 @@
+DIRS= \
+     diagfilt \
+     cdmprov \
+     wmifilt \
+     wmiacpi

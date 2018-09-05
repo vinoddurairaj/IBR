@@ -1,0 +1,56 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved
+#
+# Include this last after you've made your definitions in your makefile.
+#
+# $Id: lib_tdmf.gmk,v 1.1 2006/12/31 00:40:10 naat0 Exp $
+#
+#
+
+BUILDBRAND=$(shell ${TOP}/mk/getosarch.sh)
+ifeq (${BUILDBRAND},)
+$(error Unable to collect the operating system architecture information)
+endif
+
+include ${TOP}/mk/vars_tdmf_${BUILDBRAND}.gmk
+
+all::	makedirs ${BUILDLIBDIR}/lib$(LIBRARY).a
+
+clobber:: clean
+
+clean::	_FORCE 
+	@if [ x"${CLEANS}" != x ] ; then \
+		$(RM) -rf ${CLEANS}; \
+	fi
+
+
+${BUILDLIBDIR}/lib${LIBRARY}.a: $(addprefix ${BUILDOBJDIR}/,${OBJS})
+	@echo " "
+	@echo "---------- [ UPDATING lib${LIBRARY} LIBRARY ] ----------"
+	${AR} ${ARFLAGS} $@ $?
+	${RANLIB} $@
+
+ifndef SRC
+SRC = $(OBJS:%.o=%.c)
+endif
+
+CLEANS += cscope.out
+
+cscope.out: $(SRC)
+	$(CSCOPE) -b $(CINCLUDES) -f $@ $(SRC)
+
+${BUILDOBJDIR}/%.o: %.c
+	@echo " "
+	@echo "---------- [ COMPILING $< ] ----------"
+	cd ${BUILDOBJDIR}; ${CC} ${CFLAGS} -c ../../$<
+
+makedirs: 
+	@echo "\n--------- [ CREATING PLATFORM BUILD DIRECTORIES ] --------" 
+	@if [ ! -d ${BUILDDIR} ] ; then  mkdir ${BUILDDIR} ; fi
+	@if [ ! -d ${BUILDOBJDIR} ] ; then  mkdir ${BUILDOBJDIR} ; fi
+	@if [ ! -d ${BUILDLIBDIR} ] ; then   mkdir ${BUILDLIBDIR} ; fi
+
+_FORCE:
+
+include ${TOP}/mk/debug.gmk
+include ${TOP}/mk/depend.gmk

@@ -1,0 +1,73 @@
+<html>
+
+<head>
+
+<title>FAQ for Installing Millennium Drivers</title>
+<META NAME="MS-HKWD" CONTENT="Inf FAQ">
+<META NAME="MS-HKWD" CONTENT="Installing Millennium Drivers - FAQ">
+<META NAME="MS-HKWD" CONTENT="FAQ for Installing Millennium Drivers">
+
+</head>
+
+<body>
+<br><br>
+
+<h1>FAQ for Installing Drivers on Windows Millennium</h1>
+<ol>
+<li><i>Where can I get more information on writing infs for Millennium?</i>
+<p>Check the INF Guide topic under Millennium DDK\Installing Drivers on Windows Millennium\INF Guide
+for Windows Millennium in the online documentation.</p>
+
+<li><i>I want to disable version checking and always copy my file.  How can
+I do this?</i>
+<p>This is set by a flag in a CopyFile section.  The values of these flags
+are shown in the online help under Millennium DDK\Inf Guide for Windows
+Millennium\Default Install\Copy Files Section (CopyFiles).
+</p>
+<li><i>I want to copy a file only if it does <b>not</b> exist on a user's system.
+How can I do this?</i>
+<p>Please see question 2 above.
+</p>
+<li><i>How do I avoid overwriting critical system files?</i>
+<p>Microsoft has a new feature, System File Protection (SFP) specifically
+designed to prevent overwriting shared system files.
+Check the online documentation under Millennium DDK\Installing
+Drivers on Windows Millennium\System File Protection.
+</p>
+<li><i>What files are protected under SFP?</i>
+<p>A list is provided for you in the online documentation.  See the
+"protected file list" link in Millennium DDK\Installing Drivers on
+Windows Millennium\System File Protection.
+</p>
+<li><i>How do I disable System File Protection.</i>
+<p>System File Protection (SFP) cannot be disabled.  Check the online
+documentation under Millennium DDK\Installing
+Drivers on Windows Millennium\System File Protection for more info.
+</p>
+<li><i>How do I write an inf to install a WDM Driver on both Windows 2000
+and Windows Me?</i>
+<p>Please see the example in the section "Writing a Cross-Platform INF to
+Install USB Printer Drivers" located in the online documentation under
+Millennium DDK\Universal Serial Bus\USB Printing.
+</p>
+<li><i>Where can I get a list of install directories or Logical Disk Identifiers (LDIDs)?</i>
+<p>Check the DestinatonDirs section in the online documentation under
+Millennium DDK\Intalling Drivers on Windows Millennium\INF Guide for
+Windows Millennium.
+</p>
+<li><i>How can I get my drivers signed?</i>
+<p>Check the Driver Signing Summary section in the online documentation under
+Millennium DDk\Installing Drivers on Windows Millennium\Driver Signing.
+</p>
+<li><i>How do I get a digital signature for my driver?</i>
+<p>Check the online documentation for the section, How to Get Digital Signatures for 
+Windows Drivers, under Millennium DDK\Installing Drivers on Windows
+Millennium\Driver Signing.
+
+
+</ol>
+
+</body>
+
+</html>
+

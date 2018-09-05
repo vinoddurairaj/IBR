@@ -1,0 +1,25 @@
+HKCR
+{
+	TDMFObjects.Domain.1 = s 'Domain Class'
+	{
+		CLSID = s '{90B427FA-3CDF-4916-B011-727575F6449F}'
+	}
+	TDMFObjects.Domain = s 'Domain Class'
+	{
+		CLSID = s '{90B427FA-3CDF-4916-B011-727575F6449F}'
+		CurVer = s 'TDMFObjects.Domain.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {90B427FA-3CDF-4916-B011-727575F6449F} = s 'Domain Class'
+		{
+			ProgID = s 'TDMFObjects.Domain.1'
+			VersionIndependentProgID = s 'TDMFObjects.Domain'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{B15F8DB8-7BC4-4643-8880-3FB191E335BF}'
+		}
+	}
+}

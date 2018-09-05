@@ -1,0 +1,116 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved
+#
+# Include this last after you've made your definitions in your makefile.
+#
+# $Id: lib.gmk,v 1.3 2001/01/17 17:58:57 hutch Exp $
+#
+#
+include ${TOP}/mk/vars.gmk
+
+all::	${PKGHDRS} lib${LIBRARY}.a
+
+clean::	_FORCE 
+	@if [ x"${CLEANS}" != x ] ; then \
+		$(RM) ${CLEANS}; \
+	fi
+
+install:: _FORCE
+	@mkdir -p ${BINDIR} ${LIBDIR} ${ETCDIR} ${MANDIR} ${TCLDIR} \
+		${SAMPLEDIR} ${PKGUSRSBINDIR} ${INITDIR} ${PKGDIR} \
+                ${CONFIGDIR} ${HTMLDIR} ${LIBEXECDIR}; \
+	for i in ${BIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 555 $$i ${BINDIR}; \
+		fi; \
+	done ; \
+	for i in ${LIBEXEC_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 555 $$i ${LIBEXECDIR}; \
+		fi; \
+	done ; \
+	for i in ${HTML_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${HTMLDIR}; \
+		fi; \
+	done ; \
+	for i in ${IMG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${IMGDIR}; \
+		fi; \
+	done ; \
+        for i in ${PDF_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PDFDIR}; \
+		fi; \
+	done ; \
+        for i in ${HTMLIMG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${HTMLIMGDIR}; \
+		fi; \
+	done ; \
+	for i in ${PS_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PSDIR}; \
+		fi; \
+	done ; \
+	for i in ${TOP_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${TOPDIR}; \
+		fi; \
+	done ; \
+	for i in ${USRSBIN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PKGUSRSBINDIR}; \
+		fi; \
+	done ; \
+	for i in ${INIT_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${INITDIR}; \
+		fi; \
+	done ; \
+	for i in ${CONFIG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${CONFIGDIR}; \
+		fi; \
+	done ; \
+	for i in ${ETC_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${ETCDIR}; \
+		fi; \
+	done ; \
+	for i in ${PKG_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${PKGDIR}; \
+		fi; \
+	done ; \
+	for i in ${LIB_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${LIBDIR}; \
+		fi; \
+	done ; \
+	for i in ${MAN_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${MANDIR}; \
+		fi; \
+	done ; \
+	for i in ${TCL_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${TCLDIR}; \
+		fi; \
+	done ; \
+	for i in ${SAMPLE_INSTALL} x; do \
+		if [ $$i != x ]; then \
+			${INSTALL} -m 444 $$i ${SAMPLEDIR}; \
+		fi; \
+	done ;
+lib${LIBRARY}.a: ${OBJS}
+	${AR} ${ARFLAGS} $@ ${OBJS}
+
+.c.o:
+	${CC} ${CFLAGS} -c $<
+
+_FORCE:
+
+include ${TOP}/mk/debug.gmk
+include ${TOP}/mk/depend.gmk

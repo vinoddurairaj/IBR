@@ -1,0 +1,244 @@
+#!/sbin/sh
+########
+#  Product: %CAPQ%
+#  Fileset: %Q%.%Q%
+#  Pre-removal script for %PKGNM%
+########
+#
+# Copyright (c) %COPYRIGHTYEAR 2001% %COMPANYNAME%. All rights reserved.
+# $Id: hpux.preremove.src,v 1.22 2014/10/24 20:46:15 paulclou Exp $
+########
+
+UTILS=/usr/lbin/sw/control_utils
+REV=%VERSION%
+if [[ ! -f $UTILS ]]
+then
+    print "ERROR:   Cannot find the sh functions library $UTILS"
+    exit 1
+fi
+. $UTILS
+
+# Check if any .cfg files exist
+a=/etc/opt/%PKGNM%/[ps][0-9][0-9][0-9].cfg 
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+		mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+        # if any prior config files exist in save directory
+        b=/var/opt/%PKGNM%/%PKGNM%${REV}/[ps][0-9][0-9][0-9].cfg
+        if [ -f $b ]; then
+                rm -f $b
+        fi
+
+	echo Moving %PKGNM% Config files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any .sh files exist
+a=/etc/opt/%PKGNM%/*.sh
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+		mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+        # if any prior .sh files exist in save directory
+        b=/var/opt/%PKGNM%/%PKGNM%${REV}/*.sh
+        if [ -f $b ]; then
+                rm -f $b
+        fi
+
+	echo Moving %PKGNM% Shell files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any .lic files exist
+a=/etc/opt/%PKGNM%/*.lic
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+	        mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+        # if any prior %CAPQ%.lic file exist in save directory
+        b=/var/opt/%PKGNM%/%PKGNM%${REV}/%CAPQ%.lic
+        if [ -f $b ]; then
+                rm -f $b
+        fi
+
+	echo Moving %PKGNM% License files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+		mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Backup pxxx_migration_tracking csv and chk files
+# Check if any pxxx_migration_tracking.csv files exist (product usage tracking files)
+a=/var/opt/%PKGNM%/p[0-9][0-9][0-9]_migration_tracking.csv 
+if [ -f $a ]; then
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% Product usage statistics files to /var/opt/%PKGNM%/%PKGNM%${REV}
+    date_suffix=`/usr/bin/date +\%Y\%m\%d-\%H\%M`
+	for i in $a
+	do
+        mv $i $i.$date_suffix
+        mv $i.$date_suffix /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any pxxx_migration_tracking.chk files exist (product usage checksum files)
+a=/var/opt/%PKGNM%/p[0-9][0-9][0-9]_migration_tracking.chk 
+if [ -f $a ]; then
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% Product usage checksum files to /var/opt/%PKGNM%/%PKGNM%${REV}
+    date_suffix=`/usr/bin/date +\%Y\%m\%d-\%H\%M`
+	for i in $a
+	do
+        mv $i $i.$date_suffix
+        mv $i.$date_suffix /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if any global product_usage_stats csv files exist (product usage global tracking files of this server)
+a=/var/opt/%PKGNM%/*_product_usage_stats_*.csv 
+if [ -f $a ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+		mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+	echo Moving %PKGNM% Global Server Product usage statistics files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	for i in $a
+	do
+        mv $i /var/opt/%PKGNM%/%PKGNM%${REV}/
+	done
+fi
+
+# Check if the %Q%.conf file exists
+if [ -f /etc/opt/%PKGNM%/%Q%.conf ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+	        mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+
+        # if any prior %CAPQ%.conf file exist in save directory
+        b=/var/opt/%PKGNM%/%PKGNM%${REV}/%Q%.conf
+        if [ -f $b ]; then
+                rm -f $b
+        fi
+
+	echo Moving the %Q%.conf file to /var/opt/%PKGNM%/%PKGNM%${REV}
+	mv /etc/opt/%PKGNM%/%Q%.conf /var/opt/%PKGNM%/%PKGNM%${REV}/.
+fi
+
+# Avoid any leftover net_analysis_group.cfg and SFTKdtc_net_analysis_parms.txt
+# net_analysis_group.cfg:
+if [ -f /etc/opt/%PKGNM%/net_analysis_group.cfg ]; then
+    echo Removing /etc/opt/%PKGNM%/net_analysis_group.cfg
+    rm -f /etc/opt/%PKGNM%/net_analysis_group.cfg
+fi
+# SFTKdtc_net_analysis_parms.txt:
+if [ -f /etc/opt/%PKGNM%/SFTKdtc_net_analysis_parms.txt ]; then
+    echo Removing /etc/opt/%PKGNM%/SFTKdtc_net_analysis_parms.txt
+    rm -f /etc/opt/%PKGNM%/SFTKdtc_net_analysis_parms.txt
+fi
+
+# Check if devlist.conf files exist
+if [ -f /etc/opt/%PKGNM%/devlist.conf ]; then
+	# Create /var/opt/%PKGNM%, if necessary
+	if [ ! -d "/var/opt/%PKGNM%" ]; then
+	        mkdir /var/opt/%PKGNM%
+	fi
+
+	# Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+	if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+	        mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+	fi
+	# if any prior %CAPQ%.lic file exist in save directory
+	b=/var/opt/%PKGNM%/%PKGNM%${REV}/devlist.conf
+	if [ -f $b ]; then
+	        rm -f $b
+	fi
+
+	echo Moving the devlist.conf files to /var/opt/%PKGNM%/%PKGNM%${REV}
+	mv /etc/opt/%PKGNM%/devlist.conf /var/opt/%PKGNM%/%PKGNM%${REV}/
+fi
+
+
+# Check if any %Q%Agent.cfg files exist
+a=/etc/opt/%PKGNM%/%Q%Agent.cfg
+if [ -f $a ]; then
+    # Create /var/opt/%PKGNM%, if necessary
+    if [ ! -d "/var/opt/%PKGNM%" ]; then
+        mkdir /var/opt/%PKGNM%
+    fi
+
+    # Create /var/opt/%PKGNM%/%PKGNM%${REV}, if necessary
+    if [ ! -d "/var/opt/%PKGNM%/%PKGNM%${REV}" ]; then
+            mkdir /var/opt/%PKGNM%/%PKGNM%${REV}
+    fi
+
+    # if any prior Agent config files exist in save directory
+    b=/var/opt/%PKGNM%/%PKGNM%${REV}/%Q%Agent.cfg
+    if [ -f $b ]; then
+        rm -f $b
+    fi
+
+    echo Moving Agent Config files to /var/opt/%PKGNM%/%PKGNM%${REV}
+    mv $a /var/opt/%PKGNM%/%PKGNM%${REV}/
+fi
+
+# Remove %Q%, pmd, rmd, rmda run dirs
+a=/var/opt/%PKGNM%/run
+[ -d $a ] && rm -fr $a
+
+# remove the driver
+# 
+mod_systemfile $SW_SYSTEM_FILE_PATH -d %Q%
+
+exit 0
+

@@ -1,0 +1,11 @@
+/MAKEFILE.INC////*////
+/Wmi.c////*////
+/busenum.c////*////
+/busenum.h////*////
+/busenum.mof////*////
+/busenum.rc////*////
+/buspdo.c////*////
+/makefile////*////
+/pnp.c////*////
+/power.c////*////
+/sources////*////

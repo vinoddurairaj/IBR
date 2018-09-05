@@ -1,0 +1,9 @@
+#!/bin/ksh
+#
+# FTD revision name
+#
+# For now, derive this by looking at mk/vars.sh for the `REV' macro.
+#
+. ../../../mk/vars.sh
+
+echo ${REV}

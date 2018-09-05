@@ -1,0 +1,7 @@
+LIBRARY         LICENSE
+DESCRIPTION     'DLL to verify ftd license key'
+CODE            PRELOAD  MOVEABLE  DISCARDABLE
+DATA            PRELOAD  MOVEABLE  SINGLE
+
+EXPORTS
+  verify  @1

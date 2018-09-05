@@ -1,0 +1,433 @@
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+#============================================================================
+# %PRODUCTNAME% %VERSION% Messages file
+#============================================================================
+
+# 2004/12/08:  Record unused Messages for future references/clean-up
+#              Among them, only LOCDK and BFDOFLOW are in Message Guides 2.1
+#
+#   BADWRT       BFDBADOFF
+#   CHKFILE      CHLDRESP  CLEARMODE CTLDOPEN   CTLDOPENPS  
+#   DDTYPEERR    DRVADDDEV DRVADDGRP DRVCONFBAD
+#   GETDIRTYBITS
+#   HOSTNAME
+#   IPFMT
+#   JRNNAME      JRNREAD
+#   LICBDHOST    LICBDMODL  LICBDSITE LICCHKSUM  LICEXPIRE  LOCDK (*)
+#   MIRTYPE      MIRWRITE   MKCONF
+#   NEEDPS       NETREAD    NO0WRITE  NOACK      NOPIPE
+#   PSDELDEV     PSDELGRP   PSRDDATTR PSRDHRDB   PSRDLRDB   PSWTHDR
+#   RFDOFLOW (*) RFDREAD    RFDWRITE
+#   SECT0UPDATE  SENDFAIL   SETDEV    STATWERR   SYNCMODE   SYNCPARAMS SYNCPEND
+#   THROTMON     THROTMONLK THROTVER
+#   WRGHOST      WTIMEOUT
+
+2MANY	Launch for %GROUPNAME% group [%s] dispatch retried too many times (5)
+ABEXIT	Received an abnormal exit from a %GROUPNAME% group PMD
+ACCEPT	Server socket failed [%d] during accept of new connection: %s
+ACKCMD	Receive bad ACK command from RMD for group [%s]
+ACKMAGIC	Read of ACK magic value wrong for group [%s]
+BABNOTSET   BAB size definition and driver load have not been performed.
+BABNOTSET2  You can use either dtcagentset -b and launchagent, or dtcconfigtool to set the BAB and load the driver (see Administration Guide).
+BABOFLOW	BAB exhausted during normal operation [%s] 
+BABOFLOW2	BAB exhausted during normal/refresh operation [PMD_%03d] 
+BADAUTH	Received bad authentication or config path from [%s]
+BADCMD	Received bad command: errno = %d devid = %d cmd = %d
+BADDEVID	Received write command with bad device ID %d
+BADDEVSIZ       Unable to obtain size of volume [%s] may not exist or be supported.
+BADHDR	[%s] Found bad BAB entry header [%llx] for device [%llx/%llx] 
+BADHOSTNAM	Configuration file [%s/%d] network hostname [%s] cannot be resolved
+BADIPADDR	Configuration file [%s/%d] hostname = [%s] IP = %s: IP address doesn't resolve
+BADKEY	Key '%s' is invalid in %s
+BADMODE	PMD/Driver mode conflict: [PMD_%03d] Driver [%s] Target PMD mode [%s]. Use %Q%override. 
+BADNAMIP	Configuration file [%s/%d] hostname = [%s] IP = %s: host does not match IP address given
+BADOFF	Bad offset error, file [%s] pos [%llu]: %s
+BADPROTO	Received a message in violation of the %CAPQ% network protocol.
+BADTUNABLE      [%s] is not a valid tunable parameter name
+BADWRT	Secondary write failed [%d] group [%s] file [%s]: %s
+BFDAGAIN	Backfresh daemon [%s] already running. Use killbackfresh first. 
+BFDBADOFF	BFD (Backfresh Daemon) [%s] bad device offset on [%s] pos [%llu]: %s 
+BFDCPOFF	Cannot transition from Checkpoint mode during a Backfresh operation [%s]
+BFDCPON		Cannot transition to Checkpoint mode during a Backfresh operation [%s]
+BFDDEV	BFD (Backfresh Daemon) [%s] could not lock device [%s] for EXCL use: device mounted as %s 
+BFDDEV_NOTEXCL (Backfresh Daemon) [%s] could not open %s in Exclusive mode (device mounted?) [errno indicates: %s]
+BFDEND	Backfresh operation completed for group [%s] 
+BFDRFD	Backfresh operation cannot be started. %CAPGROUPNAME% group [%s] is in refresh mode 
+BFDSTART	Backfresh operation started [%s]
+BFDTERM	Backfresh operation terminated [%s]
+BINDERR	Could not bind Master daemon (in.%Q%) socket to port [%d]
+BLKGET	PMD unable to get data from driver for device [%s], reason code [%d]
+CFGBDKEY	Configuration file [%s] line [%d] has an unrecognized keyword [%s]
+CFGERR	Configuration file [%s] error at or before line [%d]
+CFGFILE	[%s] Unable to read config file [%s]: %s
+CFGPS [%s] Unable to retrieve pstore location from configuration file [%s]
+CFGPROB	Encountered a configuration file problem at startup
+CHKFILE	Unable to open checkpoint file [%s]
+CHKSUM	failed computing device [%s] checksum
+CHKSUMDIFF	[%s] Error while diffing local/remote checksums
+CHLDRESP	Master daemon (in.%Q%) timed out waiting for a response from a child process [%s]
+CHUNKDELAY	CHUNKDELAY parameter outside of range: [%s] (Max: [%d] Min: [%d])
+CHUNKSZ		CHUNKSIZE parameter outside of range: [%s] (Max: [%d] Min: [%d])
+CLEARMODE	Failed clearing group [%d] mode in persistent store: %s	
+CNCTED	PMD already connected to an RMD, connection request ignored
+COMMAND         [%s]
+COMPRESSVAL     COMPRESSION parameter value must be "off" or "on".
+CONERR	Could not connect socket to RMD host [%s:%d]: %s
+CPEXEC   [%s] received non-zero return from [%s] 
+#
+# Must update agent/ftd_mngt_StatusMsgThread.c if CPOFF string changes
+#
+CPOFF	%GROUPNAME% group [%s] successfully transitioned out of checkpoint mode
+CPOFFAGAIN	%GROUPNAME% group [%s] is NOT in checkpoint mode
+#
+# Must update agent/ftd_mngt_StatusMsgThread.c if CPON string changes
+#
+CPON	%GROUPNAME% group [%s] is in checkpoint mode
+CPOFFERR	%GROUPNAME% group [%s] DID NOT transition out of checkpoint mode due to error(s)
+CPOFFDEV	%GROUPNAME% group [%s] DID NOT transition out of checkpoint mode due to mounted mirror device [%s] on [%s]
+CPONERR	%GROUPNAME% group [%s] DID NOT transition to checkpoint mode due to error(s)
+CPONAGAIN	%GROUPNAME% group [%s] is already in checkpoint mode
+CPSTARTAGAIN	%GROUPNAME% group [%s] is currently transitioning to checkpoint mode
+CPSTOPAGAIN	%GROUPNAME% group [%s] is currently transitioning from checkpoint mode
+CTLOPEN	[%s] Unable to open control group device [%s]: %s 
+DDTYPEERR	Local data device [%s] not character special (raw) device [config file %s / line %d]
+DEVID	[%s] Bad device id [%08x]
+DEVIDERR	Received bad devid [%d] for [%s] during handshake
+DEVMISS	Profile in config file [%s] prior to line [%d] missing data device specification
+DEVOPEN         Could not stop group [%d]: Device(s) busy
+DRVADDDEV	Driver failed to add device %s to group %s
+DRVADDGRP	Driver failed to add group %s 
+DRVCONFBAD	Config file and driver don't agree on local data device [%s]: %s
+DRVCTL_OPENFAIL	Failed opening dtc driver control device [%s]; has dtc driver been loaded? System message: %s. 
+DRVDELDEV	Driver failed to delete device %s from group %s: %s
+DRVDELGRP	Driver failed to delete group %s 
+DRVERR	Got driver error in [%s] [%s]
+DUP_CHK_ERR Duplicate source verification failed for config file %s; assuming no duplicate
+DUP_SRCDEV  %s is defined as source data device in another started group; please check the configuration files
+DUP_SRCDEV_1CFG Duplicate entry found for device %s in %s; please fix the configuration
+ERRMIS	Told of RMD error, but could not get error message for group [%s]
+EXEC	Failed to exec a subprocess [%s]: %s
+FILE 	Failed opening file [%s]: %s
+FLUSHBAB	Failed flushing entries from the BAB: %s 	
+FLUSHNET	Failed flushing data from network 	
+FORK	Received error on a fork, exiting [%s]
+ACCPTCONN	Master daemons [%s] failed during accept of a new connection on domain socket: %s
+RUNAGAIN	Master daemon [%s] already running. Use kill%Q%master first.
+PMDBIND		Failed binding PMD domain socket: %s
+PMDFAIL		Failed creating PMD domain socket: %s
+PMDLISTEN	Configure PMD domain socket to listen to new connections failed: %s
+PMDRE           PMD exited due to BAB error. Please relaunch PMD for group %d
+GETDIRTYBITS	Failed reading dirtybit maps for group [%d]: [%d]
+HDRMAGIC	Received bad magic value in message header
+HOSTLKUP	Could not ascertain IP address for RMD host: [%s]
+HOSTNAME	Config file [%s] has unknown hostname for this system [%s] using [%s]
+IOCTLERR	ioctl [%s] error: %s
+IPCRERR		%s failed reading from IPC channel [%d]: [%s]	
+IPCWERR		%s failed writing to IPC channel [%d]: [%s]	
+IPFMT		Config file [%s/%d] hostname: [%s] IP: [%s] - IP address is invalid
+JLESS       %CAPGROUPNAME% group will activate Journal-Less mode 
+JOURNALVAL  JOURNAL parameter value must be [off | 0] or [on | 1], default:ON.
+JOURNAL_ON  To deactivate journal-less option, the group's PMD/RMD need to be restarted 
+JOURNAL_OFF To activate journal-less option, the group's PMD/RMD need to be restarted 
+JRNACCESS	Can't access secondary journal area [%s]: %s  
+JRNHEADER	Secondary journal [%s] contains bad header
+JRNINIT     Secondary journal [%s] initialization error 
+JRNLOCK     Secondary journal [%s] lock failure by [%s] 
+JRNMAGIC	Secondary journal [%s] contains bad magic value header
+JRNMISS	Config file %s near line %d does not contain a secondary journal entry
+JRNNAME	Unable to parse secondary journal name [%s] 
+JRNOPEN	Unable to open secondary journal [%s]: %s 
+JRNPATH	Unable to locate secondary journal path [%s]: %s
+JRNREAD	Journal read error %s - header reported bogus data length [%d]
+JRNSPACE	RMD [%s] out of space for secondary journal [%s]
+JRNUNLOCK   Secondary journal [%s] unlock failure by [%s]: %s 
+JRNWRITE	[%s] Secondary journal write failed for [%s]
+LGDOPEN	Unable to open %GROUPNAME% group device [%s]: %s 
+LICBADWORD	License file has keyword that is not %s_LICENSE:
+LICBDHOST	License found is not for this system
+LICBDMODL	License found is not for this system machine model
+LICBDSITE	Site license is not for this site
+LICCHKSUM	License has bad checksum value - re-verify it is as issued
+LICEXPIRE	Demo license has expired
+LICNOTALLOW Unrestricted any-host any-site permanent license is not allowed.
+LICFILE	License file (/%OURCFGDIR%/%s.lic) empty or non-existent
+LICFILFMT	License file (/%OURCFGDIR%/%s.lic) incorrectly formatted
+LICFILMIS	License file (/%OURCFGDIR%/%s.lic) missing or cannot be opened
+LICGENERR	Malformed DTC License key in %s - may be a typing error. Please correct and try again.
+LISTEN	Configuring RMD socket to listen to new connections failed
+LOCDK	Local data device [%s] open/ioctl failure for config [%s]: %s
+MALLOC	Failed to allocate %d bytes of memory
+MAXEALREADY  Maximum wait time reached on network connection in progress ([%s] <-> [%s]).
+MIGRATE	Driver migrate failure for device [%s]: %s
+MIR2SMAL	Group [%s] data disk device [%s] is larger than mirror device [%s] (%llu vs %llu sectors) -- will replicate less than entire device.
+MIR2LARGE	Group [%s] data disk device [%s] is smaller than mirror device [%s] (%llu vs %llu sectors).
+MIRDISABLE	Mirroring has been disabled by file [%s] being present
+MIRMISMTCH	Mirror device configuration mismatch between primary and secondary in [%s]
+MIRMISS	Profile in config file [%s] prior to line %d missing mirror device specification
+MIROPEN	[%s] Secondary mirror device [%s] open failure: %s
+MIROPEN_BY  %s is currently opened by process: %s; trial number %d, trial max = %d
+MIROPEN_SYNC Device %s is opened by a sync process; waiting for its termination (waited %d seconds, max = %d)
+MIROFFLINE	[%s] Mirrors must be online for %s. Operation aborted.
+MIRSIZ	Secondary mirror device [%s] open/ioctl failure for config [%s]: %s
+MIRSTAT	Secondary mirror device [%s] stat failure: %s
+MIRTYPE	NULL Secondary mirror device defined in [%s], line [%d]
+MIRTYPERR	Secondary mirror device [%s] defined in [%s], line [%d] is not a character special device
+MIRWRITE	Mirror device [%s] write error: [%s]
+MISSCFGPARM Missing parameter in configuration file of group %d for keyword %s 
+MKCONF	Failed for [%s]: [%s] [%s]: %s
+MODESYNC	BAB overflow. [PMD_%03d] Driver [%s] Target PMD mode [%s]. Sync PMD mode to driver. 
+NEEDPS  You must specify both -b and -p for initial use of %Q%init. 
+NETBROKE	Daemon [%s] Lost connection to [%s](%s)
+NETMAXERR NETMAXKBPS parameter outside of range: [%s] (Max: [%d] Min: [%d] or OFF: [%d])
+NETPROB	Encountered a network initialization problem at startup
+NETREAD	RMD (Remote Mirror Daemon) network read error [%s] 
+NETTIMEO  Timeout on network connection [%s] <-> [%s]. Retrying.
+NO0WRITE	Write to sector 0 disallowed for group [%d] device [%s].
+NOACK	Did not get ACK during [%s] 
+NOCONFIG Could not find config files for target %GROUPNAME% group(s)
+NOGROUP Target groups not started. Use %Q%start. 
+NOMASTER	[%s] could not contact Master daemon (in.%Q%). Master daemon probably not running
+NOPIPE 	Couldn't locate master/rmd [%s] communications pipe
+NOPMD       Found config file: %s but [%s] not running.	
+NORMD       Found config file: %s but [%s] not running. 
+NORESP	Master daemon (in.%Q%) is not responding. 
+NOTROOT	You must be root to run this process...aborted
+OPEN	Could not open device [%s]: %s
+OPEN_CHK_ERR Could not verify that all source devices of %s can be opened (command errno %d); assuming all devices ok 
+PASSTHRU	Driver is in PASSTHRU mode for group [%s]. PMD exiting. 
+PIPE 	Failed creating a pipe: %s
+PMDAGAIN	PMD [%s] already running. Use killpmds first. 
+PMDEXIT	PMD (Primary Mirror Daemon) exited [%s]
+PMDSTART	PMD (Primary Mirror Daemon) started [%s]
+PROTVERS	Primary and Secondary don't agree on %PRODUCTNAME% version
+PSADDDEV	Failed to add device %s to pstore %s
+PSADDGRP	Failed to add group %s to pstore %s
+PSBADSTATE	PMD cannot make requested state transition from state [%d]
+PSCREAT_SUCCESS Initialized pstore %s.  This pstore can support up to a maximum of %lld devices.
+PSCREATE	Failed to create pstore %s [%d]
+PSDELDEV	Failed to delete device %s from pstore %s
+PSDELGRP	Failed to delete group %s from pstore %s
+PSERROR	Pstore error: %s
+PSGNOTFOUND	Group [%s] not found in pstore. Has it been started ?
+PSINFO          Pstore Info: %s
+PSMAX           P-store exceeded the maximum no of devices 
+PSOPEN	Failed to open pstore: %s
+PSRDDATTR	Failed to read attributes for device %s from pstore %s
+PSRDGATTR	Failed to read attributes for group %s from pstore %s (error = %d)
+PSRDHDR	Failed to read header from pstore %s 
+PSRDHRDB	Failed to read HRT for device %s from pstore %s
+PSRDLRDB	Failed to read LRT for device %s from pstore %s
+PSSTAT          Couldn't stat pstore device: %s
+PSWTDATTR	Failed to write attributes for device %s to pstore %s
+PSWTGATTR	Failed to write attributes for group %s to pstore %s
+PSWTHDR	Failed to write header to pstore %s 
+PSWTHRDB	Failed to write HRT for device %s to pstore %s; err = %d [%s]
+PSWTLRDB	Failed to write LRT for device %s to pstore %s
+READERR	[%s] read error, offset[%llu] length[%d]: %s 
+READERR1	[%s] read error, address [%lx] offset[%llu] length[%d]: %s 
+WRITERR	[%s] write error, offset[%llu] length[%d]: %s
+RECONN	PMD attempting to reconnect to RMD
+RECOOFF	%Q%rmdreco couldn't create a .off file for group [%d]: %s
+RETHROTD        throtd no longer running, automated relaunch underway
+RFDAGAIN	Refresh daemon [%s] already running. Use killrefresh first. 
+RFDBFD		Refresh operation cannot be started. %CAPGROUPNAME% group [%s] is in backfresh mode 
+RFDCPOFF	Cannot transition from Checkpoint mode during a Refresh operation [%s]
+RFDCPON		Cannot transition to Checkpoint mode during a Refresh operation [%s]
+RFDEND		Refresh operation completed for group [%s] 
+RFDPHASE1END    Full refresh phase 1 completed for group [%s]
+RFDPHASE2START  Full refresh phase 2 started for group [%s]
+RFDPHASE2END    Full refresh phase 2 completed for group [%s]
+RFDSIMSTART	Full Refresh simulation for network bandwidth evaluation started for a period of %d seconds [%s].
+RFDSIMEND	Full Refresh simulation for network bandwidth evaluation completed [%s].
+RFDOFLOW    BAB exhausted during a refresh operation [%s]. Run launchrefresh for the group. 
+RFDREAD		RFD (Refresh Daemon) read error on %Q% device [%s]: [%s]
+RFDSTART	Refresh operation started [%s]
+RFDPHASE1START    Full refresh phase 1 started (Tracking changes) [%s]
+RFDTERM	Refresh operation terminated [%s]
+RFDWRITE	RFD (Refresh Daemon) write error on mirror device [%s] 
+RMDAEND	RMDA (Remote Mirror Apply Daemon) ended [%s] - applying journal(s) to mirror(s)
+RMDAPPLY	RMD [%s] failed applying journal entries to mirrors
+RMDASTART	RMDA (Remote Mirror Apply Daemon) started [%s] - applying journal(s) to mirror(s)
+RMDERR	PMD received err from RMD = %s
+RMDEXIT	RMD (Remote Mirror Daemon) exited [%s]
+RMDINIT	Failed initialization [%s]
+RMDSTART	RMD (Remote Mirror Daemon) started [%s]
+SDMISS	Profile in config file [%s] prior to line %d missing device specification
+SECT0UPDATE	Write to Sector ZERO detected to %GROUPNAME% group [%s] device [%s]
+SEEKERR		[%s] seek error on %s, offset: %llu: %s  
+SENDFAIL	Sendchunk failed: [%s] -- closing connection
+SENDLGMSG	Sending message failed: %s(%d).
+SETDEV	Failed setting device [%s] mode: %s
+SETFAIL	        Cannot set %s for group %d.
+SIGERR	Failed handling a signal: %s
+SIGNAL	%s terminated due to signal %d
+SOCKBIND	Failed binding PMD socket to RMD: %s
+SOCKFAIL	Failed creating socket: %s
+SOCKOP	Could not configure socket option for [%d]: %s
+SOCKRERR 	[%s] Socket read failed: %s
+SOCKWERR	[%s] Socket Write failed: %s
+STARTGRP	Failed to start group %d; start_group error code = %d
+STARTGRPS	Failed to start groups
+STAT	stat error on [%s]: %s 
+STATINT         STATINTERVAL parameter outside of range: [%s] (Max: [%d] Min: [%d])
+STATRERR	Failed reading state information file: %s
+STATSIZE        MAXSTATFILESIZE parameter outside of range: [%s] (Max: [%d] Min: [%d])
+STATWERR	Failed writing state information file: %s
+STOPFAIL        cannot stop group with active PMD - run "killpmds -g %d" first
+SYNCDEPTH       SYNCMODEDEPTH parameter outside of range: [%s] (Max: [%d] Min: [%d])
+SYNCMODE	Could not place device [%s] into synchronous mode
+SYNCPARAMS	Could not set SYNCMODE parameters in driver for device [%s] 
+SYNCPEND	PMD (Primary Mirror Daemon) not started due to pending RSYNC state
+SYNCTIMEO	Sync mode time out occurred. Transitioning to Tracking mode :[%s]
+SYNCTIMEOUT     SYNCMODETIMEOUT parameter outside of range: [%s] (Max: [%d] Min: [%d])
+SYNCVAL         SYNCMODE parameter value must be "off" or "on".
+SYSCFGERR	System config file (%Q%.conf) error: %s
+THROT2TST	Configuration file error [%s line: %d] Too many throttle test clauses
+THROTACT	Configuration file error [%s line: %d] Too many throttle actions [limit 16]
+THROTDOWM	Configuration file error [%s line: %d] Improper days-of-week / days of month specification
+THROTLOG	THROTTLE MSG: %s
+THROTLOGOP	Configuration file error [%s line: %d] Unrecognized throttle logical operator
+THROTMES	Configuration file error [%s line: %d] Unrecognized throttle measurement keyword
+THROTMON	Could not open monitor file %VAROPTDIR%/%PKGNM%/lgstats
+THROTMONLK      Could not open monitor lock file %VAROPTDIR%/%PKGNM%/lgstats.lk
+THROTREL	Configuration file error [%s line: %d] Unrecognized throttle relational operator
+THROTSTA	Configuration file error [%s line: %d] Throttle definition structure incorrect
+THROTSYN	Configuration file error [%s line: %d] Throttle definition syntax error
+THROTTIM	Configuration file error [%s line: %d] Improper time value (need HH:MM:SS or - )
+THROTTRC	THROTTLE TRACE: group=%d test=(%s) action=(%s)
+THROTVAL	Configuration file error [%s line: %d] Throttle action has numeric value error
+THROTVER	Configuration file error [%s line: %d] Unrecognized throttle action verb
+THROTWER	Configuration file error [%s line: %d] Unrecognized throttle action command
+THROTWHA	Configuration file error [%s line: %d] Throttle action command conflicts with the verb
+TRACEVAL        TRACETHROTTLE parameter value must be "off" or "on".
+WRGHOST	Config file [%s] is for hostname [%s], this is not that machine
+WRITEERR	[%s] write error on %s, devid: %x, offset: %llu, length: %llu: %s
+WTIMEOUT	Write timeout for group [%s] (sofar=%d still need=%d)
+CTLDOPEN	CTLD:Open device [%s] failed, errno [%d]
+CTLDOPENPS	CTLD:Open pstore [%s] failed, errno [%d]
+CTLDDOWN	CTLD:Daemon not running at startup
+CTLDDOWN1	CTLD:Daemon not running at startup, %GROUPNAME% groups not started
+ACCUMLATE	Group [%d] in PASSTHRU mode, need to launch full refresh
+PMDRERUNF	PMD re-launched. When connection recover, full refresh will be done again.
+PMDRERUN	PMD re-launched. 
+PMDNORERUN	PMD exitcode = %d, not re-launched. 
+ISREFRESH	Group [%d] is in REFRESH mode, wait for completion or kill refresh before expanding devices. 
+RECNFERR	Failed adding new devices
+CFGWRONG	Configuration file error [%s]
+CNTSTOP		Could not stop %s. PID=%d
+CURCPYERR	Failed copying current configuration file [%s]
+PMDSTOPED	PMD is already stopped. Please re-launch PMD and wait to NORMAL mode
+GETMINOR	Failed getting new minor number
+SETTRACKING	Failed transition to TRACKING mode, group [%d]
+SETDEVSIZ	Failed setting new device size. device name [%s]
+GETDEVSIZ	Failed to get device size from driver. 
+LNKERR		Couldn't create logical volume compatible device links
+ODMADDERR	Error adding %s to odm database
+ODMDELERR	Error deleting %s from odm database
+MINORMISMATCH	Minor numbers between dtc device %s [%d] and target device %s [%d] do not match
+INVALIDOP	Group [PMD_%03d] invalid %s operation due to %s, operation ignored 
+CPOVERWRITE	Group [PMD_%03d] overwrite checkpoint state to %s base on RMD state
+NOMEM		[%s] fail to get memory
+DEBUG		%d %d %d %s
+BADBLKBSZ	Blocksize <= 0 for device[%s].
+INTERNAL    Internal: [%s].
+RFDFRERUN	A previous full refresh did not complete successfully, launching full refresh instead.
+VALLOC      Failed to allocate %d bytes of memory (error %s)
+MEMALIGN    Failed to allocate %d bytes of memory aligned to %d (error %s)
+SYNCNETMAXKBPS     To set this parameter please Killpmds
+OLDPS         Group %d has an old version pstore. Before starting the group, either initialize the pstore using "%Q%init -p <pstore name>" or migrate it to the latest version using "%Q%psmigrate".
+COUNTFAIL       Failed to fetch the number of interface address 
+ADDRFAIL        Failed to fetch the interface addresses 
+NAMRESOLVFAIL      NAME/IP Address resolution failed %s
+SNAMRESOLVFAIL     Secondary system Name resolution failed 
+SETTUNABLE  To set this parameter please kill the PMD
+LRTVAL	LRT parameter value must be [off | 0] or [on | 1], default:ON
+HRTSIZE  The pstores of the groups being started will be initialized with Proportional HRTs with %s tracking resolution level (HRDB size depending on device size).
+HRTSIZE2 If you wish to use fixed-size HRTs (Small or Large) or change the tracking resolution level then stop all the groups and execute "%Q%init -s or -l, or -r" before starting the groups again.
+SMALLPS The pstore %s can support a maximum of %d devices. There is not enough space left in the pstore to accomodate all devices in group %d. Please use a different pstore for this group or increase the pstore size by %llu bytes.
+MISMATCH   The socket and address type does not match. Please configure the group using IPv4 addresses.
+LINKLOCAL  IPv6 Link local addresses are not supported. Please use IPv6 site local or global addresses.
+GENMSG   %s
+NACKTGTMOUNTED	Cannot perform Refresh while RMD target device is mounted; must unmount first
+RMD_TGTMOUNTED	Cannot perform Refresh; RMD target device %s is mounted (on %s); must unmount first
+PENDIO_TIMEOUT  Local device saturation: pending IOs exceeding time allowed for completion; going to Tracking mode to preserve data integrity.
+CAPTSRCDEVSIO Dynamic activation enabled for devices of group %d.
+RMD_UNCLEAN_SD  Unclean exit during previous Full Refresh detected on RMD%03d; please verify that a Full Refresh or a Checksum Refresh has been done to completion for this group.
+RMD_REP_CRASH   RMD%03d reports previous Full Refresh unclean interruption; please launch a Full Refresh (-f) or a Checksum Refresh (-c) for this group.
+INIT_STOP_BUSY  If using dynamic activation, the group has been partially stopped and replication is not fully functional. Try stopping it again.
+HSHK_TGTMOUNTED	Not in checkpoint mode and RMD target device %s is mounted (on %s); must unmount first.
+CLEAN_FR_RESTRT A previous Full Refresh was interrupted; you may resume the Full Refresh at the offset where it left (-r), or launch a Checksum Refresh (-c).
+RFDOFFSET       Resuming Full Refresh on %s at offset %lld (%d%%).
+RFD_GRP_AT_0    Resuming Full Refresh at offset 0 for all the devices of this group.
+RFD_OFFSETTO0   Full Refresh abnormally interrupted; resetting percentage completion to 0 as safety measure.  
+MERGE_FAILED    Merge of the hrdbs for a smarter smart refresh failed. Will resume with the full bitmap.
+CANNOT_JLESS    Cannot activate Journal-Less mode until journals are done being applied. Retry later.
+BADRESCODE      ps_get_tracking_resolution_info(): the specified tracking resolution level code (%d) is not valid.
+NORESFILE		The tracking resolution file (%s) was not found; will use the default tracking resolution values for the specified level.
+GETRESERROR		An error occurred while attempting to get the Tracking resolution information from %s; result code = %d.
+PSCREAT_VARHRDB Successfully initialized Pstore %s for Proportional HRDB (%s resolution), provisioning it for %d max number of devices. Actual number of supported devices will depend on HRDB sizes.
+PSCREAT_FAILED  Failed creating PStore %s.
+ERR_HRDBINFO	Failed getting HRDB info for device %s of group %d, from Pstore %s.
+PS_SIZE_ERR     Failed getting the size of Pstore %s.
+HRDB_INFO_ERR   Failed entering device %s HRDB info in Pstore HRDB info table (result = %d).
+HRDB_CLEAR_ERR  Failed deleting the Pstore HRDB info entry for device %s (result = %d).
+PS_VERSION_ERR  Failed identifying the Pstore format for Pstore %s (result = %d).
+CONFDEVER       start_group device configuration error: %s.
+PS_DEVSIZE_ERR  Device size mismatch (num_sectors) between Pstore recorded value (%llu) and real size (%llu) for device %s. Using an old Pstore that should have been reinitialized?
+PS_DEVSIZE_ER2  If you have changed some devices in this group, you can run dtcinit -g <group number> -d to reset this group and its devices Pstore records.
+DRV_HRDB_ERR	ERROR: hrdb size or resolution mismatch	between driver and Pstore definition for device %s. Have group devices been changed in cfg file?
+DRV_HRDB_ER2    Driver values: hrdb size = %d bytes, resolution shift count = %d bytes per bit;	Pstore records: hrdb size = %d, resolution shift count = %d.
+DEL_DEV_ERR	    Could not delete the device entries of group %d from the Pstore (error = %s).
+RMD_SIG_QUIT    RMD %d got Quit signal (PMD restarted?); if a Full Refresh was interrupted, the FR watchdog is removed to avoid FRefresh restart at offset 0.
+RMD_QUIT_TMOUT	Timeout reached on RMD exit requested by dtc master daemon; sending SIGKILL signal to RMD to force exit.
+RMD_IPCERR_QUIT RMD %d got IPC recv error and will exit; if a Full Refresh was interrupted, the FR watchdog is removed to avoid FRefresh restart at offset 0.
+RES_NOT_POWER2  Resolution value read from Tracking Resolution config file (%llu KB) not a power of 2; adjusting to closest power of 2: %llu KB.
+JRNINCDATAHEAD 	Skipping incomplete data header at the end of journal [%s].
+JRNINCDATA    	Skipping incomplete data at the end of journal [%s].
+JRNINCHEADER  	Skipping journal with incomplete header [%s].
+DEVEXP_ERROR	Device expansion verification error: %s
+DEVEXP_ERR2		Setting a new expansion limit for a device requires deleting its info in the Pstore (dtcinit -gx -d) and recreate it with new dtcstart
+DEVEXP_ERR3		to reallocate new HRDB space. If you really want to do this, please run a Full or Checksum refresh after.
+DEVEXP_SAVERR	Could not save new device size in the Pstore [%s]. 
+DEVEXP_SAVERR2	This can be fixed with dtcinit -gx -d if ok to reset this group's Pstore info, and then dtcstart.
+PS_DEV_ADD_ERR	Failed adding device to the Pstore [%s].
+UNDOING_START	Undoing whatever was left incomplete by start_group failure for group %d.
+ALREADY_STARTED	Group %d was already started.
+PSERRINFO		Failed updating tracking bit resolution or lrdb/hrdb numbits for device %s in pstore %s (ret = %d [%s]).
+RMDA_CORR_JRN   RMDA%03d has detected a corrupted journal file. Please launch a Full Refresh (-f) or a Checksum Refresh (-c) to recover.
+RMDA_CORR_SKIP  Skipping the application of the journals because they are known to be corrupted
+PSTOOSMALL      Pstore %s is too small (%lld KBs); you need at least %d KBs for control information and LRDB space only, PLUS additional space for HRDBs.
+COMMS_TIMEOUT   Communications timeout with PMD %d but network OK; resetting counter and continuing...
+OLD_PSTORE      Pstore %s is of an old format (%s) that this version of the product does not support. The Pstore must be reinitialized (dtcinit -p)
+OLD_PSTORE2     and a Full Refresh will be necessary for the groups associated with this Pstore OR the Pstore must be migrated.
+TARGET_FO_ERR	Target failover of group %d reported an error: rc = %d.	
+NOTENOUGHGROUPS Not enough group numbers unused to launch %d PMD-RMD pairs in Network Analysis mode.
+NETCFGFILEERR   Failed sending network analysis group cfg file to RMD %d; status = %d.
+NETCFG_COPYERR	Failed copying network analysis base config file to p%03d.cfg or p%03d.cur, error status = %d
+NETCFG_DTCERR   Failed setting the effective group number in configuration file %s, error status = %d
+NETCFGEXISTS    Received group configuration file %s for network analysis but there is already a file of this name; not overwriting the existing file.
+NETCFGOPENERR   Failed creating group configuration file %s for network analysis (%s).
+NETCFGWRITERR   Failed writing group configuration file %s for network analysis (%s).
+NUMSECONDS_ERR  Invalid value for parameter NUMSECONDS in group attributes for network bandwidth analysis.
+NETTUNABLE_ERR  Error getting tunables from network analysis parameter file %s/%s (error code = %d).
+ISNETANALCFG	%s is for Network bandwidth analysis mode; such a configuration cannot be used as a real group. Please cleanup such files if they are not in use.
+NONETGRPSTARTED There are no groups running in Network analysis mode.
+TOOMANYNETGRPS	With the already configured groups for network analysis (%d), the total number (%d) would exceed the maximum of 100.
+SFTK_DISABLED   SFTKdtc PMD launches have been disabled by marker file %s (dtcfailover sequence). Exiting.
+DEVEXP_OFF		Device %s has an expansion multiplier value of %llu in the Pstore, indicating that its expansion is turned off.
+USAGE_FILE		Error opening the product usage file %s [%s] (this does NOT affect the Full Refresh integrity).
+PRODUSE_FSTART	Error registering start of Full Refresh in Product usage statistics file for group %d (this does NOT affect the Full Refresh integrity).
+PRODUSE_FEND	Error registering completion of Full Refresh in Product usage statistics file for group %d (this does NOT affect the Full Refresh integrity).
+WRCHKFAILED     Error while setting checksum verification failure in file %s (this does NOT affect the Full Refresh integrity).
+CHKOFLOW        Cannot calculate checksum on file %s; checksum buffer overflow would occur (this does NOT affect the Full Refresh integrity).
+BKFRSH_NOTAVAIL The backfresh feature is no longer available.

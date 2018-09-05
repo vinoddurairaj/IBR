@@ -1,0 +1,4 @@
+DIRS= \
+     oemupg \
+     netcfg \
+     filter

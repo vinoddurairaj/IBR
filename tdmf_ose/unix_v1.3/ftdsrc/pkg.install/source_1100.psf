@@ -1,0 +1,104 @@
+vendor
+  tag                %OEM%
+  title              %COMPANYNAME%
+  description        <hpux.vendor.desc
+end
+
+product
+  tag                %CAPQ%
+  title              %PRODUCTNAME%
+  revision           %VERSION%
+  copyright          <copyright
+  description        <hpux.product.desc
+  readme             <hpux.product.readme
+  number             FTSW_PART_NUM
+  is_locatable       false
+  directory          /etc/opt/%PKGNM%
+  architecture       HP-UX_B.11.00_800
+  machine_type       9000/???
+  os_name            HP-UX
+  os_release         ?.11.*
+  os_version         *
+
+  fileset
+    tag              Programs
+    revision         %VERSION%
+    title            %PRODUCTNAME%
+    description      <hpux.programs.desc
+
+    checkinstall     hpux.checkinstall
+    preinstall       hpux.preinstall
+    postinstall      hpux.postinstall
+    preremove        hpux.preremove
+    postremove       hpux.postremove
+    configure        hpux.configure
+    unconfigure      hpux.unconfigure
+    is_kernel        false
+    is_reboot        false
+
+    directory        pkg/usr/conf/%Q%=/usr/conf/%Q%
+    file_permissions -o root -g root 444
+    file mod32.o
+    file mod64.o
+    file master
+    file system
+    file space.h
+
+    directory        pkg/etc/opt/%PKGNM%=/etc/opt/%PKGNM%
+    file_permissions -o root -g root 755
+    file errors.msg
+    file %Q%.conf
+
+    directory        pkg/%PKGNM%/bin=/opt/%PKGNM%/bin
+    file_permissions -o bin -g bin -m 555
+    file *
+
+    directory        pkg/%PKGNM%/samples=/opt/%PKGNM%/samples
+    file_permissions -o bin -g bin -m 755
+    file *
+
+    directory        pkg/%PKGNM%/libexec=/opt/%PKGNM%/libexec
+    file_permissions -o bin -g bin -m 755
+    file *
+
+    directory        pkg/sbin/init.d=/sbin/init.d
+    file_permissions -o bin -g bin -m 555
+    file %PKGNM%-scan
+    file %PKGNM%-startdaemons
+    file %PKGNM%-chkpt_boot
+
+    directory        pkg/%PKGNM%/bin=/sbin
+    file_permissions -o root -g sys -m 755
+    file %Q%start
+    file %Q%stop
+    file %Q%ctl
+
+    directory        pkg/%PKGNM%/lib=/opt/%PKGNM%/lib
+    file_permissions -o bin -g bin -m 755 
+    file *
+
+  end # fileset - executables
+
+  fileset
+    tag              Documentation
+    revision         %VERSION%
+    title            %PRODUCTNAME% 
+    description      <hpux.docs.desc
+    is_kernel        false
+    is_reboot        false
+
+    directory        pkg/%PKGNM%/doc/pdf =/opt/%PKGNM%/doc/pdf
+    file_permissions -o bin -g bin -m 644
+    file *
+
+    directory        pkg/%PKGNM%/doc=/opt/%PKGNM%/doc
+    file_permissions -o bin -g bin -m 755
+    file pdf
+   
+    directory        pkg/%PKGNM%/bin=/opt/%PKGNM%/bin
+    file_permissions -o bin -g bin -m 755
+    file %Q%usersguide
+
+  end # fileset - Documentation
+
+end # product

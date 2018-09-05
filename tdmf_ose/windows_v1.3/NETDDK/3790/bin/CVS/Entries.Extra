@@ -1,0 +1,15 @@
+/amd64mk.inc////*////
+/appschema.xml////*////
+/coffbase.txt////*////
+/ddktree.mac////*////
+/dirs////*////
+/generic.mac////*////
+/i386mk.inc////*////
+/ia64mk.inc////*////
+/makefile.def////*////
+/makefile.new////*////
+/makefile.plt////*////
+/projects.inc////*////
+/setenv.bat////*////
+/verify.src////*////
+/vssver.scc////*////

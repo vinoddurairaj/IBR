@@ -1,0 +1,333 @@
+cvs diff: Diffing .
+Index: ftd_buf.c
+===================================================================
+RCS file: /port/cvs/ftdsrc/driver/ftd_buf.c,v
+retrieving revision 1.5
+diff -C10 -r1.5 ftd_buf.c
+*** /tmp/T0nGaWRb	Thu Jan 27 13:18:01 2000
+--- ftd_buf.c	Thu Jan 27 13:04:50 2000
+***************
+*** 40,63 ****
+  static Simple_lock bufpool_lck;
+  #endif
+  
+  
+  /*-
+   * ftd_init_pvt_buf_pool()
+   *
+   * allocate and init structs for a pool of buf(9s)
+   * headers private to this driver.
+   */
+! struct buf *
+  ftd_init_pvt_buf_pool (ftd_void_t)
+  {
+!   ftd_int32_t i;
+    struct buf *bp;
+    ftd_metabuf_t *mbp;
+    static ftd_int32_t once = 1;
+  
+    if (once)
+      {
+        ALLOC_LOCK (bufpool_lck, QNM " driver mutex");
+        once = 0;
+      }
+  
+--- 40,63 ----
+  static Simple_lock bufpool_lck;
+  #endif
+  
+  
+  /*-
+   * ftd_init_pvt_buf_pool()
+   *
+   * allocate and init structs for a pool of buf(9s)
+   * headers private to this driver.
+   */
+! FTD_PUBLIC struct buf *
+  ftd_init_pvt_buf_pool (ftd_void_t)
+  {
+!   size_t i;
+    struct buf *bp;
+    ftd_metabuf_t *mbp;
+    static ftd_int32_t once = 1;
+  
+    if (once)
+      {
+        ALLOC_LOCK (bufpool_lck, QNM " driver mutex");
+        once = 0;
+      }
+  
+***************
+*** 102,154 ****
+      }
+  
+    return (struct buf *) ftd_buf_pool;
+  }
+  
+  /*-
+   * ftd_fini_pvt_buf_pool()
+   *
+   * release any resources allocated in ftd_init_pvt_buf_pool.
+   */
+! ftd_void_t
+  ftd_fini_pvt_buf_pool (ftd_void_t)
+  {
+  
+    kmem_free (ftd_buf_pool, ftd_buf_pool_size);
+  
+    ftd_buf_pool = (struct buf *) 0;
+  
+    DEALLOC_LOCK (bufpool_lck);
+  
+    return;
+  }
+  
+  
+  /*-
+   * bufzero()
+   *
+   * zero-fill a buf(9s) struct
+   */
+! ftd_void_t
+  bufzero (struct buf * bp)
+  {
+    bzero ((caddr_t) bp, sizeof (struct buf));
+  
+    return;
+  }
+  
+  /*-
+   * getpvtrbuf()
+   *
+   * our version of getrbuf(9f).
+   */
+! struct buf *
+  getpvtrbuf()
+  {
+    struct buf *bp;
+    ftd_ctl_t *ctlp;
+  #if defined(HPUX)
+    ftd_uint32_t context;
+  #endif /* defined(HPUX) */
+  
+    if ((ctlp = ftd_global_state) == NULL)
+      panic ("FTD: Lost global state");
+--- 102,154 ----
+      }
+  
+    return (struct buf *) ftd_buf_pool;
+  }
+  
+  /*-
+   * ftd_fini_pvt_buf_pool()
+   *
+   * release any resources allocated in ftd_init_pvt_buf_pool.
+   */
+! FTD_PUBLIC ftd_void_t
+  ftd_fini_pvt_buf_pool (ftd_void_t)
+  {
+  
+    kmem_free (ftd_buf_pool, ftd_buf_pool_size);
+  
+    ftd_buf_pool = (struct buf *) 0;
+  
+    DEALLOC_LOCK (bufpool_lck);
+  
+    return;
+  }
+  
+  
+  /*-
+   * bufzero()
+   *
+   * zero-fill a buf(9s) struct
+   */
+! FTD_PUBLIC ftd_void_t
+  bufzero (struct buf * bp)
+  {
+    bzero ((caddr_t) bp, sizeof (struct buf));
+  
+    return;
+  }
+  
+  /*-
+   * getpvtrbuf()
+   *
+   * our version of getrbuf(9f).
+   */
+! FTD_PUBLIC struct buf *
+  getpvtrbuf()
+  {
+    struct buf *bp;
+    ftd_ctl_t *ctlp;
+  #if defined(HPUX)
+    ftd_uint32_t context;
+  #endif /* defined(HPUX) */
+  
+    if ((ctlp = ftd_global_state) == NULL)
+      panic ("FTD: Lost global state");
+***************
+*** 168,188 ****
+    RELEASE_LOCK (bufpool_lck, context);
+  
+    return (bp);
+  }
+  
+  /*-
+   * freepvtrbuf()
+   *
+   * our version of freerbuf(9f).
+   */
+! ftd_void_t
+  freepvtrbuf (struct buf * bp)
+  {
+    ftd_ctl_t *ctlp;
+  #if defined(HPUX)
+    ftd_uint32_t context;
+  #endif /* defined(HPUX) */
+  
+    if ((ctlp = ftd_global_state) == NULL)
+      panic ("FTD: Lost global state");
+  
+--- 168,188 ----
+    RELEASE_LOCK (bufpool_lck, context);
+  
+    return (bp);
+  }
+  
+  /*-
+   * freepvtrbuf()
+   *
+   * our version of freerbuf(9f).
+   */
+! FTD_PUBLIC ftd_void_t
+  freepvtrbuf (struct buf * bp)
+  {
+    ftd_ctl_t *ctlp;
+  #if defined(HPUX)
+    ftd_uint32_t context;
+  #endif /* defined(HPUX) */
+  
+    if ((ctlp = ftd_global_state) == NULL)
+      panic ("FTD: Lost global state");
+  
+Index: ftd_buf.h
+===================================================================
+RCS file: /port/cvs/ftdsrc/driver/ftd_buf.h,v
+retrieving revision 1.4
+diff -C10 -r1.4 ftd_buf.h
+*** /tmp/T0gIaiSb	Thu Jan 27 13:18:02 2000
+--- ftd_buf.h	Thu Jan 27 13:03:57 2000
+***************
+*** 107,135 ****
+  
+  /* buffer pool */
+  #if defined(_AIX)
+  extern struct buf *ftd_buf_pool;
+  extern size_t ftd_buf_pool_size;
+  #else /* defined(_AIX) */
+  extern struct buf *ftd_buf_pool;
+  extern size_t ftd_buf_pool_size;
+  #endif /* defined(_AIX) */
+  
+- /* protos */
+- 
+- /* ftd_buf.c */
+- extern struct buf *ftd_init_pvt_buf_pool (ftd_void_t);
+- extern ftd_void_t ftd_fini_pvt_buf_pool (ftd_void_t);
+- extern struct buf *getpvtrbuf (ftd_void_t);
+- extern ftd_void_t freepvtrbuf (struct buf *bp);
+- extern ftd_void_t bufzero(struct buf *bp);
+- 
+  /*- 
+   * portability i/f 
+   * 
+   * _AIX and SOLARIS use the driver private 
+   * pool, someday HPUX too. not currently
+   * doing this on HPUX since the buffer that
+   * we pass on is the user buffer, in which
+   * case the private fields in the metabuffer
+   * can't be passed and used for reference 
+   * at iodone time.
+--- 107,126 ----
+Index: ftd_kern_cproto.h
+===================================================================
+RCS file: /port/cvs/ftdsrc/driver/ftd_kern_cproto.h,v
+retrieving revision 1.3
+diff -C10 -r1.3 ftd_kern_cproto.h
+*** /tmp/T0MMaOSb	Thu Jan 27 13:18:02 2000
+--- ftd_kern_cproto.h	Thu Jan 27 13:13:15 2000
+***************
+*** 1,11 ****
+! #if !defined(FTD_KERN_CPROTO_H) && defined(_KERNEL)
+  #define FTD_KERN_CPROTO_H
+  
+  /* include me in all kernel xlation units */
+  
+  #if defined(SOLARIS)
+  
+  
+  /*-
+   * output of cproto(1) using:
+   * /usr/local/bin/cproto -e -DFTD_CPROTO  -DVERSION=\"4.3\" 
+--- 1,11 ----
+! #if !defined(FTD_KERN_CPROTO_H) && (defined(_KERNEL) || defined(KERNEL))
+  #define FTD_KERN_CPROTO_H
+  
+  /* include me in all kernel xlation units */
+  
+  #if defined(SOLARIS)
+  
+  
+  /*-
+   * output of cproto(1) using:
+   * /usr/local/bin/cproto -e -DFTD_CPROTO  -DVERSION=\"4.3\" 
+***************
+*** 42,62 ****
+  FTD_PUBLIC ftd_int32_t ftd_ctl_get_device_nums(dev_t dev, ftd_intptr_t arg, ftd_int32_t flag);
+  
+  /* ftd_buf.c */
+  FTD_PUBLIC struct buf *ftd_init_pvt_buf_pool(ftd_void_t);
+  FTD_PUBLIC ftd_void_t ftd_fini_pvt_buf_pool(ftd_void_t);
+  FTD_PUBLIC ftd_void_t bufzero(struct buf *bp);
+  FTD_PUBLIC struct buf *getpvtrbuf(ftd_void_t);
+  FTD_PUBLIC ftd_void_t freepvtrbuf(struct buf *bp);
+  
+  /* ftd_bab.c */
+! FTD_PUBLIC ftd_int32_t ftd_bab_init(ftd_int32_t size, ftd_int32_t num);
+  FTD_PUBLIC ftd_void_t ftd_bab_fini(ftd_void_t);
+  FTD_PRIVATE ftd_void_t bab_buffer_free(bab_buffer_t *buf);
+  FTD_PRIVATE bab_buffer_t *bab_buffer_alloc(ftd_void_t);
+  FTD_PUBLIC bab_mgr_t *ftd_bab_alloc_mgr(ftd_void_t);
+  FTD_PUBLIC ftd_int32_t ftd_bab_free_mgr(bab_mgr_t *mgr);
+  FTD_PUBLIC ftd_uint64_t *ftd_bab_alloc_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_free_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_commit_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_get_free_length(bab_mgr_t *mgr);
+  FTD_PUBLIC ftd_int32_t ftd_bab_get_used_length(bab_mgr_t *mgr);
+--- 42,62 ----
+  FTD_PUBLIC ftd_int32_t ftd_ctl_get_device_nums(dev_t dev, ftd_intptr_t arg, ftd_int32_t flag);
+  
+  /* ftd_buf.c */
+  FTD_PUBLIC struct buf *ftd_init_pvt_buf_pool(ftd_void_t);
+  FTD_PUBLIC ftd_void_t ftd_fini_pvt_buf_pool(ftd_void_t);
+  FTD_PUBLIC ftd_void_t bufzero(struct buf *bp);
+  FTD_PUBLIC struct buf *getpvtrbuf(ftd_void_t);
+  FTD_PUBLIC ftd_void_t freepvtrbuf(struct buf *bp);
+  
+  /* ftd_bab.c */
+! FTD_PUBLIC ftd_int32_t ftd_bab_init(ftd_int32_t size, size_t num);
+  FTD_PUBLIC ftd_void_t ftd_bab_fini(ftd_void_t);
+  FTD_PRIVATE ftd_void_t bab_buffer_free(bab_buffer_t *buf);
+  FTD_PRIVATE bab_buffer_t *bab_buffer_alloc(ftd_void_t);
+  FTD_PUBLIC bab_mgr_t *ftd_bab_alloc_mgr(ftd_void_t);
+  FTD_PUBLIC ftd_int32_t ftd_bab_free_mgr(bab_mgr_t *mgr);
+  FTD_PUBLIC ftd_uint64_t *ftd_bab_alloc_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_free_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_commit_memory(bab_mgr_t *mgr, ftd_int32_t len64);
+  FTD_PUBLIC ftd_int32_t ftd_bab_get_free_length(bab_mgr_t *mgr);
+  FTD_PUBLIC ftd_int32_t ftd_bab_get_used_length(bab_mgr_t *mgr);
+cvs diff: Diffing aixmethods
+cvs diff: Diffing aixmethods/drvsyms
+cvs diff: Diffing parisc
+cvs diff: Diffing sparc

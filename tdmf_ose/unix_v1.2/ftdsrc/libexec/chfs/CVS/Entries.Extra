@@ -1,0 +1,6 @@
+/Makefile////*////
+/chfs_install////*////
+/chfs_patch_install////*////
+/chfs_patch_remove////*////
+/chfs_remove////*////
+/ftd_chfs.c////*////

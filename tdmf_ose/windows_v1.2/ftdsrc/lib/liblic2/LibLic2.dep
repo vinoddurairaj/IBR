@@ -1,0 +1,16 @@
+# Microsoft Developer Studio Generated Dependency File, included by LibLic2.mak
+
+.\LicAPI.c : \
+	"..\..\..\..\..\program files\microsoft visual studio\vc98\include\basetsd.h"\
+	".\LicAPI.h"\
+	".\octolic.h"\
+	
+
+.\md5c.c : \
+	".\md5c.h"\
+	
+
+.\octolic.c : \
+	".\md5c.h"\
+	".\octolic.h"\
+	

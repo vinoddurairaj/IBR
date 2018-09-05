@@ -1,0 +1,33 @@
+global HELP
+
+set HELP(frame00) "Introduction\n\nThis configuration wizard is intended to walk you through the configuration of Qualix DataStar step by step.  The context-sensitive help provided at each step can offer further information to aid you in making configuration decisions.  In addition, the configuration guide can offer more in-depth information about DataStar configuration.  If you run into any difficulties not covered by either of these sources, you may contact Qualix Group Technical Support.\n\nMailing Address\nQualix Group, Inc.\n1900 South Norfolk Street, Suite 224\nSan Mateo, CA\n 94403-1151\n\nTelephone\n 650-638-4042\n650-638-1234 for 24X7 support\n\nFax\n 650-572-1300\nInclude Attn: Qualix Technical Support\n\nWebsite\n www.qualix.com\n"
+
+set HELP(frame01) "Specify a hostname or IP address of the system from which you would like to mirror your data.  This system must have DataStar installed, and must be properly networked to the host machine that you are running this configuration wizard from."
+
+set HELP(frame01b) "A filesystem-level mirror creates a qdsfs filesystem that is layered on top of any filesystem that you would like to mirror.  All writes to the qdsfs filesystem are propagated to all secondary systems.  This is appropriate if you will be writing to a filesystem (i.e. creating directories, copying files, opening files and writing to them, etc.).  If you want to have the capability to mirror writes to a device driver, then you will need to create a device-level mirror.  This creates a special qds device that is layered on top of your regular devices to mirror updates to those devices.  A disadvantage to mirroring at this level is that it is not possible to view the contents of the mirror device while datastar is running.  A filesystem-level mirror, however, allows read-only access to the mirror on the secondary system."
+
+set HELP(frame02) "It is a good idea to give a description to each mirror device or filesystem, so that it can be easily identified later.  Simply provide a dbrief description of the mirror's contents." 
+
+set HELP(frame03)  "The local data device will most likely be the same device that currently contains the data that you plan to mirror.  You may choose to use another device, but this will require you to copy all of your existing data to the qds device after your configuration is complete and DataStar is running."
+set HELP(frame03b) "The source filesystem is the filesystem on the primary that you will be mirroring.  If the filesystem that you would like to mirror is not currently mounted on the primary, then you should exit the configuration, mount the filesystem, and re-run the configuration utility."
+
+set HELP(frame04)  "You will need to specify one or more devices to be used as a \"Writelog\" to journal qDS device or qdsfs transactions as they occur.  This allows writes to be accumulated on the primary before they are sent to the secondary system for asynchronous mode.  You will need to specify a Writelog for the qDS device even if you plan to use Synchronous mode; this provides the capability to switch to asynchronous mode in the event of a network slowdown.  You may choose several devices to be used for the writelog, and Datastar will automatically combine these into one writelog.  For a qds device, these writelog devices should reside on a separate controller from the local data device.  For a qdsfs filesystem, make sure that the filesystem resides on a device that uses a controller separate from the writelog devices.  This will maximize performance since the mirror performs parellel writes to the writelog and local devices."
+
+set HELP(frame05)  "You may specify a host name or IP address here for a secondary system for the current mirror definition.  Each mirror may have a number of secondary systems, so you will be able to enter additional systems later."
+ 
+set HELP(frame06) "The mirror device is the device on a secondary system that will be used to back up the data from the primary.  Only devices that are as large or larger than the local data device on the primary are shown in the Available list."
+set HELP(frame06b) "The target path is directory location on a secondary system that will be used to back up the data from the primary.  The directory specified here must exist on the secondary system, and the filesystem in which it resides must have enough available space to accomodate the mirror."
+
+set HELP(frame07) "You can optionally specify a writelog to be used on this secondary system.  You may chain several devices together to be used collectively as one writelog, as with the primary writelog.  This option should be chosen if you have additional disk space on the secondary, and you plan to do frequent back-ups of the secondary mirror disk.  The writelog allows data transfer to continue over the network while you perform the backup."
+
+set HELP(frame08) "If you will be mirroring a filesystem from the primary, you may choose to create a special read-only filesystem on the secondary system that will allow you to mount the mirror device while DataStar is running so that you can view the contents of the secondary at any time.  This option can ONLY be used if you do not plan to use the raw qDS device on the primary (i.e. /dev/rdsk/qds0)."
+
+set HELP(frame09) "You may now define additional secondary systems to mirror from the current qds device.  This allows you to create a one-to-many scenario, in which one primary machine will mirror to several secondary machines.  This would allow DataStar to continue mirroring in the event of a failure of one or more secondary systems, as long as one secondary system continues to run."
+
+set HELP(frame10) "You now have the option to define another qds device on the primary system.  If you have several devices that you want to mirror, you will need to create a qDS device for each one of them."
+
+set HELP(resolve_sec_error) "The primary system was not able to contact the secondary system (the primary was unable to 'ping' the specified secondary system).  This could be the result of an incorrect network configuration on the primary or secondary system, or may be the caused by a network problem between the two systems.  You must take the appropriate steps to rectify this problem before continuing the DataStar configuration." 
+
+set HELP(connect_error) "The connection may have failed for one of the following reasons:\n\t- The specified hostname was incorrect\n\t- DataStar has not been installed properly on the specified system\n\t- This system was not able to resolve the hostname\n\t- Some other network configuration problem on this system\n\t  or the specified system"
+
+

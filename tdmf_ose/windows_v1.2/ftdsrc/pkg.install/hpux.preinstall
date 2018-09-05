@@ -1,0 +1,12 @@
+#!	/sbin/sh
+########
+#  Product: Ftd
+#  Fileset: Ftd
+#  preinstall   
+########
+#
+#	Copyright (c) 1998 FullTime Software, Inc.  All rights reserved.
+#
+########
+exit 0
+

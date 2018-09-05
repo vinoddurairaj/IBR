@@ -1,0 +1,12 @@
+#
+# This is intended to be included last in prog.gmk, lib.gmk, etc
+#
+
+depend: _FORCE
+	@rm -f .depend
+	@makedepend $${VERSIONDEFINES} ${PLATFORMDEFINES} ${CINCLUDES} ${CDEFINES} -f - $(wildcard *.[ch]) > .depend
+	$(_MAKE_SUBDIRS)
+
+ifneq ($(wildcard .depend),)
+include .depend
+endif

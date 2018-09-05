@@ -1,0 +1,130 @@
+###############################################################
+#  automationTestConfiguration.dev
+#
+#    automation test configuration script which can
+#    be defined to add specific automation test cases
+#    to the default Sanity test suite.
+#
+#    usage  :  
+#
+#       find the test cases that would be best suited
+#       to be used with the current code change and uncomment
+#       those specific test cases and configure the 
+#       requisite dependendenc settings
+#
+#       we will use test setting dynamic activation to provide
+#       an example test case configuration  :
+#
+#       go to section  :  TEST CONFIGURATION SETTINGS
+# 
+#           to activate dynamic activation ifor test cases
+#           uncomment  :
+#               #DASETTING=both
+#               DASETTING=both
+#	Since DASETTING can also be "off," you could uncomment
+#	and set to off as well.
+#
+#	To run additional testcases, go to section : TEST SUITES
+#
+#           uncomment and set value
+#           #REFRESHES=1
+#           REFRESHES=1
+#
+#
+#
+# TEST SETTING NOTES 					
+# 	Some test settings can be set to "both."  In this case,
+#	all testcases will be run twice - once with this setting 
+#	on, and once with this setting off.
+###############################################################
+
+###############################################################
+###############################################################
+# TEST SUITES
+###############################################################
+###############################################################
+
+## A suite of refresh tests: backfresh, checksum refresh, smart refresh, full refresh, full refresh with IO...
+REFRESHES=1
+
+## suite containing a few tests for agent setup, starting, stopping, and making sure it starts on boot
+#AGENT=1
+
+
+## suite that checks checkpoint with journals on and journals off, as well as a few reboots/power cycles with checkpoint on.
+#CHECKPOINT=1
+
+
+## suite of clean reboot tests.
+#CLEANREBOOT=1
+
+
+## suite of power cycle tests/
+#POWERCYCLE=1
+
+## suite that tests AUTOSTART functionality.
+#AUTOSTART=1
+
+## suite that tests the pstore.  note: right now it only has one test, dtcinit-test, which will simply make sure all the pstore types can be created.  will add more tests later...
+#PSTORE=1
+
+## tests the dtclicinfo commandm basically.  license installation and is tested on all jobs.
+#LICENSE=1
+
+## tests a target crash while in normal mode test.
+TARGETCRASH=1
+
+###############################################################
+###############################################################
+# TEST CONFIGURATION SETTINGS 
+###############################################################
+###############################################################
+
+# SETTING: dynamic activation
+# POSSIBLE VALUES: on, off, both
+# DEFAULT: on.
+DASETTING=on
+
+# SETTING: devices per group.
+# DEFAULT: 1
+# most test machines only have about 2-5gb
+# for source and the same for target vols.
+NUMDEVICES=3
+
+# SETTING: number of groups groups
+# DEFAULT: 3
+# some tests need at least 3 groups.
+NUMGROUPS=2
+
+# SETTING: individual device size in mb.
+# DEFAULT: 128
+# careful, if you set this too big you may get more than 2gb of devices...
+#DEVICESIZE=128
+
+# SETTING: journal size in mb.
+# DEFAULT: 1000
+# usually this should be kept to under 2gb.
+#JOURNALSIZE=1000
+
+# SETTING: one pstore per group or one pstore for all groups.
+# DEFAULT: 1
+# POSSIBLE VALUES: 1 (1 pstore for all groups), 0 (one pstore for each group)
+#PSTORESETTING=1
+
+# SETTING: Pstore Type.
+# DEFAULT: low
+# Possible values: low, legacyHRT, proportionalHRT
+PSTORETYPE=proportionalHRT
+
+# SETTING: Pstore Granularity (for proportional HRT)
+# DEFAULT: low
+# Possible values: low, high, medium.
+PSTOREGRANULARITY=high
+
+# SETTING: Pstore size in mb.
+# DEFAULT: 30
+PSTORESIZE=128
+
+# SETTING: BAB size.
+# DEFAULT: 128
+#BABSIZE=128

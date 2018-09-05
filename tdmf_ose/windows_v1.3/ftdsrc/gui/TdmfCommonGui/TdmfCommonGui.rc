@@ -1,0 +1,2466 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "../../lib/libResMgr/Resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""../../lib/libResMgr/Resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\TdmfCommonGui.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+SFTK_IDI_APPLOGO        ICON                    "res\\sftk.ico"
+IDI_ICON_UPARROW        ICON                    "res\\upa.ico"
+IDI_ICON_DOWNARROW      ICON                    "res\\downa.ico"
+IDI_ICON_COPY           ICON                    "res\\Copy.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Connect...",                  ID_FILE_CONNECT
+        MENUITEM "Disconnect",                  ID_FILE_DISCONNECT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Refresh       F5",           ID_TOOLS_REFRESH
+        MENUITEM "Pop-up Warnings",             ID_TOOLS_SHOWSERVERSWARNING
+        , CHECKED
+        MENUITEM "&Options...",                 ID_TOOLS_OPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM "&Search...",                  ID_HELP_SEARCH
+        MENUITEM "&Index...",                   ID_HELP_INDEX
+        MENUITEM SEPARATOR
+        MENUITEM "&About TDMF...",              ID_APP_ABOUT
+    END
+END
+
+IDR_SERVERVIEW_MENU MENU 
+BEGIN
+    POPUP "ServerView Contextmenu"
+    BEGIN
+        MENUITEM "Sort &Ascending",             ID_SERVERVIEWCONTEXTMENU_SORTASCENDING
+
+        MENUITEM "Sort &Descending",            ID_SERVERVIEWCONTEXTMENU_SORTDESCENDING
+
+        MENUITEM "&Hide",                       ID_SERVERVIEWCONTEXTMENU_HIDE
+
+        MENUITEM SEPARATOR
+        MENUITEM "&Columns...",                 ID_SERVERVIEWCONTEXTMENU_COLUMNS
+
+        MENUITEM "Columns Auto&resize ",        ID_SERVERVIEWCONTEXTMENU_AUTOSIZECOLUMNS
+
+    END
+END
+
+IDR_CHARTFX_MENU MENU 
+BEGIN
+    POPUP "Serie ContextMenu"
+    BEGIN
+        MENUITEM "Select statistics",           ID_CHARTFX_STATS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F12,         ID_MESSENGER,           VIRTKEY, SHIFT, CONTROL, ALT, 
+                                                    NOINVERT
+    VK_F5,          ID_TOOLS_REFRESH,       VIRTKEY, NOINVERT
+    VK_F9,          ID_DEBUG_MONITOR,       VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 266, 154
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About TdmfCommonGui"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            "",IDC_TDMF_ICON,7,112,20,20
+    DEFPUSHBUTTON   "OK",IDOK,206,129,50,14,WS_GROUP
+    CONTROL         "",IDC_TDMF_OSE,"Static",SS_BITMAP | NOT WS_VISIBLE,41,9,
+                    218,12
+    LTEXT           "Copyright (c) 2003, 2004\nSoftek Storage Solutions Corporation",
+                    IDC_STATIC,37,114,134,19
+    EDITTEXT        IDC_TRADEMARK,37,56,219,44,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_NOHIDESEL | ES_READONLY | ES_WANTRETURN | WS_VSCROLL
+    LTEXT           "Static",IDC_TDMF_STATIC,37,32,216,23
+    CONTROL         "",IDC_TEAM_LOGO,"Static",SS_ENHMETAFILE | 
+                    SS_CENTERIMAGE | NOT WS_VISIBLE,7,9,252,138,
+                    WS_EX_TRANSPARENT
+END
+
+IDD_DIALOGBAR DIALOG  0, 0, 345, 15
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_SYSTEM_EVENTS DIALOG  0, 0, 360, 130
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Events"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_BORDER | 
+                    WS_TABSTOP,7,7,346,116
+END
+
+IDD_SYSTEM_DETAILS DIALOGEX 0, 0, 552, 149
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Details"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_RICHEDIT_NAME,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,7,7,163,14
+    EDITTEXT        IDC_EDIT_DATABASE,94,36,66,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "DataBase Pending Accesses (Max 10000):",IDC_STATIC,242,
+                    27,137,8
+    RTEXT           "0",IDC_DB_MSG_PEND,422,25,22,8
+    LTEXT           "DataBase Accesses/Minute:",IDC_STATIC,242,40,101,8
+    RTEXT           "0",IDC_MSG_PER_MIN,422,40,22,8
+    LTEXT           "DataBase Accesses/Hour:",IDC_STATIC,242,53,95,8
+    RTEXT           "0",IDC_MSG_PER_HOUR,422,53,22,8
+    LTEXT           "Message being processed::",IDC_STATIC,242,66,94,8
+    RTEXT           "0",IDC_MSG_THRD_PEND,422,66,22,8
+    LTEXT           "Messages/Minute",IDC_STATIC,242,79,80,8
+    RTEXT           "0",IDC_MSG_THRD_MINUTE,422,79,22,8
+    LTEXT           "Messages/Hour",IDC_STATIC,242,92,79,8
+    RTEXT           "0",IDC_MSG_THRD_HOUR,422,92,22,8
+    LTEXT           "Collector TimeStamp:",IDC_STATIC,242,105,79,8
+    RTEXT           "",IDC_COLLECTOR_TIMESTAMP,311,105,133,8
+    CONTROL         "Animate1",IDC_ANIMATE1,"SysAnimate32",NOT WS_VISIBLE | 
+                    WS_BORDER | WS_TABSTOP,437,7,20,20
+    CONTROL         "",IDC_RICHEDIT_STATS_TITLE,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,225,11,225,14
+    CONTROL         "",IDC_RICHEDIT_TITLE_DATABASE,"RICHEDIT",
+                    TCS_RAGGEDRIGHT | WS_DISABLED,16,25,209,9
+    EDITTEXT        IDC_EDIT_IP,94,79,131,12,ES_READONLY | NOT WS_BORDER | 
+                    NOT WS_TABSTOP
+    CONTROL         "",IDC_RICHEDIT_TITLE_COLLECTOR,"RICHEDIT",
+                    TCS_RAGGEDRIGHT | WS_DISABLED,16,53,209,9
+    EDITTEXT        IDC_EDIT_HOSTID,94,105,131,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PORT,94,92,131,13,ES_READONLY | NOT WS_BORDER | 
+                    NOT WS_TABSTOP
+    LTEXT           "Server:",IDC_STATIC,33,37,61,8
+    LTEXT           "IP Address:",IDC_STATIC,33,79,53,8
+    LTEXT           "Version:",IDC_STATIC,33,66,61,8
+    LTEXT           "Host Id:",IDC_STATIC,33,105,55,8
+    LTEXT           "Port:",IDC_STATIC,33,92,54,8
+    EDITTEXT        IDC_EDIT_VERSION,94,67,131,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_EMPTY_PAGE DIALOG  0, 0, 186, 90
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_DOMAIN_DETAILS DIALOG  0, 0, 303, 106
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Details"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Description:",IDC_STATIC,20,25,42,11
+    EDITTEXT        IDC_EDIT_DESCRIPTION,75,25,221,49,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_WANTRETURN | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_RICHEDIT_TITLE,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,7,7,132,14
+END
+
+IDD_SERVER_DETAILS DIALOG  0, 0, 409, 153
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Details"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_IPADDRESS,100,21,91,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "IP Address : Port:",IDC_STATIC,15,21,63,9
+    LTEXT           "Registration Key:",IDC_STATIC,15,43,63,9
+    LTEXT           "Replication Groups:",IDC_STATIC,15,98,63,9
+    LTEXT           "Replication Pairs:",IDC_STATIC,15,118,63,9
+    LTEXT           "BAB Size (All/Req):",IDC_TITLE_BAB_SIZE,207,21,62,9
+    LTEXT           "% BAB Used:",IDC_TITLE_BAB_USED,207,32,62,9
+    LTEXT           "BAB Entries:",IDC_TITLE_BAB_ENTRIES,207,43,62,9
+    LTEXT           "TCP Window Size:",IDC_TITLE_TCP_SIZE,208,54,60,11
+    LTEXT           "Source",IDC_STATIC,127,98,48,9
+    LTEXT           "Target",IDC_STATIC,127,108,48,9
+    LTEXT           "Source",IDC_STATIC,127,118,48,9
+    LTEXT           "Target",IDC_STATIC,127,128,48,10
+    EDITTEXT        IDC_EDIT_OS,100,54,91,12,ES_MULTILINE | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_BAB_SIZE,300,21,102,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_BAB_USED,300,32,102,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_BAB_ENTRIES,300,43,102,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SOCKET,300,54,102,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_RG_SOURCE,100,98,21,12,ES_RIGHT | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_RG_TARGET,100,108,21,12,ES_RIGHT | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_RP_SOURCE,100,118,21,12,ES_RIGHT | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_RP_TARGET,100,128,21,12,ES_RIGHT | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_RICHEDIT_NAME,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,7,5,93,14
+    CONTROL         "",IDC_RICHEDIT_SETTINGS,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,199,10,93,11
+    LTEXT           "Host Id:",IDC_STATIC,15,32,63,9
+    EDITTEXT        IDC_EDIT_HOST_ID,100,32,91,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "PStore Size:",IDC_TITLE_PSTORE_SIZE,208,66,62,11
+    EDITTEXT        IDC_EDIT_PSTORE_SIZE,300,65,102,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Journal:",IDC_TITLE_JOURNAL_SIZE,208,77,155,11
+    LTEXT           "Operating System:",IDC_STATIC,15,54,63,9
+    EDITTEXT        IDC_EDIT_REGISTRATION_KEY,100,43,91,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "List1",IDC_LIST_JOURNAL,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_TABSTOP,208,98,194,
+                    46
+    LTEXT           "# of CPU(s):",IDC_STATIC,15,65,63,9
+    EDITTEXT        IDC_EDIT_CPU,100,65,91,12,ES_MULTILINE | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "RAM Size:",IDC_STATIC,15,76,63,9
+    EDITTEXT        IDC_EDIT_RAM,100,76,91,12,ES_MULTILINE | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_SERVER_EVENTS DIALOG  0, 0, 186, 90
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Events"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,7,172,76
+END
+
+IDD_SERVER_PERFORMANCE DIALOG  0, 0, 420, 122
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Performance"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_SERVER_COMMANDS DIALOG  0, 0, 420, 122
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Commands"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_CMD_LST,7,7,128,188,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_CMD_DESC,157,7,256,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    COMBOBOX        IDC_COMBO_CMD_HST,7,25,335,120,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Go",IDC_BUT_GO,363,25,50,14
+    EDITTEXT        IDC_EDIT_CMD_RESULT,7,44,406,71,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_VSCROLL | WS_HSCROLL
+END
+
+IDD_RG_DETAILS DIALOG  0, 0, 381, 130
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Details"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Group Number:",IDC_STATIC,15,25,63,9
+    LTEXT           "Description:",IDC_STATIC,15,37,63,9
+    LTEXT           "Remote Server:",IDC_STATIC,15,49,63,9
+    LTEXT           "Journal Directory:",IDC_PStoreJournal_Title,15,85,63,9
+    LTEXT           "Synch Mode:",IDC_TITLE_SYNC_MODE,207,25,62,9
+    LTEXT           "Synch Depth:",IDC_TITLE_SYNC_DEPTH,207,37,62,9
+    LTEXT           "Synch Timeout:",IDC_TITLE_TIMEOUT,207,49,62,9
+    LTEXT           "Compression:",IDC_TITLE_COMPRESSION,207,61,62,9
+    LTEXT           "Chunk Delay:",IDC_TITLE_CHUNK_DELAY,207,73,62,9
+    LTEXT           "Chunk Size:",IDC_TITLE_CHUNK_SIZE,207,85,62,9
+    EDITTEXT        IDC_EDIT_GROUP_NUMBER,98,25,76,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_DESCRIPTION,98,37,95,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SYNCH_MODE,299,25,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_SYNCH_DEPTH,299,37,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_CHUNK_DELAY,299,73,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_TIMEOUT,299,49,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_COMPRESSION,299,61,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_CHUNK_SIZE,299,85,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_TARGET_SERVER,98,49,95,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PORT,98,61,95,12,ES_READONLY | NOT WS_BORDER | 
+                    NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PSTOREJOURNAL,98,85,95,38,ES_MULTILINE | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_RICHEDIT_NAME,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,7,7,167,14
+    CONTROL         "",IDC_RICHEDIT_SETTINGS,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    WS_DISABLED,199,13,93,12
+    LTEXT           "Port Number:",IDC_STATIC,15,61,63,9
+    LTEXT           "Chaining:",IDC_STATIC,15,73,63,9
+    EDITTEXT        IDC_EDIT_CHAINING,97,73,76,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Journal:",IDC_TITLE_JOURNAL_LESS,207,97,62,9
+    EDITTEXT        IDC_EDIT_JOURNAL_LESS,299,97,75,12,ES_READONLY | NOT 
+                    WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_RG_COMMANDS DIALOG  0, 0, 186, 90
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Commands"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Commands",IDC_STATIC,7,7,89,11
+END
+
+IDD_SERVER_SELECTION DIALOG  0, 0, 320, 201
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Change Servers Domain"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,199,180,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,263,180,50,14
+    CONTROL         "List1",IDC_LIST_SERVER,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,30,306,143
+    LTEXT           "Select one or more server from the following list:",
+                    IDC_STATIC,7,13,306,10
+END
+
+IDD_RG_REPLICATION_PAIRS DIALOG  0, 0, 297, 130
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Replication Pairs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_RP,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,7,7,283,116
+END
+
+IDD_RG_GENERAL DIALOG  0, 0, 318, 221
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_DESCRIPTION,87,18,221,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_PRIMARY,87,87,135,59,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PSTORE,87,104,221,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "Select Server...",IDC_BUTTON_SERVER,227,144,59,12
+    COMBOBOX        IDC_COMBO_TARGET,87,160,135,62,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_EDIT_JOURNAL,87,178,221,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Chaining",IDC_CHECK_CHAINING,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,197,47,10
+    GROUPBOX        "Group Definition",IDC_STATIC,7,7,305,46
+    LTEXT           "Description:",IDC_STATIC,16,18,53,9
+    LTEXT           "Group Number:",IDC_STATIC,16,33,53,9
+    EDITTEXT        IDC_EDIT_GROUP_NUMBER,87,33,42,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_NUMBER
+    GROUPBOX        "Primary Server",IDC_STATIC,7,59,305,68
+    LTEXT           "Pstore File:",IDC_PSTORE_TITLE,16,106,67,9
+    GROUPBOX        "Target Server",IDC_STATIC,7,133,305,79
+    LTEXT           "Replication Link:",IDC_STATIC,16,162,65,9
+    LTEXT           "Journal Directory:",IDC_STATIC,16,179,59,9
+    LTEXT           "Replication Link:",IDC_STATIC,16,89,65,9
+    LTEXT           "Name:",IDC_STATIC,16,72,66,11
+    EDITTEXT        IDC_EDIT_PRIMARY_SERVER_NAME,87,70,133,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Name:",IDC_STATIC,16,146,65,11
+    EDITTEXT        IDC_EDIT_TARGET_SERVER_NAME,87,144,133,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+END
+
+IDD_RG_REPLICATION_PAIRS_ADM DIALOG  0, 0, 318, 186
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Replication Pairs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_REPLICATION_PAIR_LIST,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,9,20,
+                    244,154
+    LTEXT           "Select a replication pair:",IDC_STATIC,9,8,90,10
+    PUSHBUTTON      "Add...",IDC_ADD_BUTTON,258,19,50,14
+    PUSHBUTTON      "Delete",IDC_DELETE_BUTTON,258,37,50,14
+END
+
+IDD_RG_TUNABLE DIALOG  0, 0, 318, 220
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Tunable"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Delay:",IDC_STATIC,62,17,32,8
+    EDITTEXT        IDC_EDIT_CHUNKDELAY,100,16,120,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Size:",IDC_STATIC,62,30,32,8
+    EDITTEXT        IDC_EDIT_CHUNKSIZE,100,31,120,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Enable Compression",IDC_CHECK_COMPRESSION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,64,80,10
+    CONTROL         "Sync Mode",IDC_CHECK_SYNC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,18,96,52,10
+    LTEXT           "Depth:",IDC_STATIC,100,96,32,8
+    EDITTEXT        IDC_EDIT_DEPTH,138,94,82,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Timeout:",IDC_STATIC,100,112,31,8
+    EDITTEXT        IDC_EDIT_TIMEOUT,138,110,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Never Timeout",IDC_CHECK_NEVERTIMEOUT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,144,82,10
+    LTEXT           "Timeout Interval:",IDC_LABEL_REFRESHTIMEOUT,18,157,58,8
+    EDITTEXT        IDC_EDIT_TIMEOUT_INTERVAL,100,155,120,13,ES_AUTOHSCROLL
+    GROUPBOX        "Synchronous Mode",IDC_STATIC,7,84,304,45
+    LTEXT           "Sec",IDC_STATIC,228,112,18,8
+    GROUPBOX        "Compression",IDC_STATIC,7,54,304,26
+    GROUPBOX        "Refresh Timeout Interval",IDC_REFRESH_TIMEOUT_FRAME,7,
+                    133,304,41
+    LTEXT           "dd/hh/mm/ss",IDC_LABEL_REFRESH_UNIT,228,155,45,8
+    GROUPBOX        "Chunk",IDC_STATIC,7,7,304,43
+    LTEXT           "KB",IDC_STATIC,228,35,18,8
+    LTEXT           "mSec",IDC_STATIC,228,19,18,8
+    GROUPBOX        "Journal",IDC_JOURNAL_FRAME,7,178,304,32
+    CONTROL         "Do Not Use Journals",IDC_CHECK_JOURNAL_LESS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,189,82,10
+END
+
+IDD_SERVER_GENERAL DIALOG  0, 0, 313, 206
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "BAB Configuration",IDC_STATIC,7,7,136,54
+    LTEXT           "BAB Size:",IDC_STATIC,20,20,38,9
+    EDITTEXT        IDC_EDIT_BAB_SIZE,83,17,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_BAB_SIZE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,126,17,11,12
+    LTEXT           "MB",IDC_STATIC,128,20,12,9
+    GROUPBOX        "Network",IDC_STATIC,150,7,155,54
+    LTEXT           "TCP Window Size:",IDC_STATIC,160,20,62,9
+    EDITTEXT        IDC_EDIT_TCP_WINDOW,246,17,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "KB",IDC_STATIC,290,20,12,9
+    LTEXT           "Primary Port Number:",IDC_STATIC,160,34,68,9
+    EDITTEXT        IDC_EDIT_PORT,246,31,40,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Master Daemon Port:",IDC_LABEL_REPLICATION_PORT,160,47,
+                    80,9,NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_REPLICATION_PORT,246,44,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER | NOT WS_VISIBLE
+    GROUPBOX        "Registration",IDC_STATIC,7,65,298,31
+    LTEXT           "Registration Key:",IDC_STATIC,20,79,57,8
+    EDITTEXT        IDC_EDIT_REG_KEY,83,77,203,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    GROUPBOX        "Default Settings",IDC_STATIC,7,102,298,47
+    LTEXT           "PStore Directory:",IDC_PSTORE_TITLE,20,116,63,9
+    EDITTEXT        IDC_EDIT_PSTORE,83,113,203,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Journal Directory:",IDC_STATIC,20,132,57,8
+    EDITTEXT        IDC_EDIT_JOURNAL,83,130,203,12,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,20,161,46,9
+    EDITTEXT        IDC_EDIT_DESCRIPTION,83,161,203,34,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN
+END
+
+IDD_SERVER_REGISTRATION DIALOG  0, 0, 260, 159
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Registration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Registration Key:",IDC_STATIC,14,32,59,11
+    EDITTEXT        IDC_EDIT_KEY,76,30,168,13,ES_AUTOHSCROLL
+END
+
+IDD_RG_SELECT_SERVER_DIALOG DIALOG  0, 0, 186, 135
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Server"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+    LISTBOX         IDC_SERVER_LIST,7,7,115,103,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Use DHCP name",IDC_CHECK_DHCP,"Button",BS_AUTOCHECKBOX | 
+                    NOT WS_VISIBLE | WS_TABSTOP,7,118,70,10
+END
+
+IDD_DOMAIN_GENERAL DIALOG  0, 0, 214, 105
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Details"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Name:",IDC_STATIC,7,14,31,11
+    EDITTEXT        IDC_EDIT_NAME,52,14,155,12,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,7,33,42,11
+    EDITTEXT        IDC_EDIT_DESCRIPTION,52,34,155,49,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN
+END
+
+IDD_RG_SELECT_DEVICES DIALOG  0, 0, 286, 194
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Devices"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_PRIMARY_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,18,35,122,83
+    CONTROL         "List2",IDC_SECONDARY_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,145,35,122,83
+    GROUPBOX        "Select a device for each system",IDC_BORDER,7,7,272,156
+    LTEXT           "Primary System:",IDC_PRIMARY_STATIC,18,23,119,8
+    LTEXT           "Secondary System:",IDC_SECONDARY_STATIC,145,23,118,8
+    LTEXT           "Description:",IDC_DESCRIPTION_STATIC,18,126,38,8
+    EDITTEXT        IDC_DESCRIPTION_EDIT,18,138,249,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,175,173,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,229,173,50,14
+    PUSHBUTTON      "Refresh Devices",ID_REFRESH_DEVICES,7,173,70,14
+END
+
+IDD_DIALOG_WAIT DIALOG  0, 0, 190, 82
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Animate1",IDC_ANIMATE1,"SysAnimate32",ACS_CENTER | 
+                    ACS_TRANSPARENT,7,7,176,37
+    CTEXT           "Static",IDC_STATIC_MSG,7,49,176,26,NOT WS_GROUP
+END
+
+IDD_SERVER_PERFORMANCE_MONITOR DIALOG  0, 0, 423, 166
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Performance Monitor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_CHART1,"{608E8B11-3690-11D1-8FD4-00AA00BD091C}",
+                    NOT WS_VISIBLE | WS_TABSTOP,7,7,409,152
+END
+
+IDD_PERFMON_PROPERTIES DIALOG  0, 0, 256, 110
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Performance Monitor Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "X axe",IDC_STATIC,7,7,186,41
+    LTEXT           "Time Start:",IDC_STATIC,14,16,35,8
+    EDITTEXT        IDC_EDIT_TIME_START,60,16,118,12,ES_AUTOHSCROLL
+    LTEXT           "Time End:",IDC_STATIC,14,31,33,8
+    EDITTEXT        IDC_EDIT_TIME_END,60,31,118,12,ES_AUTOHSCROLL
+    GROUPBOX        "Y axe",IDC_STATIC,7,55,186,41
+    LTEXT           "Value Start:",IDC_STATIC,14,64,38,8
+    EDITTEXT        IDC_EDIT_VALUE_START,60,64,118,12,ES_AUTOHSCROLL
+    LTEXT           "Value End:",IDC_STATIC,14,79,36,8
+    EDITTEXT        IDC_EDIT_VALUE_END,60,79,118,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,199,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,199,24,50,14
+END
+
+IDD_DIALOG_ADD_COUNTERS DIALOG  0, 0, 240, 126
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Groups and Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Add",ID_BUTTON_ADD,183,7,50,14
+    PUSHBUTTON      "Close",IDCANCEL,183,24,50,14
+    LISTBOX         IDC_LIST_GROUPS,17,33,63,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDC_LIST_STATS,90,33,75,77,LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Groups:",IDC_STATIC,17,21,45,12
+    LTEXT           "Statistics:",IDC_STATIC,90,21,45,12
+    GROUPBOX        "",IDC_STATIC,7,7,168,111
+END
+
+IDD_OPTIONS_DATABASE DIALOG  0, 0, 220, 239
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Database"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Database Size",IDC_STATIC,7,7,206,48
+    GROUPBOX        "Performance Table",IDC_STATIC,7,59,206,83
+    GROUPBOX        "Alert Table",IDC_STATIC,7,146,206,85
+    LTEXT           "Size :  0 KB",IDC_DB_SIZE_STATIC,20,19,71,8
+    LTEXT           "Size :  0 KB",IDC_PERF_SIZE_STATIC,20,71,138,8
+    LTEXT           "Size :  0 KB",IDC_ALERT_SIZE_STATIC,20,159,138,8
+    PUSHBUTTON      "Delete All Records Now",IDC_CLEAR_PERF_BUTTON,67,120,84,
+                    14
+    PUSHBUTTON      "Delete All Records Now",IDC_CLEAR_ALERT_BUTTON,67,209,
+                    84,14
+    LTEXT           "Delete records older than",IDC_STATIC,20,102,80,8
+    LTEXT           "days",IDC_STATIC,164,102,16,8
+    EDITTEXT        IDC_PERF_DAYS_EDIT,106,99,52,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_PERF_DAYS_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,147,97,11,14
+    LTEXT           "Delete records older than",IDC_STATIC,20,191,80,8
+    LTEXT           "days",IDC_STATIC,164,191,16,8
+    EDITTEXT        IDC_ALERT_DAYS_EDIT,106,188,52,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_ALERT_DAYS_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,147,184,11,14
+    LTEXT           "Max number of records",IDC_STATIC,20,85,73,8
+    EDITTEXT        IDC_PERF_NB_EDIT,106,83,52,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_PERF_NB_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,147,80,11,14
+    LTEXT           "Max number of records",IDC_STATIC,20,174,73,8
+    EDITTEXT        IDC_ALERT_NB_EDIT,106,171,52,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_ALERT_NB_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,147,168,11,14
+    LTEXT           "Automatic check every",IDC_STATIC,20,34,74,8
+    EDITTEXT        IDC_CLEANUP_DELAY_EDIT,106,32,52,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_CLEANUP_DELAY_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,147,27,11,14
+    LTEXT           "minutes.",IDC_STATIC,164,34,26,8
+END
+
+IDD_SOFTEK DIALOG  0, 0, 394, 20
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         178,IDC_SOFTEK_LOGO,"Static",SS_BITMAP,219,0,171,20
+    CONTROL         179,IDC_SOFTEK_TAB,"Static",SS_BITMAP | NOT WS_VISIBLE,1,
+                    0,64,20
+END
+
+IDD_COLUMN_SELECTION DIALOG  0, 0, 186, 143
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Columns"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,22,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,39,50,14
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,7,22,116,114
+    LTEXT           "Select the columns that will appear.",IDC_STATIC,7,7,
+                    172,15
+END
+
+IDD_DEBUG_MONITOR DIALOG  0, 0, 513, 313
+STYLE DS_SETFONT | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "TDMF 1.3 Debug Monitor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_MSG,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,142,495,163
+    PUSHBUTTON      "Save...",IDC_SAVE,209,120,50,14
+    LTEXT           "This monitor display all the debug traces. It also list all the messages received and sent to the collector.   \nClick the Save button to save the messages to a file.",
+                    IDC_STATIC,7,108,196,27
+    GROUPBOX        "Trace Level",IDC_STATIC,276,108,226,27
+    CONTROL         "None",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,
+                    282,120,33,10
+    CONTROL         "Basic",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,317,120,
+                    33,10
+    CONTROL         "Extended",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,354,
+                    120,46,10
+    CONTROL         "Debug",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,400,120,
+                    37,10
+    CONTROL         "More Debug",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,443,
+                    120,55,10
+    LTEXT           "Set LG Configuration",IDC_STATIC,13,20,71,10
+    LTEXT           "Get Lg Configuration",IDC_STATIC,13,31,71,10
+    LTEXT           "Agent Info Request",IDC_STATIC,13,42,71,10
+    LTEXT           "Agent Information",IDC_STATIC,13,53,71,10
+    LTEXT           "Registration key",IDC_STATIC,13,64,71,10
+    LTEXT           "TDMF Commands",IDC_STATIC,13,75,71,10
+    LTEXT           "Set Agent Gen Config",IDC_STATIC,13,86,71,10
+    LTEXT           "Get Agent Gen Config",IDC_STATIC,130,20,75,10
+    LTEXT           "Set All Devices",IDC_STATIC,130,31,75,10
+    LTEXT           "Get All Devices",IDC_STATIC,130,42,75,10
+    LTEXT           "Alert Data",IDC_STATIC,130,53,75,10
+    LTEXT           "Status Management",IDC_STATIC,130,64,75,10
+    LTEXT           "Performance",IDC_STATIC,130,75,75,10
+    LTEXT           "Monitoring Data Registration",IDC_STATIC,246,20,94,10
+    LTEXT           "Agent Alive Sockets",IDC_STATIC,246,31,94,10
+    LTEXT           "Group State",IDC_STATIC,246,42,94,10
+    LTEXT           "Group Monitoring",IDC_STATIC,246,53,94,10
+    LTEXT           "TDMF Gui Registration",IDC_STATIC,246,64,94,10
+    LTEXT           "Set Database Parameters",IDC_STATIC,246,75,94,10
+    LTEXT           "Get Database Parameters",IDC_STATIC,246,86,94,10
+    LTEXT           "Agent State",IDC_STATIC,377,20,85,10
+    LTEXT           "Gui",IDC_STATIC,377,31,85,10
+    LTEXT           "Performance Config",IDC_STATIC,130,86,75,10
+    LTEXT           "Default",IDC_STATIC,377,42,85,10
+    RTEXT           "0",IDC_MESG_SET_LG_CONFIG,93,20,21,10
+    RTEXT           "0",IDC_MESG_GET_LG_CONFIG,93,31,21,10
+    RTEXT           "0",IDC_MESG_AGENT_INFO_REQUEST,93,42,21,10
+    RTEXT           "0",IDC_MESG_AGENT_INFO,93,53,21,10
+    RTEXT           "0",IDC_MESG_REGISTRATION_KEY,93,64,21,10
+    RTEXT           "0",IDC_MESG_TDMF_CMD,93,75,21,10
+    RTEXT           "0",IDC_MESG_SET_AGENT_GEN_CONFIG,93,86,21,10
+    RTEXT           "0",IDC_MESG_GET_AGENT_GEN_CONFIG,212,20,21,10
+    RTEXT           "0",IDC_MESG_SET_ALL_DEVICES,212,31,21,10
+    RTEXT           "0",IDC_MESG_GET_ALL_DEVICES,212,42,21,10
+    RTEXT           "0",IDC_MESG_ALERT_DATA,212,53,21,10
+    RTEXT           "0",IDC_MESG_STATUS_MSG,212,64,21,10
+    RTEXT           "0",IDC_MESG_PERF_MSG,212,75,21,10
+    RTEXT           "0",IDC_MESG_PERF_CFG_MSG,212,86,21,10
+    RTEXT           "0",IDC_MESG_MONITORING_DATA_REGISTRATION,343,20,21,10
+    RTEXT           "0",IDC_MESG_AGENT_ALIVE_SOCKET,343,31,21,10
+    RTEXT           "0",IDC_MESG_GROUP_STATE,343,42,21,10
+    RTEXT           "0",IDC_MESG_GROUP_MONITORING,343,53,21,10
+    RTEXT           "0",IDC_MESG_TDMFCOMMONGGUI_REGISTRATION,343,64,21,10
+    RTEXT           "0",IDC_MESG_SET_DB_PARAMS,343,75,21,10
+    RTEXT           "0",IDC_MESG_GET_DB_PARAMS,343,86,21,10
+    RTEXT           "0",IDC_MESG_AGENT_STATE,471,20,21,10
+    RTEXT           "0",IDC_MESG_GUI_MSG,471,31,21,10
+    RTEXT           "0",IDC_MESG_DEFAULT,471,42,21,10
+    LTEXT           "Number of Alive Agents",IDC_STATIC,377,53,85,10
+    LTEXT           "Alive Messages/Minute",IDC_STATIC,377,64,85,10
+    LTEXT           "Alive Messages/Hour",IDC_STATIC,377,75,85,10
+    RTEXT           "0",IDC_ALIVE_AGENTS,471,53,21,10
+    RTEXT           "0",IDC_ALIVE_MSG_PER_MIN,471,64,21,10
+    RTEXT           "0",IDC_ALIVE_MSG_PER_HOUR,471,75,21,10
+    GROUPBOX        "Collector Statistics Msg",IDC_STATIC,7,6,495,101
+END
+
+IDD_LOGIN DIALOG  0, 0, 216, 175
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TDMF OSE Login"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_COLLECTOR_NAME,76,13,133,49,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Windows authentication",IDC_AUTHENTICATION,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,20,60,91,11
+    CONTROL         "MSDE authentication",IDC_AUTHENTICATION_MSDE,"Button",
+                    BS_AUTORADIOBUTTON,20,75,91,11
+    EDITTEXT        IDC_EDIT_USERID,76,90,124,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PASSWORD,76,107,124,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Save connection information and do not prompt again",
+                    IDC_CHECK_SAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,
+                    129,185,10
+    DEFPUSHBUTTON   "OK",IDOK,102,154,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,159,154,50,14
+    LTEXT           "User ID:",IDC_STATIC,32,92,32,8
+    LTEXT           "Password:",IDC_STATIC,32,109,39,9
+    GROUPBOX        "Connection Information:",IDC_STATIC,7,32,202,115
+    ICON            "",IDC_APP_ICON,7,7,20,20
+    LTEXT           "Collector:",IDC_STATIC,33,14,37,11
+    LTEXT           "Connect using:",IDC_STATIC,20,47,60,10
+END
+
+IDD_OPTIONS_GENERAL DIALOG  0, 0, 230, 207
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Refresh Timers (secs)",IDC_STATIC,7,7,216,193
+    LTEXT           "T1:",IDC_STATIC,22,23,29,8
+    EDITTEXT        IDC_EDIT_T1,66,23,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,23,11,
+                    13
+    LTEXT           "T2:",IDC_STATIC,22,39,29,8
+    EDITTEXT        IDC_EDIT_T2,66,39,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T2,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,42,11,
+                    13
+    LTEXT           "T3:",IDC_STATIC,22,57,29,8
+    EDITTEXT        IDC_EDIT_T3,66,55,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T3,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,55,11,
+                    13
+    LTEXT           "T4:",IDC_STATIC,22,74,29,8
+    EDITTEXT        IDC_EDIT_T4,66,71,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T4,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,71,11,
+                    13
+    LTEXT           "T5:",IDC_STATIC,22,90,29,8
+    EDITTEXT        IDC_EDIT_T5,66,87,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T5,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,87,11,
+                    13
+    LTEXT           "T6:",IDC_STATIC,22,106,29,8
+    EDITTEXT        IDC_EDIT_T6,66,106,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T6,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,106,
+                    11,13
+    LTEXT           "T7:",IDC_STATIC,22,122,29,8
+    EDITTEXT        IDC_EDIT_T7,66,122,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T7,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,125,
+                    11,13
+    LTEXT           "T8:",IDC_STATIC,22,141,29,8
+    EDITTEXT        IDC_EDIT_T8,66,140,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T8,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,138,
+                    11,13
+    LTEXT           "T9:",IDC_STATIC,22,158,29,8
+    EDITTEXT        IDC_EDIT_T9,66,157,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T9,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,157,
+                    11,13
+    LTEXT           "T10:",IDC_STATIC,22,175,29,8
+    EDITTEXT        IDC_EDIT_T10,66,174,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_T10,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,175,
+                    11,13
+END
+
+IDD_RG_SELECT_LOCATION_DIALOG DIALOG  0, 0, 250, 135
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Location"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,193,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,193,24,50,14
+    LISTBOX         IDC_LOCATION_LIST,7,7,179,121,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_OPTIONS_ADMIN DIALOG  0, 0, 220, 151
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Administration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Users Actions Log",IDC_STATIC,7,7,206,38
+    CONTROL         "Log users actions",IDC_CHECK_LOG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,23,78,8
+    PUSHBUTTON      "View Log...",IDC_BUTTON_VIEW_LOG,156,20,50,14
+    GROUPBOX        "Registration Keys Log",IDC_STATIC,7,52,206,38
+    PUSHBUTTON      "Export...",IDC_BUTTON_EXPORT_KEYLOG,99,66,50,14
+    PUSHBUTTON      "View Log...",IDC_BUTTON_VIEW_KEYLOG,156,66,50,14
+END
+
+IDD_RG_TUNABLE_UNIX DIALOG  0, 0, 260, 182
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Tunables"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Delay:",IDC_STATIC,17,19,21,8
+    EDITTEXT        IDC_EDIT_CHUNKDELAY,47,16,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Size:",IDC_STATIC,17,34,21,8
+    EDITTEXT        IDC_EDIT_CHUNKSIZE,47,31,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Enable",IDC_CHECK_COMPRESSION,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,202,19,38,10
+    CONTROL         "Sync Mode",IDC_CHECK_SYNC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,64,52,10
+    LTEXT           "Depth:",IDC_STATIC,76,65,22,8
+    EDITTEXT        IDC_EDIT_DEPTH,106,62,76,13,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Timeout:",IDC_STATIC,76,79,30,8
+    EDITTEXT        IDC_EDIT_TIMEOUT,106,77,76,13,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "Synchronous Mode",IDC_STATIC,7,53,246,42
+    LTEXT           "Sec",IDC_STATIC,186,80,14,8
+    GROUPBOX        "Compression",IDC_STATIC,189,7,64,41
+    GROUPBOX        "Chunk",IDC_STATIC,7,7,175,42
+    LTEXT           "KB",IDC_STATIC,133,34,19,8
+    LTEXT           "mSec",IDC_STATIC,133,19,19,8
+    GROUPBOX        "Statistics Generation",IDC_STATIC,7,99,246,42
+    LTEXT           "Update Interval:",IDC_STATIC,17,111,55,8
+    EDITTEXT        IDC_EDIT_STAT_UPDATE_INTERVAL,106,108,76,13,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Maximum Stat File Size:",IDC_STATIC,17,123,77,8
+    EDITTEXT        IDC_EDIT_STAT_MAX_SIZE,106,123,76,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Sec",IDC_STATIC,186,111,14,8
+    LTEXT           "KB",IDC_STATIC,186,126,19,8
+    GROUPBOX        "Network Usage Threshold",IDC_STATIC,7,145,246,30
+    CONTROL         "Enable",IDC_CHECK_NET_THRESHOLD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,157,38,10
+    EDITTEXT        IDC_EDIT_NET_THRESHOLD,106,156,76,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+END
+
+IDD_MESSENGER DIALOG  0, 0, 327, 189
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "TDMF Messenger"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_MSG,7,168,258,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Send",IDC_BUTTON_SEND,270,168,50,14
+    EDITTEXT        IDC_EDIT_ALL_MSG,7,7,313,152,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_LOG_VIEWER DIALOG  0, 0, 540, 380
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Users Actions Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_MSG,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,0,0,539,379
+END
+
+IDD_SYSTEM_USERS DIALOG  0, 0, 220, 165
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Users"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_USERS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,7,206,151
+END
+
+IDD_OPTIONS_REG_KEY DIALOG  0, 0, 230, 95
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Registration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_REG_KEY1,15,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_REG_KEY2,48,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_REG_KEY3,81,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_REG_KEY4,114,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_REG_KEY5,147,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_REG_KEY6,180,21,33,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+    GROUPBOX        "Registration Key",IDC_STATIC,7,7,216,40
+END
+
+IDD_SYSTEM_GENERAL DIALOG  0, 0, 220, 95
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Collector's Registration Key",IDC_STATIC,7,7,206,40
+    EDITTEXT        IDC_EDIT_REG_KEY,11,21,198,12,ES_UPPERCASE | 
+                    ES_AUTOHSCROLL
+END
+
+IDD_MESSAGE_BY_TYPE DIALOGEX 0, 0, 157, 282
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Collector Statistic Messages"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,59,261,50,14
+    LTEXT           "Set LG Configuration",IDC_STATIC,7,7,107,8
+    LTEXT           "Get Lg Configuration",IDC_STATIC,7,16,107,8
+    LTEXT           "Agent Info Request",IDC_STATIC,7,25,107,8
+    LTEXT           "Agent Information",IDC_STATIC,7,34,107,8
+    LTEXT           "Registration key",IDC_STATIC,7,43,107,8
+    LTEXT           "TDMF Commands",IDC_STATIC,7,52,107,8
+    LTEXT           "Set Agent General Configuration",IDC_STATIC,7,61,107,8
+    LTEXT           "Get Agent General Configuration",IDC_STATIC,7,70,107,8
+    LTEXT           "Set All Devices",IDC_STATIC,7,79,107,8
+    LTEXT           "Get All Devices",IDC_STATIC,7,88,107,8
+    LTEXT           "Alert Data",IDC_STATIC,7,97,107,8
+    LTEXT           "Status Management",IDC_STATIC,7,106,107,8
+    LTEXT           "Performance",IDC_STATIC,7,115,107,8
+    LTEXT           "Monitoring Data Registration",IDC_STATIC,7,133,107,8
+    LTEXT           "Agent Alive Sockets",IDC_STATIC,7,142,107,8
+    LTEXT           "Group State",IDC_STATIC,7,151,107,8
+    LTEXT           "Group Monitoring",IDC_STATIC,7,160,107,8
+    LTEXT           "TDMF Common Gui Registration",IDC_STATIC,7,169,107,8
+    LTEXT           "Set Database Parameters",IDC_STATIC,7,178,107,8
+    LTEXT           "Get Database Parameters",IDC_STATIC,7,187,107,8
+    LTEXT           "Agent State",IDC_STATIC,7,196,107,8
+    LTEXT           "Gui",IDC_STATIC,7,205,107,8
+    LTEXT           "Performance Configuration",IDC_STATIC,7,124,107,8
+    LTEXT           "Default",IDC_STATIC,7,214,107,8
+    RTEXT           "0",IDC_MESG_SET_LG_CONFIG,129,7,21,8
+    RTEXT           "0",IDC_MESG_GET_LG_CONFIG,129,16,21,8
+    RTEXT           "0",IDC_MESG_AGENT_INFO_REQUEST,129,25,21,8
+    RTEXT           "0",IDC_MESG_AGENT_INFO,129,34,21,8
+    RTEXT           "0",IDC_MESG_REGISTRATION_KEY,129,43,21,8
+    RTEXT           "0",IDC_MESG_TDMF_CMD,129,52,21,8
+    RTEXT           "0",IDC_MESG_SET_AGENT_GEN_CONFIG,129,61,21,8
+    RTEXT           "0",IDC_MESG_GET_AGENT_GEN_CONFIG,129,70,21,8
+    RTEXT           "0",IDC_MESG_SET_ALL_DEVICES,129,79,21,8
+    RTEXT           "0",IDC_MESG_GET_ALL_DEVICES,129,88,21,8
+    RTEXT           "0",IDC_MESG_ALERT_DATA,129,97,21,8
+    RTEXT           "0",IDC_MESG_STATUS_MSG,129,106,21,8
+    RTEXT           "0",IDC_MESG_PERF_MSG,129,115,21,8
+    RTEXT           "0",IDC_MESG_PERF_CFG_MSG,129,124,21,8
+    RTEXT           "0",IDC_MESG_MONITORING_DATA_REGISTRATION,129,133,21,8
+    RTEXT           "0",IDC_MESG_AGENT_ALIVE_SOCKET,129,142,21,8
+    RTEXT           "0",IDC_MESG_GROUP_STATE,129,151,21,8
+    RTEXT           "0",IDC_MESG_GROUP_MONITORING,129,160,21,8
+    RTEXT           "0",IDC_MESG_TDMFCOMMONGGUI_REGISTRATION,129,169,21,8
+    RTEXT           "0",IDC_MESG_SET_DB_PARAMS,129,178,21,8
+    RTEXT           "0",IDC_MESG_GET_DB_PARAMS,129,187,21,8
+    RTEXT           "0",IDC_MESG_AGENT_STATE,129,196,21,8
+    RTEXT           "0",IDC_MESG_GUI_MSG,129,205,21,8
+    RTEXT           "0",IDC_MESG_DEFAULT,129,214,21,8
+    LTEXT           "Number of Alive Agents",IDC_STATIC,7,223,107,8
+    LTEXT           "Alive Messages/Minute",IDC_STATIC,7,232,107,8
+    LTEXT           "Alive Messages/Hour",IDC_STATIC,7,241,107,8
+    RTEXT           "0",IDC_ALIVE_AGENTS,129,223,21,10
+    RTEXT           "0",IDC_ALIVE_MSG_PER_MIN,129,234,21,10
+    RTEXT           "0",IDC_ALIVE_MSG_PER_HOUR,129,245,21,10
+END
+
+IDD_SCRIPT_EDITOR DIALOG  0, 0, 389, 210
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Script Editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Files:",IDC_STATIC,7,11,17,8
+    COMBOBOX        IDC_CBO_FILE_SELECT,30,7,246,104,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "New file...",IDC_BUTTON_NEW,279,7,50,14
+    CONTROL         "",IDC_RICHEDITCTRL,"RICHEDIT",TCS_HOTTRACK | 
+                    TCS_FOCUSONBUTTONDOWN | TCS_OWNERDRAWFIXED | 
+                    TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,
+                    30,375,146
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,172,187,50,14
+    PUSHBUTTON      "Save/Send",IDC_BTN_SAVE,225,187,50,14
+    PUSHBUTTON      "Send",IDC_BUTTON_SEND,278,187,50,14
+    DEFPUSHBUTTON   "Close",IDOK,331,187,50,14
+    LTEXT           "Characters in file:",IDC_STATIC,7,188,55,8
+    EDITTEXT        IDC_EDIT_TOT_CHAR,66,188,35,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_NUMBER | NOT WS_BORDER
+    PUSHBUTTON      "Import...",IDC_BTN_IMPORT_SCRIPTS,331,7,50,14
+END
+
+IDD_SERVER_PERFORMANCE_REPORTER DIALOG  0, 0, 420, 122
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Performance Reporter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_CHART1,"{608E8B11-3690-11D1-8FD4-00AA00BD091C}",
+                    WS_TABSTOP,7,7,406,108
+END
+
+IDD_SCRIPT_EDITOR_PAGE DIALOG  0, 0, 313, 199
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Script"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Files:",IDC_STATIC,9,7,17,8
+    COMBOBOX        IDC_CBO_FILE_SELECT,32,7,161,104,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "New file...",IDC_BUTTON_NEW,203,7,50,14
+    CONTROL         "",IDC_RICHEDITCTRL,"RICHEDIT",TCS_HOTTRACK | 
+                    TCS_FOCUSONBUTTONDOWN | TCS_OWNERDRAWFIXED | 
+                    TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,
+                    27,299,145
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,150,178,50,14
+    PUSHBUTTON      "Save/Send",IDC_BTN_SAVE,203,178,50,14
+    PUSHBUTTON      "Send",IDC_BUTTON_SEND,256,178,50,14
+    LTEXT           "Characters in file:",IDC_STATIC,7,180,55,8
+    EDITTEXT        IDC_EDIT_TOT_CHAR,65,180,35,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | ES_NUMBER | NOT WS_BORDER
+    PUSHBUTTON      "Import...",IDC_BTN_IMPORT_SCRIPTS,256,7,50,14
+END
+
+IDD_SELECT_PERF_MONITOR DIALOG  0, 0, 220, 122
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Groups and Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Ok",ID_BUTTON_ADD,163,7,50,14
+    PUSHBUTTON      "Close",IDCANCEL,163,24,50,14
+    LISTBOX         IDC_LIST_GROUPS,7,19,63,77,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDC_LIST_STATS,80,19,75,77,LBS_NOINTEGRALHEIGHT | 
+                    LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Groups:",IDC_STATIC,7,7,45,12
+    LTEXT           "Statistics:",IDC_STATIC,80,7,45,12
+    EDITTEXT        IDC_EDIT_TIMESLICE,78,104,24,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_TIMESLICE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,108,104,11,8
+    LTEXT           "Time Range (mins):",IDC_STATIC,7,105,62,8
+END
+
+IDD_TIMERANGE DIALOG  0, 0, 76, 53
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Time Range"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Ok",IDOK,12,32,50,14
+    EDITTEXT        IDC_TXT_TIMERANGE,7,7,31,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_TIMERANGE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,37,7,11,14
+    LTEXT           "Minutes",IDC_STATIC,43,10,26,8
+END
+
+IDD_NEW_SCRIPTSERVER DIALOG  0, 0, 394, 47
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New Script Server File"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Server File Name:",IDC_STATIC,7,8,57,8
+    EDITTEXT        IDC_EDIT_FILENAME,74,7,253,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,337,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,337,24,50,14
+END
+
+IDD_IMPORT_SCRIPT_FILE DIALOG  0, 0, 316, 84
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Import file"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",IDC_STATIC,7,3,302,55
+    CONTROL         "All files",IDC_RADIO_All,"Button",BS_AUTORADIOBUTTON,16,
+                    16,37,10
+    CONTROL         "Overwrite all existing scripts",IDC_CHECK_OVERWRITE_ALL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,76,16,102,10
+    CONTROL         "Specific file",IDC_RADIO_SPECIFIC,"Button",
+                    BS_AUTORADIOBUTTON,16,38,52,10
+    EDITTEXT        IDC_EDIT_FILENAME,76,34,214,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Import",IDC_IMPORT_FILE,208,63,50,14
+    PUSHBUTTON      "Close",IDCANCEL,259,63,50,14
+END
+
+IDD_RG_THROTTLE DIALOG  0, 0, 318, 186
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Throttles"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_THROTTLE,7,7,304,172,ES_MULTILINE | 
+                    ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL | NOT WS_TABSTOP
+END
+
+IDD_RG_SYMMETRIC DIALOG  0, 0, 318, 220
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Symmetric"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Symmetric group normally started",
+                    IDC_CHECK_SYMMETRIC_GROUP_NORMALLY_STARTED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,18,123,10
+    GROUPBOX        "Symmetric Group settings",IDC_STATIC,7,7,304,97
+    CONTROL         "Passthru",IDC_RADIO_PASSTHRU,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,90,32,52,12
+    CONTROL         "Tracking",IDC_RADIO_TRACKING,"Button",
+                    BS_AUTORADIOBUTTON,147,32,58,12
+    LTEXT           "Failover Initial State:",IDC_STATIC,18,33,72,10
+    LTEXT           "Group Number:",IDC_STATIC,18,49,72,10
+    EDITTEXT        IDC_EDIT_SYMMETRIC_GROUP_NUMBER,90,47,45,12,
+                    ES_AUTOHSCROLL
+    GROUPBOX        "Symmetric Group state",IDC_STATIC,7,108,304,52
+    LTEXT           "Status:",IDC_STATIC,17,124,34,10
+    LTEXT           "Mode:",IDC_STATIC,17,140,35,10
+    LTEXT           "Not Started",IDC_STATUS,58,124,89,10
+    LTEXT           "",IDC_MODE,58,140,89,10
+    EDITTEXT        IDC_EDIT_PSTORE,90,64,210,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Pstore File:",IDC_PSTORE_TITLE,18,66,67,9
+    EDITTEXT        IDC_EDIT_JOURNAL,90,81,210,12,ES_MULTILINE | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Journal Directory:",IDC_STATIC,18,82,59,9
+END
+
+IDD_DIALOG_EVENT_PROPERTIES DIALOG  0, 0, 299, 198
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Event Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,185,177,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,242,177,50,14
+    GROUPBOX        "Event",IDC_STATIC,7,7,285,165
+    LTEXT           "Type:",IDC_STATIC,19,20,27,9
+    LTEXT           "Time:",IDC_STATIC,19,50,24,8
+    LTEXT           "Source:",IDC_STATIC,110,20,33,9
+    LTEXT           "Date:",IDC_STATIC,19,35,24,8
+    LTEXT           "Group Number:",IDC_STATIC,110,35,49,9
+    LTEXT           "Pair Number:",IDC_STATIC,110,50,41,9
+    EDITTEXT        IDC_EDIT_DESCRIPTION,19,80,261,85,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | WS_GROUP
+    LTEXT           "Description:",IDC_STATIC,19,65,44,9
+    PUSHBUTTON      "Up",IDC_BUTTON_UP,255,20,25,15,BS_ICON
+    PUSHBUTTON      "Down",IDC_BUTTON_DOWN,255,38,25,15,BS_ICON
+    PUSHBUTTON      "Copy",IDC_BUTTON_COPY,255,56,25,15,BS_ICON
+    LTEXT           "WARNING",IDC_STATIC_TYPE,50,20,50,9
+    LTEXT           "Server",IDC_STATIC_SOURCE,160,20,49,9
+    LTEXT           "2004-06-06",IDC_STATIC_DATE,50,35,50,9
+    LTEXT           "1",IDC_STATIC_GROUP_NUMBER,160,35,49,9
+    LTEXT           "222",IDC_STATIC_PAIR_NUMBER,160,50,75,9
+    LTEXT           "16:45:30",IDC_STATIC_TIME,50,50,50,9
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 2,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Softek"
+            VALUE "FileDescription", "DtcCommonGui Application"
+            VALUE "FileVersion", "1,0,0,1"
+            VALUE "InternalName", "DtcCommonGui"
+            VALUE "LegalCopyright", "Copyright 2002-2004"
+            VALUE "OriginalFilename", "DtcCommonGui.exe"
+            VALUE "ProductName", "Softek Replicator"
+            VALUE "ProductVersion", "2.2.0"
+            VALUE "SpecialBuild", "1500"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 259
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_SYSTEM_EVENTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 353
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+    END
+
+    IDD_SYSTEM_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 528
+        VERTGUIDE, 16
+        VERTGUIDE, 24
+        VERTGUIDE, 33
+        VERTGUIDE, 94
+        VERTGUIDE, 225
+        VERTGUIDE, 242
+        VERTGUIDE, 311
+        VERTGUIDE, 444
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+        HORZGUIDE, 11
+        HORZGUIDE, 25
+        HORZGUIDE, 66
+        HORZGUIDE, 79
+        HORZGUIDE, 92
+        HORZGUIDE, 105
+        HORZGUIDE, 117
+    END
+
+    IDD_EMPTY_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+
+    IDD_DOMAIN_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        VERTGUIDE, 20
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+        HORZGUIDE, 14
+        HORZGUIDE, 25
+    END
+
+    IDD_SERVER_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 402
+        VERTGUIDE, 15
+        VERTGUIDE, 100
+        VERTGUIDE, 121
+        VERTGUIDE, 127
+        VERTGUIDE, 175
+        VERTGUIDE, 200
+        VERTGUIDE, 208
+        VERTGUIDE, 300
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 144
+        HORZGUIDE, 10
+        HORZGUIDE, 21
+        HORZGUIDE, 32
+        HORZGUIDE, 43
+        HORZGUIDE, 54
+        HORZGUIDE, 65
+        HORZGUIDE, 76
+        HORZGUIDE, 86
+        HORZGUIDE, 98
+        HORZGUIDE, 108
+        HORZGUIDE, 118
+        HORZGUIDE, 128
+        HORZGUIDE, 138
+    END
+
+    IDD_SERVER_EVENTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+
+    IDD_SERVER_PERFORMANCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 413
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_SERVER_COMMANDS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 413
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+        HORZGUIDE, 44
+    END
+
+    IDD_RG_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 374
+        VERTGUIDE, 15
+        VERTGUIDE, 97
+        VERTGUIDE, 193
+        VERTGUIDE, 207
+        VERTGUIDE, 299
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+        HORZGUIDE, 25
+        HORZGUIDE, 37
+        HORZGUIDE, 49
+        HORZGUIDE, 61
+        HORZGUIDE, 73
+        HORZGUIDE, 85
+        HORZGUIDE, 97
+    END
+
+    IDD_RG_COMMANDS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 83
+    END
+
+    IDD_SERVER_SELECTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+        HORZGUIDE, 23
+        HORZGUIDE, 30
+        HORZGUIDE, 173
+        HORZGUIDE, 180
+    END
+
+    IDD_RG_REPLICATION_PAIRS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 290
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+    END
+
+    IDD_RG_GENERAL, DIALOG
+    BEGIN
+        VERTGUIDE, 16
+        VERTGUIDE, 87
+    END
+
+    IDD_RG_REPLICATION_PAIRS_ADM, DIALOG
+    BEGIN
+        LEFTMARGIN, 9
+        RIGHTMARGIN, 308
+        TOPMARGIN, 8
+        BOTTOMMARGIN, 177
+    END
+
+    IDD_RG_TUNABLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 311
+        VERTGUIDE, 18
+        VERTGUIDE, 58
+        VERTGUIDE, 100
+        VERTGUIDE, 157
+        VERTGUIDE, 167
+        VERTGUIDE, 220
+        VERTGUIDE, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 213
+    END
+
+    IDD_SERVER_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 305
+        VERTGUIDE, 20
+        VERTGUIDE, 83
+        VERTGUIDE, 128
+        VERTGUIDE, 133
+        VERTGUIDE, 150
+        VERTGUIDE, 160
+        VERTGUIDE, 286
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+        HORZGUIDE, 7
+        HORZGUIDE, 29
+        HORZGUIDE, 45
+        HORZGUIDE, 61
+        HORZGUIDE, 86
+        HORZGUIDE, 156
+    END
+
+    IDD_SERVER_REGISTRATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 253
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 152
+    END
+
+    IDD_RG_SELECT_SERVER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        VERTGUIDE, 122
+        VERTGUIDE, 129
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_DOMAIN_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+        HORZGUIDE, 14
+        HORZGUIDE, 34
+    END
+
+    IDD_RG_SELECT_DEVICES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 279
+        VERTGUIDE, 77
+        VERTGUIDE, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_DIALOG_WAIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_SERVER_PERFORMANCE_MONITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 416
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+
+    IDD_PERFMON_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        VERTGUIDE, 14
+        VERTGUIDE, 60
+        VERTGUIDE, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+        HORZGUIDE, 16
+        HORZGUIDE, 31
+        HORZGUIDE, 64
+        HORZGUIDE, 79
+    END
+
+    IDD_DIALOG_ADD_COUNTERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        VERTGUIDE, 17
+        VERTGUIDE, 80
+        VERTGUIDE, 90
+        VERTGUIDE, 165
+        VERTGUIDE, 175
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+        HORZGUIDE, 33
+        HORZGUIDE, 110
+        HORZGUIDE, 118
+    END
+
+    IDD_OPTIONS_DATABASE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        VERTGUIDE, 20
+        VERTGUIDE, 106
+        VERTGUIDE, 158
+        VERTGUIDE, 164
+        VERTGUIDE, 190
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 233
+    END
+
+    IDD_SOFTEK, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 390
+    END
+
+    IDD_COLUMN_SELECTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        VERTGUIDE, 123
+        VERTGUIDE, 130
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+        HORZGUIDE, 14
+        HORZGUIDE, 22
+    END
+
+    IDD_DEBUG_MONITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 502
+        VERTGUIDE, 13
+        VERTGUIDE, 93
+        VERTGUIDE, 130
+        VERTGUIDE, 212
+        VERTGUIDE, 246
+        VERTGUIDE, 340
+        VERTGUIDE, 370
+        VERTGUIDE, 471
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 305
+    END
+
+    IDD_LOGIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 209
+        VERTGUIDE, 20
+        VERTGUIDE, 32
+        VERTGUIDE, 76
+        VERTGUIDE, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 168
+    END
+
+    IDD_OPTIONS_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        VERTGUIDE, 22
+        VERTGUIDE, 66
+        VERTGUIDE, 109
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+        HORZGUIDE, 12
+    END
+
+    IDD_RG_SELECT_LOCATION_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        VERTGUIDE, 186
+        VERTGUIDE, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+
+    IDD_OPTIONS_ADMIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        VERTGUIDE, 14
+        VERTGUIDE, 206
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+        HORZGUIDE, 12
+    END
+
+    IDD_RG_TUNABLE_UNIX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 253
+        VERTGUIDE, 17
+        VERTGUIDE, 47
+        VERTGUIDE, 106
+        VERTGUIDE, 129
+        VERTGUIDE, 155
+        VERTGUIDE, 165
+        VERTGUIDE, 182
+        VERTGUIDE, 190
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_MESSENGER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_SYSTEM_USERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 158
+    END
+
+    IDD_OPTIONS_REG_KEY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SYSTEM_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        VERTGUIDE, 11
+        VERTGUIDE, 209
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+        HORZGUIDE, 21
+        HORZGUIDE, 33
+    END
+
+    IDD_MESSAGE_BY_TYPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 150
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 275
+    END
+
+    IDD_SCRIPT_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 382
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+
+    IDD_SERVER_PERFORMANCE_REPORTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 413
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_SCRIPT_EDITOR_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 192
+    END
+
+    IDD_SELECT_PERF_MONITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_TIMERANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 69
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
+    END
+
+    IDD_NEW_SCRIPTSERVER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 387
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 40
+    END
+
+    IDD_IMPORT_SCRIPT_FILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        VERTGUIDE, 16
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 77
+    END
+
+    IDD_RG_THROTTLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 311
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_RG_SYMMETRIC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 311
+        VERTGUIDE, 18
+        VERTGUIDE, 58
+        VERTGUIDE, 90
+        VERTGUIDE, 147
+        VERTGUIDE, 300
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 213
+    END
+
+    IDD_DIALOG_EVENT_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 292
+        VERTGUIDE, 19
+        VERTGUIDE, 50
+        VERTGUIDE, 100
+        VERTGUIDE, 110
+        VERTGUIDE, 160
+        VERTGUIDE, 235
+        VERTGUIDE, 255
+        VERTGUIDE, 280
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+        HORZGUIDE, 20
+        HORZGUIDE, 35
+        HORZGUIDE, 38
+        HORZGUIDE, 50
+        HORZGUIDE, 53
+        HORZGUIDE, 56
+        HORZGUIDE, 65
+        HORZGUIDE, 80
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_TREE_ICONS   BITMAP                  "res\\bitmap2.bmp"
+SFTK_IDB_SPLASHSCREEN   BITMAP                  "res\\TDMFlogo.bmp"
+SFTK_IDB_ABOUTBOX       BITMAP                  "res\\tdmf_ose.bmp"
+IDR_TOOLBAR_PERFMON     BITMAP                  "res\\toolbar1.bmp"
+IDB_BITMAP_GROUP_ICON   BITMAP                  "res\\bmp00001.bmp"
+IDB_BITMAP_SOFTEK_LOGO  BITMAP                  "res\\BrandingStripRight.bmp"
+IDB_BITMAP_TAB          BITMAP                  "res\\TDMFTab.bmp"
+IDB_LARGE_ICONS         BITMAP                  "res\\bmp00002.bmp"
+IDB_SMALL_ICONS         BITMAP                  "res\\bmp00003.bmp"
+IDB_BTN_PAUSE           BITMAP                  "res\\btn_paus.bmp"
+SFTK_IDB_TREEBKLOGO     BITMAP                  "res\\softek_logo.bmp"
+IDB_BTN_LOGARITHM       BITMAP                  "res\\btn_loga.bmp"
+IDB_BTN_CLEAR           BITMAP                  "res\\btn_clea.bmp"
+IDB_BTN_TIMERANGE       BITMAP                  "res\\btn_time.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SERVER_PERFORMANCE_MONITOR DLGINIT
+BEGIN
+    IDC_CHART1, 0x37a, 3022, 0
+0x0059, 0x0000, 0x0061, 0x0061, 0x0061, 0x0061, 0x0065, 0x0065, 0x0061, 
+0x006d, 0x007a, 0x0067, 0x0062, 0x0061, 0x0061, 0x0070, 0x0062, 0x0061, 
+0x0061, 0x0055, 0x0067, 0x0049, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 
+0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0051, 
+0x0030, 0x005a, 0x0059, 0x004e, 0x0054, 0x0045, 0x0041, 0x0059, 0x0058, 
+0x004a, 0x006c, 0x0062, 0x0067, 0x003d, 0x0070, 0x0072, 0x006a, 0x006d, 
+0x0070, 0x006c, 0x006a, 0x006c, 0x0069, 0x0073, 0x006e, 0x006d, 0x0069, 
+0x0077, 0x006d, 0x006d, 0x006f, 0x0069, 0x006f, 0x006c, 0x0070, 0x0072, 
+0x0069, 0x006d, 0x006a, 0x006a, 0x0076, 0x006e, 0x0070, 0x0072, 0x006c, 
+0x006c, 0x0070, 0x0069, 0x0071, 0x006e, 0x0075, 0x006e, 0x0074, 0x0070, 
+0x0000, 0x0012, 0x0000, 0x0001, 0x0000, 0x000a, 0x0000, 0x005c, 0x0000, 
+0x0000, 0x0300, 0x0000, 0x3f75, 0x0000, 0x1987, 0x0000, 0x5f5f, 0x4843, 
+0x5241, 0x4654, 0x3458, 0x5f5f, 0x0000, 0x0400, 0x1500, 0x2ebf, 0x0000, 
+0x0401, 0x068e, 0x0001, 0x0000, 0xfff9, 0xff6f, 0x001e, 0x001e, 0x001e, 
+0x004b, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x001e, 0x0001, 
+0x0000, 0x2004, 0x0000, 0x0010, 0x0000, 0x0002, 0x0002, 0x0000, 0x0000, 
+0x000a, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x0000, 0x0000, 
+0x0000, 0x004b, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x000e, 0x0001, 
+0x0001, 0x0000, 0x0080, 0x0000, 0x0004, 0x0000, 0x0000, 0x007f, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0xc008, 0x0000, 0x0000, 0x0000, 0xc008, 
+0x0000, 0x0000, 0x0000, 0x3ff0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x4026, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3828, 
+0x0000, 0x8001, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x3ff0, 0x0000, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 
+0x0000, 0x0010, 0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x3ff0, 0xffff, 0xffff, 0xffff, 0x7fef, 0xffff, 0xffff, 
+0xffff, 0xffef, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3868, 0x0000, 
+0x0001, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x3ff0, 0x0000, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 
+0x0010, 0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 0x0000, 
+0x0000, 0x0000, 0xbff0, 0x0000, 0x0000, 0x0000, 0xbff0, 0x0000, 0x0000, 
+0x0000, 0x3ff0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x404e, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x2828, 0x0000, 0x0001, 
+0x0001, 0x0000, 0x0000, 0x0000, 0x4044, 0x0000, 0x0000, 0x0000, 0x3ff0, 
+0x0005, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 0x0010, 
+0x8000, 0x002d, 0x0000, 0x0005, 0x0000, 0x0400, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x3ff0, 0xffff, 0xffff, 0xffff, 0x7fef, 0xffff, 0xffff, 0xffff, 0xffef, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3868, 0x0000, 0x0001, 0x0002, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x3ff0, 0x0000, 
+0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 0x0010, 0x8000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 0x000f, 0x8000, 0x0000, 
+0x0100, 0x0000, 0x0100, 0x0010, 0x0000, 0x0000, 0x0080, 0x0000, 0x002a, 
+0x0100, 0x0002, 0x0100, 0x0003, 0x0100, 0x0004, 0x0100, 0x0005, 0x0100, 
+0x0006, 0x0100, 0x0007, 0x0100, 0x0008, 0x0100, 0x0009, 0x0100, 0x000a, 
+0x0100, 0x000b, 0x0100, 0x000c, 0x0100, 0x000d, 0x0100, 0x000e, 0x0100, 
+0x000f, 0x0100, 0x0010, 0x0100, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 
+0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 
+0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 
+0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 0xffff, 0x00ff, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x3000, 0x0005, 
+0x0041, 0x0072, 0x0069, 0x0061, 0x006c, 0x4244, 0x0001, 0x0000, 0x0000, 
+0x02bc, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0008, 0x7000, 0x0005, 0x0041, 0x0072, 0x0069, 0x0061, 0x006c, 
+0x4244, 0x0001, 0x0000, 0x0000, 0x02bc, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x1000, 0x0005, 0x0041, 
+0x0072, 0x0069, 0x0061, 0x006c, 0x7cdc, 0x0001, 0x0000, 0x0000, 0x02bc, 
+0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0008, 0x1000, 0x0005, 0x0041, 0x0072, 0x0069, 0x0061, 0x006c, 0x4244, 
+0x0001, 0x0000, 0x0000, 0x02bc, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x1000, 0x0005, 0x0041, 0x0072, 
+0x0069, 0x0061, 0x006c, 0x4244, 0x0001, 0x0000, 0x0000, 0x02bc, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 
+0x1000, 0x0005, 0x0041, 0x0072, 0x0069, 0x0061, 0x006c, 0x4244, 0x0001, 
+0x0000, 0x0000, 0x02bc, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0008, 0x1000, 0x0005, 0x0041, 0x0072, 0x0069, 
+0x0061, 0x006c, 0x4244, 0x0001, 0x0000, 0x0000, 0x0190, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x1000, 
+0x0005, 0x0041, 0x0072, 0x0069, 0x0061, 0x006c, 0x4244, 0x0001, 0x0000, 
+0x0000, 0x02bc, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x000c, 0x000a, 0x0000, 
+0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 
+0x0008, 0x0000, 0x0001, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0001, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0020, 0x0000, 0x0000, 0x03af, 0x0001, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x2300, 0x0010, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x00ff, 0x0100, 
+0x0000, 0x0000, 0x0100, 0x0003, 0x7600, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0001, 0x0100, 0x0000, 0xc435, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 
+0x4d24, 0x2029, 0xffff, 0x0000, 0x0001, 0x0002, 0x0000, 0x7300, 0x735b, 
+0x005c, 0x001c, 0x005c, 0x003e, 0x0150, 0x733e, 0x0020, 0x0000, 0x0157, 
+0x0000, 0xffff, 0x0002, 0xffff, 0x0008, 0x0040, 0x0150, 0x7340, 0x0420, 
+0x0000, 0x015f, 0x0000, 0xffff, 0x0004, 0x003a, 0x003b, 0xffff, 0x000b, 
+0xffff, 0x0000, 0x7312, 0x0001, 0x0001, 0x3300, 0x37c4, 0xf39f, 0xd198, 
+0x9c11, 0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 0x8b00, 0x0070, 0x7006, 
+0x0001, 0x0000, 0x0001, 0x1200, 0x0873, 0x0000, 0x0200, 0x0000, 0x6600, 
+0x0002, 0x1e00, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x6600, 0x0002, 
+0x1f00, 0x0000, 0x0700, 0x5400, 0x6f6f, 0x626c, 0x7261, 0x0006, 0xffff, 
+0xffff, 0xffff, 0xffff, 0x0021, 0x0000, 0x01a7, 0x0000, 0x000f, 0x8000, 
+0x019a, 0x0000, 0x018f, 0x0000, 0xfff0, 0xffff, 0x0028, 0x0000, 0x0028, 
+0x0000, 0x0019, 0x0000, 0x001c, 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 
+0x0046, 0x4000, 0x0001, 0x0000, 0x0102, 0x0000, 0x0001, 0x0000, 0x0003, 
+0x0000, 0x0001, 0x0000, 0x0003, 0x0000, 0x0044, 0x0000, 0x0000, 0x0024, 
+0x0000, 0x0000, 0x1600, 0xff00, 0x01ff, 0x4000, 0x0000, 0x0800, 0x0000, 
+0x0800, 0x0000, 0x0400, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 
+0x0000, 0x0300, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 
+0xff00, 0x01ff, 0x4000, 0x0000, 0x0800, 0x0000, 0x0800, 0x0000, 0x1f00, 
+0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0x2100, 0x0000, 
+0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0xff00, 0x01ff, 0x4000, 
+0x0000, 0x0800, 0x0000, 0x0800, 0x0000, 0x1100, 0x0000, 0x4000, 0x0000, 
+0x1700, 0x0000, 0x1600, 0x0000, 0xff00, 0x01ff, 0x4000, 0x0000, 0x0800, 
+0x0000, 0x0800, 0x0000, 0x0900, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 
+0x1600, 0x0000, 0x0a00, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 
+0x0000, 0xff00, 0x01ff, 0x4000, 0x0000, 0x0800, 0x0000, 0x0800, 0x0000, 
+0x0800, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0x0500, 
+0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0xff00, 0x01ff, 
+0x4000, 0x0000, 0x0800, 0x0000, 0x0800, 0x0000, 0x4600, 0x0000, 0x4000, 
+0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0x4800, 0x0000, 0x4000, 0x0000, 
+0x1700, 0x0000, 0x1600, 0x0000, 0x4d00, 0x0000, 0x4000, 0x0000, 0x1700, 
+0x0000, 0x1600, 0x0000, 0x5100, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 
+0x1600, 0x0000, 0x4700, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 
+0x0000, 0x4b00, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 
+0x5800, 0x0000, 0x4000, 0x0000, 0x1700, 0x0000, 0x1600, 0x0000, 0xff00, 
+0x11ff, 0x0273, 0x0100, 0x0000, 0xc431, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 
+0xa000, 0x4d24, 0x2029, 0xffff, 0x0000, 0x302f, 0x0000, 0x01b0, 0x0000, 
+0x0102, 0x0000, 0x7311, 0x0000, 0x0000, 0x00cd, 0x0000, 0x0266, 0x0000, 
+0x00f5, 0x0000, 0x0000, 0x0000, 0x00cc, 0x0000, 0x0266, 0x0000, 0x00f7, 
+0x0000, 0x000b, 0x6144, 0x6174, 0x4520, 0x6964, 0x6f74, 0x0672, 0xff00, 
+0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0fff, 0x0000, 
+0x2880, 0x0000, 0x2800, 0x0000, 0x0300, 0x0000, 0x2800, 0x0000, 0x2800, 
+0x0000, 0x1800, 0x0000, 0x2800, 0x0000, 0xff00, 0xffff, 0xffff, 0xffff, 
+0x03ff, 0x0000, 0x0140, 0x0000, 0xff00, 0xffff, 0x0fff, 0x0373, 0x0100, 
+0x0000, 0xc431, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 0x4d24, 0x2029, 
+0xffff, 0x0000, 0x302b, 0x0000, 0x0020, 0x0000, 0x0203, 0x0000, 0x730f, 
+0x0264, 0x0000, 0x0021, 0x0000, 0x0264, 0x0000, 0x00ca, 0x0000, 0x0263, 
+0x0000, 0x0020, 0x0000, 0x0264, 0x0000, 0x00cb, 0x0000, 0x0006, 0x654c, 
+0x6567, 0x646e, 0x0006, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 
+0xffff, 0xffff, 0x000f, 0x8000, 0x0028, 0x0000, 0x0028, 0x0000, 0x0002, 
+0x0000, 0x0004, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 
+0xffff, 0xffff, 0xffff, 0xffff, 0x0301, 0x4000, 0x0001, 0x0000, 0x0000, 
+0x0004, 0x0000, 0x7313, 0x0004, 0x0001, 0x3300, 0x37c4, 0xf39f, 0xd198, 
+0x9c11, 0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 0x8b00, 0x0072, 0x3006, 
+0x0000, 0x0000, 0x0001, 0x1300, 0x0a73, 0x0000, 0x2100, 0x0000, 0x6400, 
+0x0002, 0x3b00, 0x0000, 0x0200, 0x0000, 0x2000, 0x0000, 0x6400, 0x0002, 
+0x3c00, 0x0000, 0x0400, 0x4d00, 0x6e65, 0x0675, 0xff00, 0xffff, 0xffff, 
+0xffff, 0xc9ff, 0x0000, 0x3200, 0x0000, 0x0f00, 0x0000, 0xc180, 0x0000, 
+0x4000, 0x0000, 0xf000, 0xffff, 0x28ff, 0x0000, 0x2800, 0x0000, 0x1600, 
+0x0000, 0x1a00, 0x0000, 0xff00, 0xffff, 0xffff, 0xffff, 0x46ff, 0x0000, 
+0x0140, 0x0000, 0x0400, 0x0001, 0x0100, 0x0000, 0x0300, 0x0000, 0x0100, 
+0x0000, 0x0300, 0x0000, 0x8400, 0x0c80, 0x0300, 0x0400, 0x0000, 0x0000, 
+0x0000, 0x7314, 0x0005, 0x0001, 0x3100, 0x37c4, 0xf39f, 0xd198, 0x9c11, 
+0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 0xab00, 0x0070, 0x1000, 0x0000, 
+0x0000, 0x0001, 0x1400, 0x0a73, 0x0000, 0x2000, 0x0000, 0x5d00, 0x0002, 
+0x3600, 0x0000, 0x0200, 0x0000, 0x1f00, 0x0000, 0x5e00, 0x0002, 0x3700, 
+0x0000, 0x0a00, 0x5000, 0x6c61, 0x7465, 0x6574, 0x6142, 0x0672, 0xff00, 
+0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x0fff, 0x0000, 
+0x2880, 0x0000, 0x2800, 0x0000, 0xff00, 0xffff, 0x16ff, 0x0000, 0x1600, 
+0x0000, 0x1600, 0x0000, 0x1600, 0x0000, 0xff00, 0xffff, 0xffff, 0xffff, 
+0x40ff, 0x0001, 0x0140, 0x0000, 0x1500, 0x0673, 0x0100, 0x0000, 0xc431, 
+0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 0x4d24, 0x2029, 0xffff, 0x0000, 
+0x70ab, 0x0000, 0x0010, 0x0000, 0x0100, 0x0000, 0x7315, 0x000a, 0x0000, 
+0x0020, 0x0000, 0x025e, 0x0000, 0x0036, 0x0000, 0x0002, 0x0000, 0x001f, 
+0x0000, 0x025f, 0x0000, 0x0037, 0x0000, 0x000a, 0x6150, 0x7474, 0x7265, 
+0x426e, 0x7261, 0x0006, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 
+0xffff, 0xffff, 0x000f, 0x8000, 0x0028, 0x0000, 0x0028, 0x0000, 0xffff, 
+0xffff, 0x0016, 0x0000, 0x0016, 0x0000, 0x0016, 0x0000, 0x0016, 0x0000, 
+0xffff, 0xffff, 0xffff, 0xffff, 0x0140, 0x4000, 0x0001, 0x0000, 0x7310, 
+0x0007, 0x0001, 0x3100, 0x37c4, 0xf39f, 0xd198, 0x9c11, 0x003b, 0x24a0, 
+0x294d, 0xff20, 0x00ff, 0x2b00, 0x0030, 0x3000, 0x0000, 0x0200, 0x0001, 
+0x1000, 0x0273, 0x0000, 0xb800, 0x0000, 0x6400, 0x0002, 0xca00, 0x0000, 
+0x0200, 0x0000, 0xb700, 0x0000, 0x6400, 0x0002, 0xcb00, 0x0000, 0x0d00, 
+0x5300, 0x7265, 0x6569, 0x2073, 0x654c, 0x6567, 0x646e, 0x0006, 0xffff, 
+0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x000f, 0x8000, 
+0x0028, 0x0000, 0x0028, 0x0000, 0x0002, 0x0000, 0x0004, 0x0000, 0x0004, 
+0x0000, 0x004d, 0x0000, 0x0012, 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 
+0x0301, 0x4000, 0x0001, 0x0000, 0x0000, 0x0004, 0x0000, 0xffff, 
+    0
+END
+
+IDD_SERVER_PERFORMANCE_REPORTER DLGINIT
+BEGIN
+    IDC_CHART1, 0x37a, 2186, 0
+0x0059, 0x0000, 0x0061, 0x0061, 0x0061, 0x0061, 0x0065, 0x0065, 0x0061, 
+0x006d, 0x007a, 0x0067, 0x0062, 0x0061, 0x0061, 0x0070, 0x0062, 0x0061, 
+0x0061, 0x0055, 0x0067, 0x0049, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 
+0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0041, 0x0051, 
+0x0030, 0x005a, 0x0059, 0x004e, 0x0054, 0x0045, 0x0041, 0x0059, 0x0058, 
+0x004a, 0x006c, 0x0062, 0x0067, 0x003d, 0x0070, 0x0072, 0x006a, 0x006d, 
+0x0070, 0x006c, 0x006a, 0x006c, 0x0069, 0x0073, 0x006e, 0x006d, 0x0069, 
+0x0077, 0x006d, 0x006d, 0x006f, 0x0069, 0x006f, 0x006c, 0x0070, 0x0072, 
+0x0069, 0x006d, 0x006a, 0x006a, 0x0076, 0x006e, 0x0070, 0x0072, 0x006c, 
+0x006c, 0x0070, 0x0069, 0x0071, 0x006e, 0x0075, 0x006e, 0x0074, 0x0070, 
+0x0000, 0x0012, 0x0000, 0x0001, 0x0000, 0x000a, 0x0000, 0x005c, 0x0000, 
+0x0000, 0x0300, 0x0000, 0x3ef1, 0x0000, 0x1231, 0x0000, 0x5f5f, 0x4843, 
+0x5241, 0x4654, 0x3458, 0x5f5f, 0x0000, 0x0400, 0x1500, 0x2ebf, 0x0000, 
+0x0408, 0x4688, 0x0008, 0x0000, 0xfffb, 0xff6f, 0x0032, 0x001e, 0x001e, 
+0x001e, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0000, 0x0050, 0x0001, 
+0x0000, 0x2084, 0x0000, 0x0010, 0x0000, 0x0002, 0x0002, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0001, 0x0000, 
+0x0000, 0x004b, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x000e, 0x0001, 
+0x0001, 0x0000, 0x0080, 0x0000, 0x0000, 0x0000, 0x0000, 0x007f, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0xc03e, 0x0000, 0x0000, 0x0000, 0xc03e, 
+0x0000, 0x0000, 0x0000, 0x3ff0, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x4059, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3828, 
+0x0000, 0x0001, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x3ff0, 0x0000, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 
+0x0000, 0x0010, 0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x3ff0, 0xffff, 0xffff, 0xffff, 0x7fef, 0xffff, 0xffff, 
+0xffff, 0xffef, 0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3868, 0x0000, 
+0x0001, 0x0002, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x3ff0, 0x0000, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 
+0x0010, 0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 0x0000, 
+0x0000, 0x0000, 0xbff0, 0x0000, 0x0000, 0x0000, 0xbff0, 0x0000, 0x0000, 
+0x0000, 0x3ff0, 0xffff, 0xffff, 0xffff, 0x7fef, 0xffff, 0xffff, 0xffff, 
+0xffef, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x3828, 0x0000, 0x0001, 
+0x0002, 0x0000, 0x0000, 0x0000, 0x4044, 0x0000, 0x0000, 0x0000, 0x3ff0, 
+0x0000, 0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 0x0010, 
+0x8000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x3ff0, 0xffff, 0xffff, 0xffff, 0x7fef, 0xffff, 0xffff, 0xffff, 0xffef, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0002, 0x3868, 0x0000, 0x0001, 0x0002, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x3ff0, 0x0000, 
+0x0000, 0x0001, 0x0000, 0x0010, 0x8000, 0x0001, 0x0000, 0x0010, 0x8000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0400, 0x0000, 0x000f, 0x8000, 0x0000, 
+0x4000, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0008, 0x2000, 0x0000, 0x0000, 
+0x0008, 0x6000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 
+0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 
+0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 
+0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x000c, 0x000a, 0x0000, 0x0000, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 0x0000, 0x0000, 0x0000, 0x0008, 
+0x0000, 0x0001, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0001, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0bff, 
+0x0100, 0x0000, 0x0000, 0x0100, 0x0003, 0x7600, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0001, 0x0100, 0x0000, 0xc435, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 
+0xa000, 0x4d24, 0x2029, 0xffff, 0x0000, 0x0001, 0x0000, 0x0000, 0x7300, 
+0x735b, 0x005c, 0x001c, 0x0000, 0x7312, 0x0001, 0x0001, 0x3300, 0x37c4, 
+0xf39f, 0xd198, 0x9c11, 0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 0x8b00, 
+0x0070, 0x7006, 0x0001, 0x0000, 0x0001, 0x1200, 0x0a73, 0x0000, 0x0200, 
+0x0000, 0x5f00, 0x0002, 0x1e00, 0x0000, 0x0200, 0x0000, 0x0200, 0x0000, 
+0x5f00, 0x0002, 0x1f00, 0x0000, 0x0700, 0x5400, 0x6f6f, 0x626c, 0x7261, 
+0x0006, 0xffff, 0xffff, 0xffff, 0xffff, 0x0021, 0x0000, 0x0034, 0x0000, 
+0x000f, 0x8000, 0x0019, 0x0000, 0x001c, 0x0000, 0xfff0, 0xffff, 0x0028, 
+0x0000, 0x0028, 0x0000, 0x0019, 0x0000, 0x001c, 0x0000, 0xffff, 0xffff, 
+0xffff, 0xffff, 0x0046, 0x4000, 0x0001, 0x0000, 0x0102, 0x0000, 0x0001, 
+0x0000, 0x0003, 0x0000, 0x0001, 0x0000, 0x0003, 0x0000, 0x0044, 0x0000, 
+0x0000, 0x0024, 0x0000, 0x0000, 0x0100, 0x0800, 0x0000, 0x4400, 0x0000, 
+0x1700, 0x0000, 0x1600, 0x0000, 0xff00, 0x10ff, 0x0273, 0x0100, 0x0000, 
+0xc431, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 0x4d24, 0x2029, 0xffff, 
+0x0000, 0x302b, 0x0000, 0x01b0, 0x0000, 0x0102, 0x0000, 0x7310, 0x0002, 
+0x0000, 0x009c, 0x0000, 0x025f, 0x0000, 0x00ae, 0x0000, 0x0002, 0x0000, 
+0x009b, 0x0000, 0x025f, 0x0000, 0x00ae, 0x0000, 0x000d, 0x6553, 0x6972, 
+0x7365, 0x4c20, 0x6765, 0x6e65, 0x0664, 0xff00, 0xffff, 0xffff, 0xffff, 
+0xffff, 0xffff, 0xffff, 0xffff, 0x0fff, 0x0000, 0x2880, 0x0000, 0x2800, 
+0x0000, 0x0200, 0x0000, 0x0400, 0x0000, 0x0400, 0x0000, 0x4d00, 0x0000, 
+0x1200, 0x0000, 0xff00, 0xffff, 0xffff, 0xffff, 0x01ff, 0x0002, 0x0140, 
+0x0000, 0x0000, 0x0400, 0x0000, 0xff00, 0xffff, 0x13ff, 0x0373, 0x0100, 
+0x0000, 0xc433, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 0x4d24, 0x2029, 
+0xffff, 0x0000, 0x728b, 0x0600, 0x0030, 0x0000, 0x0100, 0x0000, 0x7313, 
+0x000a, 0x0000, 0x0020, 0x0000, 0x0256, 0x0000, 0x003a, 0x0000, 0x0002, 
+0x0000, 0x001f, 0x0000, 0x0256, 0x0000, 0x003b, 0x0000, 0x0004, 0x654d, 
+0x756e, 0x0006, 0xffff, 0xffff, 0xffff, 0xffff, 0x00c9, 0x0000, 0x0032, 
+0x0000, 0x000f, 0x8000, 0x00c1, 0x0000, 0x0040, 0x0000, 0xfff0, 0xffff, 
+0x0028, 0x0000, 0x0028, 0x0000, 0x0016, 0x0000, 0x001a, 0x0000, 0xffff, 
+0xffff, 0xffff, 0xffff, 0x0046, 0x4000, 0x0001, 0x0000, 0x0104, 0x0000, 
+0x0001, 0x0000, 0x0003, 0x0000, 0x0001, 0x0000, 0x0003, 0x0000, 0x8084, 
+0x000c, 0x0003, 0x0004, 0x0000, 0x0000, 0x0f00, 0x0473, 0x0100, 0x0000, 
+0xc431, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 0x4d24, 0x2029, 0xffff, 
+0x0000, 0x302b, 0x0000, 0x0020, 0x0000, 0x0203, 0x0000, 0x730f, 0x025f, 
+0x0000, 0x0020, 0x0000, 0x025f, 0x0000, 0x009a, 0x0000, 0x025e, 0x0000, 
+0x001f, 0x0000, 0x025f, 0x0000, 0x009b, 0x0000, 0x0006, 0x654c, 0x6567, 
+0x646e, 0x0006, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 
+0xffff, 0x000f, 0x8000, 0x0028, 0x0000, 0x0028, 0x0000, 0x0002, 0x0000, 
+0x0004, 0x0000, 0x0004, 0x0000, 0x0000, 0x0000, 0x0004, 0x0000, 0xffff, 
+0xffff, 0xffff, 0xffff, 0x0301, 0x4000, 0x0001, 0x0000, 0x0000, 0x0004, 
+0x0000, 0x7311, 0x0005, 0x0001, 0x3100, 0x37c4, 0xf39f, 0xd198, 0x9c11, 
+0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 0x2f00, 0x0030, 0x9000, 0x0000, 
+0x0200, 0x0001, 0x1100, 0x0273, 0x0000, 0x8600, 0x0000, 0x0700, 0x0002, 
+0xb200, 0x0000, 0x0200, 0x0000, 0x8500, 0x0000, 0x0800, 0x0002, 0xb200, 
+0x0000, 0x0b00, 0x4400, 0x7461, 0x2061, 0x6445, 0x7469, 0x726f, 0x0006, 
+0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x000f, 
+0x8000, 0x0028, 0x0000, 0x0028, 0x0000, 0x0003, 0x0000, 0x0028, 0x0000, 
+0x0028, 0x0000, 0x0018, 0x0000, 0x002c, 0x0000, 0xffff, 0xffff, 0xffff, 
+0xffff, 0x0103, 0x4000, 0x0001, 0x0000, 0x7314, 0x0006, 0x0001, 0x3100, 
+0x37c4, 0xf39f, 0xd198, 0x9c11, 0x003b, 0x24a0, 0x294d, 0xff20, 0x00ff, 
+0xab00, 0x0070, 0x1000, 0x0000, 0x0000, 0x0001, 0x1400, 0x0a73, 0x0000, 
+0x2000, 0x0000, 0x0700, 0x0002, 0x3600, 0x0000, 0x0200, 0x0000, 0x1f00, 
+0x0000, 0x0800, 0x0002, 0x3700, 0x0000, 0x0a00, 0x5000, 0x6c61, 0x7465, 
+0x6574, 0x6142, 0x0672, 0xff00, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 
+0xffff, 0xffff, 0x0fff, 0x0000, 0x2880, 0x0000, 0x2800, 0x0000, 0xff00, 
+0xffff, 0x16ff, 0x0000, 0x1600, 0x0000, 0x1600, 0x0000, 0x1600, 0x0000, 
+0xff00, 0xffff, 0xffff, 0xffff, 0x40ff, 0x0001, 0x0140, 0x0000, 0x1500, 
+0x0773, 0x0100, 0x0000, 0xc431, 0x9f37, 0x98f3, 0x11d1, 0x3b9c, 0xa000, 
+0x4d24, 0x2029, 0xffff, 0x0000, 0x70ab, 0x0000, 0x0010, 0x0000, 0x0100, 
+0x0000, 0x7315, 0x000a, 0x0000, 0x0020, 0x0000, 0x0207, 0x0000, 0x0036, 
+0x0000, 0x0002, 0x0000, 0x001f, 0x0000, 0x0208, 0x0000, 0x0037, 0x0000, 
+0x000a, 0x6150, 0x7474, 0x7265, 0x426e, 0x7261, 0x0006, 0xffff, 0xffff, 
+0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x000f, 0x8000, 0x0028, 
+0x0000, 0x0028, 0x0000, 0xffff, 0xffff, 0x0016, 0x0000, 0x0016, 0x0000, 
+0x0016, 0x0000, 0x0016, 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0x0140, 
+0x4000, 0x0001, 0x0000, 0xffff, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_AVI_UPDATE_APP      AVI                     "res\\update app.avi"
+IDR_AVI_CLOCK           AVI                     "res\\clock.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TOOLBAR_PERFMON TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_TOOLBAR_CLEAR
+    BUTTON      ID_TOOLBAR_FREEZE
+    BUTTON      ID_TOOLBAR_ADD_COUNTER
+    BUTTON      ID_TOOLBAR_REMOVE_COUNTER
+    BUTTON      ID_TOOLBAR_HIGHLITE
+    BUTTON      ID_TOOLBAR_PROPERTIES
+    BUTTON      ID_
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// METAFILE
+//
+
+IDR_METAFILE2           METAFILE                "res\\14527.emf"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Softek TDMF\n\n\n\n\n\n"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "TdmfCommonGui"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT "
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_CLOSE           "Close the active document\nClose"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    ID_INDICATOR_TIME       "."
+    ID_PANE_0               " Collector Clock: 00:00 "
+    ID_PANE_1               "Pane 1"
+    ID_PANE_2               "pane 2"
+    ID_PANE_3               "PANE 3"
+END
+
+STRINGTABLE 
+BEGIN
+    SFTK_IDS_PRODUCTNAME    "Replicator"
+    SFTK_IDS_FULLPRODUCTNAME "Softek Replicator"
+    SFTK_IDS_COMPANYNAME    "Softek Storage Solutions Corporation"
+    SFTK_IDS_COPYRIGHTNOTICE 
+                            "This software is the licensed software of Softek Storage Solutions Corporation.\r\n\r\nTHIS SOFTWARE IS THE CONFIDENTIAL OR TRADE SECRET PROPERTY OF SOFTEK STORAGE SOLUTIONS CORPORATION AND MAY ONLY BE USED UNDER LICENSE FROM SOFTEK STORAGE SOLUTIONS CORPORATION."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TOOLBAR_CLEAR        "Clear All"
+    ID_TOOLBAR_FREEZE       "Freeze Display"
+    ID_TOOLBAR_ADD_COUNTER  "Add Counter"
+    ID_TOOLBAR_REMOVE_COUNTER "Remove Counter"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TOOLBAR_HIGHLITE     "Highlite"
+    ID_TOOLBAR_PROPERTIES   "Properties"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_SERVERVIEWCONTEXTMENU_AUTOSIZECOLUMNS 
+                            "Resize the columns to fit\nResize the columns to fit"
+    ID_GROUP_INFO           "Group Information\nGroup Information"
+    ID_SERIE_REFRESH        "Refresh\nRefresh data"
+    ID_CHARTFX_STATS        "Select statistics\nSelect statistics"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_REMOVE_SERIE         "Remove the group from the chart\nRemove the groupo from the chart"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRC)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH_CANADIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SELECT_SERVERNAME DIALOG  0, 0, 174, 166
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "IP adress unknown"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,117,60,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,117,76,50,14
+    LISTBOX         IDC_LIST_SERVER,14,68,91,84,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_MESSAGE,7,7,160,44,ES_MULTILINE | ES_READONLY | 
+                    NOT WS_BORDER
+    GROUPBOX        "Server name list",IDC_STATIC,7,56,104,104
+END
+
+IDD_DIALOG_SERVER_WARNING DIALOG  0, 0, 299, 111
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Warning"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,124,91,52,14
+    CONTROL         "In the future, do not show this warning",IDC_CHECK_MSG,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,68,136,10
+    LTEXT           "This can result in decreased performance of Replicator and negatively impact the system.  Please check documentation for recommended BAB/chunk sizes.",
+                    IDC_STATIC,7,38,283,22
+    LTEXT           "Requested:",IDC_STATIC,36,20,38,8
+    LTEXT           "Allocated:",IDC_STATIC,137,20,32,8
+    EDITTEXT        IDC_EDIT_REQ,77,20,24,12,ES_RIGHT | ES_READONLY | NOT 
+                    WS_BORDER
+    LTEXT           "MB",IDC_STATIC,106,20,12,8
+    LTEXT           "MB",IDC_STATIC,197,20,12,8
+    EDITTEXT        IDC_EDIT_ACT,168,20,24,12,ES_RIGHT | ES_READONLY | NOT 
+                    WS_BORDER
+    EDITTEXT        IDC_EDIT_MSG,7,7,285,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SELECT_SERVERNAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 167
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+
+    IDD_DIALOG_SERVER_WARNING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 292
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\TdmfCommonGui.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

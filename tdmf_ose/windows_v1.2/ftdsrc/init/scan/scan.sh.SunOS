@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Copyright (c) 1997, 1998, 1999 Legato Systems, Inc. All Rights Reserved
+#
+# This script does the minimum required to get the %PRODUCTNAME% driver loaded
+# and initialized.  It generally should be run in init mode S (in /etc/rcS.d)
+# AFTER all initialization routines for underlying disk components (for
+# example VxVM or Sun's Solstice) have had a chance to become alive.
+#
+#
+
+case "$1" in
+'start_msg')
+    echo "Start %PRODUCTNAME% device scan"
+    ;;
+'stop_msg')
+    echo "Stop %PRODUCTNAME% device scan"
+    ;;
+'start')
+    echo "Starting %PRODUCTNAME% devices"
+    /usr/sbin/%Q%start -ba
+    ;;
+'stop')
+    echo "Stopping %PRODUCTNAME% devices"
+    /usr/sbin/%Q%stop -sa
+    ;;
+*)
+    echo "Usage: $0 { start | stop }"
+    ;;
+esac

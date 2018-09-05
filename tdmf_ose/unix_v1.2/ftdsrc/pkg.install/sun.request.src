@@ -1,0 +1,44 @@
+trap 'exit 3' 15
+
+# Check os-version and package-version
+PCRELEASE=`/bin/uname -r`
+PCNAME=""
+
+case $PCRELEASE in
+    5.6)    PCNAME="Solaris 2.6";;
+    5.7)    PCNAME="Solaris 7";;
+    5.8)    PCNAME="Solaris 8";;
+esac
+
+if [ ! -z "$PCNAME" ]
+then
+    echo ""
+    echo "[ERROR] This version of the software cannot be installed on $PCNAME."
+    echo "Please try an older version that supports this version of the OS."
+    echo ""
+
+    exit 1
+fi
+
+# Prompts go here
+while [ -z "$ACCEPT_LICENSE" ]; do
+	# NOTE: The space after the ? is important!
+	ACCEPT_LICENSE=`ckyorn -Q -p "Do you accept the above license terms? "`
+done
+
+if [ "${ACCEPT_LICENSE}" != "y" ]; then
+	echo "You must accept the license terms to install this product"
+	exit 1
+fi
+
+while [ -z "${RMD_PORT}" ]; do
+        RMD_PORT=`ckrange -Q -d 575 \
+	        -p "Port for %PRODUCTNAME% master daemon to listen on? [575]" \
+                -l 1 -u 65535`
+done
+
+# Export the above variables to pkgadd's $1.  This ensures that 
+# they get added to the package's install enviornment.
+
+echo "ACCEPT_LICENSE=${ACCEPT_LICENSE}" >> $1 || exit 1
+echo "RMD_PORT=${RMD_PORT}" >> $1 || exit 1

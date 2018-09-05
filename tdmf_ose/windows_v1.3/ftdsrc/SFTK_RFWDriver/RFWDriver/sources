@@ -1,0 +1,204 @@
+!IF 0
+
+Copyright (c) 2002 by Softek Software Technology Corporation
+
+Module Name: sftkBlk.sys driver 
+
+    sources.
+
+!ENDIF
+
+# This is used with the clean label
+# to remove object files
+MY_OBJ=	sftk_driver.obj		\
+		sftk_OS.obj			\
+		sftk_Device.obj		\
+		sftk_Ioctl.obj		\
+		sftk_WMI.obj		\
+		sftk_MM.obj			\
+		sftk_SM.obj			\
+		sftk_Bitmap.obj		\
+		sftk_Registry.obj	\
+		sftk_Thread.obj		\
+		sftk_lg.obj			\
+		sftk_Queue.obj		\
+		sftk_dev.obj		\
+		sftk_pstore.obj		\
+		sftk_Refresh.obj	\
+		sftk_protocol.obj	\
+		sftk_tdiutil.obj	\
+		sftk_tditcpex.obj	\
+		sftk_tdiutil.obj	\
+		sftk_tditcpex.obj	\
+		sftk_md5c.obj		\
+		sftk_md5const.obj	\
+		sftk_comutil.obj	\
+		sftk_tdiconnect.obj \
+		sftk_tdilisten.obj	\
+		sftk_tdireceive.obj \
+		sftk_tdisend.obj	\
+		sftk_comp.obj		\
+		sftk_lzhl.obj		\
+		sftk_pred.obj 
+		
+		
+#
+MY_SRC= sftk_block.mc		\
+		sftk_driver.c		\
+		sftk_OS.c			\
+		sftk_Device.c		\
+		sftk_Ioctl.c		\
+		sftk_WMI.c			\
+		sftk_MM.c			\
+		sftk_Queue.c		\
+		sftk_SM.c			\
+		sftk_Bitmap.c		\
+		sftk_Registry.c		\
+		sftk_Thread.c		\
+		sftk_lg.c			\
+		sftk_dev.c			\
+		sftk_pstore.c		\
+		sftk_Refresh.c		\
+		sftk_block.rc		\
+		sftk_protocol.c		\
+		sftk_tdiutil.c		\
+		sftk_tditcpex.c		\
+		sftk_md5c.c			\
+		sftk_md5const.c		\
+		sftk_comutil.c		\
+		sftk_tdiconnect.c	\
+		sftk_tdilisten.c	\
+		sftk_tdireceive.c	\
+		sftk_tdisend.c		\
+		sftk_comp.c			\
+		sftk_lzhl.c			\
+		sftk_pred.c 
+		
+		
+	
+#
+# This is to add the correct processor directory
+# path otherwise no build macros have "i386".
+# Jerome.
+#
+!IF "$(PROCESSOR_ARCHITECTURE)" == "x86"
+PROCESSOR_LABEL=i386
+!ENDIF
+
+# The developer defines the TARGETNAME variable. It is the name of
+# the target (component) that is being built by this makefile.
+# It should not include any path or filename extension.
+#
+TARGETNAME=sftkBlk
+#
+# Intermediate dir for messages/obj files.
+#
+#INTERMDIR=
+#
+#BUILD_ALT_DIR=
+#
+# The developer defines the TARGETPATH and TARGETTYPE variables.
+# The first variable specifies where the target will be built. The second specifies
+# the type of target (either PROGRAM, DYNLINK, LIBRARY, UMAPPL_NOLIB or
+# BOOTPGM). Use UMAPPL_NOLIB when you are only building user-mode
+# programs and do not need to build a library.
+#
+TARGETPATH=$(OUTPATH)
+PASS0_CLIENTDIR=$(INTERMDIR)\$(PROCESSOR_LABEL)
+PASS0_HEADERDIR=$(INTERMDIR)\$(PROCESSOR_LABEL)
+PASS0_SERVERDIR=$(INTERMDIR)\$(PROCESSOR_LABEL)
+# 
+TARGETTYPE=DRIVER
+#
+# If your TARGETTYPE is DRIVER, you can optionally specify DRIVERTYPE.
+# If you are building a WDM Driver, use DRIVERTYPE=WDM, if you are building
+# a VxD use DRIVERTYPE=VXD. Otherwise, delete the following two lines.
+#
+#DRIVERTYPE=WDM
+#DRIVERTYPE=VXD
+#
+# Next, specify options for the compiler using C_DEFINES.
+# All parameters specified here will be passed to both the C
+# compiler and the resource compiler.
+C_DEFINES= -D_KERNEL_ -D_KERNEL -DKERNEL -DBUFFER_OVERFLOW_CHECKS=0 -DWIN32=100 -D_WINDOWS -DCONDITION_HANDLING=1 -DNT_INST=0 -D_NT1X_=100 -DWINNT=1 -DPOOL_TAGGING=1 
+
+#
+# This adds the missing function for 64bits compiler support on w2k - Jerome
+#
+!IF "$(DDK_TARGET_OS)" == "Win2K"
+2K64LIB=lldvrm.lib
+C_DEFINES=-DW2K -DWIN2K=1 $(C_DEFINES)
+!ENDIF
+!IF "$(DDK_TARGET_OS)" == "WinXP"
+C_DEFINES = "NOT SUPPORTED"
+!ENDIF
+!IF "$(DDK_TARGET_OS)" == "WinNET"
+C_DEFINES=-DWIN2003=1 $(C_DEFINES)
+!ENDIF
+
+
+
+#
+#Start Newly Added Libs
+#
+
+#TARGETLIBS=$(DDK_LIB_PATH)\ndis.lib \
+#		$(DDK_LIB_PATH)\tdi.lib \
+#		..\KSLib\$(DDKBUILDENV)\*\pcakslib.lib
+#
+#INCLUDES=..\KSInc;..\..\include;$(DDK_INC_PATH);$(BASEDIR)\src\network\inc;..\..\NetINet;
+
+#
+#End Newly Added Libs
+#
+
+#
+# The INCLUDES variable specifies any include paths that are specific to
+# this source directory. Separate multiple paths with single
+# semicolons. Relative path specifications are okay.
+#
+
+INCLUDES=$(DDK_INC_PATH);\
+         $(MSSDK)\Include;\
+         .\TDI;$(BASEDIR)\src\network\inc;\
+         $(BASEDIR)\src\storage\inc;\
+		 $(INTERMDIR)\$(PROCESSOR_LABEL);\
+         
+#
+# The TARGETLIBS macro specifies additional libraries to link against your target
+# image. Each library path specification should contain an asterisk (*)
+# where the machine-specific subdirectory name should go.
+#
+TARGETLIBS=$(DDK_LIB_DEST)\$(PROCESSOR_LABEL)\int64.lib		\
+				$(DDK_LIB_PATH)\ndis.lib					\
+				$(DDK_LIB_PATH)\tdi.lib						
+
+# Veera comment out this :..\TDI\TDISAMP\Drivers.NT\KSLib\$(DDKBUILDENV)\*\pcakslib.lib
+
+#
+# The developer defines the SOURCES macro. It contains a list of all the
+# source files for this component. Specify each source file on a separate
+# line using the line-continuation character. This minimizes merge
+# conflicts if two developers are adding source files to the same component.
+#
+BUFFER_OVERFLOW_CHECKS=0
+#
+# Just set this variable below to nul
+# to remove cod files.
+#
+ASSMBLFILES=/FAcs /Fa"$(INTERMDIR)/"
+MSC_WARNING_LEVEL=$(MSC_WARNING_LEVEL) /FR $(ASSMBLFILES)
+#MSC_WARNING_LEVEL=/WX /W3 /Zi /FR $(ASSMBLFILES)
+SOURCES=$(MY_SRC)
+#
+# Defining either (or both) the variables NTTARGETFILE0 and/or NTTARGETFILES
+# causes makefile.def to include .\makefile.inc immediately after it
+# specifies the top level targets (all, clean and loc) and their dependencies.
+# The makefile.def file expands NTTARGETFILE0 as the first dependent for the
+# "all" target and NTTARGETFILES as the last dependent for the "all" target.
+# This is useful for specifying additional targets and dependencies that do not fit the
+# general case covered by makefile.def.
+#
+#NTTARGETFILE0=$(PASS0_HEADERDIR)\HaMsg.h
+# NTTARGETFILE1=nmsym
+NTTARGETFILES=nsym

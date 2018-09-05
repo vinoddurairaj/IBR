@@ -1,0 +1,8 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
+"CL" = "@c:\\tdmf_ose\\windows_v1.2.6\\ftdsrc\\datasentry.cl"
+"QNM" = "mds"
+"CAPQ" = "MDS"
+"MASTERNAME" = "DataSentryServer"
+"PRODUCTNAME" = "DataSentry"

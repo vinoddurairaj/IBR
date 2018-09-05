@@ -1,0 +1,17 @@
+/adapter.c////*////
+/atmsmdbg.c////*////
+/atmsmdbg.h////*////
+/atmsmdrv.c////*////
+/atmsmdrv.h////*////
+/atmsmdrv.rc////*////
+/callmgr.c////*////
+/globals.c////*////
+/ioctl.c////*////
+/makefile////*////
+/misc.c////*////
+/netatmsm.inf////*////
+/precomp.h////*////
+/proto.h////*////
+/request.c////*////
+/sendrecv.c////*////
+/sources////*////

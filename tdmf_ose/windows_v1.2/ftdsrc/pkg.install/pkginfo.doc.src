@@ -1,0 +1,7 @@
+NAME="%PRODUCTNAME% User's Guide (HTML)"
+CATEGORY=system
+ARCH="sparc"
+VENDOR="%COMPANYNAME% All Rights Reserved."
+BASEDIR=/opt
+PKG=%PKGNM%d
+VERSION="%VERSION%"

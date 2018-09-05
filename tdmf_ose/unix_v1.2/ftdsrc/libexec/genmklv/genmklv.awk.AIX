@@ -1,0 +1,372 @@
+#!/usr/bin/awk -f
+#
+# LICENSED MATERIALS / PROPERTY OF IBM
+# %PRODUCTNAME% version %VERSION%
+# (c) Copyright %COMPANYNAME%  %COPYRIGHTYEAR 2001%.  All Rights Reserved.
+# The source code for this program is not published or otherwise
+# divested of its trade secrets, irrespective of what has been
+# deposited with the U.S. Copyright Office.
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with %COMPANYNAME%
+#
+#
+#  /%OPTDIR%/%PKGNM%/bin/genmklv.awk
+#
+# An awk script that enhances mklv to allow the user set the minor device number
+#
+
+function softek_msg(errnum, arg1, arg2, arg3, arg4)
+{
+    if (arg1 != "") args=" \"" arg1 "\""
+    if (arg2 != "") args=" \"" arg2 "\""
+    if (arg3 != "") args=" \"" arg3 "\""
+    if (arg4 != "") args=" \"" arg4 "\""
+    default_msg = "\"Unable to retrieve message number " errnum "\n\""
+    system( "dspmsg -s 1 \"" SOFTEK_MSGS "\" " errnum  " " default_msg " " args  ">&2" )
+}
+
+function get_cksum()
+{
+    perform_checksum = "cksum \"" FILENAME "\""
+    rc=perform_checksum | getline checksum
+    if (rc < 1)
+    {
+	exit_code = 6	# cksum failed to executed 
+	exit exit_code
+    }
+    n = split( checksum, checksum_results )
+    if (n != 3 || checksum_results[1] !~ /^[0-9]+$/ || checksum_results[2] !~ /^[0-9]+$/)
+    {
+	exit_code = 7	# invalid values returned from cksum
+	exit exit_code
+    }
+}
+
+/^Usage\(\)/ \
+{
+    processUsage = 1;
+    print $0;
+    next;
+}
+/^check_input\(\)/ \
+{
+    processCheckInput = 1
+    print $0
+    next
+}
+/^OLD_UMASK=/ \
+{
+    if (!processed["umask"])
+    {
+	print "SOFTEK_MSGS=\"" SOFTEK_MSGS "\"\n"
+	print $0
+	processed["umask"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+/`getopt/ \
+{
+    if (!processed["getopt"])
+    {
+        $(NF-1) = $(NF-1) "n:"
+        print $0
+	processed["getopt"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+/^AFLAG= ; AVAL= ;/ \
+{
+    if (!processed["init"])
+    {
+	print "has_mklv_changed\n"
+	print "nFLAG= ; nVAL= ;"
+	print $0
+	processed["init"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+/-P) PFLAG='-P';/ \
+{
+    if (!processed["arg"])
+    {
+	print $0
+	print "\t   -n) nFLAG='-n';  nVAL=$2;  shift;  shift;;   #minor number"
+	processed["arg"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+/^check_input \$AFLAG/ \
+{
+    if (!processed["validate"])
+    {
+	while (match($0, /\\$/))
+	{
+	    print $0
+	    getline
+	}
+	print $0 " $nFLAG $nVAL"
+	processed["validate"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+/^MINOR=`lvgenminor \$MAJOR \$LVNAME`$/ \
+{
+    processMinor = 1
+    next
+}
+processMinor == 1 && /^test_return \$\?$/ \
+{
+    processMinor++
+    next
+}
+processMinor == 2 && /^GOTMINOR=1$/ \
+{
+    if (!processed["genminor"])
+    {
+	processMinor = 0;
+	print "if [ -z \"\$nFLAG\" ]"
+	print "then"
+	print "    MINOR=`lvgenminor \$MAJOR \$LVNAME`"
+	print "    test_return \$\?"
+	print "    GOTMINOR=1"
+	print "else"
+	print "    MINOR=`lvgenminor -p \$nVAL \$MAJOR \$LVNAME`"
+	print "    LVGENMINOR_EC=\$\?"
+	print "    if [ \"\$MINOR\" -ne \"\$nVAL\" ]"
+	print "    then"
+	print "\tsoftek_msg 23003 mklv >& 2"
+	print "\ttest_return 1"
+	print "    fi"
+	print "    test_return \$LVGENMINOR_EC"
+	print "    GOTMINOR=1"
+	print "fi"
+	processed["genminor"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+processMinor > 0 \
+{
+    # Did not find the lvgenminor code sequence correctly
+    exit_code = 3
+    exit exit_code
+}
+processUsage == 1 && /{/ \
+{
+    inUsage++;
+    print $0;
+    next;
+}
+processUsage == 1 && /}/ \
+{
+    # append additional usage message and add additional shell functions
+
+    if (!processed["usage"])
+    {
+	inUsage--;
+	if (inUsage == 0)
+	{
+	    print "\tsoftek_msg 23004 mklv >& 2"
+	    print $0;
+	    print "\n######################### softek_msg ###################################"
+	    print "#"
+	    print "# NAME: softek_msg()"
+	    print "#"
+	    print "# DESCRIPTION:\tRetrieves and prints a message.  A default message is"
+	    print "#\t\tgenerated in case the catalog is missing the message"
+	    print "# "
+	    print "# RETURNS: exit value from dspmsg"
+	    print "#"
+	    print "softek_msg()"
+	    print "{"
+	    print "\ttypeset msgnum=\$1;"
+	    print "\ttypeset default_msg=\"Unable to retrieve message number \$msgnum\\n\""
+	    print "\tshift\n"
+	    print "\tdspmsg -s 1 \"\$SOFTEK_MSGS\" \$msgnum \"\$default_msg\" \$@"
+	    print "}\n"
+	    print "######################### has_mklv_changed ###################################"
+	    print "#"
+	    print "# NAME: has_mklv_modified()"
+	    print "#"
+	    print "# DESCRIPTION:\tSee if mklv has been modified since the last time "
+	    print "#\t\tgenmklv has been run."
+	    print "#"
+	    print "# RETURNS:"
+	    print "#\texit on serious errors otherwise just warn the user of"
+	    print "#\taction taken"
+	    print "#\n"
+	    print "has_mklv_changed()"
+	    print "{"
+	    print "\ttypeset crc chars  "
+	    print "\ttypeset -l type1 type2"
+	    print "\ttypeset name rest\n"
+	    print "\tfile \"" FILENAME "\" | read name type1 type2 rest"
+	    print "\tif [[ \"\$?\" -ne 0 ]]"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23010 mklv >&2;\t# file failed to execute"
+	    print "\t\tsoftek_msg 23008 mklv >&2;\t# cannot verify mklv changes"
+	    print "\t\treturn"
+	    print "\tfi"
+	    print "\tif [[ \"\$type1\" != \"shell\" || \"\$type2\" != \"script\" ]]"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23011 mklv >&2\t# mklv is not a shell script"
+	    print "\t\texit"
+	    print "\tfi\n"
+	    print "\tcksum \"" FILENAME "\" | read crc chars rest"
+	    print "\tif [[ \"\$?\" -ne 0 ]]"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23005 mklv >&2;\t# cksum failed to execute"
+	    print "\t\tsoftek_msg 23008 mklv >&2;\t# cannot verify mklv changes"
+	    print "\t\treturn"
+	    print "\tfi\n"
+	    print "\tif [[ -z \"\$crc\" ]] || ! expr \"\$crc\" + 1 >/dev/null 2>&1"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23006 mklv >&2;\t# crc value is not numeric"
+	    print "\t\tsoftek_msg 23008 mklv >&2;\t# cannot verify mklv changes"
+	    print "\t\treturn"
+	    print "\tfi"
+	    print "\tif [[ -z \"\$chars\" ]] || ! expr \"\$chars\" + 1 >/dev/null 2>&1"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23007 mklv >&2;\t# count value is not numeric"
+	    print "\t\tsoftek_msg 23008 mklv >&2;\t# cannot verify mklv changes"
+	    print "\t\treturn"
+	    print "\tfi"
+	    get_cksum()
+	    print "\tif [[ \"\$crc\" -ne " checksum_results[1] " || \"\$chars\" -ne " checksum_results[2] " ]]"
+	    print "\tthen"
+	    print "\t\tsoftek_msg 23009 mklv >&2;\t# mklv has been modified"
+	    print "\t\treturn"
+	    print "\tfi"
+	    print "}\n"
+	    processed["usage"] = 1
+	    processUsage = 0;
+	}
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+    next;
+}
+			   
+processCheckInput == 1 && /{/ \
+{
+    inCheckInput++;
+    print $0;
+    next;
+}
+processCheckInput == 1 && /}/ \
+{
+    inCheckInput--;
+    print $0;
+    if (inCheckInput == 0)
+	processCheckInput = 0;
+    next;
+}
+processCheckInput == 1 && /\*) shift;;/ \
+{
+    if (!processed["checkinput"])
+    {
+	print "      -n)"
+	print "\t  typeset -r MAXLVS=`lqueryvg -g \$VGID -N`"
+	print "\t  if [ \$? -ne 0 -o -z \"\$MAXLVS\" -o \"\$MAXLVS\" -lt 1 ]"
+	print "\t  then"
+	print "\t\tsoftek_msg 23001 mklv >& 2"
+	print "\t\texit"
+	print "\t  fi"
+	print "\t  if ! expr \"$2\" + 1 >/dev/null 2>&1"
+	print "\t  then              #Invalid input value specified for minor number option"
+	print "\t\tsoftek_msg 23000 mklv >& 2"
+	print "\t\texit"
+	print "\t  fi"
+	print "\t  if [ \"\$2\" -lt 1 -o \"\$2\" -ge \"\$MAXLVS\" ]"
+	print "\t  then"
+	print "\t\tsoftek_msg 23002 mklv `expr \"\$MAXLVS\" - 1` >& 2"
+	print "\t\texit"
+	print "\t  fi"
+	print "\t  shift;  shift ;;    #shift past this option flag/value pair\n"
+	print $0
+	processed["checkinput"] = 1
+	next
+    }
+    else
+    {
+	exit_code = 4	# Error in generating dtcmklv file
+	exit exit_code
+    }
+}
+
+{ print $0; }
+
+BEGIN \
+{
+    exit_code = 0
+
+    if (SOFTEK_MSGS == "" || SOFTEK_MSGS !~ /^\//)
+    {
+	exit_code = 1	# must specify this variable
+	exit exit_code
+    }
+    if (FILENAME !~ /^\//)
+    {
+	exit_code = 2	# The os mklv pathname should be rooted
+	exit exit_code
+    }
+    processed["umask"] = 0
+    processed["getopt"] = 0
+    processed["init"] = 0
+    processed["arg"] = 0
+    processed["validate"] = 0
+    processed["genminor"] = 0
+    processed["usage"] = 0
+    processed["checkinput"] = 0
+}
+
+END \
+{
+    if (exit_code)
+    {
+	softek_msg( exit_code + 24030 - 1, "genmklv" )  
+	exit exit_code
+    }
+
+    for (i in processed)
+    {
+	if (!processed[i])
+	{
+	    exit_code=5 # Missing a section 
+	    softek_msg( exit_code + 24030 - 1, "genmklv" )  
+	    exit exit_code
+	}
+    }
+}

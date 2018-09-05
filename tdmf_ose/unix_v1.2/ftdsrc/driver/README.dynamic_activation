@@ -1,0 +1,145 @@
+This file is meant to be an overall introduction to the dynamic
+activation technique used in the driver and a very high level map of
+its implementation.
+
+---------------------------------------------------------------------------
+How dynamic activation works:
+---------------------------------------------------------------------------
+
+The notion of "dynamic activation" is the feature of the product that
+enables replication to be "dynamically activated" on an existing
+system without the need to reconfigure any of the running
+applications.
+
+Within the driver, what goes on really is a mechanism to capture the
+IO requests sent to local devices.
+
+On unix systems, whenever a block device driver is written, functions
+must be provided to handle the open/close, read/write and strategy
+functions.
+
+Functions to handle these various operations are written and pointers
+to these functions are given to the OS in order for it to use the
+driver's code as appropriate.
+
+We capture the IO sent to other device drivers by swapping (replacing)
+the pointers to the real functions by pointers to our own replacement
+routines.
+
+Our replacement routines take a peek at the IO, and either processes
+the IO for replication purposes, or passes the IO through to the
+original (real) driver's function if we do not need to replicate it.
+
+---------------------------------------------------------------------------
+Main implementation concepts
+---------------------------------------------------------------------------
+
+-) swapping, swap_table, swap_keys:
+
+We swap (replace) the original routines by our own replacement
+routines that capture the IO and peeks at it.
+
+On each OS, the exact set of routines we need to replace is registered
+once for a given type of native object, which we abstract as the swap
+table key.
+
+The swap table's job is to associate the captured swap table key with:
+
+ - The pointer to the original strategy/read/write routine.
+ - How many dtc devices are capturing the IO through our replacement routines.
+
+ This table is used to know when we need to install or uninstall the
+replacement routines.
+
+-) captured_device_table:
+
+The captured device table's job is to associate a captured device
+number with the associated logical device through a pointer to the
+ftd_dev_t entry.
+
+---------------------------------------------------------------------------
+Main differences between the unix implementations:
+---------------------------------------------------------------------------
+
+-) The signatures of the captured functions differ.
+-) The exact list of functions we need to swap differs (how to capture
+   the asynchronous IO).
+
+---------------------------------------------------------------------------
+Differences/particularities of the linux implementation:
+---------------------------------------------------------------------------
+
+-) The simple unix model of the block major device number used as the
+swap key doesn't hold anymore. The linux block driver model is
+different, and is comprised of a number of objects tied together:
+
+    -) blkdev driver (major number)
+    -) gendisk (kernel representation of individual disk device or partition).
+    -) block_device_operations (open/close/ioctl functions but nothing
+                                to receive the io) 
+    -) request_queue/make_request_fn (mechanism to allow reorganizing
+       the IO requests before sending them to the device for efficiency
+       reasons.  It is the low level make_request_fn that we can replace.)
+    -) partitions (handled by the OS automatically on partitionable gendisks).
+
+The major number, the block_device_operations and a request_queue are
+hand tied to a gendisk.
+
+A given block device driver might manage any number of gendisks, with
+each its own request queue.
+
+For example, the logical volume driver (device mapper: dm), creates
+one gendisk per logical volume, each having its own request queue.
+
+Partitions are mostly handled by the OS and all share the same request
+queue and are automatically remapped to the whole disk before being
+sent to the make_request_fn.
+
+---------------------------------------------------------------------------
+Recent modifications to support linux:
+---------------------------------------------------------------------------
+
+In order to support the linux differences, the following changes were performed:
+
+-) Reorganized the platform specific code into platform specific files.
+-) Added an abstraction in order to decouple the multiple native replacement routines from their common logic.
+-) Added the abstraction of a swap key in order to swap using major device numbers on unix platforms and request_queues on linux.
+-) Added linux specific logic to detect if an IO is sent to a replicated partition.
+
+See http://9.29.84.134:8080/browse/RFX-116 for the history of the development.
+
+---------------------------------------------------------------------------
+Map to the sources:
+---------------------------------------------------------------------------
+
+
+ftd_dynamic_activation.h          The public interface of the dynamic activation code.
+                                  These are the only functions needed by the driver to enable dynamic activation.
+
+ftd_dynamic_activation.c          The heart of the implementation used by all platforms.
+
+ftd_dynamic_activation_os.h       Private API declarations which each OS needs to declare or implement and some inline
+                                  implementation of common and trivial unix functions.
+                                  Used by the cross platform implementation.
+
+ftd_dynamic_activation_aix.h      Per platform type declarations.
+ftd_dynamic_activation_hpux.h
+ftd_dynamic_activation_linux.h
+ftd_dynamic_activation_sun.h
+
+ftd_dynamic_activation_aix.c      Native implementations of the private API and of the replacement functions.
+ftd_dynamic_activation_hpux.c
+ftd_dynamic_activation_linux.c
+ftd_dynamic_activation_sun.c
+
+---------------------------------------------------------------------------
+Other pertinent documents
+---------------------------------------------------------------------------
+
+Dynamic activation UML diagrams from our wiki (https://w3.tap.ibm.com/w3ki/display/SoftekReplicator/Unix+specific+documents)
+
+https://w3.tap.ibm.com/w3ki/download/attachments/3246702/driver+-+dynamic+activation+changes.uml?version=3
+Used to explain the original dynamic activation implementation.
+
+https://w3.tap.ibm.com/w3ki/download/attachments/3246702/linux+dynamic+activation.zip?version=1
+Used to explain the linux model and new abstractions build to support it.

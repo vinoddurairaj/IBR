@@ -1,0 +1,5 @@
+DIRS= \
+     scsiscan \
+     sampcpl \
+     dll \
+     app

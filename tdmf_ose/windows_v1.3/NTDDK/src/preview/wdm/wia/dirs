@@ -1,0 +1,6 @@
+DIRS= \
+     microdrv \
+     extend \
+     wiatscan \
+     getimage \
+     testcam

@@ -1,0 +1,8 @@
+DIRS= \
+     sonymc \
+     nsmmc \
+     hpmc \
+     exabyte \
+     elmsmc \
+     ddsmc \
+     adicsc

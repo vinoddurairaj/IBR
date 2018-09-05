@@ -1,0 +1,42 @@
+#
+# Copyright (c) 1997, 1998 FullTime Software, Inc.  All Rights Reserved.
+#
+# This file is to be used for building subdirs
+#
+# $Id: subdir.gmk,v 1.7 2006/12/31 00:35:15 naat0 Exp $
+#
+#
+
+BUILDBRAND=$(shell ${TOP}/mk/getosarch.sh)
+ifeq (${BUILDBRAND},)
+$(error Unable to collect the operating system architecture information)
+endif
+
+ifeq ($(wildcard ${TOP}/mk/vars_tdmf_${BUILDBRAND}.gmk),)
+include ${TOP}/mk/vars.gmk
+else
+include ${TOP}/mk/vars_tdmf_${BUILDBRAND}.gmk
+endif
+
+ifdef SUBDIRS
+_MAKE_SUBDIRS=	\
+	@set -e ; for i in ${SUBDIRS}; do \
+		echo Making $@ in ${_TP}/$$i; \
+		$(MAKE) ${EXTRA_MAKEFLAGS} -C $$i VERSION=$(VERSION) BUILDNUM=$(BUILDNUM) _TP=${_TP}/$$i $@ || exit $$?; \
+	done
+endif
+
+all::	_FORCE
+	$(_MAKE_SUBDIRS)
+clean:	_FORCE
+	$(_MAKE_SUBDIRS)
+ifdef CLEANS
+	@$(RM) ${CLEANS}
+endif
+
+install:: _FORCE
+	$(_MAKE_SUBDIRS)
+
+_FORCE:
+
+include ${TOP}/mk/depend.gmk

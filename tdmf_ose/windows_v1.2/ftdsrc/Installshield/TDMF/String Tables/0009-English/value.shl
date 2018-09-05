@@ -1,0 +1,37 @@
+[DATA]
+COMPONENT_STATUS_SECONDARY=Copying files for the secondary
+PERF_COUNTERS_NAME=counters.ini
+TITLE_MAIN=TDMF Setup
+EVENTLOG_KEY_NAME=EventMessageFile
+PERF_DLL_NAME=tdmfPerf.dll
+COMPANY_NAME=Fujitsu Softek
+LOGMSG_NAME=tdmfLogMsg.dll
+EVENTLOG_DEFAULT_VALUE=%SystemRoot%\System32\tdmfLogMsg.dll
+DRIVER_NAME=TDMFblock.sys
+SETUP_DESCRIPTION_SECONDARY=The full product is installed, however the device driver is initally set to disabled.
+PRODUCT_VERSION=CurrentVersion
+COMPONENT_DESCRIPTION_SECONDARY=This component includes files for the secondary.
+EVENTLOG_KEY_VALUE=TypesSupported
+EVENTLOG_DRIVER_KEY=System\CurrentControlSet\Services\EventLog\System\TDMFblock
+SETUP_DESCRIPTION_PRIMARY=The full product is installed and the device driver is automatically started when the system is rebooted.
+TITLE_CAPTIONBAR=TDMF Setup
+PRIMARY=Primary
+EVENTLOG_SERVICE_KEY=System\CurrentControlSet\Services\EventLog\Application\TDMF
+SYSTEM_DRIVER_KEY_NAME=ImagePath
+COMPONENT_DESCRIPTION_DOCUMENTATION=This component includes documentation files
+FOLDER_NAME=Softek_TDMF
+DOCUMENTATION=Documentation
+SETUP_DESCRIPTION_DOCUMENTATION=Only the documentation is installed.
+COMPONENT_STATUS_DOCUMENTATION=Copying documentation files
+SECONDARY=Secondary
+SYSTEM_DRIVER_KEY=System\CurrentControlSet\Services\TDMFblock
+PRODUCT_KEY=TdmfServer.exe
+PRODUCT_NAME=TDMF
+COMPONENT_DESCRIPTION_PRIMARY=This component includes files for the primary.
+COMPONENT_STATUS_PRIMARY=Copying files for the primary
+
+[GENERAL]
+LANGUAGE=0009
+TYPE=STRINGTABLESPECIFIC
+VERSION=1.00.000
+

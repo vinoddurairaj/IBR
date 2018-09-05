@@ -1,0 +1,9 @@
+#!/usr/bin/ksh
+#
+# Package Product Name
+#
+# Derive product name using the `Q' macro.
+#
+. ../../../mk/vars.sh
+
+echo ${Q}

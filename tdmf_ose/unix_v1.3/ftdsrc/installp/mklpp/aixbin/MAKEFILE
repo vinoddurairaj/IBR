@@ -1,0 +1,45 @@
+#
+# Copyright (c) 1998 FullTime Software, Inc.  All Rights Reserved.
+#
+# RESTRICTED RIGHTS LEGEND: Use, duplication, or disclosure by the
+# Government is subject to restrictions as set forth in
+# subparagraph (c)(1)(ii) of the Rights in Technical Data and
+# Computer Software clause at DFARS 52.227-7013 and in similar
+# clauses in the FAR and NASA FAR Supplement.
+#
+#
+#
+#
+#
+TOP=../../..
+
+all: rel
+
+rel: exec doc
+
+exec: mkbaserel_PKG.sh mkinvent_PKG.sh
+	./mkbaserel_PKG.sh -f -r E 
+
+doc: mkbaserel_PKG.sh mkinvent_PKG.sh
+	./mkbaserel_PKG.sh -f -r D 
+
+#
+# product name change here...
+#
+PKGIFY=@rm -f $@; \
+	echo Making $@ from $?; \
+	sed 	-e '\@%%Q%%@s@@%QNAME%@g' \
+		-e '\@%%OEMNM%%@s@@%OEMNAME%@g' $? > $@;
+
+mkbaserel_PKG.sh: mkbaserel.sh
+	$(PKGIFY)
+	@chmod +x $@
+
+mkinvent_PKG.sh: mkinvent.sh
+	$(PKGIFY)
+	@chmod +x $@
+
+clean:
+	./mkbaserel.sh -c -r E
+	./mkbaserel.sh -c -r D
+	rm -f mkbaserel_PKG.sh mkinvent_PKG.sh

@@ -1,0 +1,22 @@
+LIBRARY	RplLibWrapper
+DESCRIPTION	"Replication Library Wrapper Functions go here"
+VERSION	1.1
+
+EXPORTS
+	;Exports go Here
+	RemoteThread @1
+	StatThread @2
+	ftd_mngt_initialize_collector_values @3
+	ftd_mngt_recv_msg @4
+	ftd_mngt_msgs_log @5
+	ftd_mngt_shutdown @6
+	ftd_mngt_send_registration_key @7
+	ftd_mngt_send_agentinfo_msg @8
+	ftd_mngt_initialize @9
+	ftd_mngt_performance_set_group_cp @10
+	sftk_mngt_init_lg_monit @11
+	sftk_mngt_do_lg_monit @12
+	ftd_mngt_create_lg_monit @13
+	ftd_mngt_delete_lg_monit @14
+	
+	

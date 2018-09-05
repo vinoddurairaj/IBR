@@ -1,0 +1,7 @@
+#! /bin/sh
+cp driver/qds /usr/kernel/drv
+rem_drv qds
+add_drv qds
+libexec/start/qdsstart -a
+echo "testing..."
+dd if=/dev/zero of=/dev/qds/lg4/rdsk/qds0 bs=8k count=1

@@ -1,0 +1,12 @@
+$(PASS0_HEADERDIR)\HaMsg.h $(PASS0_HEADERDIR)\HaDriver.rc $(PASS0_HEADERDIR)\msg00001.bin:HaMsg.mc	
+	mc -c -h $(PASS0_HEADERDIR) -r $(PASS0_CLIENTDIR) -x $(PASS0_SERVERDIR) -a -A HaMsg.mc
+
+nsym: 
+!IF "$(LINKONLY)" == "1"
+      ..\..\..\Tools\Bin\nmsym.exe /TRANSLATE:ALWAYS,SOURCE,PACKAGE /SOURCE:.;$(DDK_INC_PATH);$(SDK_INC_PATH) $(TARGETPATH)\$(PROCESSOR_LABEL)\$(TARGETNAME).sys
+!ELSE
+	@echo
+!ENDIF
+
+clean:
+	

@@ -1,0 +1,185 @@
+#!/sbin/sh
+########
+#  Product: %CAPQ%
+#  Fileset: %Q%.%Q%
+#  postremove
+########
+#
+# Copyright (c) %COPYRIGHTYEAR 2001% %COMPANYNAME%. All rights reserved.
+#
+########
+VERS=`uname -r | sed -e '\@\.@ s@@@g' | tr -d '[A-Z]'`
+DLKM=0
+if [ ${VERS} -ge 1100 ]
+then
+    DLKM=1
+fi
+
+cp -p /etc/services /etc/services.%Q%
+if [ $? -eq 0 ]; then
+    grep -E -v 'in\.%Q%' /etc/services.%Q% > /etc/services
+fi
+
+#
+# remove dtcautomount soft link
+#
+rm -f /opt/SFTKdtc/bin/%Q%automount
+
+FTDLINKS="%Q%checkpoint %Q%configtool %Q%debugcapture %Q%hostinfo %Q%info %Q%init %Q%killpmd %Q%killrefresh %Q%killrmd %Q%licinfo %Q%monitortool %Q%override %Q%perftool %Q%pmd %Q%refresh %Q%rmdreco %Q%set %Q%start %Q%stop in.%Q% in.pmd in.rmd kill%Q%master killpmds killrefresh killrmds launch%Q%master launchpmds launchrefresh throtd %Q%modfs %Q%automount in.%QAGN% %Q%agentset launchagent killagent %Q%psmigrate %Q%expand %Q%limitsize %Q%panalyze launchnetanalysis %Q%netanalysis %Q%stopnetanalysis %Q%psmigrate272"
+FTDLINKS="$FTDLINKS %Q%monitortty %Q%hrdb_maths %Q%failover %Q%sendfailover"
+# Note: launchbackfresh, killbackfresh, %Q%backfresh, %Q%killbackfresh deactivated as of TDMF IP 2.8.0
+#
+# dynamic volume expansion feature disabled
+# %Q%reconfig %Q%expand %Q%limitsize
+#
+# delete the links in /usr/local/bin
+#
+if [ -d "/usr/local/bin" -a -w "/usr/local/bin" ]; then
+    for LINK in $FTDLINKS
+    do
+        rm -f /usr/local/bin/${LINK}
+    done
+fi
+
+#
+# delete rc directory links
+#
+rm -f /sbin/rc0.d/*%PKGNM%*
+rm -f /sbin/rc1.d/*%PKGNM%*
+rm -f /sbin/rc2.d/*%PKGNM%*
+rm -f /sbin/rc3.d/*%PKGNM%*
+
+rm -f /%FTDVAROPTDIR%/* >/dev/null 2>&1
+
+#
+# Remove our modifications from bcheckrc 
+# 
+BCHECKRC=/sbin/bcheckrc
+# check if CONFIG is touched by %PRODUCTNAME%
+grep "%PKGNM%-scan" ${BCHECKRC} > /dev/null 2>&1
+if [ $? -eq 0 ]
+then
+    # save current copy off where it can be restored in case of failure 
+    echo "Saving current $BCHECKRC to ${BCHECKRC}.pre_%Q%_remove" 
+    cp $BCHECKRC ${BCHECKRC}.pre_%Q%_remove
+    #
+    # Find the first line of our mods by finding the line with %Q%start, then
+    # backtracking to the beginning of our comments
+    #
+    lineno=`cat ${BCHECKRC} | sed -n -e '/%PKGNM%-scan/=' | tail -1`
+    if [ xx"${lineno}" = "xx" ]
+    then
+        echo "${BCHECKRC} context to modify not found";
+    else
+        beginline=`expr $lineno - 4`
+        endline=`expr $lineno + 4`
+	    echo "\nRemoving %PRODUCTNAME% modifications from ${BCHECKRC}"
+        cat ${BCHECKRC} | sed "${beginline},${endline} d" > ${BCHECKRC}.tmp
+        mv ${BCHECKRC}.tmp ${BCHECKRC}
+    fi
+fi
+/sbin/chmod 544 /sbin/bcheckrc
+
+
+UTILS=/usr/lbin/sw/control_utils
+if [[ ! -f $UTILS ]]
+then
+    print "ERROR:   Cannot find the sh functions library $UTILS"
+    exit 1
+fi
+. $UTILS
+
+#
+# Move original config.sys back in place
+#
+SEDTMP=/tmp/mod_config.sed
+CONFIG=/usr/conf/gen/config.sys
+# save current copy in /tmp, just in case!!
+if [ -s "${CONFIG}" ]
+then
+	echo "Saving current $CONFIG to $CONFIG.pre_%Q%_remove"
+	cp $CONFIG ${CONFIG}.pre_%Q%_remove
+	# check if CONFIG is touched by %PRODUCTNAME%
+	grep "%Q%SZLIMIT" ${CONFIG} > /dev/null 2>&1
+	if [ $? -eq 0 ]
+	then
+	   echo "/%Q%SZLIMIT/d" > $SEDTMP
+	   echo "/^SZLIMIT/d" >> $SEDTMP
+	   echo "s/# SZLIMIT/SZLIMIT/" >> $SEDTMP
+	   echo "\nModifing SZLIMIT in ${CONFIG}.\n" 
+	   cat $CONFIG | sed -f $SEDTMP > $CONFIG.tmp
+	   mv $CONFIG.tmp $CONFIG
+	   rm $SEDTMP
+	fi
+fi
+
+
+#
+# Remove /opt/FTSWftd/bin from /etc/PATH
+# Remove /opt/FTSWftd/man from /etc/MANPATH
+#
+mod_pathfile -d P /%FTDBINDIR%
+
+mod_systemfile $SW_SYSTEM_FILE_PATH -d %Q%
+
+#
+# Delete kernel module %Q%
+#
+# return an OS version number (in the hundreds)
+#
+# DTurrin (Aug 17th, 2001)
+#      Changed -eq to -ge in first "if"
+#      to take OS version 11i into account.
+#
+
+if [ ${VERS} -ge 1123 ]
+then
+   # DLKM for 11.23
+   # should be done prior to preremove ???
+
+   # stop the driver
+   /usr/sbin/kcmodule %Q%=unused
+
+   # remove the module from the system and
+   # cause the system to forget all the modules settings
+   /usr/sbin/kcmodule %Q%=uninstall
+
+elif [ ${VERS} -ge 1100 ]
+then
+   if [ ${DLKM} -eq 0 ]
+   then
+       /usr/sbin/kminstall -d %Q%
+       /usr/sbin/config /stand/system
+       /usr/sbin/kmupdate /stand/build/vmunix_test
+   else
+       /usr/sbin/kmadmin -U %Q%
+       /usr/sbin/kminstall -d %Q%
+   fi
+fi
+
+#
+# delete /etc/opt/%PKGNM% directory
+#
+if [ -d "/etc/opt/%PKGNM%" ]; then
+    rmdir -f /etc/opt/%PKGNM% >/dev/null 2>&1
+fi
+
+#
+# delete /opt/%PKGNM% directory
+#
+DIRS="bin lib/blt2.4/dd_protocols lib/blt2.4 lib/%Q%%REV% lib/tcl8.0/http1.0 lib/tcl8.0/http2.0 lib/tcl8.0/opt0.1 lib/tcl8.0 lib/tix4.1/bitmaps lib/tix4.1/pref lib/tix4.1 lib/tk8.0/images lib/tk8.0 lib libexec samples"
+if [ -d "/opt/%PKGNM%" ]; then
+    for DIR in $DIRS
+    do
+        rmdir -f /opt/%PKGNM%/${DIR} >/dev/null 2>&1
+    done
+    rmdir -f /opt/%PKGNM% >/dev/null 2>&1
+fi
+
+# delete /var/opt/%PKGNM%/Agn_tmp directory
+b=/var/opt/%PKGNM%/Agn_tmp
+if [ -d $b ]; then
+    rm -fr ${b} > /dev/null 2>&1
+fi
+
+exit 0

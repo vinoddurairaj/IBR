@@ -1,0 +1,5 @@
+DIRS= \
+     mirror \
+     3dlabs \
+     s3virge \
+     framebuf

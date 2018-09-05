@@ -1,0 +1,88 @@
+# PSF defining Replicator Agent product.
+depot
+  layout_version 1.0
+  copyright      <pkg.hp/hpux.copyright.src
+  description    "Softek - Replicator Agent package"
+##number         FS1234-56789  <= Parts number or order number of distribute package
+  title          Softek - Replicator Agent package
+
+# Vendor definition
+vendor
+  tag            SFTK
+  title          Softek Technology Corporation
+  description    <pkg.hp/hpux.vendor.desc.src
+end # End of vendor definition
+
+# Product definition
+product
+  tag            DUA
+  title          Replicator Agent 2.1.1 Build 001
+  revision       2.1.1
+  copyright      <pkg.hp/hpux.copyright.src
+  description    <pkg.hp/hpux.product.desc.src
+# readme
+# number
+  is_locatable   false
+  directory      /opt
+  architecture   HP-UX_B.11.00_800
+  machine_type   9000/???
+  os_name        HP-UX
+  os_release     ?.11.*
+  os_version     *
+  vendor_tag     SFTK
+
+  fileset
+    tag            Programs
+    revision       2.1.1
+    title          Replicator Agent 2.1.1 Build 001
+    description    <pkg.hp/hpux.programs.desc.src
+#    checkinstall   pkg.hp/hpux.checkinstall.src
+#    preinstall     pkg.hp/hpux.preinstall.src
+    postinstall    pkg.hp/hpux.postinstall.src
+    preremove      pkg.hp/hpux.preremove.src
+    postremove     pkg.hp/hpux.postremove.src
+#    configure      pkg.hp/hpux.configure.src
+#    unconfigure    pkg.hp/hpux.unconfigure.src
+    is_kernel      false
+    is_reboot      false
+#   Replicator Version
+#   # DTC                   2.1.1-i        Replicator
+#     DTC.Documentation     2.1.1-i        Replicator
+#     DTC.Programs          2.1.1-i        Replicator
+   prerequisites  DTC
+
+    directory      pkg.hp/opt/SFTKdua/bin=/opt/SFTKdua/bin
+    file_permissions -m 755 -o root -g sys
+    file dtcAgent
+    file SFTKdua
+    file killdua
+
+    directory      pkg.hp/etc/opt/SFTKdua=/etc/opt/SFTKdua
+    file_permissions -m 755 -o root -g sys
+    file dtcAgent.cfg
+
+    directory      pkg.hp/var/opt/SFTKdua=/var/opt/SFTKdua
+    file_permissions -m 755 -o root -g sys
+    file *
+
+#    directory      pkg.hp/var/opt/SFTKdua/Agn_tmp=/var/opt/SFTKdua/Agn_tmp
+#    file_permissions -m 755 -o root -g sys
+#    file *
+
+  end # End of fileset
+
+  fileset
+    tag            Documentation
+    revision       1.0.0
+    title          Replicator Agent
+    description    <pkg.hp/hpux.docs.desc.src
+    is_kernel      false
+    is_reboot      false
+
+    directory      pkg.hp/opt/SFTKdua/doc=/opt/SFTKdua/doc
+    file_permissions -m 755 -o root -g sys
+    file *
+
+  end # fileset - Documentation
+
+end # End of product definition
